@@ -8308,7 +8308,7 @@ namespace Capex.Web.Controllers
 
                             //ViewBag.EveTipoCambio = ((string.IsNullOrEmpty(ini.EveTipoCambio)) ? double.Parse("0", ciCL) : double.Parse(ini.EveTipoCambio.Replace('.', ','), ciCL));
                             //sheetOne.Cell("T33").Value = ViewBag.EveTipoCambio;
-                            //sheetOne.Cell("T33").Style.NumberFormat.Format = "#,##0.00"; 
+                            //sheetOne.Cell("T33").Style.NumberFormat.Format = "#,##0.00";
 
                             ViewBag.FaseIngenieria = ((string.IsNullOrEmpty(ini.TotalCapexIng)) ? double.Parse("0", ciCL) : double.Parse(ini.TotalCapexIng.Replace('.', ','), ciCL));
                             sheetOne.Cell("B43").Value = ViewBag.FaseIngenieria;
@@ -8534,8 +8534,98 @@ namespace Capex.Web.Controllers
                             ViewBag.IrFecha = DateTime.Today.ToString("dd-MM-yyyy");
                             sheetOne.Cell("H10").Value = ViewBag.IrFecha;
                             sheetOne.Cell("V10").Value = ViewBag.IrFecha;
+
+                            /*ViewBag.TCAnio = ((ini.TCAnio == null || string.IsNullOrEmpty(ini.TCAnio.ToString())) ? null : double.Parse(ini.TCAnio.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.TCAnio != null)
+                            {
+                                sheetOne.Cell("L44").Value = ViewBag.TCAnio;
+                            }
+                            sheetOne.Cell("L44").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.TCAnioMasUno = ((ini.TCAnioMasUno == null || string.IsNullOrEmpty(ini.TCAnioMasUno.ToString())) ? null : double.Parse(ini.TCAnioMasUno.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.TCAnioMasUno != null)
+                            {
+                                sheetOne.Cell("M44").Value = ViewBag.TCAnioMasUno;
+                            }
+                            sheetOne.Cell("M44").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.TCAnioMasDos = ((ini.TCAnioMasDos == null || string.IsNullOrEmpty(ini.TCAnioMasDos.ToString())) ? null : double.Parse(ini.TCAnioMasDos.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.TCAnioMasDos != null)
+                            {
+                                sheetOne.Cell("N44").Value = ViewBag.TCAnioMasUno;
+                            }
+                            sheetOne.Cell("N44").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.TCAnioMasTres = ((ini.TCAnioMasTres == null || string.IsNullOrEmpty(ini.TCAnioMasTres.ToString())) ? null : double.Parse(ini.TCAnioMasTres.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.TCAnioMasTres != null)
+                            {
+                                sheetOne.Cell("O44").Value = ViewBag.TCAnioMasTres;
+                            }
+                            sheetOne.Cell("O44").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.IPCAnio = ((ini.IPCAnio == null || string.IsNullOrEmpty(ini.IPCAnio.ToString())) ? null : double.Parse(ini.IPCAnio.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.IPCAnio != null)
+                            {
+                                sheetOne.Cell("L45").Value = ViewBag.IPCAnio;
+                            }
+                            sheetOne.Cell("L45").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.IPCAnioMasUno = ((ini.IPCAnioMasUno == null || string.IsNullOrEmpty(ini.IPCAnioMasUno.ToString())) ? null : double.Parse(ini.IPCAnioMasUno.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.IPCAnioMasUno != null)
+                            {
+                                sheetOne.Cell("M45").Value = ViewBag.IPCAnioMasUno;
+                            }
+                            sheetOne.Cell("M45").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.IPCAnioMasDos = ((ini.IPCAnioMasDos == null || string.IsNullOrEmpty(ini.IPCAnioMasDos.ToString())) ? null : double.Parse(ini.IPCAnioMasDos.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.IPCAnioMasDos != null)
+                            {
+                                sheetOne.Cell("N45").Value = ViewBag.IPCAnioMasDos;
+                            }
+                            sheetOne.Cell("N45").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.IPCAnioMasTres = ((ini.IPCAnioMasTres == null || string.IsNullOrEmpty(ini.IPCAnioMasTres.ToString())) ? null : double.Parse(ini.IPCAnioMasTres.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.IPCAnioMasTres != null)
+                            {
+                                sheetOne.Cell("O45").Value = ViewBag.IPCAnioMasTres;
+                            }
+                            sheetOne.Cell("O45").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.CPIAnio = ((ini.CPIAnio == null || string.IsNullOrEmpty(ini.CPIAnio.ToString())) ? null : double.Parse(ini.CPIAnio.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.CPIAnio != null)
+                            {
+                                sheetOne.Cell("L46").Value = ViewBag.CPIAnio;
+                            }
+                            sheetOne.Cell("L46").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.CPIAnioMasUno = ((ini.CPIAnioMasUno == null || string.IsNullOrEmpty(ini.CPIAnioMasUno.ToString())) ? null : double.Parse(ini.CPIAnioMasUno.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.CPIAnioMasUno != null)
+                            {
+                                sheetOne.Cell("M46").Value = ViewBag.CPIAnioMasUno;
+                            }
+                            sheetOne.Cell("M46").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.CPIAnioMasDos = ((ini.CPIAnioMasDos == null || string.IsNullOrEmpty(ini.CPIAnioMasDos.ToString())) ? null : double.Parse(ini.CPIAnioMasDos.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.CPIAnioMasDos != null)
+                            {
+                                sheetOne.Cell("N46").Value = ViewBag.CPIAnioMasDos;
+                            }
+                            sheetOne.Cell("N46").Style.NumberFormat.Format = "#,##0.00";
+
+                            ViewBag.CPIAnioMasTres = ((ini.CPIAnioMasTres == null || string.IsNullOrEmpty(ini.CPIAnioMasTres.ToString())) ? null : double.Parse(ini.CPIAnioMasTres.ToString().Replace('.', ','), ciCL));
+                            if (ViewBag.CPIAnioMasTres != null)
+                            {
+                                sheetOne.Cell("O46").Value = ViewBag.CPIAnioMasTres;
+                            }
+                            sheetOne.Cell("O46").Style.NumberFormat.Format = "#,##0.00";*/
+
                             ViewBag.DESCRIPCION = ini.DESCRIPCION;
                             fileName = ini.DESCRIPCION + "-" + ini.IdPid + ".xlsx";
+                        }
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            wb.SaveAs(stream);
+                            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
                         }
                     }
                     catch (Exception err)
@@ -8547,20 +8637,10 @@ namespace Capex.Web.Controllers
                     finally
                     {
                         objConnection.Close();
+                        fstream.Close();
                     }
                 }
-                try
-                {
-                    using (MemoryStream stream = new MemoryStream())
-                    {
-                        wb.SaveAs(stream);
-                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
-                    }
-                }
-                finally
-                {
-                    fstream.Close();
-                }
+
             }
         }
 
