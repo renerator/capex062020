@@ -1,0 +1,716 @@
+﻿@{
+    Layout = null;
+}
+<style>
+    table.mt {
+        border-width: 1px;
+        border-spacing: 0px;
+        border-style: solid;
+        border-collapse: collapse;
+        background-color: transparent;
+        width: 1100px;
+        font-family: Tahoma;
+    }
+
+        table.mt th {
+            border-width: 2px;
+            padding: 1px;
+            border-style: solid;
+            white-space: normal;
+            text-align: center;
+            font-family: Tahoma;
+            font-weight: bold;
+        }
+
+        table.mt td {
+            border-width: 2px;
+            padding: 1px;
+            border-style: solid;
+            text-align: left;
+            vertical-align: top;
+            white-space: normal;
+            font-family: Tahoma;
+        }
+
+    #scroller {
+        overflow: auto;
+        height: 600px;
+        border: 1px solid #808080;
+    }
+</style>
+<!--Inicio Vista Parcial Evaluación Riesgo-->
+<div class="card offset-md-0">
+    <div class="card-body offset-md-0">
+        <!--<form name="form_eval_riesgo" id="form_eval_riesgo" action="" style="width:1680px;">-->
+
+
+        <div class="container offset-md-0">
+            <form name="form_eval_riesgo" id="form_eval_riesgo" action="">
+                <div class="row">
+                    <div class="col-xl-12 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%;">
+                            <div class="col-sm-6 pb-1">
+                                <table class="table table-bordered mb-0">
+                                    <tr style='text-align:center;background-color:#5c808d;'>
+                                        <th class="tg-obuw" colspan="5" width="600px">Situación Sin Proyecto</th>
+                                    </tr>
+                                    <tr style='text-align:center;background-color:#5c808d; font-weight:bold;'>
+                                        <td>Probabilidad</td>
+                                        <td>Impacto</td>
+                                        <td>Nivel de Riesgo</td>
+                                        <td>Clasificación</td>
+                                        <th>MFL (KUS$)</th>
+                                    </tr>
+                                    <tr>
+                                        <td><div style="width:80px;"><input type="number" min="1" max="5" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 1, 5); FNCalculoRiesgoSinProyecto();" maxlength="1" class="form-control" style="text-align:center;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;width:80px;" value="1" id="EvrProbabilidad1" name="EvrProbabilidad1"></div></td>
+                                        <td><div style="width:80px;"><input type="number" min="1" max="5" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 1, 5); FNCalculoRiesgoSinProyecto();" maxlength="1" class="form-control" style="text-align:center;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;width:80px;" value="1" id="EvrImpacto1" name="EvrImpacto1"></div></td>
+                                        <td><div style="width:80px;"><input type="text" class="form-control" style="text-align:center;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;width:80px;" value="1" id="EvrRiesgo1" name="EvrRiesgo1" disabled></div></td>
+                                        <td><div style="width:130px;"><input type="text" class="form-control" style="text-align:center;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;width:130px;" value="Bajo" id="EvrClasificacion1" name="EvrClasificacion1" disabled></div></td>
+                                        <td rowspan="2"><div style="width:130px;"><input type="text" class="form-control" style="text-align:center; height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0; width:130px;" value="0" id="EvrMFL1" name="EvrMFL1" onkeyup="return FNCheckDownKey2('EvrMFL1')"></div></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-12 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%;">
+                            <div class="col-sm-6 pb-1">
+                                <table class="table table-bordered mb-0">
+                                    <tr style='text-align:center;background-color:#5c808d;'>
+                                        <th class="tg-obuw" colspan="5" width="600px">Situación Con Proyecto</th>
+                                    </tr>
+                                    <tr style='text-align:center;background-color:#5c808d;font-weight:bold;'>
+                                        <td>Probabilidad</td>
+                                        <td>Impacto</td>
+                                        <td>Nivel de Riesgo</td>
+                                        <td>Clasificación</td>
+                                        <th>MPE (KUS$)</th>
+                                    </tr>
+                                    <tr>
+                                        <td><div style="width:80px;"><input type="number" min="1" max="5" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 1, 5); FNCalculoRiesgoConProyecto();" maxlength="1" class="form-control" style="text-align:center; height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0; width:80px;" value="1" id="EvrProbabilidad2" name="EvrProbabilidad2"></div></td>
+                                        <td><div style="width:80px;"><input type="number" min="1" max="5" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 1, 5); FNCalculoRiesgoConProyecto();" maxlength="1" class="form-control" style="text-align:center; height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0; width:80px;" value="1" id="EvrImpacto2" name="EvrImpacto2"></div></td>
+                                        <td><div style="width:80px;"><input type="text" class="form-control" style="text-align:center; height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0; width:80px;" value="1" id="EvrRiesgo2" name="EvrRiesgo2" disabled></div></td>
+                                        <td><div style="width:130px;"><input type="text" class="form-control" style="text-align:center;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;width:130px;" value="Bajo" id="EvrClasificacion2" name="EvrClasificacion2" disabled></div></td>
+                                        <td rowspan="2"><div style="width:130px;"><input type="text" class="form-control" style="text-align:center; height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0; width:130px;" value="0" id="EvrMFL2" name="EvrMFL2" onkeyup="return FNCheckDownKey2('EvrMFL2')"></div></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </form>
+            <span>
+                <span style="text-decoration:underline"> <a href="#" style="color:white;" onclick="FNVerModalTablaRiesgo()"> Ver Tabla de Riesgo</a></span>
+                <span style="text-decoration:underline"> <a href="#" style="color:white;margin-left:5px;" onclick="FNVerModalImpactoProyecto()"> Ver Impacto Proyecto</a></span>
+                <span style="text-decoration:underline"> <a href="#" style="color:white;margin-left:5px;" onclick="FNVerModalNivelesProbabilidad()"> Ver Niveles Probabilidad</a></span>
+            </span>
+
+            <hr />
+            <div class="row">
+                <div class="col-md-6 offset-md-0">
+                    <div class="form-row mt-12">
+                        <div class="col-sm-8 pb-0">
+                            <span><h7> Adjuntar Archivo de Respaldo</h7></span>
+                            <br />
+                            <br />
+                            <!--
+                            <label for="ArchivoEvalRiesgo" style="border: 1px dashed #6995a1; height: 28px; width:400px; padding:3px 3px 3px 3px;"><span id="NombreArchivoRiesgo">Seleccione un archivo..</span></label>
+                            <input id="ArchivoEvalRiesgo" name="AdjuntarArchivosRespaldoEvalRiesgo" style="font-size:12px;" class="inputfile inputfile-1" type="file">
+                            <input type="submit" class="btn btn-success btn-sm" id="BotonAdjuntarArchivoEvalRiesgo" value="Adjuntar" />
+                            -->
+                            <iframe src="~/WebForm1.aspx?type=26" scrolling="no" id="frame26" frameborder="0" height="70" width="390"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br /><br />
+            <div class="row">
+                <div class="col-md-8 offset-md-0">
+                    <div class="form-row mt-12">
+                        <div class="col-sm-10 pb-3">
+                            <span><h7> Matriz de Riesgo de la Compañía</h7></span>
+                            <br />
+                            <span>
+                                Si su iniciativa esta relacionada con un riesgo declarado por la compañia.
+                                Favor indique el número de Riesgo en el campo Riesgo de la tabla
+                                que se encuentra a continuación.
+                            </span>
+                            <br />
+                            <br />
+                            <span>
+                                <span style="font-size:11px; text-decoration:underline"> <a href="#" style="color:white;" onclick="FNVerMatrizRiesgo()"> Ver Matriz de Riesgo</a></span>
+                            </span>
+                            <div id="ContenedorRiesgoClaveEnPantalla" style="display:none;" class="alert alert-info" role="alert">
+                                <i class="fa fa-clipboard-list fa-2x"></i><span id="ConetenidoRiesgoClaveEnPantalla"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- < /form > -->
+        <div class="clearfix">
+            <button class="btn btn-primary" id="BotonGuardarEvaluacionRiesgo" onclick="FNGuardarEvaluacionRiesgo()">Guardar</button>
+            <button class="btn btn-warning" id="BotonActualizarEvaluacionRiesgo" onclick="FNActualizarEvaluacionRiesgo()" style="display:none;">Actualizar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal inmodal" id="ModalTablaRiesgo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:700px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Tabla de Riesgo</h6>
+            </div>
+
+            <div id="ContenedorTablaRiesgo" class="modal-body" style="margin-left:5px;width:700px; font-size:14px;">
+                <div style="height:350px;width:700px;font-size:11px;margin-top:0px; margin-left:-30px;">
+
+                    <div class="container" style="width: 700px;">
+                        <table border="0" width="100%">
+                            <tr>
+                                <td style="padding: 8px;">
+                                    <div align="center" style="color: #000; font-size: 16px; font-family: Tahoma;">
+                                        <b>Clasificación de Riesgo</b><br />
+                                        (Mapa de Riesgos)
+                                    </div>
+                                    <br />
+                                    <div align="center">
+                                        <table width="80%">
+                                            <tr>
+                                                <td>
+                                                    <table width="100%" style="font-size: 16px; font-family: Tahoma; border-color: #fff;" border="0">
+                                                        <tr height="30">
+                                                            <th width="5%" rowspan="6" style="border-style: solid; border-color: #fff;"><div align="center" style="-webkit-transform: rotate(-90deg);-moz-transform: rotate(-90deg);font-size: 18px; font-family: Tahoma;">Impacto</div></th>
+                                                            <th width="5%" style="font-size: 18px; border-style: solid; border-color: #fff;"><div align="center">5</div></th>
+                                                            <td style="background-color: #EBB566; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #EBB566; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #B6363A; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #B6363A; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #B6363A; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                        </tr>
+                                                        <tr height="30">
+                                                            <th width="5%" style="font-size: 18px; border-style: solid; border-color: #fff;"><div align="center">4</div></th>
+                                                            <td style="background-color: #FFEF51; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #EBB566; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #EBB566; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #B6363A; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #B6363A; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                        </tr>
+                                                        <tr height="30">
+                                                            <th width="5%" style="font-size: 18px; border-style: solid; border-color: #fff;"><div align="center">3</div></th>
+                                                            <td style="background-color: #FFEF51; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #FFEF51; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #EBB566; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #EBB566; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #B6363A; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                        </tr>
+                                                        <tr height="30">
+                                                            <th width="5%" style="font-size: 18px; border-style: solid; border-color: #fff;"><div align="center">2</div></th>
+                                                            <td style="background-color: #5CA152; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #5CA152; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #FFEF51; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #FFEF51; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #EBB566; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                        </tr>
+                                                        <tr height="30">
+                                                            <th width="5%" style="font-size: 18px; border-style: solid; border-color: #fff;"><div align="center">1</div></th>
+                                                            <td style="background-color: #5CA152; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #5CA152; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #5CA152; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #FFEF51; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <td style="background-color: #FFEF51; border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                        </tr>
+                                                        <tr height="30">
+                                                            <td style="border-style: solid; border-color: #fff;">&nbsp;</td>
+                                                            <th style="font-size: 18px; border-style: solid; border-color: #fff;"><div align="center">1</div></th>
+                                                            <th style="font-size: 18px; border-style: solid; border-color: #fff;"><div align="center">2</div></th>
+                                                            <th style="font-size: 18px; border-style: solid; border-color: #fff;"><div align="center">3</div></th>
+                                                            <th style="font-size: 18px; border-style: solid; border-color: #fff;"><div align="center">4</div></th>
+                                                            <th style="font-size: 18px; border-style: solid; border-color: #fff;"><div align="center">5</div></th>
+                                                        </tr>
+                                                    </table>
+                                                    <div align="center">
+                                                        <b style="font-size: 18px; font-family: Tahoma;">Probabilidad</b><br /><br />
+                                                        <table width="60%" style="font-size: 16px; font-family: Tahoma; border-color: #fff;" border="0">
+                                                            <tr height="35">
+                                                                <th width="25%" style="background-color: #5CA152; color: #fff; border-style: solid; border-color: #fff; font-family: Tahoma;"><div align="center">BAJO</div></th>
+                                                                <th width="25%" style="background-color: #FFEF51; color: #000; border-style: solid; border-color: #fff; font-family: Tahoma;"><div align="center">MEDIO</div></th>
+                                                                <th width="25%" style="background-color: #EBB566; color: #000; border-style: solid; border-color: #fff; font-family: Tahoma;"><div align="center">ALTO</div></th>
+                                                                <th width="25%" style="background-color: #B6363A; color: #fff; border-style: solid; border-color: #fff; font-family: Tahoma;"><div align="center">EXTREMO</div></th>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalTablaRiesgo()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal inmodal" id="ModalMatrizRiesgo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:750px; font-size:12px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Matriz de Riesgo</h6>
+            </div>
+
+            <div id="ContenedorMatrizRiesgo" class="modal-body" style="margin-left:5px;width:750px; font-size:12px;">
+                <div style="height:750px;height:550px;font-size:11px;margin-top:0px;">
+                    <table class="tableizer-table" id="tablaMatrizRiesgo">
+                        <thead>
+                            <tr class="tableizer-firstrow">
+                                <th></th>
+                                <th style="border-bottom:1px solid #ddd; width:30px; text-align:center;">RR</th>
+                                <th style="border-bottom:1px solid #ddd">Riesgo Clave</th>
+                                <th style="border-bottom:1px solid #ddd">Impacto</th>
+                                <th style="border-bottom:1px solid #ddd">Probabilidad</th>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align:center;">
+                            <tr><td></td><td></td><td></td><td></td><td></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalMatrizRiesgo()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal inmodal" id="ModalImpactoPoyecto" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:-300px;width:1200px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Tabla Impacto Proyecto</h6>
+            </div>
+
+            <div class="modal-body" style="margin-left:0px;width:1200px;height:750px; font-size:14px;">
+                <div id="ContenedorImpactoPoyecto">
+
+                    <div class="container">
+                        <div id="scroller">
+                            <table cellspacing="0" border="1" cellpadding="0" class="mt">
+                                <thead>
+                                    <tr height="35px">
+                                        <th width="5%" rowspan="2" style="background-color: #63C0B7; color: #fff; font-size: 14px; font-family: Tahoma;" valign="middle">
+                                            <div align="center"> Nivel</div>
+                                        </th>
+                                        <th width="16%" colspan="4" style="background-color: #63C0B7; color: #fff; font-size: 14px; font-family: Tahoma;" valign="middle">
+                                            <div align="center">Proyectos</div>
+                                        </th>
+                                        <th width="8%" colspan="2" style="background-color: #63C0B7; color: #fff; font-size: 14px; font-family: Tahoma;" valign="middle">
+                                            <div align="center">Operaciones</div>
+                                        </th>
+                                        <th width="14%" rowspan="2" style="background-color: #63C0B7; color: #fff; font-size: 14px; font-family: Tahoma;" valign="middle">
+                                            <div align="center">Seguridad y Salud Ocupacional</div>
+                                        </th>
+                                        <th width="14%" rowspan="2" style="background-color: #63C0B7; color: #fff; font-size: 14px; font-family: Tahoma;" valign="middle">
+                                            <div align="center">Medio Ambiente</div>
+                                        </th>
+                                        <th width="14%" rowspan="2" style="background-color: #63C0B7; color: #fff; font-size: 14px; font-family: Tahoma;" valign="middle">
+                                            <div align="center">Comunidades</div>
+                                        </th>
+                                        <th width="14%" rowspan="2" style="background-color: #63C0B7; color: #fff; font-size: 14px; font-family: Tahoma;" valign="middle">
+                                            <div align="center">Legal</div>
+                                        </th>
+                                        <th width="14%" rowspan="2" style="background-color: #63C0B7; color: #fff; font-size: 14px; font-family: Tahoma;" valign="middle">
+                                            <div align="center">Reputación</div>
+                                        </th>
+                                    </tr>
+                                    <tr height="80px">
+                                        <th width="80px" style="background-color: #EAF4F0;">
+                                            <div align="center" style="width:70px; -webkit-transform: rotate(-90deg);-moz-transform: rotate(-90deg);font-size: 12px; font-family: Tahoma;">
+                                                CAPEX
+                                            </div>
+                                        </th>
+                                        <th width="85" style="background-color: #EAF4F0;">
+                                            <div align="center" style="width:70px;-webkit-transform: rotate(-90deg);-moz-transform: rotate(-90deg);font-size: 12px; font-family: Tahoma;">OPEX</div>
+                                        </th>
+                                        <th width="85" style="background-color: #EAF4F0;">
+                                            <div align="center" style="width:70px;-webkit-transform: rotate(-90deg);-moz-transform: rotate(-90deg);font-size: 12px; font-family: Tahoma;">Plazo</div>
+                                        </th>
+                                        <th width="85" style="background-color: #EAF4F0;">
+                                            <div align="center" style="width:70px;-webkit-transform: rotate(-90deg);-moz-transform: rotate(-90deg);font-size: 12px; font-family: Tahoma;">NPV</div>
+                                        </th>
+                                        <th width="85" style="background-color: #EAF4F0;">
+                                            <div align="center" style="width:70px;-webkit-transform: rotate(-90deg);-moz-transform: rotate(-90deg);font-size: 12px; font-family: Tahoma;">EBITDA</div>
+                                        </th>
+                                        <th width="85" style="background-color: #EAF4F0;">
+                                            <div align="center" style="width:70px;-webkit-transform: rotate(-90deg);-moz-transform: rotate(-90deg);font-size: 12px; font-family: Tahoma;">Producción</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr valign="top">
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">5</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">> 20%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">> 10%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">> 30%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">> 50%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">> 50%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">> 15%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Accidente o
+                                            enfermedad ocupacional que causa múltiples fatalidades
+                                            o incapacidades permanentes >40%.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Daño ambiental
+                                            irreversible, con efectos por largo plazo en área extendida.
+                                            Puede afectar el permiso ambiental vigente.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Incidente grave
+                                            que afecte una localidad con daño severo e irreversible a la calidad de vida de las personas. Irrupción
+                                            de conflictos sociales que detenga la operación, pérdida de licencia social para operar.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Transgresiones o
+                                            incumplimientos a normas anticorrupción (de la ley 20.393, Antibribery Act o similar) o de libre
+                                            competencia; u otras transgresiones o incumplimientos normativos que, se estima, pueden dar lugar a una
+                                            revocación, pérdida de los permisos para operar, sanción
+                                            o resultado adverso superior al 20% del EBITDA.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Afectación
+                                            severa
+                                            de la reputación internacionalmente y de credibilidad institucional de la empresa con efectos por largo
+                                            plazo.
+                                        </td>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">4</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">15-20%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">5-10%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">20-30%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">20-50%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">20-50%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">6-15%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Accidente o
+                                            enfermedad ocupacional que causa una fatalidad o incapacidad permanente >40%.
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Daño ambiental
+                                            reversible, con efectos por mediano plazo en área extensa, que requiere acciones de remediación. Puede
+                                            afectar el permiso ambiental vigente.
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Incidente mayor
+                                            que afecte una localidad con daño serio a la calidad de vida de las personas. Irrupción de conflictos
+                                            sociales que detenga la operación. Efectos negativos entre relación empresa comunidad, reversible LP.
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Transgresiones o
+                                            incumplimientos normativos que, se estima, pueden dar lugar a una condena penal, sanción o resultado
+                                            adverso superior a un 3% y hasta un 20% del EBITDA.
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Afectación alta
+                                            de la reputación nacional y de credibilidad institucional de la empresa con efectos por mediano plazo.
+                                        </td>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">3</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">8-15%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">3-5%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">10-20%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">10-20%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">10-20%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">3-6%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Accidente con tiempo perdido o enfermedad ocupacional con incapacidad permanente <40%.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Impacto ambiental moderado, con efectos en el corto plazo y reversible naturalmente
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Incidente leve que afecte una localidad con daño moderada a la calidad de vida de las personas. Irrupción de conflictos sociales. Efectos negativos entre relación empresa comunidad, reversible MP.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Transgresiones o incumplimientos normativos que, se estima, pueden dar lugar a una formalización penal o a una sanción o resultado adverso entre un 0,05% y un 3% del EBITDA.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Reclamos moderados
+                                            y titulares noticieros negativos repetitivos
+                                            de alcance nacional por periodo de mediano plazo.
+                                        </td>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">2</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">3-8%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">1-3%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">5-10%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">5-10%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">5-10%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">1-3%</div>
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Accidente o enfermedad ocupacional sin tiempo perdido, requiere tratamiento médico.
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Impacto ambiental menor, localizado y reversible en el corto plazo.
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Incidente leve que afecte una localidad sin daño a la calidad
+                                            de vida de las personas y sin irrupciones de la comunidad. Efectos negativos entre relación empresa comunidad, reversible CP.
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Transgresiones o incumplimientos normativos que, se estima, pueden dar lugar a una sanción
+                                            o resultado adverso inferior a un 0,05% del EBITDA.
+                                        </td>
+                                        <td style="background-color: #B7D5CE; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Reclamos moderados y titulares noticieros negativos de alcance nacional por periodo de corto plazo.
+                                        </td>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">1</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">< 3%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">< 1%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">< 5%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">< 5%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">< 5%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            <div align="center">< 1%</div>
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Accidente o enfermedad ocupacional menor, sin tiempo perdido que no requiere tratamiento médico.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Impacto ambiental limitada y reducida con baja significancia ambiental y fácil de reparar.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Incidente leve que no sea percibido por la comunidad y no afecte su calidad de vida.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Transgresiones o incumplimientos normativos que, se estima,
+                                            no darán lugar a sanciones monetarias.
+                                        </td>
+                                        <td style="background-color: #EAF4F0; padding: 5px; font-size: 12px; font-family: Tahoma;">
+                                            Reclamos sin fundamentos que no lleguen a los medios de comunicación formales.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p style="font-size: 16px; font-family: Tahoma;">*Si el resultado obtenido es igual al número de porcentaje del cambio de nivel, escoja el mayor.</p>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalImpactoProyecto()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal inmodal" id="ModalNivelesProbabilidad" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:5px;width:750px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Tabla Niveles de Probabilidad</h6>
+            </div>
+
+            <div class="modal-body" style="margin-left:5px;width:750px; font-size:12px;">
+                <div id="ContenedorNivelesProbabilidad">
+
+                    <div class="container" style="width: 700px;">
+                        <table border="0" width="100%">
+                            <tr>
+                                <td style="padding: 0px;">
+                                    <table width="100%" cellspacing="0" border="1" cellpadding="0">
+                                        <tr height="40px">
+                                            <th width="33%" style="background-color: #3F9A91; color: #fff; font-size: 14px; font-family: Tahoma;" rowspan="3" valign="middle">
+                                                <div align="center"><b>NIVEL</b></div>
+                                            </th>
+                                            <th width="77%" style="background-color: #3F9A91; color: #fff; font-size: 14px; font-family: Tahoma;" colspan="3">
+                                                <div align="center"><b>PROBABILIDAD</b></div>
+                                            </th>
+                                        </tr>
+                                        <tr height="40px">
+                                            <th width="33%" style="background-color: #EAF4F0; font-size: 14px; font-family: Tahoma;">
+                                                <div align="center"><b>CUANTITATIVO</b></div>
+                                            </th>
+                                            <th width="34%" style="background-color: #EAF4F0; font-size: 14px; font-family: Tahoma;">
+                                                <div align="center"><b>CUALITATIVO</b></div>
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="100%" border="1" style="font-size: 14px; font-family: Tahoma;">
+                            <tr style="background-color: #BDDCD5;" height="60px">
+                                <td width="33%" valign="middle">
+                                    <div align="center">
+                                        <b>5<br /></b>
+                                        Casi Cierto
+                                    </div>
+                                </td>
+                                <td width="33%" valign="middle">
+                                    <div align="center">Una vez a la semana</div>
+                                </td>
+                                <td width="34%" valign="middle">
+                                    <div align="center">Pasa a menudo</div>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #EAF4F0;" height="60px">
+                                <td width="33%" valign="middle">
+                                    <div align="center">
+                                        <b>4<br /></b>
+                                        Probable
+                                    </div>
+                                </td>
+                                <td width="33%" valign="middle">
+                                    <div align="center">Una vez al mes o más</div>
+                                </td>
+                                <td width="34%" valign="middle">
+                                    <div align="center">Podría suceder fácilmente y ha ocurrido generalmente en condiciones similares</div>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #BDDCD5;" height="60px">
+                                <td width="33%" valign="middle">
+                                    <div align="center">
+                                        <b>3<br /></b>
+                                        Posible
+                                    </div>
+                                </td>
+                                <td width="33%" valign="middle">
+                                    <div align="center">Una o dos veces al año</div>
+                                </td>
+                                <td width="34%" valign="middle">
+                                    <div align="center">
+                                        Podría suceder y ha sucedido en condiciones similares aquí o en otra compañía.
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #EAF4F0;" height="60px">
+                                <td width="33%" valign="middle">
+                                    <div align="center">
+                                        <b>2<br /></b>
+                                        Poco Probable
+                                    </div>
+                                </td>
+                                <td width="33%" valign="middle">
+                                    <div align="center">Una o dos veces cada 10 años</div>
+                                </td>
+                                <td width="34%" valign="middle">
+                                    <div align="center">No ha sucedido todavía pero podría suceder.</div>
+                                </td>
+                            </tr>
+                            <tr style="background-color: #BDDCD5;" height="60px">
+                                <td width="33%" valign="middle">
+                                    <div align="center">
+                                        <b>1<br /></b>
+                                        Muy Poco Probable
+                                    </div>
+                                </td>
+                                <td width="33%" valign="middle">
+                                    <div align="center">Una o dos veces cada 50 años</div>
+                                </td>
+                                <td width="34%" valign="middle">
+                                    <div align="center">Sólo en circunstancias extremas</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalNivelesProbabilidad()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

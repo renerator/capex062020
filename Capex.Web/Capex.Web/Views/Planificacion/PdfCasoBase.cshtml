@@ -1,0 +1,356 @@
+﻿@{
+    Layout = null;
+}
+<!--PDF Caso Base-->
+<style>
+    body {
+        text-transform: uppercase;
+        font-size: 12px;
+        color: #333;
+        margin-left: 100px;
+    }
+</style>
+
+<div class="container" style="width: 800px;">
+    <table border="0" width="100%">
+        <tr>
+            <td style="padding: 8px;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td>
+                            <table width="100%" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td width="80%"><div align="center"> <div style="font-size: 18px; font-family: Tahoma; text-align:center;">Ficha Iniciativa Caso Base<br />Minera Centinela</div></td>
+                                    <td width="20%"><div align="center"><img src="@Server.MapPath("~/Images/logo-centinela.jpg")" /></div></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                @foreach (var Idd in ViewBag.Identificacion)
+                {
+                    <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                        <tr>
+                            <td width="33%"><div align="center"><b>Presupuesto</b> @ViewBag.IniPeriodo</div></td>
+                            <td width="34%" style="color: #333"><div align="center"> @ViewBag.IrFecha Rev X</div></td>
+                            <td width="33%" style="color: #333"><div align="center">KUS$ 0 / 6 meses</div></td>
+                        </tr>
+                        <tr valign="top">
+                            <td width="100%" colspan="3">
+                                <div align="center" style="color: #333; font-size:14px;">
+                                    @Idd.IdenCodigo<br />
+                                    @Idd.IdenNombre
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="33%"><div align="center" style="background-color: #DADADA;">Gerencia Cliente</div></td>
+                            <td width="34%"><div align="center" style="background-color: #DADADA;">Gerencia Ejecutor</div></td>
+                            <td width="33%"><div align="center" style="background-color: #DADADA;">Superintendencia Ejecutor</div></td>
+                        </tr>
+                        <tr>
+                            <td width="33%"><div align="center" style="color: #333; font-size: 9px;">@Idd.PidGerenciaInversion</div></td>
+                            <td width="34%"><div align="center" style="color: #333; font-size: 9px;">@Idd.PidGerenciaEjecucion</div></td>
+                            <td width="33%"><div align="center" style="color: #333; font-size: 9px;">@Idd.PidSuperintendencia</div></td>
+                        </tr>
+                    </table>
+                }
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td width="15%"><div align="center" style="background-color: #DADADA;">Estado</div></td>
+                        <td width="20%"><div align="center" style="background-color: #DADADA;">Macrocategoría</div></td>
+                        <td width="30%"><div align="center" style="background-color: #DADADA;">Categoría</div></td>
+                        <td width="20%"><div align="center" style="background-color: #DADADA;">Clasificación SSO</div></td>
+                        <td width="15%"><div align="center" style="background-color: #DADADA;">Clase</div></td>
+                    </tr>
+                    <tr>
+                        <td width="15%"><div align="center" style="color: #333; font-size: 9px;">Estado</div></td>
+                        <td width="20%"><div align="center" style="color: #333; font-size: 9px;">Macrocat.</div></td>
+                        <td width="30%"><div align="center" style="color: #333; font-size: 9px;">Categoría</div></td>
+                        <td width="20%"><div align="center" style="color: #333; font-size: 9px;">Clasificación SSO</div></td>
+                        <td width="15%"><div align="center" style="color: #333; font-size: 9px;">Clase</div></td>
+                    </tr>
+                </table>
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td width="33%"><div align="center" style="background-color: #DADADA;">Nivel de Ingeniería</div></td>
+                        <td width="34%"><div align="center" style="background-color: #DADADA;">Estandar de Seguridad</div></td>
+                        <td width="33%"><div align="center" style="background-color: #DADADA;">Superintendencia Ejecutor</div></td>
+                    </tr>
+                    <tr>
+                        <td width="33%"><div align="center" style="color: #333; font-size: 9px;">Nivel de Ingeniería</div></td>
+                        <td width="34%"><div align="center" style="color: #333; font-size: 9px;">Estandar de Seguridad</div></td>
+                        <td width="33%"><div align="center" style="color: #333; font-size: 9px;">Tipo de Cotización</div></td>
+                    </tr>
+                </table><br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td width="100%"><div align="left" style="background-color: #DADADA;"><b>Objetivo de la Inversión</b></div></td>
+                    </tr>
+                    <tr height="40px" valign="top">
+                        <td width="100%"><div align="left" style="color: #333; font-size: 9px;">Este texto debe estar en formato justificado, y debe tener el espacio de caracteres definidos en el sistema.</div></td>
+                    </tr>
+                    <tr>
+                        <td width="100%"><div align="left" style="background-color: #DADADA;"><b>Descripción de la Inversión</b></div></td>
+                    </tr>
+                    <tr height="40px" valign="top">
+                        <td width="100%"><div align="left" style="color: #333; font-size: 9px;">Este texto debe estar en formato justificado, y debe tener el espacio de caracteres definidos en el sistema.</div></td>
+                    </tr>
+                    <tr>
+                        <td width="100%"><div align="left" style="background-color: #DADADA;"><b>Alcance de la Inversión</b></div></td>
+                    </tr>
+                    <tr height="40px" valign="top">
+                        <td width="100%"><div align="left" style="color: #333; font-size: 9px;">Este texto debe estar en formato justificado, y debe tener el espacio de caracteres definidos en el sistema.</div></td>
+                    </tr>
+                </table><br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td colspan="11"><div align="left" style="background-color: #DADADA;"><b>Fechas</b></div></td>
+                    </tr>
+                    <tr>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">CI</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">CA</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">OPR/IMM</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">VPF</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">PE</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">Dir PLC</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">Dir MCEN</div></td>
+                        <th width="9%"><div align="center" style="background-color: #DADADA;">Inicio</div></th>
+                        <th width="9%"><div align="center" style="background-color: #DADADA;">Término</div></th>
+                        <th width="9%"><div align="center" style="background-color: #DADADA;">Cierre</div></th>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">Post- Eval.</div></td>
+                    </tr>
+                    <tr>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">dd-mm-yy</div></td>
+                    </tr>
+                </table><br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td colspan="7"><div align="left" style="background-color: #DADADA;"><b>CAPEX (KUS$ <small style="color: #333;">XXX.XXX</small>)</b></div></td>
+                    </tr>
+                    <tr>
+                        <td width="15%"><div align="center" style="background-color: #F1EFEF;">Fase Ingeniería</div></td>
+                        <td width="15%"><div align="center" style="background-color: #F1EFEF;">Fase Adquisiciones</div></td>
+                        <td width="14%"><div align="center" style="background-color: #F1EFEF;">Fase Construción</div></td>
+                        <td width="14%"><div align="center" style="background-color: #F1EFEF;">Fase Administración</div></td>
+                        <td width="14%"><div align="center" style="background-color: #F1EFEF;">Contingencia</div></td>
+                        <th width="14%"><div align="center" style="background-color: #DADADA;">%Conting</div></th>
+                        <th width="14%"><div align="center" style="background-color: #DADADA;">% CDD</div></th>
+                    </tr>
+                    <tr>
+                        <td width="15%"><div align="center" style="color: #333; font-size: 9px;">XXX.XXX</div></td>
+                        <td width="15%"><div align="center" style="color: #333; font-size: 9px;">XXX.XXX</div></td>
+                        <td width="14%"><div align="center" style="color: #333; font-size: 9px;">XXX.XXX</div></td>
+                        <td width="14%"><div align="center" style="color: #333; font-size: 9px;">XXX.XXX</div></td>
+                        <td width="14%"><div align="center" style="color: #333; font-size: 9px;">XXX.XXX</div></td>
+                        <td width="14%"><div align="center" style="color: #333; font-size: 9px;">15%$</div></td>
+                        <td width="14%"><div align="center" style="color: #333; font-size: 9px;">8%</div></td>
+                    </tr>
+                </table><br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td colspan="7"><div align="left" style="background-color: #DADADA;"><b>Presupuesto</b></div></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;">
+                            <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                                <tr>
+                                    <td width="6%"></td>
+                                    <td width="6%"><div align="center"> Acum</div></td>
+                                    <td width="5%"><div align="center"> E</div></td>
+                                    <td width="5%"><div align="center"> F</div></td>
+                                    <td width="5%"><div align="center"> M</div></td>
+                                    <td width="5%"><div align="center"> A</div></td>
+                                    <td width="5%"><div align="center"> M</div></td>
+                                    <td width="5%"><div align="center"> J</div></td>
+                                    <td width="5%"><div align="center"> A</div></td>
+                                    <td width="5%"><div align="center"> S</div></td>
+                                    <td width="5%"><div align="center"> O</div></td>
+                                    <td width="5%"><div align="center"> N</div></td>
+                                    <td width="5%"><div align="center"> D</div></td>
+                                    <td width="7%"><div align="center"> Total año</div></td>
+                                    <td width="7%"><div align="center"> Año +1</div></td>
+                                    <td width="7%"><div align="center"> Año +2</div></td>
+                                    <td width="7%"><div align="center"> Total</div></td>
+                                </tr>
+                                <tr>
+                                    <td>Fianan</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Físico</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Dotación</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table><br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td width="100%" colspan="9"><div align="left" style="background-color: #DADADA;"><b>Evaluación de Riesgos</b></div></td>
+                    </tr>
+                    <tr>
+                        <td width="33%" colspan="4"><div align="center" style="background-color: #DADADA;">Situación sin Proyecto (MFL : <small style="color: #333; font-size: 9px;">XXXXXX</small>)</div></td>
+                        <td width="34%" colspan="4"><div align="center" style="background-color: #DADADA;">Situación con Proyecto (MPE: <small style="color: #333; font-size: 9px;">XXXXXXX</small>)</div></td>
+                        <td width="33%"><div align="center" style="background-color: #DADADA;">Selección de Riesgo de Matriz MCEN</div></td>
+                    </tr>
+                    <tr>
+                        <td><div align="center" style="background-color: #F1EFEF;">Prob.</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Impacto</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Nivel Riesgo</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Clasif.</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Prob.</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Impacto</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Nivel Riesgo</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Clasif.</div></td>
+                        <td rowspan="2">
+                            <div align="left" style="color: #333; font-size: 9px;">
+                                R1: Nombre del Riesgo<br />
+                                Rn: Nombre del Riesgo
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><div align="center" style="color: #333; font-size: 9px;">x</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">x</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">x</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">Aasdasd</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">x</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">x</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">x</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">Aasdasd</div></td>
+                    </tr>
+                </table><br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td width="30%">
+                            <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                                <tr>
+                                    <td width="100%" colspan="9"><div align="center" style="background-color: #DADADA;"><b>Evaluación Económica</b></div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">VAN</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">XXX.XXX</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">TIR</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">X,XX%</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">IVAN</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">X,X</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Payback</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">XX</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Vida Útil</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">XX</div></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="10%"></td>
+                        <td width="60%">
+                            <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                                <tr>
+                                    <td width="100%" colspan="9"><div align="left" style="background-color: #DADADA;"><b>Parámetros de Post Evaluación</b></div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">KPI N°</div></td>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Descripción</div></td>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Unidad</div></td>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Valor Actual</div></td>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Target</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center">1</div></td>
+                                    <td><div align="left" style="color: #333; font-size: 9px;">Aasdasdsadsaad</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">ASDd</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">XXXX</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">XXXX</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center">2</div></td>
+                                    <td><div align="left" style="color: #333; font-size: 9px;">Aasdasdsadsaad</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">ASDd</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">XXXX</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">XXXX</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center">3</div></td>
+                                    <td><div align="left" style="color: #333; font-size: 9px;">Aasdasdsadsaad</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">ASDd</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">XXXX</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">XXXX</div></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+

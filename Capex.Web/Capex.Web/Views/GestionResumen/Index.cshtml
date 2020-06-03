@@ -1,0 +1,1158 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewBag.Title</title>
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link href="~/Content/glyphicons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/select2.min.css" rel="stylesheet" />
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+    <link href="~/Content/file-explore.css" rel="stylesheet" />
+    <style>
+        div.pager {
+            text-align: center;
+            margin: 1em 0;
+        }
+
+            div.pager span {
+                display: inline-block;
+                width: 1.8em;
+                height: 1.8em;
+                line-height: 1.8;
+                text-align: center;
+                cursor: pointer;
+                background: transparent;
+                color: #fff;
+                margin-right: 0.5em;
+            }
+
+                div.pager span.active {
+                    background: #4a848e;
+                }
+
+        #menu li {
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        ul.navegacion a {
+            cursor: pointer;
+        }
+
+        .active {
+            color: gold;
+            font-weight: bolder;
+        }
+
+        .jumbotron {
+            margin-top: 30px;
+        }
+
+        #content,
+        #sidebar {
+            min-height: 500px;
+        }
+
+        #row-main {
+            overflow-x: hidden; /* necessary to hide collapsed sidebar */
+        }
+
+        #content {
+            background-color: lightyellow;
+            -webkit-transition: width 0.3s ease;
+            -moz-transition: width 0.3s ease;
+            -o-transition: width 0.3s ease;
+            transition: width 0.3s ease;
+        }
+
+            #content .btn-group {
+                margin-bottom: 10px;
+            }
+
+        .col-md-9 .width-12,
+        .col-md-12 .width-9 {
+            display: none; /* just hiding labels for demo purposes */
+        }
+
+        #sidebar {
+            background-color: lightgrey;
+            -webkit-transition: margin 0.3s ease;
+            -moz-transition: margin 0.3s ease;
+            -o-transition: margin 0.3s ease;
+            transition: margin 0.3s ease;
+        }
+
+        .collapsed {
+            display: none; /* hide it for small displays */
+        }
+
+        @@media (min-width: 992px) {
+            .collapsed {
+                display: block;
+                margin-left: -25%; /* same width as sidebar */
+            }
+        }
+
+
+        #menuFilter {
+            left: 20px;
+            font-size: 4em;
+            font-weight: 800;
+            z-index: 111;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.5s;
+            -webkit-transition: all 0.25s;
+            position: absolute;
+        }
+
+            #menuFilter:hover {
+                transform: rotate(90deg);
+                color: #FF9900;
+            }
+
+        /* div#lgMenuFilter ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 75px;
+        }
+
+        div#lgMenuFilter ul li {
+            text-align: center;
+            text-transform: uppercase;
+            height: 70px;
+            line-height: 70px;
+            margin: 15px 0;
+            color: white;
+            cursor: pointer;
+            background-color: #00936E;
+            font-size: 1em;
+            letter-spacing: 0.2em;
+            transition: all 0.25s;
+        }
+
+        div#lgMenuFilter ul li:hover {
+            background-color: white;
+            color: black;
+            letter-spacing: 0.3em;
+            font-size: 1.5em
+        }*/
+
+        .blue-primary {
+            background-color: #1296ff;
+        }
+
+        .toggle {
+            text-align: left;
+            font-size: 12px;
+            color: #ffffff;
+            font-weight: 600;
+            width: 90%;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        #lgMenuFilter {
+            width: 300px;
+            height: 100%;
+            top: 0;
+            left: -400px;
+            overflow: hidden;
+            background-color: #51818e;
+            box-shadow: 5px 5px 10px grey;
+            position: absolute;
+            z-index: 11;
+            opacity: 0;
+            transition: all 0.25s;
+            -webkit-transition: all 0.25s;
+        }
+
+        #exitFilter {
+            position: absolute;
+            right: 10px;
+            padding: 0px;
+            top: -10px;
+            font-size: 4em;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+            -webkit-transition: all 0.25s;
+        }
+
+            #exitFilter:hover {
+                color: #FF9900;
+            }
+
+        #lgMenuFilter.enter {
+            opacity: 1;
+            left: 0;
+        }
+
+        /********* SIDE NAV BAR ***********/
+        /*a {
+            color:#000;
+        }*/
+
+        li {
+            list-style: none;
+        }
+
+        .panel-default > .panel-heading {
+            color: #fff;
+            background-color: #1a3847;
+            border-color: #ddd;
+        }
+
+            .panel-default > .panel-heading > .panel-title > .collapsed {
+                margin-left: 0%;
+            }
+
+        .card > .card-header > .kkkkk {
+            margin-left: 0%;
+        }
+
+
+        .panel-group .panel + .panel {
+            margin-top: 0px;
+        }
+
+        .panel-group {
+            margin-top: 35px;
+        }
+
+        .panel-collapse {
+            background-color: rgba(220, 213, 172, 0.5);
+        }
+
+        .glyphicon {
+            margin-right: 10px;
+        }
+
+        ul.list-group {
+            margin: 0px;
+        }
+
+        ul.bulletlist li {
+            list-style: disc;
+        }
+
+        ul.list-group li a {
+            display: block;
+            padding: 5px 0px 5px 15px;
+            text-decoration: none;
+        }
+
+        ul.list-group li {
+            border-bottom: 1px dotted rgba(0,0,0,0.2);
+        }
+
+            ul.list-group li a:hover, ul li a:focus {
+                color: #fff;
+                background-color: #00436a;
+            }
+
+        .panel-title a:hover,
+        .panel-title a:active,
+        .panel-title a:focus,
+        .panel-title .open a:hover,
+        .panel-title .open a:active,
+        .panel-title .open a:focus {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .panel-title > .small, .panel-title > .small > a, .panel-title > a, .panel-title > small, .panel-title > small > a {
+            display: block;
+        }
+
+        .navbar-collapse.collapse {
+            display: block !important;
+            height: auto !important;
+            padding-bottom: 0;
+            overflow: visible !important;
+            padding-left: 0px;
+        }
+
+        .menu-hide {
+            display: none;
+        }
+
+            .menu-hide .panel-default > .panel-heading {
+                color: #fff;
+                background-color: #8e8c8c;
+                border-color: #ddd;
+            }
+
+        /********** END SIDEBAR *************/
+
+        /********** NAVBAR TOGGLE *************/
+
+        .navbar-toggle .icon-bar {
+            background-color: #fff;
+        }
+
+        .navbar-toggle {
+            padding: 11px 10px;
+            margin-top: 8px;
+            margin-right: 15px;
+            margin-bottom: 8px;
+            background-color: #a32638;
+            border-radius: 0px;
+        }
+
+        .myButtonXls {
+            background-color: #287233;
+            border-radius: 3px;
+            border: 1px solid #18ab29;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 12px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #2f6627;
+        }
+
+            .myButtonXls:hover {
+                background-color: #5cbf2a;
+                color: #000000;
+            }
+
+            .myButtonXls:active {
+                position: relative;
+                top: 1px;
+                color: #000000;
+            }
+    </style>
+</head>
+<body style="overflow: visible;" onload="FNResetear()">
+
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="Content/logos/logo-amsa-trasparente.png" border="0" height="28" width="165" style="margin-top:0px;">
+                    </a>
+                </div>
+                <!--Fi Logo Container-->
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end topbar-main -->
+        <!-- Menu -->
+        @Html.Partial("_MenuAdministrador")
+        <!-- Fin Menu-->
+
+    </header>
+
+    <div class="wrapper dashboard" style="margin-top:20px;">
+        <div class="container-fluid">
+            <!-- Modulo -->
+            <div class="row" style="margin-top:-30px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Logout", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active">Gestión de Iniciativas</li>
+                            </ol>
+                        </div>
+                        <input type="button" id="BotonVolverGeneral" onclick="document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&nbsp;
+                        <input type="button" id="BotonVolverGeneral" onclick="Actualizar()" class="btn btn-success btn-sm" value="Actualizar Vista" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mail-inbox">
+                        <div id="container">
+                            <div id="lgMenuFilter">
+                                <span id="exitFilter">&times;</span>
+                                <br /><br /><br />
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h4 class="ml-3 toggle">Has seleccionado</h4>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" id="buttonFilterAction" onClick="FNFilterActionGetData();" disabled class="mb-3 btn btn-warning btn-sm">
+                                            <span class="glyphicon glyphicon-filter"></span> Filtrar
+                                        </button>
+                                    </div>
+                                    <div class="col-12">
+                                        <div id="contenedor_refinement" class="refinement"></div>
+                                    </div>
+                                </div>
+                                <div id="accordion">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title mb-3">
+                                <div class="d-inline-block ml-2">
+                                    <h6>Resumen de Inicitivas</h6><div id="iconFilter"></div>
+                                </div>
+                            </div>
+                            <!--CONTENEDOR PANEL LATERAL ESTADOS-->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @{
+                                        if (@Session["CAPEX_SESS_ROLNOMBRE"] == null)
+                                        {
+                                            Response.Redirect("/login");
+                                        }
+                                        else
+                                        {
+                                            <h7><i class="fa fa-gear fa-1x"></i> Herramientas</h7>
+                                            <br />
+                                            <i class="fa fa-chevron-right fa-1x"></i> <a href="#" onllcik="FNNavegar('INGRESO_INICIATIVA')">Ingresar Iniciativa</a><br />
+                                            <i class="fa fa-chevron-right fa-1x"></i> <a href="#" onllcik="FNNavegar('DOCUMENTACION')">Documentos</a><br />
+                                            <i class="fa fa-chevron-right fa-1x"></i> <a href="#" onllcik="FNNavegar('CONTACTO-ADMINISTRADOR')">Contacto Administrador</a><br />
+                                        }
+                                    }
+
+                                    <div class="card border-0 p-0  mt-3">
+                                        <div class="card-body p-0">
+                                            <div class="list-group mail-list" id="menu">
+                                                <ul class="folder-list m-b-md navegacion" style="padding:10px;text-transform:uppercase; cursor:pointer;">
+                                                    @{
+                                                        if (@Session["CAPEX_SESS_ROLNOMBRE"] == null)
+                                                        {
+                                                            Response.Redirect("/login");
+                                                        }
+                                                        else
+                                                        {
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionResumen")'" class="active"> Resumen Iniciativas           <span id="ContenedorContResumenIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionDesarrollo")'"> En Desarrollo              <span id="ContenedorContDesaIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionVisacion")'"> Visación                     <span id="ContenedorContVisIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionObservada")'"> Observadas                  <span id="ContenedorContComent" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionIngresada")'"> REVISIÓN C.E.               <span id="ContenedorContIngresadaIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionEnRevision")'"> REVISIÓN AMSA                <span id="ContenedorContRevisionIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionAprobadaAmsa")'"> Aprobada AMSA            <span id="ContenedorContAprobadaAMSAIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="1"})'"> No Aprobada GAF         <span id="ContenedorContNoAprobadaGAFIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="2"})'"> No Aprobada C.E.             <span id="ContenedorContNoAprobadaCEIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="3"})'"> No Aprobada AMSA           <span id="ContenedorContNoAprobadaAMSAIni" class="label label-warning float-right">0</span></li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="ContenedorIniciativasResumen" class="col-md-10">
+                                    <!--CONTENEDOR BARRA HERRAMIENTAS-->
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div id="ContenedorBarraHerramientas" class="btn-toolbar mb-3" role="toolbar">
+                                                <div class="btn-group mr-2">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-sm" name="buscador" id="buscador" onblur="FNEvaluarEstadoFiltro(this.value);" placeholder="Buscar y Filtrar.." style="text-transform:uppercase;font-size:11px; width:400px; margin-right:5px;">
+                                                    </div>
+                                                    <button type="button" class="btn btn-warning btn-sm" alt="Descargar Excel" onclick="document.location.href='../../Planificacion/ExcelResumenIniciativa?token=@ViewBag.IniToken'">Descargar Excel</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" id="idMostrarOcultarFiltros" disabled='disabled' class="btn btn-primary" onclick="FNMostrarOcultarFiltros()">Mostrar Filtros</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div id="botonDescargarMasivaXLS" style="display: none;">
+                                                @{
+                                                    if (@Session["CAPEX_SESS_ROLNOMBRE"] != null && Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+                                                    {
+                                                        <button type="button" id="idDescargaMasivaXLS" class="btn myButtonXls btn-sm" onclick="FNDescargaMasivaXls()">Descargar XLS</button>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div id="botonDescargarMasivaPdf" style="display: none;">
+                                                <button type="button" id="idDescargaMasiva" class="btn btn-warning btn-sm" onclick="FNDescargaMasiva()">Descargar PDF</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--CONTENEDOR GRILLA DE INICIATIVAS-->
+                                    <div class="panel panel-default">
+                                        <div class="collapse" id="collapseExample">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Ann">Año Ejercicio</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px" id="AnnEjercicio">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Etapa">Etapa</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Etapa">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="SSO">Clasificación HSEC</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Sso">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Area">Area</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Area">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Clase">Clase</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Clase">
+                                                            <option>Clase 1</option>
+                                                            <value>Clase 1</value>
+                                                            <option>Clase 2</option>
+                                                            <value>Clase 2</value>
+                                                            <option>Clase 3</option>
+                                                            <value>Clase 3</value>
+                                                            <option>Clase 4</option>
+                                                            <value>Clase 4</value>
+                                                            <option value="0" selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Categoria">Categoria</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Categoria">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Estado">Estado Iniciativa</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Estado">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Macrocategoria">Macrocategoria</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Macrocategoria">
+                                                            <option>SUSTAINING</option>
+                                                            <value>SUSTAINING</value>
+                                                            <option>DEVELOPMENT</option>
+                                                            <value>DEVELOPMENT</value>
+                                                            <option value="0" selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="AreaEjecutora">Gerencia Ejecutora</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="AreaEjecutora">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="buscarConFiltros"></label><br />
+                                                        <button type="button" class="btn btn-lg btn-primary" id="buscarConFiltros" disabled>Buscar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @Html.Partial("~/Views/Gestion/ListadoIniciativaResumen.cshtml")
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Contenido 2-->
+    </div>
+    </div>
+    <!-- VISTA PARCIAL - MODAL COMENTAR -->
+    @Html.Partial("~/Views/Gestion/Adjunto.cshtml")
+    @Html.Partial("~/Views/Gestion/EliminarIniciativa.cshtml")
+    <!-- FIN VISTA PARCIAL-->
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+    <!--Preloader-->
+    @Html.Partial("_PreLoader")
+    <!--End Preloader-->
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
+    <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
+    <!-- Arbol de Contenido-->
+    <script src="~/Scripts/file-explore.js"></script>
+
+    <!--Script de Gestión -->
+    <script src="~/Scripts/Modules/Gestion/Gestion.js"></script>
+    <script src="~/Scripts/Modules/Gestion/GestionResumen.js"></script>
+    <script src="~/Scripts/sidebar.js"></script>
+    <script>
+        // ----------------------------------------------
+        //
+        // SISTEMA          : CAPEX
+        // CLIENTE          : ANTOFAGASTA MINERALS S.A.
+        // MODULO           : GESTION RESUMEN
+        // FECHA            : MAYO 2018
+        // DESARROLLADO POR : PMO 360 SpA
+        //
+        // ----------------------------------------------
+        // SECCION          : INICIALIZADOR
+        // METODOS          :
+        (function ($) {
+            $(".file-tree").filetree();
+        }(jQuery));
+
+
+        $(function () {
+
+            $("#defaultCheckedAll").on("click", function () {
+                console.log("defaultCheckedAll this.checked=", this.checked);
+                seleccionarTodo(this.checked);
+            });
+
+            $(".page-number, .clickable").click(function () {
+                exitFilterPanel();
+                deseleccionarTodo($(this).text());
+            });
+
+            $(".toggle-sidebar").click(function () {
+                $("#sidebar").toggleClass("collapsed");
+                $("#content").toggleClass("col-md-12 col-md-9");
+                return false;
+            });
+
+            $('#buttonFilterAction').prop('disabled', true);
+
+            $("#menuFilter").on("click", function () {
+                showFilterPanel();
+            });
+            $("#exitFilter").on("click", function () {
+                exitFilterPanel();
+            });
+            FNFilterData();
+            FNListarAnnEjercicio();
+            FNListarEtapas();
+            FNListarAreaCliente();
+            FNListarSSO();
+            FNListarCategoria();
+            FNListarEstadoiniciativa();
+            FNListarEstandarSeguridad();
+            FNListarAreaEjecutora();
+        });
+
+
+        function clickColapse(value) {
+            console.log("clickColapse value=", value);
+        }
+
+        //
+        // CARGAR COMBO AREA CLIENTE
+        //
+        var Area = $("#Area")
+        function FNListarAreaCliente() {
+            //PREPARAR
+            Area.empty();
+            Area.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarAreaCliente",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Area.empty();
+                    setTimeout(function () {
+
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Area.append(new Option(value.AreaNombre, value.AreaToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Area.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Area.append('<option value=0 selected="true">Seleccionar..</option>')
+                        }
+                    }, 200);
+                    console.log(Area)
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO AÑO EJERCICIO
+        //
+        var AnnEjercicio = $("#AnnEjercicio")
+        function FNListarAnnEjercicio() {
+            //PREPARAR
+            AnnEjercicio.empty();
+            AnnEjercicio.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarAnnEjercicio",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    AnnEjercicio.empty();
+                    setTimeout(function () {
+
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            AnnEjercicio.append(new Option(value.IniPeriodo, value.IniPeriodo, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            AnnEjercicio.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            AnnEjercicio.append('<option value=0 selected="true">Seleccionar..</option>')
+                        }
+                    }, 200);
+                    console.log(resp)
+                }
+            });
+        };
+
+        //
+        // CARGAR COMBO ETAPAS
+        //
+        var Etapa = $("#Etapa")
+        function FNListarEtapas() {
+            //PREPARAR
+            Etapa.empty();
+            Etapa.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarEtapas",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Etapa.empty();
+                    setTimeout(function () {
+
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Etapa.append(new Option(value.NINombre, value.NIAcronimo, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Etapa.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Etapa.append('<option value=0 selected="true">Seleccionar..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO SSO
+        //
+        var Sso = $("#Sso")
+        function FNListarSSO() {
+            //PREPARAR
+            Sso.empty();
+            Sso.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarSSO",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Sso.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Sso.append(new Option(value.CSNombre, value.CSToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Sso.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Sso.append('<option value=0 selected="true">Seleccionar..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO ESTANDAR SEGURIDAD
+        //
+        var EstandarSeguridad = $("#EstandarSeguridad")
+        function FNListarEstandarSeguridad() {
+            //PREPARAR
+            EstandarSeguridad.empty();
+            EstandarSeguridad.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarEstandarSeguridad",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    EstandarSeguridad.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            EstandarSeguridad.append(new Option(value.EssNombre, value.EssToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            EstandarSeguridad.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            EstandarSeguridad.append('<option value=0 selected="true">Seleccionar..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO CATEGORIA
+        //
+        var Categoria = $("#Categoria")
+        function FNListarCategoria() {
+            //PREPARAR
+            Categoria.empty();
+            Categoria.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarCategorias",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Categoria.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Categoria.append(new Option(value.CatNombre, value.CatToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Categoria.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Categoria.append('<option value=0 selected="true">Seleccionar..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO ESTADO INICIATIVA
+        //
+        var Estado = $("#Estado")
+        function FNListarEstadoiniciativa() {
+            //PREPARAR
+            Estado.empty();
+            Estado.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarEstadoIniciativa",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Estado.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Estado.append(new Option(value.EstNombre, value.EstToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Estado.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Estado.append('<option value=0 selected="true">Seleccionar..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO AREA EJECUTORA
+        //
+        var AreaEjecutora = $("#AreaEjecutora")
+        function FNListarAreaEjecutora() {
+            //PREPARAR
+            AreaEjecutora.empty();
+            AreaEjecutora.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarAreaEjecutora",
+                //data: (DTO),
+                success: function (resp) {
+                    AreaEjecutora.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            AreaEjecutora.append(new Option(value.GerNombre, value.GerToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            AreaEjecutora.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            AreaEjecutora.append('<option value=0 selected="true">Seleccionar..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+        var Clase = $("#Clase");
+        var Categoria = $("#Categoria");
+        var Estado = $("#Estado");
+        var Macrocategoria = $("#Macrocategoria");
+        var AreaEjecutora = $("#AreaEjecutora");
+
+        //SET AÑO EN TITULO
+        AnnEjercicio.change(function () {
+            console.info('cambiando AnnEjercicio AnnEjercicio.val()=', $.trim(AnnEjercicio.val()));
+            if ($.trim(AnnEjercicio.val()) !== '0') {
+                $('#labelAnn').text($("#AnnEjercicio option:selected").text());
+                $('#buscarConFiltros').prop('disabled', false);
+            } else {
+                if ($("#AnnEjercicio").val() == "0" && $("#Etapa").val() == "0" && $("#Sso").val() == "0" && $("#Area").val() == "0"
+                    && $("#Clase").val() == "0" && $("#Categoria").val() == "0" && $("#Estado").val() == "0" && $("#Macrocategoria").val() == "0"
+                    && $("#AreaEjecutora").val() == "0") {
+                    $('#buscarConFiltros').prop('disabled', true);
+                }
+            }
+        });
+
+        Etapa.change(function () {
+            console.info('cambiando Etapa Etapa.val()=', $.trim(Etapa.val()));
+            if ($.trim(Etapa.val()) !== '0') {
+                $('#buscarConFiltros').prop('disabled', false);
+            } else {
+                if ($("#AnnEjercicio").val() == "0" && $("#Etapa").val() == "0" && $("#Sso").val() == "0" && $("#Area").val() == "0"
+                    && $("#Clase").val() == "0" && $("#Categoria").val() == "0" && $("#Estado").val() == "0" && $("#Macrocategoria").val() == "0"
+                    && $("#AreaEjecutora").val() == "0") {
+                    $('#buscarConFiltros').prop('disabled', true);
+                }
+            }
+        });
+
+        Sso.change(function () {
+            console.info('cambiando Sso Sso.val()=', $.trim(Sso.val()));
+            if ($.trim(Sso.val()) !== '0') {
+                $('#buscarConFiltros').prop('disabled', false);
+            } else {
+                if ($("#AnnEjercicio").val() == "0" && $("#Etapa").val() == "0" && $("#Sso").val() == "0" && $("#Area").val() == "0"
+                    && $("#Clase").val() == "0" && $("#Categoria").val() == "0" && $("#Estado").val() == "0" && $("#Macrocategoria").val() == "0"
+                    && $("#AreaEjecutora").val() == "0") {
+                    $('#buscarConFiltros').prop('disabled', true);
+                }
+            }
+        });
+
+        Area.change(function () {
+            console.info('cambiando Area Area.val()=', $.trim(Area.val()));
+            if ($.trim(Area.val()) !== '0') {
+                $('#buscarConFiltros').prop('disabled', false);
+            } else {
+                if ($("#AnnEjercicio").val() == "0" && $("#Etapa").val() == "0" && $("#Sso").val() == "0" && $("#Area").val() == "0"
+                    && $("#Clase").val() == "0" && $("#Categoria").val() == "0" && $("#Estado").val() == "0" && $("#Macrocategoria").val() == "0"
+                    && $("#AreaEjecutora").val() == "0") {
+                    $('#buscarConFiltros').prop('disabled', true);
+                }
+            }
+        });
+
+        Clase.change(function () {
+            console.info('cambiando Clase Clase.val()=', $.trim(Clase.val()));
+            if ($.trim(Clase.val()) !== '0') {
+                $('#buscarConFiltros').prop('disabled', false);
+            } else {
+                if ($("#AnnEjercicio").val() == "0" && $("#Etapa").val() == "0" && $("#Sso").val() == "0" && $("#Area").val() == "0"
+                    && $("#Clase").val() == "0" && $("#Categoria").val() == "0" && $("#Estado").val() == "0" && $("#Macrocategoria").val() == "0"
+                    && $("#AreaEjecutora").val() == "0") {
+                    $('#buscarConFiltros').prop('disabled', true);
+                }
+            }
+        });
+
+        Categoria.change(function () {
+            console.info('cambiando Categoria Categoria.val()=', $.trim(Categoria.val()));
+            if ($.trim(Categoria.val()) !== '0') {
+            } else {
+                if ($("#AnnEjercicio").val() == "0" && $("#Etapa").val() == "0" && $("#Sso").val() == "0" && $("#Area").val() == "0"
+                    && $("#Clase").val() == "0" && $("#Categoria").val() == "0" && $("#Estado").val() == "0" && $("#Macrocategoria").val() == "0"
+                    && $("#AreaEjecutora").val() == "0") {
+                    $('#buscarConFiltros').prop('disabled', true);
+                }
+            }
+        });
+
+        Estado.change(function () {
+            console.info('cambiando Estado AnnEjercicio.val()=', $.trim(Estado.val()));
+            if ($.trim(Estado.val()) !== '0') {
+                $('#buscarConFiltros').prop('disabled', false);
+            } else {
+                if ($("#AnnEjercicio").val() == "0" && $("#Etapa").val() == "0" && $("#Sso").val() == "0" && $("#Area").val() == "0"
+                    && $("#Clase").val() == "0" && $("#Categoria").val() == "0" && $("#Estado").val() == "0" && $("#Macrocategoria").val() == "0"
+                    && $("#AreaEjecutora").val() == "0") {
+                    $('#buscarConFiltros').prop('disabled', true);
+                }
+            }
+        });
+
+        Macrocategoria.change(function () {
+            console.info('cambiando Macrocategoria Macrocategoria.val()=', $.trim(Macrocategoria.val()));
+            if ($.trim(Macrocategoria.val()) !== '0') {
+                $('#buscarConFiltros').prop('disabled', false);
+            } else {
+                if ($("#AnnEjercicio").val() == "0" && $("#Etapa").val() == "0" && $("#Sso").val() == "0" && $("#Area").val() == "0"
+                    && $("#Clase").val() == "0" && $("#Categoria").val() == "0" && $("#Estado").val() == "0" && $("#Macrocategoria").val() == "0"
+                    && $("#AreaEjecutora").val() == "0") {
+                    $('#buscarConFiltros').prop('disabled', true);
+                }
+            }
+        });
+
+        AreaEjecutora.change(function () {
+            console.info('cambiando AreaEjecutora AreaEjecutora.val()=', $.trim(AreaEjecutora.val()));
+            if ($.trim(AreaEjecutora.val()) !== '0') {
+                $('#buscarConFiltros').prop('disabled', false);
+            } else {
+                if ($("#AnnEjercicio").val() == "0" && $("#Etapa").val() == "0" && $("#Sso").val() == "0" && $("#Area").val() == "0"
+                    && $("#Clase").val() == "0" && $("#Categoria").val() == "0" && $("#Estado").val() == "0" && $("#Macrocategoria").val() == "0"
+                    && $("#AreaEjecutora").val() == "0") {
+                    $('#buscarConFiltros').prop('disabled', true);
+                }
+            }
+        });
+
+        window.onpageshow = function (event) {
+            //console.log("onpageshow gestion resumen!");
+            setTimeout(function () {
+                //console.log("setTimeout 1000");
+                $('#iniciativas > tbody  > tr').each(function (index, tr) {
+                    //console.log('$(tr).attr(style)=', $(tr).attr('style'));
+                    if (!$(tr).attr('style')) {
+                        //console.log('if not tr=', $(tr));
+                        var selectElm = $("td:last-child", tr).children("select");
+                        //console.log('selectElm.val()=', selectElm.val());
+                        selectElm.val(-1);
+                    }
+                });
+            }, 500);
+        };
+
+    </script>
+</body>
+</html>

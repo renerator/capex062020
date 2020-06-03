@@ -1,0 +1,458 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>@ViewBag.Title</title>
+    @*<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/select2.min.css" rel="stylesheet" />
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+
+    <style>
+        div.pager {
+            text-align: center;
+            margin: 1em 0;
+        }
+
+            div.pager span {
+                display: inline-block;
+                width: 1.8em;
+                height: 1.8em;
+                line-height: 1.8;
+                text-align: center;
+                cursor: pointer;
+                background: transparent;
+                color: #fff;
+                margin-right: 0.5em;
+            }
+
+                div.pager span.active {
+                    background: #4a848e;
+                }
+
+        #menu li {
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        ul.navegacion a {
+            cursor: pointer;
+        }
+
+        .active {
+            color: gold;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body style="overflow: visible;">
+
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="~/Content/logos/logo-amsa-trasparente.png" border="0" height="28" width="165" style="margin-top:0px;">
+                    </a>
+                </div>
+                <!--Fi Logo Container-->
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end topbar-main -->
+        <!-- Menu -->
+        @Html.Partial("_MenuAdministrador")
+        <!-- Fin Menu-->
+
+    </header>
+
+    <div class="wrapper dashboard" style="margin-top:30px;">
+        <div class="container-fluid">
+            <!-- Navegacion -->
+            <div class="row" style="margin-top:-30px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active"><a href="#" onclick="document.location.href='@Url.Action("Index", "Mantenedor")'">Mantenedores</a> / Gerencias</li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">
+                            <input type="button" id="BotonVolverGeneral" onclick="document.location='@Url.Action("Index", "Mantenedor")'" class="btn btn-primary btn-sm" value="Volver" />
+                            <input type="button" id="BotonActualizarVista" onclick="Actualizar()" class="btn btn-success btn-sm" style="margin-left:5px;" value="Actualizar Vista" />
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin Modulo-->
+            <!-- Navegacion -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mail-inbox">
+                        <div class="card-body">
+                            <div class="card-title mb-3">
+                                <div class="d-inline-block ml-2">
+                                    <h6>Listado de Gerencias Disponibles</h6>
+                                </div>
+                            </div>
+                            <!--CONTENEDOR PANEL LATERAL ESTADOS-->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button class="btn btn-primary btn-block " onclick="FNEvaluarAccion('1', '0')">Nuevo Gerencia</button>
+                                </div>
+                                <div id="ContenedorUsuario" class="col-md-10">
+                                    <!--CONTENEDOR BARRA HERRAMIENTAS-->
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div id="ContenedorBarraHerramientas" class="btn-toolbar mb-3" role="toolbar">
+                                                <div class="btn-group mr-2">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-sm" name="buscador" id="buscador" onblur="FNEvaluarEstadoFiltro(this.value);" placeholder="Buscar y Filtrar.." style="text-transform:uppercase;font-size:11px; width:400px; margin-right:5px;">
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- FIN HERRAMIENTAS -->
+                                    <!-- CONTENEDOR GRILLA DE INICIATIVAS -->
+                                    <div class="panel panel-default">
+                                        <div id="ContenedorGrillaUsuario" class="panel-body">
+                                            <table class="table table-hover mails paginated" id="gerencias">
+                                                <thead style="background-color:#4a848e;text-transform:uppercase;">
+                                                    <tr>
+                                                        <th scope="col"><strong>N°</strong></th>
+                                                        <th scope="col"><strong>Nombre</strong></th>
+                                                        <th scope="col"><strong>Descripción</strong></th>
+                                                        <th scope="col"><strong>Estado</strong></th>
+                                                        <th scope="col"><strong>Acciones</strong></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @{
+                                                        if (ViewBag.Usuarios != null)
+                                                        {
+                                                            foreach (var u in ViewBag.Usuarios)
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        @u.IdGerencia
+                                                                    </td>
+                                                                    <td>
+                                                                        @u.GerNombre
+                                                                    </td>
+                                                                    <td>
+                                                                        @u.GerDescripcion
+                                                                    </td>
+                                                                    <td>
+                                                                        @{
+                                                                            if (u.GerEstado == 1)
+                                                                            {
+                                                                                <span>Activa</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>Inactiva</span>
+                                                                            }
+                                                                        }
+                                                                    </td>
+                                                                    <td align="center" width="100px">
+                                                                        <select id='Funcionalidades_@u.GerToken' class="form-control orderselect" onchange="FNEvaluarAccion(this.value, `@Html.Raw(u.GerToken)`)" style="font-size:11px;height:28px; margin:0px; padding:0px;">
+                                                                            <option value="-1" selected>...</option>
+                                                                            <option value="2">Editar</option>
+                                                                            @{
+                                                                                if (@u.GerEstado == 1)
+                                                                                {
+                                                                                    <option value="3">Desactivar</option>
+                                                                                }
+                                                                            }
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- FIN CONTENEDOR -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin Contenido 2-->
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal" data-backdrop="false" id="ModalConfirmarDesactivar" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:450px;height:200px; font-size:12px;">
+                <div id="ContenedorConfirmarDesactivar" class="modal-body" style="margin-left:5px;width:450px; font-size:12px;">
+                    <div>
+                        <input type="hidden" id="GerenciaToken_Desactivar" />
+                        <div style="border-bottom:1px solid #808080; padding:5px 5px 10px 5px;">
+                            <h7 style="color:#333;"><strong>Confirmar Acción</strong> </h7>
+                        </div>
+                        <br />
+                        Tenga en cuenta que la desactivación de un elemento del sistema puede afectar datos guardados y /o comportamiento del mismo.<br /> <br />
+                        Proceder con la desactivación de esta gerencia?
+
+                        <div class="input-group" style="border-top:0px solid #808080; text-align:right; margin-top:5px;">
+                            <div class="clearfix" style="margin-top:10px;">
+                                <button class="btn btn-primary btn-sm" type="button" onclick="FNDesactivarGerencia()" style="font-size:11px;">Aceptar</button>
+                                <button class="btn btn-white btn-sm" type="button" onclick="FNCerrarModalDesactivar()" style="font-size:11px; margin-left:5px;">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Crear -->
+    <div class="modal" data-backdrop="false" id="ModalCrearGerencia" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:570px;height:380px; font-size:12px;">
+                <div id="ContenedorCrearGerencia" class="modal-body" style="margin-left:5px;width:570px; font-size:12px;">
+                    <div>
+                        <div style="border-bottom:1px solid #808080; padding:5px 5px 10px 5px;">
+                            <h7 style="color:#333;"><strong>Crear Gerencia</strong> </h7>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-xl-12 offset-md-0">
+                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                    <div class="col-sm-4 pb-1">
+                                        <label for="GerenciaNombre">Nombre</label>
+                                        <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:28px; width:400px" id="GerenciaNombre" maxlength="50" placeholder="...">
+                                        <label><code>Max. 50 Caracteres</code></label>
+                                    </div>
+                                </div>
+                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                    <div class="col-sm-4 pb-1">
+                                        <label for="GerenciaDescripcion">Descripción</label>
+                                        <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:28px; width:400px" id="GerenciaDescripcion" maxlength="128" placeholder="...">
+                                        <label><code>Max. 128 Caracteres</code></label>
+                                    </div>
+                                </div>
+                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                    <div class="col-sm-4 pb-1">
+                                        <label for="GerenciaEstado">Estado</label>
+                                        <select class="form-control" style="height:36px; font-size:11px;" id="GerenciaEstado">
+                                            <option value="-1" selected>Seleccionar..</option>
+                                            <option value="1">Activo</option>
+                                            <option value="0">No Activo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group" style="border-top:0px solid #808080; text-align:right; margin-top:5px;">
+                            <div class="clearfix" style="margin-top:10px;">
+                                <button class="btn btn-primary btn-sm" type="button" onclick="FNGuardarGerencia()" style="font-size:11px;">Aceptar</button>
+                                <button class="btn btn-white btn-sm" type="button" onclick="FNCerrarCrearGerencia()" style="font-size:11px; margin-left:5px;">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar -->
+    <div class="modal" data-backdrop="false" id="ModalActualizarGerencia" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:570px;height:380px; font-size:12px;">
+                <div id="ContenedorActualizarGerencia" class="modal-body" style="margin-left:5px;width:570px; font-size:12px;">
+                    <div>
+                        <div style="border-bottom:1px solid #808080; padding:5px 5px 10px 5px;">
+                            <h7 style="color:#333;"><strong>Editar Gerencia</strong> </h7>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-xl-12 offset-md-0">
+                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                    <div class="col-sm-4 pb-1">
+                                        <label for="GerenciaNombre_Editar">Nombre</label>
+                                        <input type="hidden" id="GerenciaToken_Editar" />
+                                        <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:28px; width:400px" id="GerenciaNombre_Editar" maxlength="50" placeholder="...">
+                                        <label><code>Max. 50 Caracteres</code></label>
+                                    </div>
+                                </div>
+                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                    <div class="col-sm-4 pb-1">
+                                        <label for="GerenciaDescripcion_Editar">Descripción</label>
+                                        <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:28px; width:400px" id="GerenciaDescripcion_Editar" maxlength="128" placeholder="...">
+                                        <label><code>Max. 128 Caracteres</code></label>
+                                    </div>
+                                </div>
+                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                    <div class="col-sm-4 pb-1">
+                                        <label for="GerenciaEstado_Editar">Estado</label>
+                                        <select class="form-control" style="height:36px; font-size:11px;" id="GerenciaEstado_Editar">
+                                            <option value="-1" selected>Seleccionar..</option>
+                                            <option value="1">Activo</option>
+                                            <option value="0">No Activo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-group" style="border-top:0px solid #808080; text-align:right; margin-top:5px;">
+                            <div class="clearfix" style="margin-top:10px;">
+                                <button class="btn btn-primary btn-sm" type="button" onclick="FNActualizarGerencia()" style="font-size:11px;">Actualizar</button>
+                                <button class="btn btn-white btn-sm" type="button" onclick="FNCerrarActualizarGerencia()" style="font-size:11px; margin-left:5px;">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" data-backdrop="false" id="ModalConfirmarEliminarCuentaUsuario" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:460px;height:200px; font-size:12px;">
+                <div id="ContenedorConfirmarEliminarCuentaUsuario" class="modal-body" style="margin-left:5px;width:460px; font-size:12px;">
+                    <div>
+                        <div style="border-bottom:1px solid #f0f0f0; padding:5px 5px 10px 5px;">
+                            <h7 style="color:#333;"><strong>Confirmar Acción</strong> </h7>
+                        </div>
+                        <br />
+                        Esta acción eliminará la cuenta del usuario impidiendo su ingreso al sistema. <strong>Desea Proceder?</strong><br /><br /><br />
+
+                        <div class="input-group" style="border-top:1px solid #f0f0f0; text-align:right; margin-top:2px;">
+                            <div class="clearfix" style="margin-top:10px;">
+                                <button class="btn btn-danger btn-sm" type="button" onclick="FNRealizarEliminacionCuentaUsuario()" style="font-size:11px;">Aceptar</button>
+                                <button class="btn btn-white btn-sm" type="button" onclick="FNCerrarModalEliminacionCuentaUsuario()" style="font-size:11px; margin-left:5px;">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+    <!--Preloader-->
+    <div class="modal-overlay"></div>
+    @Html.Partial("_PreLoader")
+    <!--End Preloader-->
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    @*<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
+    <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
+
+    <!--Script de Gestión -->
+    <script src="~/Scripts/Modules/Mantenedor/Mantenedor.js"></script>
+    <script src="~/Scripts/Modules/Mantenedor/Gerencia.js"></script>
+
+
+
+    <script>
+        $(function () {
+            console.log("Iniciando pagina paginaSeleccionada=", paginaSeleccionada);
+            paginaSeleccionada = getUrlParams('paginaSeleccionada');
+            if (!paginaSeleccionada || paginaSeleccionada == undefined) {
+                paginaSeleccionada = 1;
+            } else {
+                if (!isNaN(paginaSeleccionada)) {
+                    paginaSeleccionada = parseInt(paginaSeleccionada);
+                } else {
+                    paginaSeleccionada = 1;
+                }
+            }
+            if (paginaSeleccionada > 1) {
+                FNGotoPage(paginaSeleccionada, 10);
+            }
+        });
+    </script>
+
+</body>
+</html>

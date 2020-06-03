@@ -1,0 +1,545 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    .table-scroll {
+        position: relative;
+        max-width: 900px;
+        height: 200px;
+        margin: auto;
+        overflow: hidden;
+    }
+
+    .table-wrap {
+        width: 100%;
+        overflow: auto;
+    }
+
+    .table-scroll table {
+        width: 100%;
+        margin: auto;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+</style>
+<!--Inicio Vista Parcial Presupuestos-->
+<div id="ContenedorPresupuesto" class="card offset-md-0">
+    <div class="card-body offset-md-0">
+        <div class="container offset-md-0">
+            <div class="row" id="ContenedorBotoneraComprobacion">
+                <div class="col-sm-12 pb-1">
+                    <h7>Gráficos de Comprobación</h7><hr />
+                </div>
+                <div class="col-xl-12 offset-md-0">
+                    <button onclick="FNMostrarModalGraficoComprobacion1();" class="btn btn-success btn-sm">Total Valor Estimado Base</button>
+                    <button onclick="FNMostrarModalGraficoComprobacion2();" class="btn btn-success btn-sm">Fase Ingeniería</button>
+                    <button onclick="FNMostrarModalGraficoComprobacion3();" class="btn btn-success btn-sm">Fase Adquisiciones</button>
+                    <button onclick="FNMostrarModalGraficoComprobacion4();" class="btn btn-success btn-sm">Fase Construcción</button>
+                    <hr />
+                </div>
+            </div>
+            <div class="clearfix" style="height:30px;">&nbsp;</div>
+            <div class="row">
+                <div class="col-xl-12 offset-md-0">
+                    <div class="form-row mt-0" style="width:100%;">
+                        <div class="col-sm-6 pb-1">
+                            <span id="ContenedorDescargaTemplate" style="font-size:12px; text-decoration:underline;display:none;"><img src="../../Content/icons/excel-48x48-1.png" height="24" /><a href="~/Files/Downloads/TemplatePPTO.xlsx" style="color:white;"> Descargar Template</a></span>
+                            <span id="ContenedorDescargaTemplateCB" style="font-size:12px; text-decoration:underline;display:none;">
+                                <img src="../../Content/icons/excel-48x48-1.png" height="24" /><a href="~/Files/Downloads/TemplateCBCD_Vacio.xlsx" style="color:white;"> Descargar Template</a>
+                            </span>
+                        </div>
+                        <div class="col-sm-4 pb-1">
+
+                            <div>
+                                <!--
+                                <form name="form_importar_template" id="form_importar_template" action="">
+                                    <label for="ImportarTemplate" style="border: 1px dashed #6995a1; height: 28px; width:210px; padding:3px 3px 3px 3px;"><span id="filename">Seleccione un archivo..</span></label>
+                                    <input id="ImportarTemplate" name="ImportarTemplate" style="font-size:12px;" class="inputfile inputfile-1" type="file">
+                                    <input type="submit" class="btn btn-success btn-sm" id="BotonAccionImportarTemplate" value="Importar" />
+                                </form>
+                                -->
+                                <iframe src="~/WebForm1.aspx?type=27" scrolling="no" id="frame27" frameborder="0" height="70" width="390"></iframe>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12 offset-md-0">
+                    <hr />
+                    <div class="form-row mt-0" style="width:100%;">
+                        <div class="col-sm-12 pb-1">
+                            <h7>Avance Financiero (KUS$)</h7>
+                        </div>
+                        <div class="col-sm-10 pb-1">
+                            <div id="ContenedorTabla1" style="display:none;">
+                                <table id="tabla1" class="table table-bordered mb-0">
+                                    <thead>
+                                        <tr style='text-align:center;background-color:#5c808d;'>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">Fase</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding:0px;" rowspan="2">Periodos Anteriores</th>
+                                            <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">2020</div></th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2021</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2022</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2023</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">TOTAL</th>
+                                        </tr>
+                                        <tr style='text-align:center;background-color:#5c808d;'>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Ene</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Feb</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Mar</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Abr</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">May</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Jun</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Jul</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Ago</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Sep</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Oct</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Nov</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Dic</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">TOTAL</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+
+                                </table>
+                            </div>
+                            <div id="ContenedorTablaCasoBase1" style="overflow-x:auto;display:none;padding:1px; border: 1px dashed #f0f0f0;width:835px;">
+                                <table id="tablacasobase1" class="table table-bordered mb-0">
+                                    <thead>
+                                        <tr style='text-align:center;background-color:#5c808d;'>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">Fase</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding:0px;" rowspan="2">Periodos Anteriores</th>
+                                            <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">2020</div></th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2021</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2022</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2023</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2024</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2025</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2026</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2027</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2028</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2029</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2030</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2031</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2032</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2033</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2034</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2035</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2036</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2037</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2038</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2039</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2040</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2041</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2042</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2043</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2044</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2045</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2046</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2047</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2048</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2049</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2050</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2051</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2052</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2053</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2054</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2055</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2056</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2057</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2058</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2059</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2060</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2061</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2062</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2063</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2064</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2065</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2066</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2067</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2068</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2069</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2070</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2071</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2072</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2073</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2074</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2075</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2076</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2077</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2078</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2079</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2080</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2081</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2082</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2083</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2084</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2085</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2086</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2087</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2088</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2089</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2090</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2091</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2092</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2093</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2094</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2095</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2096</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2097</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2098</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2099</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2100</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">TOTAL CAPEX</th>
+
+                                        </tr>
+                                        <tr style='text-align:center;background-color:#5c808d;'>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Ene</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Feb</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Mar</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Abr</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">May</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Jun</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Jul</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Ago</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Sep</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Oct</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Nov</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Dic</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">TOTAL</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12 offset-md-0">
+                    <div class="form-row mt-0" style="width:100%;">
+                        <div class="col-sm-12 pb-1">
+                            <h7>Avance Físico Acumulado (%)</h7>
+                        </div>
+                        <div class="col-sm-10 pb-1">
+                            <div id="ContenedorTabla2" style="display:none;">
+                                <table id="tabla2" class="table table-bordered mb-0">
+                                    <thead>
+                                        <tr style='text-align:center;background-color:#5c808d;'>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">Fase</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding:0px;" rowspan="2">Periodos Anteriores</th>
+                                            <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">2020</div></th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2021</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2022</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2023</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">TOTAL</th>
+                                        </tr>
+                                        <tr style='text-align:center;background-color:#5c808d;'>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Ene</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Feb</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Mar</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Abr</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">May</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Jun</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Jul</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Ago</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Sep</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Oct</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Nov</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Dic</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">TOTAL</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+
+                                </table>
+                            </div>
+
+                            <div id="ContenedorTablaCasoBase2" style="overflow-x:auto;display:none;padding:1px; border: 1px dashed #f0f0f0;width:835px;">
+                                <table id="tablacasobase2" class="table table-bordered mb-0">
+                                    <thead>
+                                        <tr style='text-align:center;background-color:#5c808d;'>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">Fase</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding:0px;" rowspan="2">Periodos Anteriores</th>
+                                            <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">2020</div></th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2021</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2022</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2023</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2024</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2025</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2026</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2027</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2028</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2029</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2030</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2031</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2032</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2033</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2034</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2035</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2036</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2037</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2038</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2039</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2040</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2041</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2042</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2043</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2044</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2045</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2046</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2047</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2048</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2049</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2050</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2051</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2052</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2053</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2054</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2055</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2056</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2057</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2058</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2059</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2060</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2061</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2062</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2063</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2064</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2065</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2066</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2067</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2068</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2069</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2070</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2071</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2072</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2073</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2074</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2075</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2076</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2077</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2078</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2079</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2080</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2081</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2082</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2083</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2084</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2085</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2086</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2087</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2088</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2089</th>
+
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2090</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2091</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2092</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2093</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2094</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2095</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2096</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2097</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2098</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2099</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2100</th>
+                                            <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">TOTAL CAPEX</th>
+
+                                        </tr>
+                                        <tr style='text-align:center;background-color:#5c808d;'>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Ene</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Feb</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Mar</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Abr</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">May</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Jun</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Jul</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Ago</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Sep</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Oct</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Nov</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">Dic</td>
+                                            <td style="width:100px;height:20px; margin:0px; padding:0px;">TOTAL</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-xl-12 offset-md-0">
+                    <hr />
+                    <div class="form-row mt-0" style="width:100%;">
+                        <div class="col-sm-6 pb-1">
+                            <h7>Carta Gantt</h7>
+                        </div>
+                        <div class="col-sm-4 pb-1">
+                            <div>
+                                <!--
+                                <form name="form_importar_gantt" id="form_importar_gantt" action="">
+                                    <label for="ArchivoGantt" style="border: 1px dashed #6995a1;  height: 28px; width:210px; padding:3px 3px 3px 3px;"><span id="NombreArchivoGantt">Seleccione un archivo..</span></label>
+                                    <input id="ArchivoGantt" style="font-size:12px;" class="inputfile inputfile-1" type="file">
+                                    <input type="submit" class="btn btn-success btn-sm" id="BotonAccionImportarGantt" value="Adjuntar" />
+                                </form>
+                                -->
+                                <iframe src="~/WebForm1.aspx?type=23" scrolling="no" id="frame23" frameborder="0" height="70" width="390"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-xl-12 offset-md-0">
+                    <hr />
+                    <div class="form-row mt-0" style="width:100%;">
+                        <div class="col-sm-8 pb-1">
+                            <h7>Dotación Promedio</h7>
+                        </div>
+                        <div class="col-sm-4 pb-1" style="margin-left:-10px;">
+                            <input type="button" id="BotonAgregarDotacion" class="btn btn-primary btn-sm" value="Agregar Dotación" />
+                        </div>
+                    </div>
+                </div>
+                <!--PAGINACION DE CONTRATOS-->
+                <div id="ContenedorContratosDotacion" style="display:none;">
+                    <div class="paginate 1">
+                        <div id="ContenedorDotacionesResumen" class="items"></div>
+                        <div class="pager">
+                            <div class="previousPage">&lsaquo;</div>
+                            <div class="pageNumbers"></div>
+                            <div class="nextPage">&rsaquo;</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--Inicio Vista Dotacion-->
+<div id="ContenedorDotacion" class="card offset-md-0" style="display:none;">
+    <div class="card-body offset-md-0">
+        <div class="row pb-2 offset-md-0"> <input type="button" id="BotonVolverPresupuesto" class="btn btn-primary btn-sm" value="Volver a Presupuesto" /></div>
+    </div>
+    <div class="card">
+        @Html.Partial("~/Views/Planificacion/Dotacion.cshtml")
+    </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal inmodal" id="ModalGraficoComprobacion1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:0px;width:650px; font-size:12px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Comprobación</h6>
+            </div>
+            <div class="modal-body" style="margin-left:0px;width:650px; font-size:12px;">
+                <div id="ContenedorGraficoComprobacion1" style="width:610px; height:360px;background:#fff;padding:5px; border:1px solid #808080;">
+                    <canvas id="GC1" width="600" height="350"></canvas>
+                </div>
+                <div class="modal-footer">
+                    <small> Información: Cifras representan porcentajes. </small>
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalGraficoComprobacion1();">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal inmodal" id="ModalGraficoComprobacion2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:0px;width:650px; font-size:12px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Comprobación</h6>
+            </div>
+            <div class="modal-body" style="margin-left:0px;width:650px; font-size:12px;">
+                <div id="ContenedorGraficoComprobacion2" style="width:610px; height:360px;background:#fff;padding:5px; border:1px solid #808080;">
+                    <canvas id="GC2" width="600" height="350"></canvas>
+                </div>
+                <div class="modal-footer">
+                    <small> Información: Cifras representan porcentajes. </small>
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalGraficoComprobacion2();">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal inmodal" id="ModalGraficoComprobacion3" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:0px;width:650px; font-size:12px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Comprobación</h6>
+            </div>
+            <div class="modal-body" style="margin-left:0px;width:650px; font-size:12px;">
+                <div id="ContenedorGraficoComprobacion3" style="width:610px; height:360px;background:#fff;padding:5px; border:1px solid #808080;">
+                    <canvas id="GC3" width="600" height="350"></canvas>
+                </div>
+                <div class="modal-footer">
+                    <small> Información: Cifras representan porcentajes. </small>
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalGraficoComprobacion3();">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal inmodal" id="ModalGraficoComprobacion4" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:0px;width:650px; font-size:12px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Comprobación</h6>
+            </div>
+            <div class="modal-body" style="margin-left:0px;width:650px; font-size:12px;">
+                <div id="ContenedorGraficoComprobacion4" style="width:610px; height:360px;background:#fff;padding:5px; border:1px solid #808080;">
+                    <canvas id="GC4" width="600" height="350"></canvas>
+                </div>
+                <div class="modal-footer">
+                    <small> Información: Cifras representan porcentajes. </small>
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalGraficoComprobacion4();">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

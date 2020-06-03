@@ -1,0 +1,66 @@
+﻿<div class="navbar-custom">
+    <div class="container-fluid">
+        <div id="navigation">
+            <!-- Navigation Menu-->
+
+            <ul class="navigation-menu">
+                <li class="has-submenu active">
+                    <a href="#" style="font-size:11px;"><i class="fa fa-leaf"></i>Iniciativas</a>
+                    <ul class="submenu megamenu">
+                        <li class="active">
+                            <ul>
+                                <li><a href="#" onclick="FNRegistrarEventoIngresoIniciativa();">Ingresar iniciativa</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                @{
+                    if (@Session["CAPEX_SESS_ROLNOMBRE"] == null)
+                    {
+                        Response.Redirect("/Login");
+                    }
+                    else
+                    {
+                        if (@Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador1" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador2")
+                        {
+                            <li class="has-submenu">
+                                <a href="#" style="font-size:11px;"><i class="fa fa-random"></i>Ajustes</a>
+                                <ul class="submenu megamenu">
+                                    <li class="">
+                                        <ul>
+                                            <li><a href="#">Configuraciones</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="has-submenu">
+                                <a href="#" style="font-size:11px;"><i class="fa fa-cog"></i>Mantenedores</a>
+                                <ul class="submenu megamenu">
+                                    <li class="">
+                                        <ul>
+                                            <li><a href="#">Usuarios</a></li>
+                                            <li><a href="#">Areas</a></li>
+                                            <li><a href="#">Rol</a></li>
+                                            <li><a href="#">Compañias</a></li>
+                                            <li><a href="#">Gerencias</a></li>
+                                            <li><a href="#">Etapas</a></li>
+                                            <!--<li><a href="#">SLA</a></li>-->
+                                            <li><a href="#">Gerentes</a></li>
+                                            <li><a href="#">Superintendencias</a></li>
+                                            <li><a href="#">Superintendentes</a></li>
+                                            <li><a href="#">Areas Revisoras</a></li>
+                                            <li><a href="#">Categorias</a></li>
+                                            <li><a href="#">Clasificación SSO</a></li>
+                                            <li><a href="#">Procesos</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+

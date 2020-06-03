@@ -1,0 +1,41 @@
+﻿@{
+    Layout = null;
+}
+<!--COMENTAR-->
+<div class="modal inmodal" id="ModalComentar" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Ingresar Comentario</h6>
+            </div>
+
+            <div class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                <div id="ContenedorContenidoComentar">
+                    <div style="font-size:11px;">
+
+                        <div>
+                            <label for="Comentario">Comentario</label>
+                            <textarea id="Comentario" class="form-control" style="font-size:11px; color:#333;height:100px;" placeholder="Ingresar comentario.."></textarea>
+                        </div>
+                        <div>
+                            <label for="Prioridad">Prioridad</label>
+                            <select id="Prioridad" class="form-control" style="height:28px; font-size:11px;">
+                                <option value="-1" selected>Seleccionar..</option>
+                                <option value="Normal">Normal</option>
+                                <option value="Importante">Importante</option>
+                                <option value="Urgente">Urgente</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="FNGuardarComentario();">Aceptar</button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalComentar()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

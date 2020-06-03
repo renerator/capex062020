@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+}
+
+<div id="ContenedorGrillaIniciativas" class="panel-body" style="text-transform:uppercase;">
+    <form name="GestionFormIndex" id="GestionFormIndex">
+        <table class="table table-hover paginated" id="iniciativas">
+            <thead style="background-color:#4a848e;text-transform:uppercase;">
+                <tr>
+                    <th scope="col"><strong>Codigo Iniciativa</strong></th>
+                    <th scope="col"><strong>Nombre de Proyecto</strong></th>
+                    <th scope="col"><strong>Tipo de Proyecto</strong></th>
+                    <th scope="col"><strong>Etapa de Proyecto</strong></th>
+                    <th scope="col"><strong>Clasif. HSEC</strong></th>
+                    <th scope="col"><strong>Acciones</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    if (ViewBag.Iniciativas != null)
+                    {
+                        foreach (var ini in ViewBag.Iniciativas)
+                        {
+                            <tr>
+                                <td>
+                                    @ini.PidCodigoIniciativa
+                                </td>
+
+                                <td>
+                                    @ini.PidNombreProyecto
+                                </td>
+                                <td>
+                                    @ini.IniTipo
+                                </td>
+                                <td>
+                                    @ini.PidEtapa
+                                </td>
+                                <td class="text-center" width="100px">
+                                    @ini.CatClasificacionSSO
+                                </td>
+                                <td class="text-center" width="100px" onclick="FNRegistrarIniciativa('@ini.PidToken')">
+                                    @Html.Partial("~/Views/Gestion/AccionIniciativa.cshtml")
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </form>
+</div>

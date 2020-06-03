@@ -1,0 +1,147 @@
+﻿@{
+    Layout = null;
+}
+
+<!--Inicio Vista Parcial Descripcion Detallada-->
+<div class="card offset-md-0">
+    <div class="card-body offset-md-0">
+        <!--<form name="form_descripcion" id="form_descripcion" action="" style="width:1680px;">-->
+        <div class="container offset-md-0">
+            <form name="form_descripcion" id="form_descripcion" action="">
+                <div class="row">
+                    <div class="col-xl-12 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%;">
+                            <div class="col-sm-12 pb-1">
+                                <label for="PddObjetivo">Objetivo de la Inversión</label>
+                                <textarea class="form-control" id="PddObjetivo" name="PddObjetivo" maxlength="400" rows="3" style="width:650px;height:80px;text-transform:uppercase; font-size:11px;" onkeyup="FNCuentaLosCaracteres('OBJETIVO_INVERSION',this)"></textarea>
+                                <br><span>Max. 400 Caracteres, Quedan :</span>&nbsp;<span id="ContenedorContador1"> 400</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-12 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%;">
+                            <div class="col-sm-12 pb-2">
+                                <label for="PddAlcance">Alcance /Descripción de la Inversión</label>
+                                <textarea class="form-control" id="PddAlcance" name="PddAlcance" style="width:650px;height:80px;text-transform:uppercase; font-size:11px;" onkeyup="FNCuentaLosCaracteres('ALCANCE_INVERSION',this)"></textarea>
+                                <br><span>Max. 400 Caracteres, Quedan :</span>&nbsp;<span id="ContenedorContador2"> 400</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xl-12 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%;">
+                            <div class="col-sm-12 pb-2">
+                                <label for="PddJustificacion">Justificación de la Inversión</label>
+                                <textarea class="form-control" id="PddJustificacion" name="PddJustificacion" style="width:650px;height:80px;text-transform:uppercase; font-size:11px;" onkeyup="FNCuentaLosCaracteres('JUSTIFICACON_INVERSION',this)"></textarea>
+                                <br><span>Max. 400 Caracteres, Quedan :</span>&nbsp;<span id="ContenedorContador3"> 400</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <hr>
+
+            <div class="row">
+                <div class="col-md-12 offset-md-0">
+                    <div class="form-row mt-12">
+                        <div class="col-sm-3 pb-1">
+                            <div>
+                                <h7>Fecha de Post Evaluación</h7>
+                                <br />
+                                <br />
+                                <!--<div class="input-group">
+                                    <input class="form-control" type="date" id="PddFechaPostEvalDp" style="width:120px; font-size:11px; display:none;">
+                                    <input class="form-control" type="text" id="PddFechaPostEval" style="width:120px; font-size:11px;">&nbsp;<button class="btn btn-primary btn-sm" id="BotonCambiarFechaPostEval" onclick="FNUsarDatePickerPostEval()" style="font-size:11px;">Cambiar Fecha</button>&nbsp;<button class="btn btn-warning btn-sm" id="BotonCambiarDatePickerPostEval" onclick="FNUsarFechaPropuestaPostEval()" style="font-size:11px;display:none;">Cancelar</button>
+                                </div>-->
+                                <div class="input-group date">
+                                    <input type="text" class="form-control" style="background-color: rgba(239, 243, 246, 0.1);" id="datepickerFPE" readonly>
+                                    <div class="input-group-addon">
+                                        <span class="fa fa-calendar"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-1 pb-1">
+                            <div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 pb-1">
+
+                            <span><h7> Adjuntar Archivo de Respaldo</h7></span>
+                            <br />
+                            <br />
+                            <!--
+                            <label for="ArchivoDesc" style="border: 1px dashed #6995a1; height: 28px; width:200px; padding:3px 3px 3px 3px;"><span id="NombreArchivoDesc">Seleccione un archivo..</span></label>
+                            <input id="ArchivoDesc" name="AdjuntarArchivosRespaldoDescripcion" style="font-size:12px;" class="inputfile inputfile-1" type="file">
+                            <input type="submit" class="btn btn-success btn-sm" id="BotonAdjuntarArchivoDesc" value="Adjuntar" />
+                            -->
+                            <iframe src="~/WebForm1.aspx?type=24" scrolling="no" id="frame24" frameborder="0" height="70" width="390"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="row">
+                <div class="col-xl-10 offset-md-0">
+                    <div class="form-row mt-0" style="width:650px;">
+                        <h7>Cuadro de KPI (s)</h7>
+                        <br />
+                        <br />
+                        <table class="table table-bordered mb-0" width="600">
+                            <thead>
+                                <tr style='text-align:center;background-color:#5c808d;'>
+                                    <th style="width:80px;">&nbsp;KPI ( s )</th>
+                                    <th style="width:345px;">Descripción</th>
+                                    <th style="width:80px;"><div align="center">Unidad</div></th>
+                                    <th style="width:80px;"><div align="center">Actual</div></th>
+                                    <th style="width:80px;"><div align="center">Target</div></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style='text-align:center;background-color:#5c808d;'><div align="center">KPI 1</div></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:300px;" id="PddDescripcion1" maxlength="50" placeholder=""></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:80px;" id="PddUnidad1" maxlength="8" placeholder=""></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:80px;" id="PddActual1" maxlength="8" placeholder=""></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:80px;" id="PddTarget1" maxlength="8" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td style='text-align:center;background-color:#5c808d;'><div align="center">KPI 2</div></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:300px;" id="PddDescripcion2" maxlength="50" placeholder=""></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:80px;" id="PddUnidad2" maxlength="8" placeholder=""></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:80px;" id="PddActual2" maxlength="8" placeholder=""></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:80px;" id="PddTarget2" maxlength="8" placeholder=""></td>
+                                </tr>
+                                <tr>
+                                    <td style='text-align:center;background-color:#5c808d;'><div align="center">KPI 3</div></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:300px;" id="PddDescripcion3" maxlength="50" placeholder=""></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:80px;" id="PddUnidad3" maxlength="8" placeholder=""></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:80px;" id="PddActual3" maxlength="8" placeholder=""></td>
+                                    <td><input type="text" class="form-control" style="text-transform:uppercase; font-size:11px; width:80px;" id="PddTarget3" maxlength="8" placeholder=""></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!--</form>-->
+        <div class="clearfix" style="margin-left:5px; margin-top:10px;">
+            <button class="btn btn-primary" id="BotonGuardarDescripcion" onclick="FNGuardarDescripcion()">Guardar</button>
+            <button class="btn btn-warning" id="BotonActualizarDescripcion" onclick="FNActualizarDescripcion()" style="display:none;">Actualizar</button>
+        </div>
+
+
+    </div>
+</div>
+

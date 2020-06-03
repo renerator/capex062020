@@ -1,0 +1,20 @@
+﻿<div class="float-left" style="margin-top:10px;margin-left:70px;">
+    <span style="font-size:16px; color:#333; width:300px;"><strong>Sistema de Gestión de Iniciativas CAPEX</strong></span>
+    <div>
+        <div class="btn-group float-right">
+
+        </div>
+        <div style="margin-top:-0px;  font-size:12px; color:#333;">
+            @{
+                if (string.IsNullOrEmpty(Convert.ToString(Session["CAPEX_SESS_USUNOMBRE"])))
+                {
+                    Response.Redirect("/login");
+                }
+                else
+                {
+                    <span> Bienvenido(a), <strong> @Session["CAPEX_SESS_USUNOMBRE"].ToString() @Session["CAPEX_SESS_USUAPELLIDO"].ToString() </strong> (@Session["CAPEX_SESS_ROLNOMBRE"].ToString()) </span>
+                }
+            }
+        </div>
+    </div>
+</div>

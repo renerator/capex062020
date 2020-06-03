@@ -1,0 +1,226 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>@ViewBag.Title</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/select2.min.css" rel="stylesheet" />
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+
+    <style>
+        div.pager {
+            text-align: center;
+            margin: 1em 0;
+        }
+
+            div.pager span {
+                display: inline-block;
+                width: 1.8em;
+                height: 1.8em;
+                line-height: 1.8;
+                text-align: center;
+                cursor: pointer;
+                background: transparent;
+                color: #fff;
+                margin-right: 0.5em;
+            }
+
+                div.pager span.active {
+                    background: #4a848e;
+                }
+
+        #menu li {
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        ul.navegacion a {
+            cursor: pointer;
+        }
+
+        .active {
+            color: gold;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body style="overflow: visible;">
+
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="~/Content/logos/logo-amsa-trasparente.png" border="0" height="28" width="165" style="margin-top:0px;">
+                    </a>
+                </div>
+                <!--Fi Logo Container-->
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end topbar-main -->
+        <!-- Menu -->
+        @Html.Partial("_MenuAdministrador")
+        <!-- Fin Menu-->
+
+    </header>
+
+    <div class="wrapper dashboard" style="margin-top:30px;">
+        <div class="container-fluid">
+            <!-- Navegacion -->
+            <div class="row" style="margin-top:-30px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active"><a href="#">Mantenedores / Gerente / Nuevo</a></li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">
+                            <input type="button" id="BotonVolverGeneral" onclick="document.location='@Url.Action("Gerente", "Mantenedor")'" class="btn btn-primary btn-sm" value="Volver" />&nbsp;
+                            <input type="button" id="BotonVolverGeneral" onclick="Actualizar()" class="btn btn-success btn-sm" value="Actualizar Vista" />
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Contenido -->
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title mb-3">
+                                <div class="d-inline-block ml-4">
+                                    <h6>Nuevo Gerente</h6>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="container">
+                                    <form id="form1" name="form1" class="form-horizontal" role="form" style=" font-family:Arial; font-size:11px;">
+                                        <div style="border-bottom:1px solid #4a848e; margin-bottom:10px;margin-top:0px;"><h6>Identificación</h6></div>
+                                        <div class="row">
+                                            <div class="col-xl-10 offset-md-0">
+                                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                                    <div class="col-sm-5 pb-1">
+                                                        <label for="GteNombre">Nombres y Apellidos</label>
+                                                        <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="GteNombre" maxlength="128" onblur="" placeholder="Nombres y Apellidos" required>
+                                                        <label><code>Max. 128 Caracteres</code></label>
+                                                    </div>
+                                                    <div class="col-sm-5 pb-1">
+                                                        <label for="IdGerencia">Gerencia</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="IdGerencia">
+                                                            <option selected>Seleccionar..</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-xl-10 offset-md-0">
+                                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                                    <div class="col-sm-10 pb-1">
+                                                        <label for="GteDescripcion">Descipción</label>
+                                                        <textarea class="form-control" style="text-transform:uppercase; font-size:11px;height:80px; font-size:11px;" id="GteDescripcion" maxlength="128" placeholder="Texto descriptivo" required></textarea>
+                                                        <label><code>Max. 128 Caracteres</code></label>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-top:5px; margin-left:0px; margin-bottom:30px; width:300px;">
+                                                    <button class="btn btn-primary " onclick="FNCrearGerente()">Guardar</button>
+                                                    <button class="btn btn-warning " onclick="FNModificarGerente()" disabled>Modificar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+    <!--Preloader-->
+    <div class="modal-overlay"></div>
+    @Html.Partial("_PreLoader")
+    <!--End Preloader-->
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
+    <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
+    <script src="~/Scripts/validarut.js"></script>
+
+    <!--Script de Gestión -->
+    <script src="~/Scripts/Modules/Mantenedor/Mantenedor.js"></script>
+</body>
+</html>
+
+
+

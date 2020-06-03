@@ -1,0 +1,80 @@
+﻿@{
+    Layout = null;
+}
+<div id="ContenedorGrillaIniciativas" class="panel-body" style="text-transform:uppercase;">
+    <form name="GestionFormIndex" id="GestionFormIndex">
+        <table class="table table-hover paginated" id="iniciativas">
+            <thead style="background-color:#4a848e;text-transform:uppercase;">
+                <tr>
+                    <th scope="col">
+                        <div class="form-check">
+                            <input class="styled" type="checkbox" id="defaultCheckedAll">
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <strong>Codigo Iniciativa</strong>
+                    </th>
+                    <th scope="col"><strong>Estado Iniciativa</strong></th>
+                    <th scope="col"><strong>Nombre de Proyecto</strong></th>
+                    <th scope="col"><strong>Tipo de Proyecto</strong></th>
+                    <th scope="col"><strong>Etapa de Proyecto</strong></th>
+                    <th scope="col"><strong>Clasif. HSEC</strong></th>
+                    <th scope="col"><strong>Acciones</strong></th>
+                </tr>
+            </thead>
+            <tbody id="TBodyIdSummary">
+                @{
+                    if (ViewBag.Iniciativas != null)
+                    {
+                        foreach (var ini in ViewBag.Iniciativas)
+                        {
+                            <tr>
+                                <td width="5px">
+                                    <input type="hidden" name=@(String.Format("{0}{1}", "defaultHiddenChecked_", ini.PidId)) value="@(String.Format("{0}{1}", "defaultChecked_", ini.PidId)),@(String.Format("{0}",ini.PidToken))">
+                                    <div class="form-check">
+                                        <input id=@(String.Format("{0}{1}", "defaultChecked_", ini.PidId)) class="styled" type="checkbox" onclick='seleccionarIniciativaPdf("@(String.Format("{0}{1}", "defaultChecked_", ini.PidId))", "@(String.Format("{0}",ini.PidToken))");'>
+                                        <label class="form-check-label" for=@(String.Format("{0}{1}", "defaultChecked_", ini.PidId))></label>
+                                    </div>
+                                </td>
+                                <td>
+                                    @ini.PidCodigoIniciativa
+                                </td>
+                                <td>
+                                    @ini.PidEstadoFlujo
+                                </td>
+                                <td>
+                                    @ini.PidNombreProyecto
+                                </td>
+                                <td>
+                                    @ini.IniTipo
+                                </td>
+                                <td>
+                                    @ini.PidEtapa
+                                </td>
+                                <td class="text-center" width="100px">
+                                    @ini.CatClasificacionSSO
+                                </td>
+                                <td class="text-center" width="100px" onclick="exitFilterPanel();FNRegistrarIniciativa('@ini.PidToken')">
+                                    @Html.Partial("~/Views/Gestion/AccionIniciativa.cshtml")
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </form>
+</div>

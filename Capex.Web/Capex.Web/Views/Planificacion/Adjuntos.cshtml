@@ -1,0 +1,58 @@
+﻿@{
+    Layout = null;
+}
+<input id="optionFileDelete" name="optionFileDelete" type="hidden" value="0">
+<!--Inicio Vista Parcial Documentos-->
+<div class="card offset-md-0">
+    <div class="card-body offset-md-0">
+        <form name="form_documentos" id="form_documentos" action="" style="width:1680px;">
+            <div class="container offset-md-0">
+                <div id="ContenedorDocumentos">
+                    <h7>Archivos Adjuntos</h7>
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div class="col-xl-10 offset-md-0">
+                            <div class="form-row mt-0" style="width:100%;">
+                                <div id="ContenedorTablaDocumentosAdjuntos" style="color:#0094ff;">
+
+                                    <ul class="file-tree">
+                                        <li>
+                                            <i class="fa fa-folder fa-2x"></i> <a href="#">Iniciativa </a>
+                                            <ul id="ContenedorElementosAdjuntos"></ul>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal inmodal" id="ModalEliminarAdjunto" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:0px;width:450px; font-size:12px;">
+            <div id="ContenedorEliminarAdjunto" class="modal-body" style="margin-left:5px;width:440px; font-size:12px;">
+                <div>
+                    <h6 style="color:#333;"><strong>Eliminar Adjunto</strong></h6>
+                    <br />
+                    <div class="input-group">
+                        Se eliminará el adjunto seleccionado, Proceder?
+                    </div>
+                    <div class="m-t-10">
+                        <button class="btn btn-danger btn-sm" id="BotonFechaAprobacion" onclick="FNEliminarAdjuntoFinal()" style="font-size:11px;">Eliminar</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalEliminarAdjunto()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

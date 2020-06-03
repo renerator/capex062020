@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="CapexRepository-Web.config Connection String" description="CapexRepository Cadena de conexión que usa la aplicación en web.config para obtener acceso a la base de datos." defaultValue="Data Source=tcp:amsazdev.database.windows.net; Initial Catalog=CapexRepository;Integrated Security=false; User ID=strquiroz@amsazdev; Password=R3ne@uiroz01" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="D:\\Escritorio\\PROYECTOS\\AMSA\\Deploy\\capex\\Capex\\Capex\.Web\\Capex\.Web\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='CapexRepository']/@connectionString" />
+  </parameter>
+</parameters>

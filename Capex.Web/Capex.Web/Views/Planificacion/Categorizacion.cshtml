@@ -1,0 +1,316 @@
+﻿@{
+                /**/
+
+                Layout = null;
+}
+<!--Inicio Vista Parcial Categorizacion-->
+<div class="card offset-md-0">
+    <div class="card-body offset-md-0">
+        <div class="container offset-md-0">
+            <form name="form_categorizacion" id="form_categorizacion" action="" style="width:1680px;">
+                <div class="row">
+                    <div class="col-xl-6 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%;">
+                            <div class="col-sm-6 pb-1">
+                                <div id="ContenedorEstadoNoSeleccionable">
+                                    <label for="EstadoProyecto1">Estado del Proyecto</label>
+                                    <input type="text" class="form-control" value="" style="height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;" id="EstadoProyecto1" name="EstadoProyecto1" disabled>
+                                </div>
+                                <div id="ContenedorEstadoSeleccionable1">
+                                    <label for="EstadoProyecto2">Estado del Proyecto</label>
+                                    <select class="form-control" style="height:36px; font-size:11px;" id="EstadoProyecto2" name="EstadoProyecto2" onchange="FNGuardarSeleccion('COMBO_ESTADO_PROYECTO', this.value);">
+                                        <option value="-1" selected>Seleccionar..</option>
+                                        <option value="CREAR">Nuevo</option>
+                                        <option value="IMPORTAR">Remanente</option>
+                                        <option value="FUTURO">Futuro</option>
+                                    </select>
+                                </div>
+                                <div id="ContenedorEstadoSeleccionable2">
+                                    <label for="EstadoProyecto3">Estado del Proyecto</label>
+                                    <select class="form-control" style="height:36px; font-size:11px;" id="EstadoProyecto3" name="EstadoProyecto3" onchange="FNGuardarSeleccion('COMBO_ESTADO_PROYECTO', this.value);">
+                                        <option value="-1" selected>Seleccionar..</option>
+                                        <option value="CREAR">Nuevo</option>
+                                        <option value="IMPORTAR">Remanente</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 pb-1">
+                                <label for="TipoCotizacion">Tipo de Cotización</label>
+                                <select class="form-control" style="height:36px; font-size:11px;" id="TipoCotizacion" name="TipoCotizacion">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                    <option value="FORMAL">Formal</option>
+                                    <option value="REFERENCIAL">Valor Referencial</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%;">
+
+                            <div class="col-sm-6 pb-1">
+                                <label>¿La ejecución de su iniciativa agrega capacidad de producción adicional?</label>
+                                <div class="form-group small">
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="RequiereCapacidad" id="RequiereCapacidad1" value="SI" onclick="FNGuardarSeleccion('RADIO_REQUIERE_CAPACIDAD', 'SI');"> SI
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="RequiereCapacidad" id="RequiereCapacidad2" value="NO" onclick="FNGuardarSeleccion('RADIO_REQUIERE_CAPACIDAD', 'NO');"> NO
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 pb-1">
+                                <label for="Clase">Clase (Priorización)</label>
+                                <select class="form-control" style="height:36px; font-size:11px;" id="Clase" name="Clase" onchange="FNObtenerTextoAyuda('CATEGORIZACION', this.value);">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                    <option value="Clase 1">Clase 1</option>
+                                    <option value="Clase 2">Clase 2</option>
+                                    <option value="Clase 3">Clase 3</option>
+                                    <option value="Clase 4">Clase 4</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%; height:30px;">
+                            <div class="col-sm-6 pb-1">
+                                <span id="ContenedorMacro1" style="display:none;"><strong>Macrocategoria : Development</strong></span>
+                                <span id="ContenedorMacro2" style="display:none;"><strong>Macrocategoria : Sustaining</strong></span>
+                            </div>
+                            <div class="col-sm-4 pb-1">
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-6 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%;">
+                            <div class="col-sm-6 pb-1">
+                                <label for="Categoria">Categoria</label>
+                                <select class="form-control" style="height:36px; font-size:11px;" id="Categoria" name="Categoria" onchange="FNEvaluarCategoria();">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 pb-1">
+                                <label for="ClasificacionSSO">Clasificación HSEC</label>
+                                <select class="form-control" style="height:36px; font-size:11px;" id="ClasificacionSSO" name="ClasificacionSSO" onchange="FNObtenerTextoAyuda('CATEGORIZACION', this.value); FNProcesarOpcionSSO(this.value); FNGuardarSeleccion('COMBO_SSO', this.value);">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-6 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%;">
+                            <div class="col-sm-6 pb-1">
+                                <label for="NivelIngenieria">Nivel de Ingenieria</label>
+                                <div id="ContenedorNivelIngenieria1">
+                                    <select class="form-control" style="height:36px; font-size:11px;" id="NivelIngenieria" name="NivelIngenieria" onchange="FNObtenerTextoAyuda('CATEGORIZACION', this.value);FnAnalizarEtapaCicloInversional(this.value);">
+                                        <option value="-1" selected>Seleccionar..</option>
+                                    </select>
+                                </div>
+                                <div id="ContenedorNivelIngenieria2" style="display:none;"></div>
+                            </div>
+                            <div class="col-sm-4 pb-1">
+                                <div id="ContenedorSSO">
+                                    <label for="EstandarSeguridad">Estándar de Seguridad</label>
+                                    <select class="form-control" style="height:36px; font-size:11px;" id="EstandarSeguridad" name="EstandarSeguridad">
+                                        <option value="-1" selected>Seleccionar..</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+            <hr />
+            <div class="row">
+                <div class="col-xl-12 offset-md-0">
+                    <!-- <form name="form_categorizacion_desarrollo" id="form_categorizacion_desarrollo" action="" style="width:1680px;"> -->
+                    <h7>Respaldo de Ingeniería</h7>
+                    <br />
+                    <br />
+                    <div class="form-row mt-0" style="width:100%;">
+                        <!--
+                        <label for="ArchivoDesarrollo" style="border: 1px dashed #6995a1; height: 28px; width:300px; padding:3px 3px 3px 3px;"><span id="NombreArchivoDesarrollo">Seleccione un archivo..</span></label>
+                        <input id="ArchivoDesarrollo" name="ArchivoDesarrollo" style="font-size:12px;" class="inputfile inputfile-1" type="file">&nbsp;&nbsp;
+                        <input type="submit" class="btn btn-success btn-sm" style="height:28px;" id="BotonArchivoDesarrollo" value="Adjuntar" />
+                        -->
+                        <iframe src="~/WebForm1.aspx?type=21" scrolling="no" id="frame21" frameborder="0" height="70" width="390"></iframe>
+                    </div>
+                    <!--</form> -->
+                </div>
+            </div>
+            <hr />
+            <div id="ContenedorAnalisisBajaComplejidad" style="display:none;">
+                <h7>Análisis de Parámetros</h7>
+                <br />
+                <span>Marcar con 1, 2 o 3 en el campo "Complejidad" que corresponda y completar la observación que justifica la nota.</span>
+                <table id="Analisis" width="800" style="border:1px solid #f0f0f0; font-size:11px;">
+                    <tr style="background-color:#5c808d; height:100%;">
+                        <td style="text-align:center;height:28px;border:1px solid #fff;" rowspan="2">Parámetro</td>
+                        <td style="width:70px;text-align:center; height:28px;border:1px solid #fff;" colspan="3">Complejidad</td>
+                        <td style="text-align:center;height:28px;border:1px solid #fff; width:50px;" rowspan="2">Nota</td>
+                        <td style="text-align:center;height:28px;border:1px solid #fff;" rowspan="2">Observaciones que justifican la nota</td>
+                    </tr>
+                    <tr style="background-color:#5c808d; height:100%;">
+                        <td style="text-align:center; height:28px;border:1px solid #fff;">1</td>
+                        <td style="text-align:center; height:28px;border:1px solid #fff;">2</td>
+                        <td style="text-align:center; height:28px;border:1px solid #fff;">3</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #fff;text-align:left; height:28px;border:1px solid #fff;">1.- Interferencias </td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n11" name="n1" onclick="FNCalcularSubtotal('INTERFERENCIA','1')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n12" name="n1" onclick="FNCalcularSubtotal('INTERFERENCIA','2')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n13" name="n1" onclick="FNCalcularSubtotal('INTERFERENCIA','3')" /></td>
+                        <td style="border:1px solid #fff;" align="center"><input type="text" style="width:100%;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;text-align:center;" class="form-control" id="TotalNota1" value="0" disabled /></td>
+                        <td style="border:1px solid #fff;"><input type="text" class="form-control" id="NotaInterferencia" /></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left; height:28px;border:1px solid #fff;">2.- Riesgo a las Personas</td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n21" name="n2" onclick="FNCalcularSubtotal('RIESGO','1')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n22" name="n2" onclick="FNCalcularSubtotal('RIESGO','2')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n23" name="n2" onclick="FNCalcularSubtotal('RIESGO','3')" /></td>
+                        <td style="border:1px solid #fff;" align="center"><input type="text" style="width:100%;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0; text-align:center;" class="form-control" id="TotalNota2" value="0" disabled /></td>
+                        <td style="border:1px solid #fff;"><input type="text" class="form-control" id="NotaRiesgo" /></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left; height:28px;border:1px solid #fff;">3.- Sustentabilidad</td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n31" name="n3" onclick="FNCalcularSubtotal('SUSTENTABILIDAD','1')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n32" name="n3" onclick="FNCalcularSubtotal('SUSTENTABILIDAD','2')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n33" name="n3" onclick="FNCalcularSubtotal('SUSTENTABILIDAD','3')" /></td>
+                        <td style="border:1px solid #fff;" align="center"><input type="text" style="width:100%;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;text-align:center;" class="form-control" id="TotalNota3" value="0" disabled /></td>
+                        <td style="border:1px solid #fff;"><input type="text" class="form-control" id="NotaSustentabilidad" /></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left; height:28px;border:1px solid #fff;">4.- Complejidad Tecnológica</td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n41" name="n4" onclick="FNCalcularSubtotal('COMPLEJIDAD','1')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n42" name="n4" onclick="FNCalcularSubtotal('COMPLEJIDAD','2')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n43" name="n4" onclick="FNCalcularSubtotal('COMPLEJIDAD','3')" /></td>
+                        <td style="border:1px solid #fff;" align="center"><input type="text" style="width:100%;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;text-align:center;" class="form-control" id="TotalNota4" value="0" disabled /></td>
+                        <td style="border:1px solid #fff;"><input type="text" class="form-control" id="NotaComplejidad" /></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left; height:28px;border:1px solid #fff;">5.- Emplazamiento</td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n51" name="n5" onclick="FNCalcularSubtotal('EMPLAZAMIENTO','1')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n52" name="n5" onclick="FNCalcularSubtotal('EMPLAZAMIENTO','2')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n53" name="n5" onclick="FNCalcularSubtotal('EMPLAZAMIENTO','3')" /></td>
+                        <td style="border:1px solid #fff;" align="center"><input type="text" style="width:100%;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;text-align:center;" class="form-control" id="TotalNota5" value="0" disabled /></td>
+                        <td style="border:1px solid #fff;"><input type="text" class="form-control" id="NotaEmplazamiento" /></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left; height:28px;border:1px solid #fff;">6.- Solución técnica</td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n61" name="n6" onclick="FNCalcularSubtotal('SOLUCION','1')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n62" name="n6" onclick="FNCalcularSubtotal('SOLUCION','2')" /></td>
+                        <td style="border:1px solid #fff;"><input type="radio" class="form-control" id="n63" name="n6" onclick="FNCalcularSubtotal('SOLUCION','3')" /></td>
+                        <td style="border:1px solid #fff;" align="center"><input type="text" style="width:100%;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;text-align:center;" class="form-control" id="TotalNota6" value="0" disabled /></td>
+                        <td style="border:1px solid #fff;"><input type="text" class="form-control" id="NotaSolucion" /></td>
+                    </tr>
+                    <tr style="text-align:left; height:28px;border:1px solid #fff;">
+                        <td colspan="4">Nota Total Complejidad</td>
+                        <td rowspan="2" style="text-align:left; height:28px;border-right:1px solid #fff"><input type="text" id="TotalAnalisis" style="width:50px;height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;text-align:center;" class="form-control" value="0" disabled /></td>
+                    </tr>
+                </table>
+                <br />
+                <br />
+                <div id="ContenedorRecomendacion" class="alert alert-info align-items-center" style="font-size:12px; display:none; width:800px;" role="alert">
+                    <i class="fa fa-exclamation-circle fa-2x"></i><strong class="pr-1">Información </strong><span id="ValorRecomendacion">Esperando ingreso de notas..</span>.
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 offset-md-0">
+                        <form name="form_categorizacion_baja_complejidad" id="form_categorizacion_baja_complejidad" action="" style="width:1680px;">
+                            <h7>Respaldo de Baja Complejidad</h7>
+                            <br />
+                            <br />
+                            <div class="form-row mt-0" style="width:100%;">
+                                <label for="ArchivoBajaComplejidad" style="border: 1px dashed #6995a1; height: 28px; width:300px; padding:3px 3px 3px 3px;"><span id="NombreArchivoBajaComplejidad">Seleccione un archivo..</span></label>
+                                <input id="ArchivoBajaComplejidad" name="ArchivoBajaComplejidad" style="font-size:12px;" class="inputfile inputfile-1" type="file">&nbsp;&nbsp;
+                                <input type="submit" class="btn btn-success btn-sm" style="height:28px;" id="BotonArchivoBajaComplejidad" value="Adjuntar" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix;" style="margin-top:10px;">
+                <button class="btn btn-primary" id="BotonGuardarCategorizacion" onclick="FNGuardarCategorizacion()">Guardar</button>
+                <button class="btn btn-warning" id="BotonActualizarCategorizacion" onclick="FNActualizarCategorizacion()" style="display:none;">Actualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal inmodal" id="ModalCicloInversional" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Ciclo Inversional</h6>
+            </div>
+            <div class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                <div id="ContenedorOpcionesCicloInversional">
+                    <div style="font-size:11px;">
+                        <div class="alert alert-warning alert-dismissible fade show d-flex align-items-center" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <i class="fa fa-exclamation-triangle fa-2x"></i><strong class="pr-1">Atención !</strong> No cumple ciclo inversional
+                        </div>
+                        <div align="center">
+                            <small>PERFIL > PREFIBILIDAD > FACTIBILIDAD > EJECUCION DE INVERSION</small>
+                        </div>
+                        <div style="padding-top:5px;padding-bottom:5px;">
+                            Seleccione una opción para dar cumplimiento a ciclo inversional
+                        </div>
+                    </div>
+                    <div style="height:130px;font-size:12px;margin-top:10px;">
+                        <div class="" style="margin-top:0px;">
+                            <div class="row" style="height:50px;">
+                                <div class="col-md-12">
+                                    <span><input type="radio" id="opci1" name="opci" onclick="FNFijarOpcionSolucionCicloInversional('CAMBIO-NIVEL')" /> Cambiar Nivel de Respaldo de Ingeniería (Categorizacion) </span><br />
+                                    <span><input type="radio" id="opci2" name="opci" onclick="FNFijarOpcionSolucionCicloInversional('CAMBIO-ETAPA')" /> Cambiar Etapa de Solicitud de Proyecto (Identificación) </span><br />
+                                    <span><input type="radio" id="opci3" name="opci" onclick="FNFijarOpcionSolucionCicloInversional('ANALISIS')" /> Análisis de Baja Complejidad </span><br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="FNProcesarOpcionSolucionCicloInversional();" id="BotonAceptarOpcionCicloInversional" disabled>Aceptar</button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNProcesarResetDeControles();">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal inmodal" id="ModalGradoComplejidad" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:5px;width:650px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Tabla Grado Complejidad</h6>
+            </div>
+            <div class="modal-body" style="margin-left:5px;width:650px; font-size:14px;">
+                <div id="ContenedorGradoComplejidad">
+                    <img src="~/Content/analisis/gradoBajaComplejidad.png" alt="Tabla Baja Complejidad" height="350" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalBajaComplejidad()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

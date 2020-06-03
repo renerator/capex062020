@@ -1,0 +1,56 @@
+﻿@{
+    Layout = null;
+}
+<!--COMENTAR-->
+<div class="modal inmodal" id="ModalAsignacion" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Asignar Iniciativa</h6>
+            </div>
+
+            <div class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                <div id="ContenedorAsignacion">
+                    <div style="font-size:11px;">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col"><strong>Seleccionar</strong></th>
+                                    <th scope="col"><strong>Area Revisora</strong></th>
+                                    <th scope="col"><strong>Usuario Designado</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.Revisores != null && ViewBag.Revisores.Count > 0)
+                                {
+                                    foreach (var rev in ViewBag.Revisores)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" id="op" value="0" onclick="FNAsignarRevisor('@rev.Usuario')" />
+                                            </td>
+                                            <td>
+                                                @rev.Area
+                                            </td>
+                                            <td>
+                                                @rev.Nombre
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="FNAsignarIniciativa();">Aceptar</button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarAsignacion()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,165 @@
+﻿@{
+    Layout = null;
+}
+<!--Inicio Vista Parcial Identificación-->
+<div class="card offset-md-0">
+    <div class="card-body offset-md-0">
+        <form name="form_identificacion" id="form_identificacion" action="">
+            <div class="container offset-md-0">
+                <div class="row">
+                    <div class="col-xl-12 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                            <div class="col-sm-2 pb-1">
+                                <label for="Proceso">Proceso</label>
+                                <select class="form-control" style="height:36px; font-size:11px; " id="Proceso" name="Proceso" onchange="FNGuardarSeleccion('COMBO_PROCESO',this.value)">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2 pb-1">
+                                <label for="Objeto">Objeto</label>
+                                <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="Objeto" name="Objeto" maxlength="16" onblur="FNGuardarSeleccion('OBJETO',this.value)" placeholder="">
+                                <label><code>Max. 16 Caracteres</code></label>
+                            </div>
+                            <div class="col-sm-2 pb-1">
+                                <label for="Area">Area</label>
+                                <select class="form-control" style="height:36px; font-size:11px;" id="Area" name="Area" onchange="FNGuardarSeleccion('COMBO_AREA',this.value)">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2 pb-1">
+                                <label for="Compania">Compañia</label>
+                                <select class="form-control" style="height:36px; font-size:11px;" id="Compania" name="Compania" onchange="FNGuardarSeleccion('COMBO_COMPANIA', this.value); FNObtenerTokenCompania(this.value);">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2 pb-1">
+                                <label for="Etapa">Etapa</label>
+                                <select class="form-control" style="height:36px; font-size:11px;" id="Etapa" name="Etapa" onchange="FNGuardarSeleccion('COMBO_ETAPA',this.value)">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 pb-1">
+                                <label for="NombreProyecto">Nombre del Proyecto</label>
+                                <input type="text" class="form-control" style="height:36px; font-size:11px;text-transform:uppercase; background-color:#517c89;color:#f0f0f0;" id="NombreProyecto" name="NombreProyecto" disabled>
+                            </div>
+                            <div class="col-sm-4 pb-1">
+                                <label for="CodigoIniciativa">Código Iniciativa</label>
+                                <input type="text" class="form-control" id="CodigoIniciativa" name="CodigoIniciativa" style="height:36px; font-size:11px;" placeholder="">
+                            </div>
+                            <div class="col-sm-2 pb-1">
+                                <label for="CodigoProyecto">Código del Proyecto</label>
+                                <input type="text" class="form-control" id="CodigoProyecto" name="CodigoProyecto" style="height:36px; font-size:11px;" maxlength="12">
+                                <label><code>Max. 12 Caracteres</code></label>
+                            </div>
+                            <div class="col-sm-4 pb-1">
+                                <label for="NombreProyectoAlias">Nombre del Proyecto(Alias)</label>
+                                <input type="text" class="form-control" style="height:36px; font-size:11px;text-transform:uppercase;" id="NombreProyectoAlias" name="NombreProyectoAlias" maxlength="40">
+                                <label><code>Max. 40 Caracteres</code></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-12 offset-md-0"><h7>Responsable de la Inversión (Cliente)</h7></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 offset-md-0">
+                        <div class="form-row mt-12">
+                            <div class="col-sm-6 pb-1">
+                                <label for="GerenciaInversion">Gerencia</label>
+                                <select class="form-control" style="height:36px; font-size:11px;" id="GerenciaInversion" name="GerenciaInversion" onchange="FNGuardarSeleccion('COMBO_GERENCIAINVERSION', this.value); FNObtenerGerenteInversion(this.value);">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 pb-3">
+                                <label for="GerenteInversion">Gerente</label>
+                                <input type="text" class="form-control" style="height:36px; font-size:11px;background-color:#517c89;color:#f0f0f0;" id="GerenteInversion" name="GerenteInversion" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 offset-md-0"><h7>Responsable de la Ejecución </h7><br /> <label>¿Su iniciativa requiere para su ejecución desarollo de ingeniería, construcción y puesta en marcha?</label></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 offset-md-0">
+                        <div class="form-row mt-10">
+                            <div class="col-md-10 pb-1">
+                                <div class="form-group small">
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="requiere" id="requiere1" value="SI" onclick="FNGuardarSeleccion('RADIO_REQUIERE_EJECUCION', 'SI')"> SI
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="radio" name="requiere" id="requiere2" value="NO" onclick="FNGuardarSeleccion('RADIO_REQUIERE_EJECUCION', 'NO')"> NO
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:-20px;">
+                    <div class="col-md-12 offset-md-0">
+                        <div class="form-row mt-12">
+                            <div class="col-sm-6 pb-1">
+                                <label for="GerenciaEjecucion">Gerencia</label>
+                                <select class="form-control" style="height:36px; font-size:11px;" id="GerenciaEjecucion" name="GerenciaEjecucion" onchange="FNGuardarSeleccion('COMBO_GERENCIAEJECUCION', this.value);">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 pb-3">
+                                <label for="GerenteEjecucion">Gerente</label>
+                                <input type="text" class="form-control" id="GerenteEjecucion" style="height:36px; font-size:11px;background-color:#517c89;color:#f0f0f0;" disabled>
+                            </div>
+                        </div>
+
+                        <div class="form-row mt-12">
+                            <div class="col-sm-6 pb-3">
+                                <label for="Superitendencia">Superitendencia</label>
+                                <select class="form-control" style="height:36px; font-size:11px;" id="Superitendencia" name="Superitendencia" onchange="FNGuardarSeleccion('COMBO_SUPERINTENDENCIA', this.value);FNObtenerIntendente(this.value);">
+                                    <option value="-1" selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4 pb-3">
+                                <label for="SuperIntendente">SuperIntendente</label>
+                                <input type="text" class="form-control" id="SuperIntendente" style="height:36px; font-size:11px;background-color:#517c89;color:#f0f0f0;" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 offset-md-0"><h7>Responsable de la Control de Ejecución SAP</h7></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 offset-md-0">
+                        <div class="form-row mt-12">
+                            <div class="col-sm-6 pb-3">
+                                <label for="Encargado">Encargado</label>
+                                <input type="text" class="form-control" id="Encargado" style="height:36px; font-size:11px;background-color:#517c89;color:#f0f0f0;" disabled>
+                            </div>
+                            <div class="col-sm-4 pb-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix">
+
+                    <button class="btn btn-primary" id="BotonGuardarIdentificacion" onclick="FNGuardarIdentificacion()">Guardar</button>&nbsp;&nbsp;
+                    <button class="btn btn-warning" id="BotonActualizarIdentificacion" onclick="FNActualizarIdentificacion()" style="display:none;">Actualizar</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,300 @@
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ApplicationInsights.config
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Capex.Web.dll.config
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Capex.Web.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Capex.Web.pdb
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\csc.exe
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\csc.exe.config
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\csc.rsp
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\csi.exe
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\csi.rsp
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.AppContext.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.IO.FileSystem.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\vbc.exe
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\vbc.exe.config
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\vbc.rsp
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\VBCSCompiler.exe
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Antlr3.Runtime.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\CapexIdentity.Bll.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\CapexInfraestructure.Bll.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ClosedXML.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Dapper.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\DocumentFormat.OpenXml.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ExcelNumberFormat.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\FastMember.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\itextsharp.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.Agent.Intercept.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.DependencyCollector.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.PerfCounterCollector.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.ServerTelemetryChannel.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.Web.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.WindowsServer.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.ApplicationInsights.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.Identity.Core.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Azure.KeyVault.Core.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.OAuth.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.Extensions.Desktop.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.Extensions.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Common.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Common.NetFramework.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Configuration.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Storage.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Newtonsoft.Json.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Owin.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Rotativa.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Diagnostics.DiagnosticSource.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Extensions.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Formatting.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Primitives.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Helpers.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Http.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Http.WebHost.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Mvc.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Optimization.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Razor.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.Deployment.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.Razor.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\WebGrease.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\CapexIdentity.Bll.pdb
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\CapexIdentity.Bll.dll.config
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\CapexInfraestructure.Bll.pdb
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Antlr3.Runtime.pdb
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ClosedXML.pdb
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ClosedXML.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Dapper.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\DocumentFormat.OpenXml.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ExcelNumberFormat.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\itextsharp.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.DependencyCollector.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.PerfCounterCollector.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.ServerTelemetryChannel.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.Web.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.WindowsServer.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.ApplicationInsights.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.Identity.Core.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.Identity.Owin.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Azure.KeyVault.Core.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.IdentityModel.Clients.ActiveDirectory.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.OAuth.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.Extensions.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.Extensions.Desktop.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Common.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Common.NetFramework.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Configuration.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Storage.pdb
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Storage.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Newtonsoft.Json.pdb
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Newtonsoft.Json.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Diagnostics.DiagnosticSource.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Extensions.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Formatting.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Primitives.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Helpers.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Http.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Http.WebHost.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Mvc.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Razor.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.Deployment.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.Razor.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Optimization.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Net.Http.Formatting.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Helpers.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Http.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Http.WebHost.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Mvc.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Razor.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\pl\System.Web.Razor.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.WebPages.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.WebPages.Deployment.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.WebPages.Razor.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Optimization.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\pl\System.Web.Optimization.resources.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.csproj.App.config
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.csprojAssemblyReference.cache
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.csproj.CoreCompileInputs.cache
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.csproj.CopyComplete
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ApplicationInsights.config
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Capex.Web.dll.config
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Capex.Web.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Capex.Web.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\csc.exe
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\csc.exe.config
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\csc.rsp
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\csi.exe
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\csi.rsp
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CodeAnalysis.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.CSharp.Core.targets
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\Microsoft.VisualBasic.Core.targets
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.AppContext.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.Collections.Immutable.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.Diagnostics.StackTrace.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.IO.FileSystem.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.IO.FileSystem.Primitives.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\System.Reflection.Metadata.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\vbc.exe
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\vbc.exe.config
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\vbc.rsp
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\VBCSCompiler.exe
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\roslyn\VBCSCompiler.exe.config
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Antlr3.Runtime.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\CapexIdentity.Bll.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\CapexInfraestructure.Bll.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ClosedXML.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Dapper.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\DocumentFormat.OpenXml.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ExcelNumberFormat.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\FastMember.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\itextsharp.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.Agent.Intercept.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.DependencyCollector.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.PerfCounterCollector.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.ServerTelemetryChannel.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.Web.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.WindowsServer.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.ApplicationInsights.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.Identity.Core.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.Identity.Owin.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.TelemetryCorrelation.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Azure.KeyVault.Core.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.Cookies.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.OAuth.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.Extensions.Desktop.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.Extensions.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Web.Infrastructure.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Common.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Common.NetFramework.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Configuration.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Storage.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Newtonsoft.Json.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Owin.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Rotativa.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Diagnostics.DiagnosticSource.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Extensions.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Formatting.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Primitives.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Helpers.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Http.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Http.WebHost.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Mvc.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Optimization.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Razor.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.Deployment.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.Razor.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\WebGrease.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\CapexIdentity.Bll.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\CapexIdentity.Bll.dll.config
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\CapexInfraestructure.Bll.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Antlr3.Runtime.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ClosedXML.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ClosedXML.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Dapper.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\DocumentFormat.OpenXml.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\ExcelNumberFormat.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\itextsharp.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.DependencyCollector.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.PerfCounterCollector.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.ServerTelemetryChannel.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.Web.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AI.WindowsServer.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.ApplicationInsights.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.Identity.Core.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.Identity.Owin.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.AspNet.TelemetryCorrelation.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Azure.KeyVault.Core.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.IdentityModel.Clients.ActiveDirectory.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.Cookies.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Owin.Security.OAuth.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.Extensions.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.Threading.Tasks.Extensions.Desktop.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Common.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Common.NetFramework.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Configuration.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Storage.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Microsoft.WindowsAzure.Storage.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Newtonsoft.Json.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\Newtonsoft.Json.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Diagnostics.DiagnosticSource.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Extensions.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Formatting.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Net.Http.Primitives.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Helpers.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Http.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Http.WebHost.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Mvc.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Razor.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.Deployment.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.WebPages.Razor.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\System.Web.Optimization.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Net.Http.Formatting.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Helpers.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Http.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Http.WebHost.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Mvc.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Razor.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\pl\System.Web.Razor.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.WebPages.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.WebPages.Deployment.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.WebPages.Razor.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\es\System.Web.Optimization.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\bin\pl\System.Web.Optimization.resources.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.csproj.App.config
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.csprojAssemblyReference.cache
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.csproj.CoreCompileInputs.cache
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.csproj.CopyComplete
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\Capex.Web\Capex.Web\obj\Release\Capex.Web.pdb

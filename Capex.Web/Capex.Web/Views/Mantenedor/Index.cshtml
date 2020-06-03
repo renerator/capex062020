@@ -1,0 +1,231 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+}
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewBag.Title</title>
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="Content/logos/logo-centinela-190x50.png" border="0" height="45" style="margin-top:0px;" />
+                    </a>
+                </div>
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Wrapper -->
+    <div class="wrapper" style="margin-top:-60px;">
+        <div class="container-fluid">
+
+            <div class="row" style="margin-top:0px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active"><a href="#">Mantenedores</a></li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">Mantenedores</h6>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjetas-->
+            <div class="row">
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body ">
+                            <h6 class="card-title">Usuarios</h6>
+                            <p class="card-text">Identificación de Usuarios.</p>
+                            <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Usuario", "Mantenedor")'">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Gerentes</h6>
+                            <p class="card-text">Ingreso y mantención de Gerentes Centinela.</p>
+                            <a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("Gerente", "Mantenedor")'" data-toggle="modal" data-target="">Ingresar</a>
+
+                        </div>
+                    </div>
+                </div>
+
+                @*<div class="col-md-12 col-xl-3">
+            <div class="card m-b-30">
+                <div class="card-body">
+                    <h6 class="card-title">Superintendentes</h6>
+                    <p class="card-text">Ingreso y mantención de Superintendente Centinela.</p>
+                    <a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("Superintendente", "Mantenedor")'">Ingresar</a>
+
+                </div>
+            </div>
+        </div>*@
+
+                @*<div class="col-md-12 col-xl-3">
+            <div class="card m-b-30">
+                <div class="card-body">
+                    <h6 class="card-title">Gerencias</h6>
+                    <p class="card-text">Ingreso y mantención de Gerencias Centinela.</p>
+                    <a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("Gerencia", "Mantenedor")'">Ingresar</a>
+
+                </div>
+            </div>
+            </div>*@
+
+            <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Matriz de Riesgo</h6>
+                            <p class="card-text">Ingreso y mantención de riesgos relevantes para la seguridad y salud de los trabajadores que enfrenta una organización.</p>
+                            <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("MatrizRiesgo", "Mantenedor")'">Ingresar</a>
+                        </div>
+                    </div>
+            </div>
+
+
+            </div>
+
+            <div class="row">
+
+                @*<div class="col-md-12 col-xl-3">
+            <div class="card m-b-30">
+                <div class="card-body ">
+                    <h6 class="card-title">Superintendencias</h6>
+                    <p class="card-text">Ingreso y mantención de Superintendencia Centinela.</p>
+                    <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Superintendencia", "Mantenedor")'">Ingresar</a>
+                </div>
+            </div>
+        </div>*@
+
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Areas</h6>
+                            <p class="card-text">Ingreso y mantención de Áreas Centinela.</p>
+                            <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Area", "Mantenedor")';">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+                @* <div class="col-md-12 col-xl-3">
+            <div class="card m-b-30">
+                <div class="card-body ">
+                    <h6 class="card-title">Clasificación SSO</h6>
+                    <p class="card-text">Ingreso y mantención de Clasificación de Seguridad, Salud, Trabajo y Reglamentos Centinela.</p>
+                    <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("ClasificacionSSO", "Mantenedor")';">Ingresar</a>
+                </div>
+            </div>
+        </div>*@
+
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Gerencias</h6>
+                            <p class="card-text">Ingreso y mantención de Gerencias Centinela.</p>
+                            <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Gerencia", "Mantenedor")';">Ingresar</a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Categorias</h6>
+                            <p class="card-text">Ingreso y mantención de Categorías.</p>
+                            <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Categoria", "Mantenedor")'">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+               
+
+            </div>
+
+                </div>
+            </div>
+
+            <!--Hidden Control-->
+            @{
+                if (Session["CAPEX_SESS_USERNAME"] == null)
+                {
+                    Response.Redirect("/login");
+                }
+                else
+                {
+                    @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+                }
+            }
+
+            <!-- Footer -->
+            <footer class="footer">
+                @Html.Partial("_Footer")
+            </footer>
+            <!-- End Footer -->
+            <!-- jQuery  -->
+            <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+            <script src="~/Scripts/popper.js"></script>
+            <script src="~/Scripts/bootstrap.min.js"></script>
+            <script src="~/Scripts/toastr.min.js"></script>
+            <script src="~/Scripts/detect.js"></script>
+            <script src="~/Scripts/fastclick.js"></script>
+            <script src="~/Scripts/jquery.slimscroll.js"></script>
+            <script src="~/Scripts/jquery.blockUI.js"></script>
+            <script src="~/Scripts/jquery.nicescroll.js"></script>
+            <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+            <script src="~/Scripts/waves.js"></script>
+            <script src="~/Scripts/sweetalert2.all.min.js"></script>
+            <script src="~/Scripts/moment.js"></script>
+            <script src="~/Scripts/select2.min.js"></script>
+            <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+            <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
+            <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
+            <script src="~/Scripts/Chart.bundle.js"></script>
+            <!-- Paginacion de Contenido -->
+            <script src="~/Scripts/paginga.jquery.min.js"></script>
+            <!-- Arbol de Contenido-->
+            <script src="~/Scripts/file-explore.js"></script>
+            <script src="~/Scripts/Modules/Contexto/Contexto.js"></script>
+        </body>
+        </html>

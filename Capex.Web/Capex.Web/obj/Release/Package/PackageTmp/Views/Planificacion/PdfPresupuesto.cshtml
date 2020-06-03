@@ -1,0 +1,384 @@
+﻿@{
+    Layout = null;
+}
+<!--PDF Presupuesto-->
+<style>
+    body {
+        text-transform: uppercase;
+        font-size: 12px;
+        color: #333;
+        margin-left: 100px;
+    }
+</style>
+
+<div class="container" style="width: 800px;">
+    <table border="0" width="100%">
+        <tr>
+            <td style="padding: 8px;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td>
+                            <table width="100%" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td width="80%"><div align="center"> <div style="font-size: 18px; font-family: Tahoma; text-align:center;">Ficha Iniciativa  @ViewBag.DESCRIPCION <br />Minera Centinela</div></td>
+                                    <td width="20%"><div align="center"><img src="@Server.MapPath("~/Images/logo-centinela.jpg")" /></div></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                @foreach (var Idd in ViewBag.Identificacion)
+                {
+                    <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                        <tr>
+                            <td width="50%"><div align="left"><b>Nombre de Proyecto(Alias) :</b> @ViewBag.NombreProyectoAlias</div></td>
+                        </tr>
+                        <tr>
+                            <td width="50%"><div align="left"><b>Nombre de Proyecto :</b> @ViewBag.NombreProyecto</div></td>
+                        </tr>
+                        <tr>
+                            <td width="50%"><div align="left"><b>Código Iniciativa : </b> @ViewBag.CodigoIniciativa</div></td>
+                        </tr>
+                    </table>
+                    <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                        <tr>
+                            <td width="33%"><div align="center"><b>Presupuesto</b> @ViewBag.IniPeriodo</div></td>
+                            <td width="34%" style="color: #333"><div align="center">Fecha Rev: @ViewBag.IrFecha</div></td>
+                            <!--     <td width="33%" style="color: #333"><div align="center"><b>KUS$  <b>@ViewBag.TotalAcumFinanciero<b> / 6 meses</b> </div></td> -->
+                            <td width="33%" style="color: #333"><div align="center"><b>KUS$  <b>@ViewBag.TotalAcumTotPar<b> / 6 meses</b> </div></td>
+                        </tr>
+                        <tr valign="top">
+                            <td width="100%" colspan="3">
+                                <div align="center" style="color: #333; font-size:14px;">
+                                    @Idd.IdenCodigo<br />
+                                    @Idd.IdenNombre
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="33%"><div align="center" style="background-color: #DADADA;">Gerencia Cliente</div></td>
+                            <td width="34%"><div align="center" style="background-color: #DADADA;">Gerencia Ejecutor</div></td>
+                            <td width="33%"><div align="center" style="background-color: #DADADA;">Superintendencia Ejecutor</div></td>
+                        </tr>
+                        <tr>
+                            <td width="33%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.GerenciaInversion</div></td>
+                            <td width="34%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.GerenciaEjecucion</div></td>
+                            <td width="33%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Superintendencia</div></td>
+                        </tr>
+                    </table>
+                }
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td width="15%"><div align="center" style="background-color: #DADADA;">Estado</div></td>
+                        <td width="20%"><div align="center" style="background-color: #DADADA;">Macrocategoría</div></td>
+                        <td width="30%"><div align="center" style="background-color: #DADADA;">Categoría</div></td>
+                        <td width="20%"><div align="center" style="background-color: #DADADA;">Clasificación SSO</div></td>
+                        <td width="15%"><div align="center" style="background-color: #DADADA;">Clase</div></td>
+                    </tr>
+                    <tr>
+                        <td width="15%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Estado</div></td>
+                        <td width="20%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.MacroCategoria</div></td>
+                        <td width="30%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Categoria</div></td>
+                        <td width="20%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.ClasificacionSSO</div></td>
+                        <td width="15%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Clase</div></td>
+                    </tr>
+                </table>
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td width="33%"><div align="center" style="background-color: #DADADA;">Nivel de Ingeniería</div></td>
+                        <td width="34%"><div align="center" style="background-color: #DADADA;">Estandar de Seguridad</div></td>
+                        <td width="33%"><div align="center" style="background-color: #DADADA;">Encargado de Control (SAP)</div></td>
+                    </tr>
+                    <tr>
+                        <td width="33%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.NivelIngenieria</div></td>
+                        <td width="34%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.EstandarSeguridad</div></td>
+                        <td width="33%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.EncargadoControl</div></td>
+                    </tr>
+                </table>
+                <br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td width="100%"><div align="left" style="background-color: #DADADA;"><b>Objetivo de la Inversión</b></div></td>
+                    </tr>
+                    <tr height="40px" valign="top">
+                        <td width="100%"><div align="left" style="color: #333; font-size: 9px;">@ViewBag.PddObjetivo</div></td>
+                    </tr>
+                    <tr>
+                        <td width="100%"><div align="left" style="background-color: #DADADA;"><b>Descripción de la Inversión</b></div></td>
+                    </tr>
+                    <tr height="40px" valign="top">
+                        <td width="100%"><div align="left" style="color: #333; font-size: 9px;">@ViewBag.PddJustificacion</div></td>
+                    </tr>
+                    <tr>
+                        <td width="100%"><div align="left" style="background-color: #DADADA;"><b>Alcance de la Inversión</b></div></td>
+                    </tr>
+                    <tr height="40px" valign="top">
+                        <td width="100%"><div align="left" style="color: #333; font-size: 9px;">@ViewBag.PddAlcance</div></td>
+                    </tr>
+                </table>
+                <br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td colspan="11"><div align="left" style="background-color: #DADADA;"><b>Fechas</b></div></td>
+                    </tr>
+                    <tr>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">CI</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">CA</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">OPR/IMM</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">VPF</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">PE</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">Dir PLC</div></td>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">Dir MCEN</div></td>
+                        <th width="9%"><div align="center" style="background-color: #DADADA;">Inicio</div></th>
+                        <th width="9%"><div align="center" style="background-color: #DADADA;">Término</div></th>
+                        <th width="9%"><div align="center" style="background-color: #DADADA;">Cierre</div></th>
+                        <td width="9%"><div align="center" style="background-color: #F1EFEF;">Post- Eval.</div></td>
+                    </tr>
+                    <tr>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HCI</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HCA</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HOPR</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HVPF</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HPE</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HDIRPLC</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HDIRMCEN</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HINICIO</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HTERMINO</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HCIERRE</div></td>
+                        <td width="9%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.HPOSTEVAL</div></td>
+                    </tr>
+                </table>
+                <br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <!-- <td colspan="7"><div align="left" style="background-color: #DADADA;"><b>CAPEX (KUS$ <small style="color: #333;"> <b>@ViewBag.TotalAcumFinanciero<b></small>)</b></div></td>  -->
+                        <td colspan="7"><div align="left" style="background-color: #DADADA;"><b>CAPEX (KUS$ <small style="color: #333;"> <b>@ViewBag.TotalAcumTotPar<b></small>)</b></div></td>
+                    </tr>
+                    <tr>
+                        <td width="15%"><div align="center" style="background-color: #F1EFEF;">Fase Ingeniería</div></td>
+                        <td width="15%"><div align="center" style="background-color: #F1EFEF;">Fase Adquisiciones</div></td>
+                        <td width="14%"><div align="center" style="background-color: #F1EFEF;">Fase Construción</div></td>
+                        <td width="14%"><div align="center" style="background-color: #F1EFEF;">Fase Administración</div></td>
+                        <td width="14%"><div align="center" style="background-color: #F1EFEF;">Contingencia</div></td>
+                        <th width="14%"><div align="center" style="background-color: #DADADA;">%Conting</div></th>
+                        <th width="14%"><div align="center" style="background-color: #DADADA;">% CDD</div></th>
+                    </tr>
+                    <tr>
+                        <td width="15%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.FaseIngenieria</div></td>
+                        <td width="15%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.FaseAdquisicion</div></td>
+                        <td width="14%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.FaseConstruccion</div></td>
+                        <td width="14%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.FaseAdministracion</div></td>
+                        <td width="14%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.TotalContingencia</div></td>
+                        <td width="14%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Contingencia</div></td>
+                        <td width="14%"><div align="center" style="color: #333; font-size: 9px;">@ViewBag.CostoDueno</div></td>
+                    </tr>
+                </table>
+                <br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td colspan="7"><div align="left" style="background-color: #DADADA;"><b>Presupuesto</b></div></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;">
+                            <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                                <tr>
+                                    <td width="6%"></td>
+                                    <td width="6%"><div align="center"> Per. Ant.</div></td>
+                                    <td width="5%"><div align="center"> E</div></td>
+                                    <td width="5%"><div align="center"> F</div></td>
+                                    <td width="5%"><div align="center"> M</div></td>
+                                    <td width="5%"><div align="center"> A</div></td>
+                                    <td width="5%"><div align="center"> M</div></td>
+                                    <td width="5%"><div align="center"> JU</div></td>
+                                    <td width="5%"><div align="center"> JL</div></td>
+                                    <td width="5%"><div align="center"> A</div></td>
+                                    <td width="5%"><div align="center"> S</div></td>
+                                    <td width="5%"><div align="center"> O</div></td>
+                                    <td width="5%"><div align="center"> N</div></td>
+                                    <td width="5%"><div align="center"> D</div></td>
+                                    <td width="7%"><div align="center" style="background-color: #DADADA;"><b> Total @ViewBag.Anio<b></div></td>
+                                    <td width="7%"><div align="center"> Año  @ViewBag.AnioUno</div></td>
+                                    <td width="7%"><div align="center"> Año @ViewBag.AnioDos</div></td>
+                                    <td width="7%"><div align="center" style="background-color: #DADADA;"><b> Total<b></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Financiero</td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.TotalCapexTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.EneroTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.FebreroTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.MarzoTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.AbrilTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.MayoTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.JunioTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.JulioTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.AgostoTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.SeptiembreTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.OctubreTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.NoviembreTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.DiciembreTotPar</div></td>
+                                    <td><div align="center" style="background-color: #DADADA; font-size: 9px;"><b>@ViewBag.TotalTotPar<b></div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.PresAnioMasUnoTotPar</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.PresAnioMasDosTotPar</div></td>
+                                    <td><div align="center" style="background-color: #DADADA; font-size: 9px;"><b>@ViewBag.TotalAcumTotPar<b></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Físico</td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.TotalCapexFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.EneroFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.FebreroFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.MarzoFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.AbrilFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.MayoFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.JunioFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.JulioFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.AgostoFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.SeptiembreFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.OctubreFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.NoviembreFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.DiciembreFisico</div></td>
+                                    <td><div align="center" style="background-color: #DADADA; font-size: 9px;"><b>@ViewBag.TotalFisico<b></div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.PresAnioMasUnoFisico</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.PresAnioMasDosFisico</div></td>
+                                    <td><div align="center" style="background-color: #DADADA; font-size: 9px;"><b>@ViewBag.TotalAcumFisico<b></div></td>
+                                </tr>
+                                <tr>
+                                    <td>Dotación</td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;"> </div></td>
+                                    <td><div align="center" value="0" style="color: #333; font-size: 9px;">@ViewBag.EneroDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.FebreroDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.MarzoDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.AbrilDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.MayoDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.JunioDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.JulioDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.AgostoDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.SeptiembreDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.OctubreDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.NoviembreDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.DiciembreDotacion</div></td>
+                                    <td><div align="center" style="background-color: #DADADA; font-size: 9px;"><b>@ViewBag.TotalCapexDotacion<b></div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.PresAnioMasUnoDotacion</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.PresAnioMasDosDotacion</div></td>
+                                    <td><div align="center" style="background-color: #DADADA; font-size: 9px;"><b>@ViewBag.TotalCapexDotacion<b></div></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td width="100%" colspan="9"><div align="left" style="background-color: #DADADA;"><b>Evaluación de Riesgos</b></div></td>
+                    </tr>
+                    <tr>
+                        <td width="33%" colspan="4"><div align="center" style="background-color: #DADADA;">Situación sin Proyecto (MFL : <small style="color: #333; font-size: 9px;"><b>@ViewBag.EriMFL1</b></small>)</div></td>
+                        <td width="34%" colspan="4"><div align="center" style="background-color: #DADADA;">Situación con Proyecto (MPE: <small style="color: #333; font-size: 9px;"><b>@ViewBag.EriMFL2</b></small>)</div></td>
+                        <td width="33%"><div align="center" style="background-color: #DADADA;">Selección de Riesgo de Matriz MCEN</div></td>
+                    </tr>
+                    <tr>
+                        <td><div align="center" style="background-color: #F1EFEF;">Prob.</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Impacto</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Nivel Riesgo</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Clasif.</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Prob.</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Impacto</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Nivel Riesgo</div></td>
+                        <td><div align="center" style="background-color: #F1EFEF;">Clasif.</div></td>
+                        <td><div align="left" style="background-color: #F1EFEF;">@ViewBag.RiesgoNombre</div></td>
+                    </tr>
+                    <tr>
+                        <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Prob1</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Impacto1</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.NivelRiesgo1</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Clasif1</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Prob2</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Impacto2</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.NivelRiesgo2</div></td>
+                        <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Clasif2</div></td>
+                        <td>
+                            <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Impacto:</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.RiesgoImpacto</div></td>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Probabilidad:</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.RiesgoProbabilidad</div></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                    <tr>
+                        <td width="30%">
+                            <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                                <tr>
+                                    <td width="100%" colspan="9"><div align="center" style="background-color: #DADADA;"><b>Evaluación Económica</b></div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">VAN</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Van</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">TIR</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Tir%</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">IVAN</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.Ivan</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Payback</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.PayBack</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Vida Útil</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.VidaUtil</div></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="10%"></td>
+                        <td width="60%">
+                            <table width="100%" border="0" style="font-size: 10px; font-family: Tahoma;">
+                                <tr>
+                                    <td width="100%" colspan="9"><div align="left" style="background-color: #DADADA;"><b>Parámetros de Post Evaluación</b></div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center" style="background-color: #F1EFEF;">KPI N°</div></td>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Descripción</div></td>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Unidad</div></td>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Valor Actual</div></td>
+                                    <td><div align="center" style="background-color: #F1EFEF;">Target</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center">1</div></td>
+                                    <td><div align="left" style="color: #333; font-size: 9px;">@ViewBag.KP1Descripcion1</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.KP1Unidad1</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.KP1Actual1</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.KP1Target1</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center">2</div></td>
+                                    <td><div align="left" style="color: #333; font-size: 9px;">@ViewBag.KP1Descripcion2</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.KP1Unidad2</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.KP1Actual2</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.KP1Target2</div></td>
+                                </tr>
+                                <tr>
+                                    <td><div align="center">3</div></td>
+                                    <td><div align="left" style="color: #333; font-size: 9px;">@ViewBag.KP1Descripcion3</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.KP1Unidad3</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.KP1Actual3</div></td>
+                                    <td><div align="center" style="color: #333; font-size: 9px;">@ViewBag.KP1Target3</div></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+

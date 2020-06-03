@@ -1,0 +1,322 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>@ViewBag.Title</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/select2.min.css" rel="stylesheet" />
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+
+    <style>
+        div.pager {
+            text-align: center;
+            margin: 1em 0;
+        }
+
+            div.pager span {
+                display: inline-block;
+                width: 1.8em;
+                height: 1.8em;
+                line-height: 1.8;
+                text-align: center;
+                cursor: pointer;
+                background: transparent;
+                color: #fff;
+                margin-right: 0.5em;
+            }
+
+                div.pager span.active {
+                    background: #4a848e;
+                }
+
+        #menu li {
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        ul.navegacion a {
+            cursor: pointer;
+        }
+
+        .active {
+            color: gold;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body style="overflow: visible;">
+
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="~/Content/logos/logo-amsa-trasparente.png" border="0" height="28" width="165" style="margin-top:0px;">
+                    </a>
+                </div>
+                <!--Fi Logo Container-->
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end topbar-main -->
+        <!-- Menu -->
+        @Html.Partial("_MenuAdministrador")
+        <!-- Fin Menu-->
+
+    </header>
+
+    <div class="wrapper dashboard" style="margin-top:30px;">
+        <div class="container-fluid">
+            <!-- Navegacion -->
+            <div class="row" style="margin-top:-30px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active"><a href="#">Mantenedores / Usuarios / Nuevo</a></li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">
+                            <input type="button" id="BotonVolverGeneral" onclick="document.location='@Url.Action("Usuario", "Mantenedor")'" class="btn btn-primary btn-sm" value="Volver" />&nbsp;
+                            <input type="button" id="BotonVolverGeneral" onclick="Actualizar()" class="btn btn-success btn-sm" value="Actualizar Vista" />
+                        </h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Contenido -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mail-inbox">
+                        <div class="card-body">
+                            <div class="card-title mb-3">
+                                <div class="d-inline-block ml-2">
+                                    <h6>Nuevo Usuario</h6>
+                                </div>
+                            </div>
+                            <!--CONTENEDOR PANEL LATERAL ESTADOS-->
+                            <div class="row">
+                                <!-- CONTENEDOR CONTROLES -->
+                                <div class="col-sm-2">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="container">
+                                                <div style="padding:5px;display:none;">
+                                                    <img src="~/Images/IMG-003.png" class="rounded-circle  mx-auto d-block w-80" />
+                                                </div>
+                                                <div style="margin-top:5px;">
+                                                    <button class="btn btn-danger btn-block " onclick="FNCargarImagenPerfil()">Cargar Imagen de Perfil</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- CONTENEDOR DATOS DE USUARIO -->
+                                <div id="ContenedorDatosUsuario" class="col-md-8">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="container">
+                                                <form id="form1" name="form1" class="form-horizontal" role="form" style=" font-family:Arial; font-size:11px;">
+                                                    <div style="border-bottom:1px solid #4a848e; margin-bottom:10px;margin-top:0px;"><h6>Identificación</h6></div>
+                                                    <div class="row">
+                                                        <div class="col-xl-10 offset-md-0">
+                                                            <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="UsuRut">RUT</label>
+                                                                    <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="UsuRut" maxlength="12" onmouseout="javascript:return Rut(document.form1.UsuRut.value)" placeholder="Rut" required>
+                                                                    <label><code>Sin puntos. Ejemplo: 123456789-0</code></label>
+                                                                </div>
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="UsuNombre">Nombres</label>
+                                                                    <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="UsuNombre" maxlength="50" onblur="" placeholder="Nombres" required>
+                                                                    <label><code>Max. 50 Caracteres</code></label>
+                                                                </div>
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="UsuApellido">Apellidos</label>
+                                                                    <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="UsuApellido" maxlength="50" onblur="" placeholder="Apellidos" required>
+                                                                    <label><code>Max. 50 Caracteres</code></label>
+                                                                </div>
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="UsuTelefono">Teléfono</label>
+                                                                    <input type="text" class="form-control" style="text-transform:uppercase; text-align:left; font-size:11px;height:36px; font-size:11px;" id="UsuTelefono" maxlength="15" onblur="" placeholder="Teléfono" required>
+                                                                    <label><code>Ejemplo: +56 2 2345678</code></label>
+                                                                </div>
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="UsuMovil">Móvil</label>
+                                                                    <input type="text" class="form-control" style="text-transform:uppercase; text-align:left;font-size:11px;height:36px; font-size:11px;" id="UsuMovil" maxlength="15" onblur="" placeholder="Móvil" required>
+                                                                    <label><code>Ejemplo: +56 9 9999999</code></label>
+                                                                </div>
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="Email">E-Mail</label>
+                                                                    <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="Email" maxlength="50" onblur="" placeholder="E-mail" required>
+                                                                    <label><code>Max. 50 Caracteres</code></label>
+                                                                </div>
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="ComToken">Compañia</label>
+                                                                    <select class="form-control" style="height:36px; font-size:11px;" id="ComToken">
+                                                                        <option selected>Seleccionar..</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="AreaToken">Area</label>
+                                                                    <select class="form-control" style="height:36px; font-size:11px;" id="AreaToken">
+                                                                        <option selected>Seleccionar..</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div style="border-bottom:1px solid #4a848e; margin-bottom:10px;margin-top:10px;"><h6>Datos de Acceso</h6></div>
+                                                    <div class="row">
+                                                        <div class="col-xl-10 offset-md-0">
+                                                            <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="UserName">Nombre de Usuario</label>
+                                                                    <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="UserName" maxlength="30" onblur="" placeholder="Nombre de Usuario" required>
+                                                                    <label><code>Max. 30 Caracteres</code></label>
+                                                                </div>
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="Password">Contraseña</label>
+                                                                    <input type="password" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="Password" maxlength="30" onblur="" placeholder="Contraseña" required>
+                                                                    <label><code>Max. 30 Caracteres</code></label>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div style="border-bottom:1px solid #4a848e; margin-bottom:10px;margin-top:10px;"><h6>Rol & Permisos</h6></div>
+                                                    <div class="row">
+                                                        <div class="col-xl-10 offset-md-0">
+                                                            <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="RoleID">Rol</label>
+                                                                    <select class="form-control" style="height:36px; font-size:11px;" id="RoleID">
+                                                                        <option value="-1" selected>Seleccionar..</option>
+                                                                        <option value="3F312A81-127E-492B-90AC-15046FB45EA2">Revisor</option>
+                                                                        <option value="5B00C837-DE33-4E46-A30F-154A1DAD5EF0">Gestor</option>
+                                                                        <option value="775961B6-341F-4EFD-9C29-A0F4D64D2E04">Sponsor</option>
+                                                                        <option value="ADB9A75E-46E0-4379-8A93-2ED438CE8F30">Cliente</option>
+                                                                        <option value="B60E4FBC-E8EE-4431-BA14-6D798E4C3BB5">Administrador1</option>
+                                                                        <option value="D4491070-7125-4432-99EE-41F1AA3B96BF">Administrador2</option>
+                                                                        <option value="E4E4DE7C-B909-497D-A0D6-458D95EA415B">Administrador3</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div style="border-bottom:1px solid #4a848e; margin-bottom:10px;margin-top:10px;"><h6>Privilegios</h6></div>
+                                                    <div class="row">
+                                                        <div class="col-xl-10 offset-md-0">
+                                                            <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                                                <div class="col-sm-4 pb-1">
+                                                                    <label for="ArevToken">Area de Revisión</label>
+                                                                    <select class="form-control" style="height:36px; font-size:11px;" id="ArevToken" onchange="FNGuardarNombreAreaRevisora(this.value);">
+                                                                        <option value="-1" selected>Seleccionar..</option>
+                                                                        <option value="633A2F56-F23F-495C-9001-9FC0FDCB307F">Medio Ambiente</option>
+                                                                        <option value="6CF4D9F9-C313-46B9-96C7-29463C02B465">Gerencia de Administracion y Finanzas</option>
+                                                                        <option value="8BF41E67-46C7-48A9-BA81-5575CB049A0E">Servicio de Seguridad Operacional</option>
+                                                                        <option value="91F36E64-68CC-4EE3-B7D7-A59675D34075">Gerencia de Proyectos</option>
+                                                                        <option value="9476C6E8-ADFA-4887-88F0-F6D3906DB814">Contabilidad</option>
+                                                                        <option value="D59E988E-7967-4B5F-A009-F8D5B5FA8143">Riesgos</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div style="margin-top:5px; margin-left:15px; margin-bottom:30px; width:300px;">
+                                                            <button class="btn btn-primary " onclick="FNCrearUsuario()">Guardar</button>
+                                                            <button class="btn btn-warning " onclick="FNModificarUsuario()" disabled>Modificar</button>
+                                                        </div>
+                                                    </div>
+                                                </form> <!-- /form -->
+                                            </div> <!-- ./container -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+    <!--Preloader-->
+    <div class="modal-overlay"></div>
+    @Html.Partial("_PreLoader")
+    <!--End Preloader-->
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
+    <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
+    <script src="~/Scripts/validarut.js"></script>
+    <script src="~/Scripts/Modules/Contexto/Contexto.js"></script>
+    <script src="~/Scripts/Modules/Mantenedor/Mantenedor.js"></script>
+</body>
+</html>
+
+

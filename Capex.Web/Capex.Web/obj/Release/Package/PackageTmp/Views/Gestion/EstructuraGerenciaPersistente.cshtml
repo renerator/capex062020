@@ -1,0 +1,97 @@
+﻿@{
+    Layout = null;
+}
+<div id="CompEstadoPrevioEstructuraGerencial">
+    <div class="row">
+        <div class="col-xl-12 "><h7>Responsable de la Inversión (Cliente)</h7></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="form-row">
+                <div class="col-sm-6 pb-1">
+                    <label for="GerenciaInversion">Gerencia</label>
+                    <select class="form-control" style="height:36px; font-size:11px;" id="GerenciaInversion" name="GerenciaInversion">
+                        <option value="-1" selected>Seleccionar..</option>
+                    </select>
+                </div>
+                <div class="col-sm-4 pb-3">
+                    <label for="GerenteInversion">Gerente</label>
+                    <input type="text" class="form-control" style="height:36px; font-size:11px;background-color:#517c89;color:#f0f0f0;" value="@Html.Raw(@ViewBag.IdenGereInve)" id="GerenteInversion" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 ">
+            <h7>Responsable de la Ejecución </h7>
+            <br />
+            <label>¿Su iniciativa requiere para su ejecución desarollo de ingeniería, construcción y puesta en marcha?</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10 ">
+            <div class="form-row mt-10">
+                <div class="col-md-10 pb-1">
+                    <div class="form-group small">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="requiere" id="requiere1" value="SI"> SI
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" name="requiere" id="requiere2" value="NO"> NO
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:-20px;">
+        <div class="col-md-12 ">
+            <div class="form-row">
+                <div class="col-sm-6 pb-1">
+                    <label for="GerenciaEjecucion">Gerencia</label>
+                    <select class="form-control" style="height:36px; font-size:11px;" id="GerenciaEjecucion" name="GerenciaEjecucion">
+                        <option value="-1" selected>Seleccionar..</option>
+                    </select>
+                </div>
+                <div class="col-sm-4 pb-3">
+                    <label for="GerenteEjecucion">Gerente</label>
+                    <input type="text" class="form-control" id="GerenteEjecucion" name="GerenteEjecucion" style="height:36px; font-size:11px;background-color:#517c89;color:#f0f0f0;" value="@Html.Raw(@ViewBag.IdenGereEje)" disabled required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="col-sm-6 pb-3">
+                    <label for="Superitendencia">Superitendencia</label>
+                    <select class="form-control" style="height:36px; font-size:11px;" id="Superitendencia" name="Superitendencia">
+                        <option value="-1" selected>Seleccionar..</option>
+                    </select>
+                </div>
+                <div class="col-sm-4 pb-3">
+                    <label for="SuperIntendente">SuperIntendente</label>
+                    <input type="text" class="form-control" id="SuperIntendente" style="height:36px; font-size:11px;background-color:#517c89;color:#f0f0f0;" value="@Html.Raw(@ViewBag.IdenSupInten)" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 "><h7>Responsable de la Control de Ejecución SAP</h7></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="form-row">
+                <div class="col-sm-6 pb-3">
+                    <label for="Encargado">Encargado</label>
+                    <input type="text" class="form-control" id="Encargado" style="height:36px; font-size:11px;background-color:#517c89;color:#f0f0f0;" value="@Html.Raw(@ViewBag.IdenEncargad)" disabled>
+                </div>
+                <div class="col-sm-4 pb-3">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,452 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+}
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewBag.Title</title>
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link href="~/Content/glyphicons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+
+    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/select2.min.css" rel="stylesheet" />
+
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+    <link href="~/Content/file-explore.css" rel="stylesheet" />
+    <style>
+
+        div.pager {
+            text-align: center;
+            margin: 1em 0;
+        }
+
+            div.pager span {
+                display: inline-block;
+                width: 1.8em;
+                height: 1.8em;
+                line-height: 1.8;
+                text-align: center;
+                cursor: pointer;
+                background: transparent;
+                color: #fff;
+                margin-right: 0.5em;
+            }
+
+                div.pager span.active {
+                    background: #4a848e;
+                }
+
+        #menu li {
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        .toggle {
+            text-align: left;
+            font-size: 12px;
+            color: #ffffff;
+            font-weight: 600;
+            width: 90%;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        #menuFilter {
+            left: 20px;
+            font-size: 4em;
+            font-weight: 800;
+            z-index: 111;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.5s;
+            -webkit-transition: all 0.25s;
+            position: absolute;
+        }
+
+            #menuFilter:hover {
+                transform: rotate(90deg);
+                color: #FF9900;
+            }
+
+        #lgMenuFilter {
+            width: 300px;
+            height: 100%;
+            top: 0;
+            left: -400px;
+            overflow: hidden;
+            background-color: #51818e;
+            box-shadow: 5px 5px 10px grey;
+            position: absolute;
+            z-index: 11;
+            opacity: 0;
+            transition: all 0.25s;
+            -webkit-transition: all 0.25s;
+        }
+
+        #exitFilter {
+            position: absolute;
+            right: 10px;
+            padding: 0px;
+            top: -10px;
+            font-size: 4em;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+            -webkit-transition: all 0.25s;
+        }
+
+            #exitFilter:hover {
+                color: #FF9900;
+            }
+
+        #lgMenuFilter.enter {
+            opacity: 1;
+            left: 0;
+        }
+
+        ul.navegacion a {
+            cursor: pointer;
+        }
+
+        .active {
+            color: gold;
+            font-weight: bolder;
+        }
+
+        .myButtonXls {
+            background-color: #287233;
+            border-radius: 3px;
+            border: 1px solid #18ab29;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 12px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #2f6627;
+        }
+
+            .myButtonXls:hover {
+                background-color: #5cbf2a;
+                color: #000000;
+            }
+
+            .myButtonXls:active {
+                position: relative;
+                top: 1px;
+                color: #000000;
+            }
+    </style>
+</head>
+<body style="overflow: visible;" onload="FNResetear()">
+
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="Content/logos/logo-amsa-trasparente.png" border="0" height="28" width="165" style="margin-top:0px;">
+                    </a>
+                </div>
+                <!--Fi Logo Container-->
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end topbar-main -->
+        <!-- Menu -->
+        @Html.Partial("_MenuAdministrador")
+        <!-- Fin Menu-->
+
+    </header>
+
+    <div class="wrapper dashboard" style="margin-top:30px;">
+        <div class="container-fluid">
+            <!-- Modulo -->
+            <div class="row" style="margin-top:-30px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Logout", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active">Gestión de Iniciativas</li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">
+                            <input type="button" id="BotonVolverGeneral" onclick="document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />
+                            <input type="button" id="BotonVolverGeneral" onclick="Actualizar()" class="btn btn-success btn-sm" value="Actualizar Vista" />
+                        </h6>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mail-inbox">
+                        <div id="container">
+                            <div id="lgMenuFilter">
+                                <span id="exitFilter">&times;</span>
+                                <br /><br /><br />
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h4 class="ml-3 toggle">Has seleccionado</h4>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" id="buttonFilterAction" onClick="FNFilterActionGetData();" disabled class="mb-3 btn btn-warning btn-sm">
+                                            <span class="glyphicon glyphicon-filter"></span> Filtrar
+                                        </button>
+                                    </div>
+                                    <div class="col-12">
+                                        <div id="contenedor_refinement" class="refinement"></div>
+                                    </div>
+                                </div>
+                                <div id="accordion">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title mb-3">
+                                <div class="d-inline-block ml-2">
+                                    <h6>Iniciativas en Visación</h6><div id="iconFilter"></div>
+                                </div>
+                            </div>
+                            <!--CONTENEDOR PANEL LATERAL ESTADOS-->
+                            <div class="row">
+                                <div class="col-md-2">
+                                    @{
+                                        if (@Session["CAPEX_SESS_ROLNOMBRE"] == null)
+                                        {
+                                            Response.Redirect("/login");
+                                        }
+                                        else
+                                        {
+                                            <h7><i class="fa fa-gear fa-1x"></i> Herramientas</h7>
+                                            <br />
+                                            <i class="fa fa-chevron-right fa-1x"></i> <a href="#" onllcik="FNNavegar('INGRESO_INICIATIVA')">Ingresar Iniciativa</a><br />
+                                            <i class="fa fa-chevron-right fa-1x"></i> <a href="#" onllcik="FNNavegar('DOCUMENTACION')">Documentos</a><br />
+                                            <i class="fa fa-chevron-right fa-1x"></i> <a href="#" onllcik="FNNavegar('CONTACTO-ADMINISTRADOR')">Contacto Administrador</a><br />
+                                        }
+                                    }
+
+                                    <div class="card border-0 p-0  mt-3">
+                                        <div class="card-body p-0">
+                                            <div class="list-group mail-list" id="menu">
+                                                <ul class="folder-list m-b-md navegacion" style="padding:10px;text-transform:uppercase; cursor:pointer;">
+                                                    @{
+                                                        if (@Session["CAPEX_SESS_ROLNOMBRE"] == null)
+                                                        {
+                                                            Response.Redirect("/login");
+                                                        }
+                                                        else
+                                                        {
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionResumen")'"> Resumen Iniciativas           <span id="ContenedorContResumenIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionDesarrollo")'"> En Desarrollo              <span id="ContenedorContDesaIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionVisacion")'" class="active"> Visación      <span id="ContenedorContVisIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionObservada")'"> Observadas                  <span id="ContenedorContComent" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionIngresada")'"> REVISIÓN C.E.               <span id="ContenedorContIngresadaIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionEnRevision")'"> REVISIÓN AMSA              <span id="ContenedorContRevisionIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionAprobadaAmsa")'"> Aprobada AMSA            <span id="ContenedorContAprobadaAMSAIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="1"})'"> No Aprobada GAF            <span id="ContenedorContNoAprobadaGAFIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="2"})'"> No Aprobada C.E.           <span id="ContenedorContNoAprobadaCEIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="3"})'"> No Aprobada AMSA           <span id="ContenedorContNoAprobadaAMSAIni" class="label label-warning float-right">0</span></li>
+                                                        }
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="ContenedorIniciativasResumen" class="col-md-10">
+                                    <!--CONTENEDOR BARRA HERRAMIENTAS-->
+                                    <div class="row">
+                                        <div class="col-md-7">
+                                            <div id="ContenedorBarraHerramientas" class="btn-toolbar mb-3" role="toolbar">
+                                                <div class="btn-group mr-2">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-sm" name="buscador" id="buscador" onblur="FNEvaluarEstadoFiltro(this.value);" placeholder="Buscar y Filtrar.." style="text-transform:uppercase;font-size:11px; width:400px; margin-right:5px;">
+                                                    </div>
+                                                    <button type="button" class="btn btn-warning btn-sm" alt="Descargar Excel" onclick="getUrl()">Descargar Excel</button>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" id="idMostrarOcultarFiltros" disabled='disabled' class="btn btn-primary" onclick="FNMostrarOcultarFiltros()">Mostrar Filtros</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div id="botonDescargarMasivaXLS" style="display: none;">
+                                                @{
+                                                    if (@Session["CAPEX_SESS_ROLNOMBRE"] != null && Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+                                                    {
+                                                        <button type="button" id="idDescargaMasivaXLS" class="btn myButtonXls btn-sm" onclick="FNDescargaMasivaXls()">Descargar XLS</button>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div id="botonDescargarMasivaPdf" style="display: none;">
+                                                <button type="button" id="idDescargaMasiva" class="btn btn-warning btn-sm" onclick="FNDescargaMasiva()">Descargar PDF</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--CONTENEDOR GRILLA DE INICIATIVAS-->
+                                    <div class="panel panel-default">
+                                        @Html.Partial("~/Views/Gestion/ListadoIniciativaAmpliado.cshtml")
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fin Contenido 2-->
+
+        </div>
+    </div>
+
+    <!-- INICIO - MODAL -->
+    @Html.Partial("~/Views/Gestion/Comentario.cshtml")
+    @Html.Partial("~/Views/Gestion/VerObservacion.cshtml")
+    @Html.Partial("~/Views/Gestion/RechazoSponsor.cshtml")
+    @Html.Partial("~/Views/Gestion/Adjunto.cshtml")
+    <!-- FIN - MODAL-->
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+    <!--Preloader-->
+    @Html.Partial("_PreLoader")
+    <!--End Preloader-->
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
+    <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
+    <!-- Arbol de Contenido-->
+    <script src="~/Scripts/file-explore.js"></script>
+
+    <!--Script de Gestión -->
+    <script src="~/Scripts/Modules/Gestion/Gestion.js"></script>
+    <script src="~/Scripts/Modules/Gestion/GestionVisacion.js"></script>
+
+    <script>
+        // ----------------------------------------------
+        //
+        // SISTEMA          : CAPEX
+        // CLIENTE          : ANTOFAGASTA MINERALS S.A.
+        // MODULO           : GESTION VISACION
+        // FECHA            : MAYO 2018
+        // DESARROLLADO POR : PMO 360 SpA
+        //
+        // ----------------------------------------------
+        // SECCION          : INICIALIZADOR
+        // METODOS          :
+        (function ($) {
+            $(".file-tree").filetree();
+        }(jQuery));
+
+        $(function () {
+            $("#defaultCheckedAll").on("click", function () {
+                console.log("defaultCheckedAll this.checked=", this.checked);
+                seleccionarTodo(this.checked);
+            });
+
+            $(".page-number, .clickable").click(function () {
+                exitFilterPanel();
+                deseleccionarTodo($(this).text());
+            });
+            $('#buttonFilterAction').prop('disabled', true);
+
+            $("#menuFilter").on("click", function () {
+                showFilterPanel();
+            });
+            $("#exitFilter").on("click", function () {
+                exitFilterPanel();
+            });
+            FNFilterData();
+        });
+
+        function getUrl() {
+            document.location.href = '../../Planificacion/ExcelResumenIniciativa?token=' + window.location.pathname.substring(1);
+        }
+
+        window.onpageshow = function (event) {
+            console.log("onpageshow gestion visacion!");
+            setTimeout(function () {
+                console.log("setTimeout 1000");
+                $('#iniciativas > tbody  > tr').each(function (index, tr) {
+                    //console.log('$(tr).attr(style)=', $(tr).attr('style'));
+                    if (!$(tr).attr('style')) {
+                        //console.log('if not tr=', $(tr));
+                        var selectElm = $("td:last-child", tr).children("select");
+                        //console.log('selectElm.val()=', selectElm.val());
+                        selectElm.val(-1);
+                    }
+                });
+            }, 500);
+        };
+
+    </script>
+</body>
+</html>

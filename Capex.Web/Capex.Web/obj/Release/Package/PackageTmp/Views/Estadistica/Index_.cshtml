@@ -1,0 +1,1076 @@
+﻿
+@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+}
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewBag.Title</title>
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="Content/rwd-table.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="Content/toastr.min.css" rel="stylesheet" />
+    <link href="Content/site.css" rel="stylesheet" type="text/css">
+    <link href="Content/sweetalert2.css" rel="stylesheet" />
+    <link href="Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="Content/select2.min.css" rel="stylesheet" />
+    <link href="fonts/css/all.css" rel="stylesheet" />
+    <!-- DataTables -->
+    <link href="Content/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="Content/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="Content/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="Content/chartist.min.css" rel="stylesheet" />
+    <style>
+
+        #chartdiv1, #chartdiv2 {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+</head>
+<body style="overflow: visible;">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="Content/logos/logo-centinela-190x50.png" border="0" height="45" style="margin-top:0px;">
+                    </a>
+                </div>
+                <!--Fi Logo Container-->
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end topbar-main -->
+    </header>
+    <!-- Wrapper -->
+    <div class="wrapper dashboard" style="margin-top:-50px;">
+        <div class="container-fluid">
+            <div class="row" style="margin-top:0px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active">Estadística</li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">Módulo de Estadística</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Contenido -->
+            <div class="row">
+                <!-- Card Gráficos-->
+                <div class="col-md-12 col-xl-12">
+                    <div class="col-md-12" style="margin-top:15px; margin-left:-20px; margin-right:-20px;">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#t-1" style=" color:#fff;"><small> Conformación Nuevo - Remanente </small></a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#t-2" style=" color:#fff;"><small> Comparativo Caso Base /Presupuesto </small></a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#t-3" style=" color:#fff;"><small> Comparativo Año /Año-1 </small></a></li>
+                                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#t-4" style=" color:#fff;"><small> Tortas </small></a></li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Tab panes -->
+                                    <div class="tab-content">
+                                        <div id="t-1" class="tab-pane p-3 active show" role="tabpanel" style="width:100%;">
+                                            <div class="card-header">
+                                                <div align="left" style="margin-top:0px; margin-bottom:0px; height:30px;  margin-left:20px;"><h6>Gráfico Conformación Cartera Anual en KUS$</h6></div>
+                                                <div align="left" style="margin-top:0px; margin-bottom:0px; height:30px;  margin-left:20px;"><h7>Filtros</h7></div>
+                                                <div class="form-row mt-0" style="width:100%; font-size:11px; margin-left:20px;">
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Ann">Año Ejercicio</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px" id="AnnEjercicio">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Etapa">Etapa</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Etapa">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="SSO">Clasificación SSO</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Sso">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Area">Area Cliente</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Area">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Clase">Clase</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Clase">
+                                                            <option>Clase 1</option>
+                                                            <value>Clase 1</value>
+                                                            <option>Clase 2</option>
+                                                            <value>Clase 2</value>
+                                                            <option>Clase 3</option>
+                                                            <value>Clase 3</value>
+                                                            <option>Clase 4</option>
+                                                            <value>Clase 4</value>
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row mt-0" style="width:100%; font-size:11px; margin-left:20px;">
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="EstandarSeguridad">Estandar Seguridad</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="EstandarSeguridad">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Categoria">Categoria</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Categoria">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Estado">Estado Iniciativa</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Estado">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Macrocategoria">Macrocategoria</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Macrocategoria">
+                                                            <option>SUSTAINING</option>
+                                                            <value>SUSTAINING</value>
+                                                            <option>DEVELOPMENT</option>
+                                                            <value>DEVELOPMENT</value>
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="AreaEjecutora">Area Ejecutora</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="AreaEjecutora">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="col-sm-2 pb-1">
+                                                    <a class="btn btn-primary btn-lg" id="FNObtenerDatosGrafico1">Generar Gráfico</a>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-body" style="background-color:cadetblue;">
+                                                    <div align="center" style="margin-top:20px;"><h6>Presupuesto (KUS$)</h6></div>
+                                                    <div id="chartdiv1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="t-2" class="tab-pane p-3" role="tabpanel" style="width:100%; ">
+                                            <div class="card-header">
+                                                <div align="left" style="margin-top:0px; margin-bottom:0px; height:30px;  margin-left:20px;"><h6>Gráfico Comparativo Ejercicios de Planificación en KUS$</h6></div>
+                                                <div align="left" style="margin-top:0px; margin-bottom:0px; height:30px;  margin-left:20px;"><h7>Filtros</h7></div>
+                                                <div class="form-row mt-0" style="width:100%; font-size:11px; margin-left:20px;">
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Ann">Año Ejercicio</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px" id="AnnEjercicio2">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Etapa">Etapa</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Etapa2">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="SSO">Clasificación SSO</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Sso2">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Area">Area Cliente</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Area2">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Clase">Clase</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Clase2">
+                                                            <option>Clase 1</option>
+                                                            <value>Clase 1</value>
+                                                            <option>Clase 2</option>
+                                                            <value>Clase 2</value>
+                                                            <option>Clase 3</option>
+                                                            <value>Clase 3</value>
+                                                            <option>Clase 4</option>
+                                                            <value>Clase 4</value>
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row mt-0" style="width:100%; font-size:11px; margin-left:20px;">
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="EstandarSeguridad">Estandar Seguridad</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="EstandarSeguridad2">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Categoria">Categoria</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Categoria2">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Estado">Estado Iniciativa</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Estado2">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="Macrocategoria">Macrocategoria</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Macrocategoria2">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                            <option>SUSTAINING</option>
+                                                            <value>SUSTAINING</value>
+                                                            <option>DEVELOPMENT</option>
+                                                            <value>DEVELOPMENT</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="EstadoProyecto">Estado Proyecto</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="EstadoProyecto2">
+                                                            <option>Nuevo</option>
+                                                            <value>CREAR</value>
+                                                            <option>Remanente</option>
+                                                            <value>IMPORTAR</value>
+                                                            <option>Futuro</option>
+                                                            <value>FUTURO</value>
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="col-sm-2 pb-1">
+                                                    <a class="btn btn-primary btn-lg" id="FNObtenerDatosGrafico2">Generar Gráfico</a>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-body" style="background-color:cadetblue;">
+                                                    <div align="center" style="margin-top:20px;"><h6>Comparativo (KUS$)</h6></div>
+                                                    <div id="chartdiv2"></div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="t-3" class="tab-pane p-3" role="tabpanel" style="width:100%;">
+                                            <div class="card-header">
+                                                <div align="left" style="margin-top:0px; margin-bottom:0px; height:30px;  margin-left:20px;"><h6>Gráfico Comparativo Ejercicios de Planificación en KUS$</h6></div>
+                                                <div align="left" style="margin-top:0px; margin-bottom:0px; height:30px;  margin-left:20px;"><h7>Filtros</h7></div>
+                                                <div class="form-row mt-0" style="width:100%; font-size:11px; margin-left:20px;">
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="AreaEjecutora">Año Ejercicio</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="AnnEjercicio">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="AreaEjecutora">Año Comparación</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="AnnComparacion">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="AreaEjecutora">Estado Iniciativa Ejercicio</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="Estado">
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <a class="btn btn-primary btn-lg" id="FNObtenerDatosGrafico3">Generar Gráfico</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-body" style="background-color:cadetblue;">
+                                                    <div align="center" style="margin-top:20px;"><h6>Presupuesto 2019 (KUS$)</h6></div>
+                                                    <div id="chartdiv3"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="t-4" class="tab-pane p-3" role="tabpanel" style="width:100%">
+                                            <div class="card-header">
+                                                <div align="left" style="margin-top:0px; margin-bottom:0px; height:30px;  margin-left:20px;"><h6></h6></div>
+                                                <div align="left" style="margin-top:0px; margin-bottom:0px; height:30px;  margin-left:20px;"><h7>Filtros</h7></div>
+
+
+                                                <hr />
+                                                <div class="form-row mt-0" style="width:100%; font-size:11px; margin-left:20px;">
+                                                    <div class="col-sm-2 pb-1">
+                                                        <label for="EstadoProyecto4">Estado Proyecto</label>
+                                                        <select class="form-control" style="height:36px; font-size:11px;" id="EstadoProyecto4">
+                                                            <option selected>Nuevo</option>
+                                                            <value>CREAR</value>
+                                                            <option selected>Remanente</option>
+                                                            <value>IMPORTAR</value>
+                                                            <option selected>Futuro</option>
+                                                            <value>FUTURO</value>
+                                                            <option selected>Seleccionar..</option>
+                                                            <value>-1</value>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-2 pb-1">
+                                                        <a class="btn btn-primary btn-lg" id="FNObtenerDatosGrafico4">Generar Gráfico</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-body" style="background-color:cadetblue;">
+                                                    <div id="chartdiv4"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin del Contenido-->
+        </div>
+    </div>
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="Scripts/popper.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/toastr.min.js"></script>
+    <script src="Scripts/detect.js"></script>
+    <script src="Scripts/fastclick.js"></script>
+    <script src="Scripts/jquery.slimscroll.js"></script>
+    <script src="Scripts/jquery.blockUI.js"></script>
+    <script src="Scripts/jquery.nicescroll.js"></script>
+    <script src="Scripts/jquery.scrollTo.min.js"></script>
+    <script src="Scripts/waves.js"></script>
+    <script src="Scripts/sweetalert2.all.min.js"></script>
+    <script src="Scripts/moment.js"></script>
+    <script src="Scripts/select2.min.js"></script>
+    <script src="Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="Scripts/bootstrap-inputmask.min.js"></script>
+    <script src="Scripts/bootstrap-maxlength.min.js"></script>
+    <!-- Required datatable js -->
+    <script src="Scripts/jquery.dataTables.min.js"></script>
+    <script src="Scripts/jquery.dataTables.min.js"></script>
+    <script src="Scripts/dataTables.bootstrap4.min.js"></script>
+    <!-- Buttons examples -->
+    <script src="Scripts/dataTables.buttons.min.js"></script>
+    <script src="Scripts/jszip.min.js"></script>
+    <script src="Scripts/pdfmake.min.js"></script>
+    <script src="Scripts/buttons.html5.min.js"></script>
+    <script src="Scripts/buttons.print.min.js"></script>
+    <script src="Scripts/buttons.colVis.min.js"></script>
+    <!-- Responsive examples -->
+    <script src="Scripts/dataTables.responsive.min.js"></script>
+    <script src="Scripts/responsive.bootstrap4.min.js"></script>
+    <script src="Scripts/chartist.min.js"></script>
+    <!-- Estadisticas -->
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="~/Scripts/Estadisticas/Grafico1.js"></script><!-- Grafico 1 -->
+    <script src="~/Scripts/Estadisticas/Grafico2.js"></script> <!-- Grafico 2 -->
+
+    <script>
+
+        // ----------------------------------------------
+        //
+        // SISTEMA          : CAPEX
+        // CLIENTE          :
+        // MODULO           : PLANIFICACION
+        // FECHA            : MAYO 2018
+        // DESARROLLADO POR : PMO 360 SpA
+        //
+        // ----------------------------------------------
+        // SECCION          : ESTADISTICA
+        // METODOS          :
+
+        //
+        // CARGAR COMBO AREA CLIENTE
+        //
+        var Area = $("#Area")
+        function FNListarAreaCliente() {
+            //PREPARAR
+            Area.empty();
+            Area.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarAreaCliente",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Area.empty();
+                    setTimeout(function () {
+
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Area.append(new Option(value.AreaNombre, value.AreaToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Area.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Area.append('<option selected="true">Area..</option>')
+                        }
+                    }, 200);
+                    console.log(Area)
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO AÑO EJERCICIO
+        //
+        var AnnEjercicio = $("#AnnEjercicio")
+        function FNListarAnnEjercicio() {
+            //PREPARAR
+            AnnEjercicio.empty();
+            AnnEjercicio.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarAnnEjercicio",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    AnnEjercicio.empty();
+                    setTimeout(function () {
+
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            AnnEjercicio.append(new Option(value.IniPeriodo, value.IniToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            AnnEjercicio.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            AnnEjercicio.append('<option selected="true">Año Ejercicio..</option>')
+                        }
+                    }, 200);
+                    console.log(resp)
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO ETAPAS
+        //
+        var Etapa = $("#Etapa")
+        function FNListarEtapas() {
+            //PREPARAR
+            Etapa.empty();
+            Etapa.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarEtapas",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Etapa.empty();
+                    setTimeout(function () {
+
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Etapa.append(new Option(value.NINombre, value.NIAcronimo, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Etapa.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Etapa.append('<option selected="true">Etapa..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO SSO
+        //
+        var Sso = $("#Sso")
+        function FNListarSSO() {
+            //PREPARAR
+            Sso.empty();
+            Sso.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarSSO",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Sso.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Sso.append(new Option(value.CSNombre, value.CSToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Sso.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Sso.append('<option selected="true">SSO..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO ESTANDAR SEGURIDAD
+        //
+        var EstandarSeguridad = $("#EstandarSeguridad")
+        function FNListarEstandarSeguridad() {
+            //PREPARAR
+            EstandarSeguridad.empty();
+            EstandarSeguridad.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarEstandarSeguridad",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    EstandarSeguridad.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            EstandarSeguridad.append(new Option(value.EssNombre, value.EssToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            EstandarSeguridad.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            EstandarSeguridad.append('<option selected="true">Estandar de Seguridad..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO CATEGORIA
+        //
+        var Categoria = $("#Categoria")
+        function FNListarCategoria() {
+            //PREPARAR
+            Categoria.empty();
+            Categoria.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarCategorias",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Categoria.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Categoria.append(new Option(value.CatNombre, value.CatToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Categoria.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Categoria.append('<option selected="true">Categorias..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO ESTADO INICIATIVA
+        //
+        var Estado = $("#Estado")
+        function FNListarEstadoiniciativa() {
+            //PREPARAR
+            Estado.empty();
+            Estado.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarEstadoIniciativa",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Estado.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Estado.append(new Option(value.EstNombre, value.EstToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Estado.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Estado.append('<option selected="true">Estados..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO AREA EJECUTORA
+        //
+        var AreaEjecutora = $("#AreaEjecutora")
+        function FNListarAreaEjecutora() {
+            //PREPARAR
+            AreaEjecutora.empty();
+            AreaEjecutora.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarAreaEjecutora",
+                //data: (DTO),
+                success: function (resp) {
+                    AreaEjecutora.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            AreaEjecutora.append(new Option(value.GerNombre, value.GerToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            AreaEjecutora.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            AreaEjecutora.append('<option selected="true">Area Ejecutora..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+
+
+
+        ////
+        ///
+        // COMBOS FILTROS GRAFICO 2
+        //
+        // CARGAR COMBO AÑO EJERCICIO
+        //
+        var AnnEjercicio2 = $("#AnnEjercicio2")
+        function FNListarAnnEjercicio2() {
+            //PREPARAR
+            AnnEjercicio2.empty();
+            AnnEjercicio2.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarAnnEjercicio",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    AnnEjercicio2.empty();
+                    setTimeout(function () {
+
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            AnnEjercicio2.append(new Option(value.IniPeriodo, value.IniToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            AnnEjercicio2.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            AnnEjercicio2.append('<option selected="true">Año Ejercicio..</option>')
+                        }
+                    }, 200);
+                    console.log(resp)
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO AREA CLIENTE
+        //
+        var Area2 = $("#Area2")
+        function FNListarAreaCliente2() {
+            //PREPARAR
+            Area2.empty();
+            Area2.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarAreaCliente",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Area2.empty();
+                    setTimeout(function () {
+
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Area2.append(new Option(value.AreaNombre, value.AreaToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Area2.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Area2.append('<option selected="true">Area..</option>')
+                        }
+                    }, 200);
+                    console.log(Area)
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO ETAPAS
+        //
+        var Etapa2 = $("#Etapa2")
+        function FNListarEtapas2() {
+            //PREPARAR
+            Etapa2.empty();
+            Etapa2.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarEtapas",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Etapa2.empty();
+                    setTimeout(function () {
+
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Etapa2.append(new Option(value.NINombre, value.NIAcronimo, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Etapa2.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Etapa2.append('<option selected="true">Etapa..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO SSO
+        //
+        var Sso2 = $("#Sso2")
+        function FNListarSSO2() {
+            //PREPARAR
+            Sso2.empty();
+            Sso2.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarSSO",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Sso2.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Sso2.append(new Option(value.CSNombre, value.CSToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Sso2.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Sso2.append('<option selected="true">SSO..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO ESTANDAR SEGURIDAD
+        //
+        var EstandarSeguridad2 = $("#EstandarSeguridad2")
+        function FNListarEstandarSeguridad2() {
+            //PREPARAR
+            EstandarSeguridad2.empty();
+            EstandarSeguridad2.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarEstandarSeguridad",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    EstandarSeguridad.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            EstandarSeguridad2.append(new Option(value.EssNombre, value.EssToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            EstandarSeguridad2.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            EstandarSeguridad2.append('<option selected="true">Estandar de Seguridad..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO CATEGORIA
+        //
+        var Categoria2 = $("#Categoria2")
+        function FNListarCategoria2() {
+            //PREPARAR
+            Categoria2.empty();
+            Categoria2.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarCategorias",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Categoria2.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Categoria2.append(new Option(value.CatNombre, value.CatToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Categoria2.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Categoria2.append('<option selected="true">Categorias..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+
+
+        //
+        // CARGAR COMBO ESTADO INICIATIVA
+        //
+        var Estado2 = $("#Estado2")
+        function FNListarEstadoiniciativa2() {
+            //PREPARAR
+            Estado2.empty();
+            Estado2.append('<option selected="true">Buscando..</option>');
+            //LISTO
+            var cuantos = 0;
+            var DTO = {};
+
+            $.ajax({
+                type: "GET",
+                url: "Estadistica/ListarEstadoIniciativa",
+                dataType: "json",
+                //data: (DTO),
+                success: function (resp) {
+                    Estado2.empty();
+                    setTimeout(function () {
+                        $.each(JSON && JSON.parse(resp) || $.parseJSON(resp), function (key, value) {
+                            Estado2.append(new Option(value.EstNombre, value.EstToken, false, false))
+                            cuantos++;
+                        });
+                        if (cuantos == 1) {
+                            Estado2.prop('selectedIndex', 0);
+                        }
+                        else if (cuantos > 1) {
+                            Estado2.append('<option selected="true">Estados..</option>')
+                        }
+                    }, 200);
+
+                }
+            });
+        };
+        //
+        // OBTENER NUMERO DE COMENTARIOS
+        //
+        FNObtenerNumeroComentariosIniciativas = function () {
+            var usuario = $("#CAPEX_H_USERNAME").val();
+            $.ajaxSetup({ cache: false });
+            $.ajax({
+                url: "Panel/ObtenerContador",
+                method: "GET",
+                data: { "usuario": usuario }
+            }).done(function (r) {
+                var obj = JSON.parse(JSON.stringify(r));
+                var cantidad = obj.Resultado[0].Value;
+                $("#ContenedorComentarios").html(cantidad);
+            }).fail(function (xhr) { console.log('error', xhr); });
+        }
+        //
+        // INICIALIZAR
+        //
+        $(function () {
+
+            FNListarAnnEjercicio();
+            FNListarEtapas();
+            FNListarAreaCliente();
+            FNListarSSO();
+            FNListarCategoria();
+            FNListarEstadoiniciativa();
+            FNListarEstandarSeguridad();
+            FNListarAreaEjecutora();
+
+            FNListarAnnEjercicio2();
+            FNListarEtapas2();
+            FNListarAreaCliente2();
+            FNListarSSO2();
+            FNListarCategoria2();
+            FNListarEstadoiniciativa2();
+            FNListarEstandarSeguridad2();
+            /**************************** CARGA DE VALORES CONTADOR DE COMENTARIOS ***********************/
+            setTimeout(function () {
+                FNObtenerNumeroComentariosIniciativas();
+            }, 0);
+            jQuery("#AppLoaderContainer").hide();
+        });
+
+    </script>
+</body>
+</html>

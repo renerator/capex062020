@@ -1,0 +1,70 @@
+﻿@{
+    Layout = null;
+}
+<!-- Vista Buscador Para Gestión -->
+<div id="ContenedorBuscadorIniciativas" class="panel-body" style="display:none;">
+    <table class="table table-hover mails paginated">
+        <thead>
+            <tr>
+                <th scope="col"><strong>Codigo Iniciativa</strong></th>
+                <th scope="col"><strong>Estado Iniciativa</strong></th>
+                <th scope="col"><strong>Nombre de Proyecto</strong></th>
+                <th scope="col"><strong>Tipo de Proyecto</strong></th>
+                <th scope="col"><strong>Etapa de Proyecto</strong></th>
+                <th scope="col"><strong>Clasif. HSEC</strong></th>
+                <th scope="col"><strong>Total CAPEX (KUS$)</strong></th>
+                <th scope="col"><strong>Acciones</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                if (ViewBag.Iniciativas != null)
+                {
+                    foreach (var ini in ViewBag.Iniciativas)
+                    {
+                        <tr>
+                            <td>
+                                <a href="#" onclick="FNVerIniciativa('@ini.PidToken')"><span class="badge badge-danger mr-1" style="font-size:11px; color:#fff;">&nbsp;@ini.PidCodigoIniciativa</span></a>
+                            </td>
+                            <td>
+                                @ini.PidEstadoFlujo
+                            </td>
+                            <td>
+                                @ini.PidNombreProyecto
+                            </td>
+                            <td>
+                                @ini.IniTipo
+                            </td>
+                            <td>
+                                @ini.PidEtapa
+                            </td>
+                            <td class="text-center" width="100px">
+                                @ini.CatClasificacionSSO
+                            </td>
+                            <td class="text-center" width="140px">
+                                @ini.IfDato19
+                            </td>
+                            <td class="text-center" width="100px" onclick="FNRegistrarIniciativa('@ini.PidToken')">
+                                <div style="text-align:center">@Html.Partial("~/Views/Gestion/AccionIniciativa.cshtml")</div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>

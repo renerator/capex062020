@@ -1,0 +1,82 @@
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\CapexInfraestructure.Bll.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\CapexInfraestructure.Bll.pdb
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.Extensions.AspNet.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.Extensions.Mvc.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.Extensions.WebApi.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXml.Generic.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.Report.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Dapper.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\DocumentFormat.OpenXml.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ExcelNumberFormat.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\FastMember.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Microsoft.Web.Infrastructure.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Newtonsoft.Json.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Linq.Dynamic.Core.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.ValueTuple.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Helpers.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Mvc.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Razor.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.Deployment.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.Razor.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.pdb
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Dapper.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\DocumentFormat.OpenXml.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ExcelNumberFormat.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Newtonsoft.Json.pdb
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Newtonsoft.Json.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Linq.Dynamic.Core.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Helpers.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Mvc.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Razor.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.Deployment.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.Razor.xml
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\obj\Release\CapexInfraestructure.Bll.csprojAssemblyReference.cache
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\obj\Release\CapexInfraestructure.Bll.csproj.CoreCompileInputs.cache
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\obj\Release\CapexInfraestructure.Bll.csproj.CopyComplete
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\obj\Release\CapexInfraestructure.Bll.dll
+C:\Users\Enrique Cuevas\Desktop\CAPEX\Deploy\capex\Capex\CapexInfraestructure.Bll\obj\Release\CapexInfraestructure.Bll.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\CapexInfraestructure.Bll.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\CapexInfraestructure.Bll.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.Extensions.AspNet.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.Extensions.Mvc.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.Extensions.WebApi.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXml.Generic.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.Report.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Dapper.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\DocumentFormat.OpenXml.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ExcelNumberFormat.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\FastMember.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Microsoft.Web.Infrastructure.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Newtonsoft.Json.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Linq.Dynamic.Core.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.ValueTuple.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Helpers.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Mvc.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Razor.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.Deployment.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.Razor.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ClosedXML.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Dapper.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\DocumentFormat.OpenXml.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\ExcelNumberFormat.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Newtonsoft.Json.pdb
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\Newtonsoft.Json.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Linq.Dynamic.Core.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Helpers.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Mvc.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.Razor.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.Deployment.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\bin\Release\System.Web.WebPages.Razor.xml
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\obj\Release\CapexInfraestructure.Bll.csprojAssemblyReference.cache
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\obj\Release\CapexInfraestructure.Bll.csproj.CoreCompileInputs.cache
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\obj\Release\CapexInfraestructure.Bll.csproj.CopyComplete
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\obj\Release\CapexInfraestructure.Bll.dll
+D:\Escritorio\PROYECTOS\AMSA\Deploy\capex\Capex\CapexInfraestructure.Bll\obj\Release\CapexInfraestructure.Bll.pdb

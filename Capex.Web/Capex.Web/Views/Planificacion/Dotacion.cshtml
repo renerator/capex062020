@@ -1,0 +1,210 @@
+﻿
+<!--Inicio Vista Dotacion-->
+<div id="ContenedorDotacion" class="card offset-md-0">
+    <div class="card-body offset-md-0">
+        <div class="row">
+            <!--Panel Izquierdo-->
+            <div class="col-md-6 order-md-2">
+                <h7 class="mt-0"></h7>
+                <br />
+                <h7 class="mt-0">Contrato</h7>
+                <div class="row">
+                    <div class="col-sm-3"><div style="height:36px;padding-top:8px;">N° de Contrato</div></div>
+                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="NumContrato" placeholder="Numero Conrato" required=""></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Nombre EECC</div></div>
+                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="NombreEECC" placeholder="Nombre EECC" required=""></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Sub Contrato</div></div>
+                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="SubContrato" placeholder="Sub Contrato" required=""></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Descripción Servicio</div></div>
+                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="DescripcionServicio" placeholder="Descripción Servicio" required=""></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3"><div style="height:36px;padding-top:8px;">SituacionFaena</div></div>
+                    <div class="col-sm-6">
+                        <select id="SituacionFaena" class="form-control" style="height:30px; font-size:11px;">
+                            <option option="-1" selected>Seleccionar..</option>
+                            <option option="Presente">Presente</option>
+                            <option option="Fuera">Fuera Faena</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Turno</div></div>
+                    <div class="col-sm-6">
+                        <select id="Turno" class="form-control" style="height:30px; font-size:11px;">
+                            <option selected>Seleccionar..</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Alimentación</div></div>
+                    <div class="col-sm-6">
+                        <select id="Alimentacion" class="form-control" style="height:30px; font-size:11px;" onchange="FNGuardarSeleccion('COMBO_ALIMENTACION',this.value)">
+                            <option option="-1" selected>Seleccionar..</option>
+                            <option option="SI">SI</option>
+                            <option option="NO">NO</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Hoteleria</div></div>
+                    <div class="col-sm-6">
+                        <select id="Hoteleria" class="form-control" style="height:30px; font-size:11px;" onchange="FNGuardarSeleccion('COMBO_HOTELERIA',this.value)">
+                            <option option="-1" selected>Seleccionar..</option>
+                            <option option="SI">SI</option>
+                            <option option="NO">NO</option>
+                        </select>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <!--Panel Derecho-->
+            <div class="col-md-6 order-md-1">
+                <h7 class="mt-0">Ingresar Nuevo Contrato de Dotación</h7>
+                <br />
+                <h7 class="mt-0">Contexto</h7>
+                <div class="row">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Año</div></div>
+                            <div class="col-sm-6">
+                                <select id="PeriodoAnn" class="form-control" style="height:30px; font-size:11px;">
+                                    <option option="-1" selected>Seleccionar..</option>
+                                    <option option="2017">2017</option>
+                                    <option option="2018">2018</option>
+                                    <option option="2019">2019</option>
+                                    <option option="2020">2020</option>
+                                    <option option="2021">2021</option>
+                                    <option option="2022">2022</option>
+                                    <option option="2023">2023</option>
+                                    <option option="2024">2024</option>
+                                    <option option="2025">2025</option>
+                                    <option option="2026">2026</option>
+                                    <option option="2027">2027</option>
+                                    <option option="2028">2028</option>
+                                    <option option="2029">2029</option>
+                                    <option option="2030">2030</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Departamento</div></div>
+                            <div class="col-sm-6">
+                                <select id="DepartamentoDot" class="form-control" style="height:30px; font-size:11px;">
+                                    <option selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Centro de Costo</div></div>
+                            <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="CentroCosto" placeholder="Centro de Costo" required=""></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Clasificación</div></div>
+                            <div class="col-sm-6">
+                                <select id="ClasificacionDot" class="form-control" style="height:30px;font-size:11px;">
+                                    <option selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Tipo EECC</div></div>
+                            <div class="col-sm-6">
+                                <select id="TipoEECC" class="form-control" style="height:30px;font-size:11px;">
+                                    <option selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Situación Proyecto</div></div>
+                            <div class="col-sm-6">
+                                <select id="SituacionProyecto" class="form-control" style="height:30px;font-size:11px;">
+                                    <option selected>Seleccionar..</option>
+                                    <option option="Normal">Normal Proyecto</option>
+                                    <option option="Detencion">Detencion de Planta</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Ubicación</div></div>
+                            <div class="col-sm-6">
+                                <select id="Ubicacion" class="form-control" style="height:30px;font-size:11px;">
+                                    <option selected>Seleccionar..</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!--Panel Bajo-->
+            <div class="col-md-12">
+                <hr />
+                <div class="row">
+                    <div class="card-body">
+                        <div class="row offset-md-0">
+                            <div style="width:900px;" alingn="left">
+                                <h7 class="mt-0">Ingrese detalle de dotaciones para el periodo seleccionado</h7>
+                                <br />
+                                <table style="width:800px; text-align:center;margin-top:20px;">
+                                    <tr>
+                                        <th>ENE</th>
+                                        <th>FEB</th>
+                                        <th>MAR</th>
+                                        <th>ABR</th>
+                                        <th>MAY</th>
+                                        <th>JUN</th>
+                                        <th>JUL</th>
+                                        <th>AGO</th>
+                                        <th>SEP</th>
+                                        <th>OCT</th>
+                                        <th>NOV</th>
+                                        <th>DIC</th>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="number" id="dotEne" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotFeb" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotMar" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotAbr" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotMay" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotJun" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotJul" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotAgo" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotSep" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotOct" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotNov" class="DotPeriodoMes" value="0" /></td>
+                                        <td><input type="number" id="dotDic" class="DotPeriodoMes" value="0" /></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-t-30 m-b-30"><input type="button" class="btn btn-success btn-sm" value="Guardar Dotación" onclick="FNFuardarContratoDotacion()" id="BotonGuardarDotacion" /></div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,470 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+}
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewBag.Title</title>
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="~/Content/glyphicons.css" rel="stylesheet" type="text/css">
+    <link href="Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="Content/toastr.min.css" rel="stylesheet" />
+    <link href="Content/site.css" rel="stylesheet" type="text/css">
+    <link href="Content/sweetalert2.css" rel="stylesheet" />
+
+    <link href="Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="Content/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="Content/select2.min.css" rel="stylesheet" />
+
+    <link href="fonts/css/all.css" rel="stylesheet" />
+
+    <!-- DataTables -->
+    <link href="Content/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="Content/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="Content/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Arbol Documental -->
+    <link href="Content/file-explore.css" rel="stylesheet" />
+    <style>
+
+        div.pager {
+            text-align: center;
+            margin: 1em 0;
+        }
+
+            div.pager span {
+                display: inline-block;
+                width: 1.8em;
+                height: 1.8em;
+                line-height: 1.8;
+                text-align: center;
+                cursor: pointer;
+                background: transparent;
+                color: #fff;
+                margin-right: 0.5em;
+            }
+
+                div.pager span.active {
+                    background: #4a848e;
+                }
+
+        #menuFilter {
+            left: 20px;
+            font-size: 4em;
+            font-weight: 800;
+            z-index: 111;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.5s;
+            -webkit-transition: all 0.25s;
+            position: absolute;
+        }
+
+            #menuFilter:hover {
+                transform: rotate(90deg);
+                color: #FF9900;
+            }
+
+        .blue-primary {
+            background-color: #1296ff;
+        }
+
+        .toggle {
+            text-align: left;
+            font-size: 12px;
+            color: #ffffff;
+            font-weight: 600;
+            width: 90%;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        #lgMenuFilter {
+            width: 300px;
+            height: 100%;
+            top: 0;
+            left: -400px;
+            overflow: hidden;
+            background-color: #51818e;
+            box-shadow: 5px 5px 10px grey;
+            position: absolute;
+            z-index: 11;
+            opacity: 0;
+            transition: all 0.25s;
+            -webkit-transition: all 0.25s;
+        }
+
+        #exitFilter {
+            position: absolute;
+            right: 10px;
+            padding: 0px;
+            top: -10px;
+            font-size: 4em;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+            -webkit-transition: all 0.25s;
+        }
+
+            #exitFilter:hover {
+                color: #FF9900;
+            }
+
+        #lgMenuFilter.enter {
+            opacity: 1;
+            left: 0;
+        }
+    </style>
+</head>
+<body style="overflow: visible;" onload="FNResetear()">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="Content/logos/logo-centinela-190x50.png" border="0" height="45" style="margin-top:0px;">
+                    </a>
+                </div>
+                <!--Fi Logo Container-->
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end topbar-main -->
+    </header>
+
+    <!-- Wrapper -->
+    <div class="wrapper dashboard" style="margin-top:-50px;">
+        <div class="container-fluid">
+            <div class="row" style="margin-top:0px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active">Ejercicios Oficiales</li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">Ejercicios Oficiales</h6> <div id="iconFilter"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Contenido -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mail-inbox">
+                        <div id="container">
+                            <div id="lgMenuFilter">
+                                <span id="exitFilter">&times;</span>
+                                <br /><br /><br />
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h4 class="ml-3 toggle">Has seleccionado</h4>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" id="buttonFilterAction" onClick="FNFilterActionGetData();" disabled class="mb-3 btn btn-warning btn-sm">
+                                            <span class="glyphicon glyphicon-filter"></span> Filtrar
+                                        </button>
+                                    </div>
+                                    <div class="col-12">
+                                        <div id="contenedor_refinement" class="refinement"></div>
+                                    </div>
+                                </div>
+                                <div id="accordion">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="card">
+                                        <div class="card-body" style="height:1100px;">
+
+                                            <div id="accordion" role="tablist" aria-multiselectable="true">
+                                                <div class="card">
+                                                    <div class="card-header" role="tab" id="headingOne">
+                                                        <h5 class="mb-0 mt-0 font-12">
+                                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="text-muted">
+                                                                <i class="fa fa-cog"></i> Herramientas
+                                                            </a>
+                                                        </h5>
+                                                    </div>
+
+                                                    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                                                        <div class="card-body" style="font-size:11px;">
+                                                            <i class="fa fa-chevron-right"></i> <a href="#" onclick="FNRegistrarEventoIngresoIniciativa();" style="color:#fff;">Ingresar Iniciativa</a><br />
+                                                            <i class="fa fa-chevron-right"></i> <a href="#" onclick="document.location='@Url.Action("Index", "Documentacion")'" style="color:#fff;">Documentos</a><br />
+                                                            <i class="fa fa-chevron-right"></i> <a href="#" onclick="document.location='@Url.Action("Index", "Contacto")'" style="color:#fff;">Contacto Administrador</a><br />
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-10">
+                                    <form name="EjercicioFormIndex" id="EjercicioFormIndex">
+                                        <!--CONTENEDOR BARRA HERRAMIENTAS-->
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <div id="ContenedorBarraHerramientas" class="btn-toolbar mb-3" role="toolbar">
+                                                    <div id="ContenedorBarraHerramientas" class="btn-toolbar mb-3" role="toolbar">
+                                                        <div class="btn-group mr-2">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control form-control-sm" name="buscador" id="buscador" onblur="FNEvaluarEstadoFiltro(this.value);" placeholder="Buscar y Filtrar.." style="text-transform:uppercase;font-size:11px; width:400px; margin-right:5px;">
+                                                            </div>
+                                                            <button type="button" class="btn btn-warning btn-sm" alt="Descargar Excel" onclick="getUrl()">Descargar Excel</button>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                            <button type="button" id="idMostrarOcultarFiltros" disabled='disabled' class="btn btn-primary" onclick="FNMostrarOcultarFiltros()">Mostrar Filtros</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3"></div>
+                                            <div class="col-md-2">
+                                                <div id="botonDescargarMasivaPdf" style="display: none;">
+                                                    <button type="button" id="idDescargaMasiva" class="btn btn-warning btn-sm" onclick="FNDescargaMasiva()">Descargar PDF</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table class="table table-hover mails paginated" id="ejercicios">
+                                                    <thead style="background-color:#4a848e;text-transform:uppercase;text-align:center">
+                                                        <tr>
+                                                            <th scope="col">
+                                                                <div class="form-check">
+                                                                    <input class="styled" type="checkbox" id="defaultCheckedAll">
+                                                                </div>
+                                                            </th>
+                                                            <th scope="col"><strong>Codigo Iniciativa</strong></th>
+                                                            <th scope="col"><strong>Creada Por</strong></th>
+                                                            <th scope="col"><strong>Año</strong></th>
+                                                            <th scope="col"><strong>Tipo Ejercicio</strong></th>
+                                                            <th scope="col"><strong>Nombre de Proyecto</strong></th>
+                                                            <th scope="col"><strong>Gerencia Cliente</strong></th>
+                                                            <th scope="col"><strong>Macrocategoría</strong></th>
+                                                            <th scope="col"><strong>Total CAPEX (KUS$)</strong></th>
+                                                            <th scope="col"><strong>Acciones</strong></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="TBodyIdSummary">
+                                                        @{
+                                                            if (ViewBag.Iniciativas != null)
+                                                            {
+                                                                foreach (var ini in ViewBag.Iniciativas)
+                                                                {
+                                                                    <tr>
+                                                                        <td width="5px">
+                                                                            <input type="hidden" name=@(String.Format("{0}{1}", "defaultHiddenChecked_", ini.PidId)) value="@(String.Format("{0}{1}", "defaultChecked_", ini.PidId)),@(String.Format("{0}",ini.PidToken))">
+                                                                            <div class="form-check">
+                                                                                <input id=@(String.Format("{0}{1}", "defaultChecked_", ini.PidId)) class="styled" type="checkbox" onclick='seleccionarIniciativaPdf("@(String.Format("{0}{1}", "defaultChecked_", ini.PidId))", "@(String.Format("{0}",ini.PidToken))");'>
+                                                                                <label class="form-check-label" for=@(String.Format("{0}{1}", "defaultChecked_", ini.PidId))></label>
+                                                                            </div>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <span style="font-size:11px;">&nbsp;@ini.PidCodigoIniciativa</span>
+                                                                        </td>
+
+                                                                        <td class="text-center" width="120px">
+                                                                            <div style="text-transform:uppercase;text-align:left"> @ini.IniUsuario</div>
+                                                                        </td>
+
+                                                                        <td width="100px">
+
+                                                                            <div style="text-align:center">@ini.IniPeriodo</div>
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <div style="text-align:center">@ini.IniTipo</div>
+                                                                        </td>
+
+                                                                        <td>
+                                                                            <div style="text-transform:uppercase;">@ini.PidNombreProyecto</div>
+                                                                        </td>
+
+                                                                        <td class="text-center" width="200px">
+                                                                            <!--   <div style="text-align:left">ini.FechaAprobacion</div> -->
+                                                                            <div style="text-align:left">@ini.GerNombre</div>
+
+                                                                        </td>
+
+                                                                        <!--<td class="text-center" width="120px"><div style="text-transform:uppercase;text-align:left">ini.PidCodigoProyecto</div></td> -->
+                                                                        <td class="text-center" width="120px"><div style="text-transform:uppercase;text-align:left">@ini.CatMacroCategoria</div></td>
+
+                                                                        <td class="text-center" width="200px"><div style="text-transform:uppercase;text-align:center" id="TotalCapex">@ini.IfDato19</div></td>
+                                                                        <td class="text-center" width="100px" onclick="exitFilterPanel();FNRegistrarIniciativa('@ini.PidToken')">
+                                                                            <select id="Funcionalidades" class="form-control" style="font-size:11px;text-align:center" onchange="FNEvaluarAccion(this.value,'@ini.PidToken')">
+                                                                                <option value="-1" selected>...</option>
+                                                                                <option value="0">Ver</option>
+                                                                                <option value="2">Adjuntos</option>
+                                                                                <option value="3">Pdf</option>
+                                                                            </select>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                    <td></td>
+                                                                </tr>
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div><!--end row-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin Contenido -->
+
+        </div>
+    </div>
+
+
+    <!-- VISTA PARCIAL - MODAL COMENTAR -->
+    @Html.Partial("~/Views/Gestion/Adjunto.cshtml")
+    <!-- FIN VISTA PARCIAL-->
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/Login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+    <!--Preloader-->
+    @Html.Partial("_PreLoader")
+    <!--End Preloader-->
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script src="Scripts/popper.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/toastr.min.js"></script>
+    <script src="Scripts/detect.js"></script>
+    <script src="Scripts/fastclick.js"></script>
+    <script src="Scripts/jquery.slimscroll.js"></script>
+    <script src="Scripts/jquery.blockUI.js"></script>
+    <script src="Scripts/jquery.nicescroll.js"></script>
+    <script src="Scripts/jquery.scrollTo.min.js"></script>
+    <script src="Scripts/waves.js"></script>
+    <script src="Scripts/sweetalert2.all.min.js"></script>
+
+    <script src="Scripts/moment.js"></script>
+    <script src="Scripts/select2.min.js"></script>
+    <script src="Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="Scripts/bootstrap-inputmask.min.js"></script>
+    <script src="Scripts/bootstrap-maxlength.min.js"></script>
+
+    <!-- Arbol para Documentos -->
+    <script src="Scripts/file-explore.js"></script>
+    <!-- Script para Documentos -->
+
+    <script src="Scripts/Modules/Ejercicios/Ejercicios.js"></script>
+    <script src="Scripts/Modules/Contexto/Contexto.js"></script>
+    <script>
+        $(function () {
+
+            $("#defaultCheckedAll").on("click", function () {
+                console.log("defaultCheckedAll this.checked=", this.checked);
+                seleccionarTodo(this.checked);
+            });
+
+            $(".page-number, .clickable").click(function () {
+                exitFilterPanel();
+                deseleccionarTodo($(this).text());
+            });
+
+            $('#buttonFilterAction').prop('disabled', true);
+
+            $("#menuFilter").on("click", function () {
+                showFilterPanel();
+            });
+            $("#exitFilter").on("click", function () {
+                exitFilterPanel();
+            });
+            FNFilterData();
+        });
+
+        function getUrl() {
+            document.location.href = '../../Planificacion/ExcelResumenIniciativaEjerciciosOficiales?token=' + window.location.pathname.substring(1);
+        }
+
+        window.onpageshow = function (event) {
+            //console.log("onpageshow gestion resumen!");
+            setTimeout(function () {
+                //console.log("setTimeout 1000");
+                $('#ejercicios > tbody  > tr').each(function (index, tr) {
+                    //console.log('$(tr).attr(style)=', $(tr).attr('style'));
+                    if (!$(tr).attr('style')) {
+                        //console.log('if not tr=', $(tr));
+                        var selectElm = $("td:last-child", tr).children("select");
+                        //console.log('selectElm.val()=', selectElm.val());
+                        selectElm.val(-1);
+                    }
+                });
+            }, 500);
+        };
+    </script>
+</body>
+</html>
+
+
+
+

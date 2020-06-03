@@ -1,0 +1,145 @@
+﻿<div class="menu-extras topbar-custom">
+    <ul class="list-inline float-right mb-0 ">
+        @{
+            if (Convert.ToString(Session["CAPEX_SESS_ES_ADM_CAPEX"]) == "SI")
+            {
+
+                <li class="list-inline-item dropdown notification-list" onclick="document.location.href='@Url.Action("Index", "Solicitud")'">
+                    <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                        <i class="fa fa-inbox"></i>
+                        <span id="ContenedorNumSolicitudes" class="badge badge-danger a-animate-blink">
+                            @{
+                                if (string.IsNullOrEmpty(Convert.ToString(Session["CAPEX_SESS_NUM_SOL_PEND_ADM"])))
+                                {
+                                    <span>0</span>
+                                }
+                                else
+                                {
+                                    <span>@Convert.ToString(Session["CAPEX_SESS_NUM_SOL_PEND_ADM"])</span>
+                                }
+                            }
+                        </span>
+                    </a>
+
+                </li>
+            }
+
+        }
+        <li class="list-inline-item dropdown notification-list">
+            <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                <i class="fa fa-bell"></i>
+                <span id="ContenedorComentarios" class="badge badge-danger a-animate-blink">
+                    @{
+                        if (string.IsNullOrEmpty(Convert.ToString(Session["CAPEX_SESS_NUM_COMENTARIOS"])))
+                        {
+                            <span>0</span>
+                        }
+                        else
+                        {
+                            <span>@Convert.ToString(Session["CAPEX_SESS_NUM_COMENTARIOS"])</span>
+                        }
+                    }
+                </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-menu-lg">
+                <!-- item-->
+                <div class="dropdown-item noti-title">
+                    <h5>Comentarios</h5>
+                </div>
+                @{
+                    if (ViewBag.Mensajes != null)
+                    {
+                        foreach (var msj in ViewBag.Mensajes)
+                        {
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <div class="notify-icon bg-danger" style="font-size:10px;">@msj.ObsRemite<i class="fa fa-shield"></i></div>
+                                <p class="notify-details"><small><b>@msj.ObsFecha</b></small><small class="text-secondary">@msj.ComeTexto</small></p>
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <p class="notify-details"><small class="text-secondary">No hay mensajes.</small></p>
+                        </a>
+                    }
+                }
+                <div class="dropdown-divider"></div>
+                <a href="#" onclick="VerModuloComentarios()" class="dropdown-item notify-item">
+                    Ver Todos
+                </a>
+            </div>
+        </li>
+        <li class="list-inline-item dropdown notification-list">
+            <div class="dropdown notification-list nav-pro-img">
+
+                <a class="dropdown-toggle nav-link arrow-none waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <img src="~/Content/avatars/user1.png" alt="user" class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right profile-dropdown " style="font-size:11px;">
+                    <!-- item-->
+                    <div class="dropdown-item noti-title">
+                        <h6>Bienvenido</h6>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" onclick="FNAbrirModalCambioClave()"><i class="fa fa-passport"></i> Cambio Contraseña</a>
+                    <a class="dropdown-item" href="#" onclick="document.location.href='@Url.Action("Logout", "Login")'"><i class="fa fa-share-square"></i> Salir</a>
+                </div>
+            </div>
+        </li>
+        <li class="menu-item list-inline-item">
+            <!-- Mobile menu toggle-->
+            <a class="navbar-toggle nav-link" id="mobileToggle">
+                <div class="lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </a>
+            <!-- End mobile menu toggle-->
+        </li>
+    </ul>
+</div>
+
+<!-- Modal -->
+<div class="modal inmodal" id="ModalActualizarClave" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Cambio de Contraseña</h6>
+            </div>
+            <div id="ContenedorActualizarClave" class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                <div style="height:130px;">
+                    <div class="" style="margin-top:0px;">
+                        <div class="row" style="height:50px;">
+                            <div class="col-md-12">
+                                <div style="float: left;width: 30px;margin-right: 20px;text-align: center;">
+                                </div>
+                                <h6 style="color:#333"><strong>Ingrese una nueva contraseña</strong></h6>
+                                <div class="form-group mb-1 row">
+                                    <div class="col-md-12">
+                                        <input type="password" class="form-control" style="font-size:11px;height:36px; font-size:11px;" id="Clave1" maxlength="30">
+                                    </div>
+                                </div>
+                                <h6 style="color:#333"><strong>Repita la contraseña ingresada</strong></h6>
+                                <div class="form-group mb-1 row">
+                                    <div class="col-md-12">
+                                        <input type="password" class="form-control" style="font-size:11px;height:36px; font-size:11px;" id="Clave2" maxlength="30">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="FNActualizarClave();">Aceptar</button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="document.location.reload();">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,835 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+}
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewBag.Title</title>
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="~/Content/logos/logo-centinela-190x50.png" border="0" height="45" style="margin-top:0px;" />
+                    </a>
+                </div>
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+    </header>
+
+    <div class="wrapper" style="margin-top:-60px;">
+        <div class="container-fluid">
+
+            <div class="row" style="margin-top:0px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Gestion")'">Panel</a></li>
+                                <li class="breadcrumb-item active"><a href="#">Ver Iniciativa</a></li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">Ver Iniciativa</h6>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div id="ContenedorVerIniciativa" class="col-md-10" style="margin-left:100px; margin-top:0px; color:#e1e1e1; width:75%">
+                            <!--IDENTIFICACION-->
+                            @foreach (var Idd in ViewBag.Identificacion)
+                            {
+                                <div class="container offset-md-0 m-t-10">
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <div class="card-header form-row mt-0" style="height:45px;">
+                                                <div class="col-sm-10 pb-0"><h6>Código Iniciativa #<span id="ContenedorCodigoIniciativa" style="color:#ffa231;"> @Idd.PidCodigoIniciativa </span> Fecha <span id="ContenedorCodigoIniciativa" style="color:#ffa231;"> @Idd.PidFecha</span></h6></div>
+                                                <div class="col-sm-2 pb-0" style="margin-top:-5px;"><input type="button" id="BotonVolverGrillaIniciativa" onclick="history.back()" class="btn btn-primary btn-sm" value="Volver" />&nbsp;<button type="button" class="btn btn-warning btn-sm" alt="Ver PDF" onclick="document.location.href='../../Planificacion/descargaPdfPresupuesto?token=@Idd.PidToken'">Descargar PDF</button></div>
+                                            </div>
+                                            <br />
+                                            <h6 class="m-0">Identificación</h6>
+                                            <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                                <div class="col-sm-2 pb-1">
+                                                    <label for="Proceso">Proceso</label>
+                                                    <br /><div id="Proceso" style="width:150px; color:#ffa231;">@Idd.PidProceso</div>
+                                                </div>
+                                                <div class="col-sm-2 pb-1">
+                                                    <label for="Objeto">Objeto</label>
+                                                    <br /><div id="Objeto" style="width:150px; color:#ffa231;">@Idd.PidObjeto</div>
+                                                </div>
+                                                <div class="col-sm-2 pb-1">
+                                                    <label for="Area">Area</label>
+                                                    <br /><div id="Area" style="width:150px; color:#ffa231;">@Idd.PidArea</div>
+                                                </div>
+                                                <div class="col-sm-2 pb-1">
+                                                    <label for="Compania">Compañia</label>
+                                                    <br /><div id="Compania" style="width:150px; color:#ffa231;">@Idd.PidCompania</div>
+                                                </div>
+                                                <div class="col-sm-2 pb-1">
+                                                    <label for="Etapa">Etapa</label>
+                                                    <br /><div id="Etapa" style="width:150px; color:#ffa231;">@Idd.PidEtapa</div>
+                                                </div>
+
+                                                <div class="col-xl-12 offset-md-0">
+                                                    <hr style="border-top:0px dashed #6995a1;" />
+                                                </div>
+
+                                                <div class="col-sm-4 pb-1">
+                                                    <label for="NombreProyecto">Nombre del Proyecto</label>
+                                                    <br /><div id="NombreProyecto" style="width:200px; color:#ffa231;">@Idd.PidNombreProyecto</div>
+                                                </div>
+                                                <div class="col-sm-2 pb-1">
+                                                    <label for="CodigoIniciativa">Código Iniciativa</label>
+                                                    <br /><div id="CodigoIniciativa" style="width:150px; color:#ffa231;">@Idd.PidCodigoIniciativa</div>
+                                                </div>
+                                                <div class="col-sm-2 pb-1">
+                                                    <label for="CodigoProyecto">Código del Proyecto</label>
+                                                    <br /><div id="CodigoProyecto" style="width:150px; color:#ffa231;">@Idd.PidCodigoProyecto</div>
+                                                </div>
+                                                <div class="col-sm-2 pb-1">
+                                                </div>
+                                                <div class="col-sm-4 pb-1">
+                                                    <label for="NombreProyectoAlias">Nombre del Proyecto(Alias)</label>
+                                                    <br /><div id="NombreProyectoAlias" style="width:200px; color:#ffa231;">@Idd.PidNombreProyectoAlias</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 offset-md-0">
+                                            <hr style="border-top:1px dashed #6995a1;" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0"><h7>Responsable de la Inversión (Cliente)</h7></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 offset-md-0">
+                                            <div class="form-row mt-12">
+                                                <div class="col-sm-4 pb-1">
+                                                    <label for="GerenciaInversion">Gerencia</label>
+                                                    <br /><div id="GerenciaInversion" style="width:150px;color:#ffa231;">@Idd.PidGerenciaInversion</div>
+                                                </div>
+                                                <div class="col-sm-4 pb-3">
+                                                    <label for="GerenteInversion">Gerente</label>
+                                                    <br /><div id="GerenteInversion" style="width:150px;color:#ffa231;">@Idd.PidGerenteInversion</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 offset-md-0">
+                                            <hr style="border-top:1px dashed #6995a1;" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 offset-md-0"><h7>Responsable de la Ejecución </h7><br /> <label>¿Su iniciativa requiere para su ejecución desarollo de ingeniería, construcción y puesta en marcha?</label></div>
+                                        <br /><div class="col-xl-12 offset-md-0" id="Requiere1" style="width:150px;color:#ffa231;">@Idd.PidRequiere</div>
+                                    </div>
+
+                                    <div class="row m-t-20">
+                                        <div class="col-md-12 offset-md-0">
+                                            <div class="form-row mt-12">
+                                                <div class="col-sm-4 pb-1">
+                                                    <label for="GerenciaEjecucion">Gerencia</label>
+                                                    <br /><div id="GerenciaEjecucion" style="width:150px;color:#ffa231;">@Idd.PidGerenciaEjecucion</div>
+                                                </div>
+                                                <div class="col-sm-4 pb-3">
+                                                    <label for="GerenteEjecucion">Gerente</label>
+                                                    <br /><div id="GerenteEjecucion" style="width:150px;color:#ffa231;">@Idd.PidGerenteEjecucion</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-row mt-12">
+                                                <div class="col-sm-4 pb-3">
+                                                    <label for="Superitendencia">Superitendencia</label>
+                                                    <br /><div id="Superitendencia" style="width:150px;color:#ffa231;">@Idd.PidSuperintendencia</div>
+                                                </div>
+                                                <div class="col-sm-4 pb-3">
+                                                    <label for="SuperIntendente">SuperIntendente</label>
+                                                    <br /><div id="SuperIntendente" style="width:150px;color:#ffa231;">@Idd.PidSuperintendente</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 offset-md-0"><h7>Responsable del Control de Ejecución SAP</h7></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 offset-md-0">
+                                            <div class="form-row mt-12">
+                                                <div class="col-sm-6 pb-3">
+                                                    <label for="Encargado">Encargado</label>
+                                                    <br /><div id="Encargado" style="width:150px;color:#ffa231;">@Idd.PidEncargadoControl</div>
+                                                </div>
+                                                <div class="col-sm-4 pb-3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 offset-md-0">
+                                    <hr style="border-top:1px dashed #6995a1;" />
+                                </div>
+                            }
+                            <!--CATEGORIZACION-->
+                            @foreach (var Cat in ViewBag.Categorizacion)
+                            {
+                                <div class="container offset-md-0">
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <h6>Categorización</h6>
+                                            <div class="form-row mt-0" style="width:100%;">
+                                                <div class="col-sm-6 pb-1">
+                                                    <div id="ContenedorEstadoNoSeleccionable">
+                                                        <label for="EstadoProyecto1">Estado del Proyecto</label>
+                                                        <br /><div id="EstadoProyecto1" style="width:150px; color:#ffa231;">@Cat.CatEstadoProyecto</div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4 pb-1">
+                                                    <label for="TipoCotizacion">Tipo de Cotización</label>
+                                                    <br /><div id="TipoCotizacion" style="width:150px; color:#ffa231;">@Cat.CatTipoCotizacion</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <div class="form-row mt-0" style="width:100%;">
+                                                <div class="col-sm-6 pb-1">
+                                                    <label for="Categoria">Categoria</label>
+                                                    <br /><div id="Categoria" style="width:150px; color:#ffa231;">@Cat.CatCategoriaNombre</div>
+                                                </div>
+                                                <div class="col-sm-4 pb-1">
+                                                    <label for="ClasificacionSSO">Clasificación HSEC</label>
+                                                    <br /><div id="ClasificacionSSO" style="width:150px; color:#ffa231;">@Cat.CatClasificacionSSO</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <div class="form-row mt-0" style="width:100%;">
+                                                <div class="col-sm-6 pb-1">
+                                                    <label for="NivelIngenieria">Nivel de Ingenieria</label>
+                                                    <br /><div id="NivelIngenieria" style="width:150px; color:#ffa231;">@Cat.CatNivelIngenieria</div>
+                                                </div>
+                                                <div class="col-sm-4 pb-1">
+                                                    <div id="ContenedorEstandarSeguridad">
+                                                        <label for="EstandarSeguridad">Estándar de Seguridad</label>
+                                                        <br /><div id="EstandarSeguridad" style="width:150px; color:#ffa231;">@Cat.CatEstandarSeguridad</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <div class="form-row mt-0" style="width:100%;">
+                                                <div class="col-sm-6 pb-1">
+                                                    <label for="Agrega">¿La ejecución de su iniciativa agrega capacidad de producción adicional?</label>
+                                                    <br /><div id="Agrega" style="width:150px; color:#ffa231;">@Cat.CatAgrega</div>
+                                                </div>
+                                                <div class="col-sm-4 pb-1">
+                                                    <label for="Clase">Clase (Priorización)</label>
+                                                    <br /><div id="Clase" style="width:150px; color:#ffa231;">@Cat.CatClase</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <div class="form-row mt-0" style="width:100%;">
+                                                <div class="col-sm-6 pb-1">
+                                                    <label for="Macro">Macrocategoria</label>
+                                                    <br /><div id="Macro" style="width:150px; color:#ffa231;">@Cat.CatMacroCategoria</div>
+                                                </div>
+                                                <div class="col-sm-4 pb-1">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-xl-8 offset-md-0">
+                                            <div class="form-row mt-0" style="width:100%;">
+                                                <div class="col-sm-4 pb-1">
+                                                    <label for="Analisis">Realiza Análisis de Baja Complejidad?</label>
+                                                    <br /><div id="Analisis" style="width:150px; color:#ffa231;">@Cat.CatAnalisis</div>
+                                                </div>
+                                                <div class="col-sm-4 pb-1">
+                                                    &nbsp;
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if (@Cat.CatAnalisis == "SI")
+                                    {
+                                        <div id="ContenedorAnalisisBajaComplejidad" style="width:740px;">
+                                            <h7>Resultado de Análisis</h7>
+                                            <br />
+                                            <table id="Analisis" class="table table-bordered mb-0" with="740" style="font-size:11px;">
+                                                <thead>
+                                                    <tr style="background-color:#5c808d; height:100%;">
+                                                        <th style="text-align:center;height:28px; width:0px;">Parámetro</th>
+                                                        <th style="text-align:center;height:28px; width:0px;">Nota</th>
+                                                        <th style="text-align:center;height:28px; width:0px;">Observaciones que justifican la nota</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="text-align:left; height:28px;">1.- Interferencias </td>
+                                                        <td style="" align="center"><div id="Analisis" style="color:#ffa231;">@Cat.CatACNota1</div></td>
+                                                        <td style=""><div id="Analisis" style="color:#ffa231;">@Cat.CatACObs1</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left; height:28px;">2.- Riesgo a las Personas</td>
+                                                        <td style="" align="center"><div id="Analisis" style="color:#ffa231;">@Cat.CatACNota2</div></td>
+                                                        <td style=""><div id="NotaRiesgo" style="color:#ffa231;">@Cat.CatACObs2</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left; height:28px;">3.- Sustentabilidad</td>
+                                                        <td style="" align="center"><div id="Analisis" style="color:#ffa231;">@Cat.CatACNota3</div></td>
+                                                        <td style=""><div id="NotaSustentabilidad" style="color:#ffa231;">@Cat.CatACObs3</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left; height:28px;">4.- Complejidad Tecnológica</td>
+                                                        <td style="" align="center"><div id="Analisis" style="color:#ffa231;">@Cat.CatACNota4</div></td>
+                                                        <td style=""><div id="NotaComplejidad" style=" color:#ffa231;">@Cat.CatACObs4</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left; height:28px;">5.- Emplazamiento</td>
+                                                        <td style="" align="center"><div id="Analisis" style="color:#ffa231;">@Cat.CatACNota5</div></td>
+                                                        <td style=""><div id="NotaEmplazamiento" style="color:#ffa231;">@Cat.CatACObs5</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="text-align:left; height:28px;">6.- Solución técnica</td>
+                                                        <td style="" align="center"><div id="Analisis" style="color:#ffa231;">@Cat.CatACNota6</div></td>
+                                                        <td style=""><div id="NotaSolucion" style="color:#ffa231;">@Cat.CatACObs6</div></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <br />
+                                            <div class="row">
+                                                <div class="col-xl-12 offset-md-0">
+                                                    <div class="form-row mt-0" style="width:100%;">
+                                                        <div class="col-sm-6 pb-1">
+                                                            <label for="NotaTotal">Nota total de Complejidad</label><label style="width:150px; color:#ffa231;margin-left:10px;"><strong>@Cat.CatACTotal</strong></label>
+                                                        </div>
+                                                        <div class="col-sm-4 pb-1">
+                                                            &nbsp;
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-xl-12 offset-md-0">
+                                    <hr style="border-top:1px dashed #6995a1;" />
+                                </div>
+                            }
+                            <!--PRESUPUESTO-->
+                            <!--DESCRIPCION DETALLADA-->
+                            @foreach (var Det in ViewBag.DescripcionDetallada)
+                            {
+                                <div class="container offset-md-0">
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <div class="form-row mt-0" style="width:100%;">
+                                                <div class="col-sm-12 pb-1">
+                                                    <h6 class="m-0">Descripción Detallada</h6><br />
+                                                    <label for="PddObjetivo">Objetivo de la Inversión</label>
+                                                    <br /><div id="PddObjetivo" style="width:730px; color:#ffa231;">@Det.PddObjetivo</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <div class="form-row mt-0" style="width:100%;">
+                                                <div class="col-sm-12 pb-2">
+                                                    <label for="PddAlcance">Alcance /Descripción de la Inversión</label>
+                                                    <br /><div id="PddAlcance" style="width:730px; color:#ffa231;">@Det.PddAlcance</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <div class="form-row mt-0" style="width:100%;">
+                                                <div class="col-sm-12 pb-2">
+                                                    <label for="PddJustificacion">Justificación de la Inversión</label>
+                                                    <br /><div id="PddJustificacion" style="width:730px; color:#ffa231;">@Det.PddJustificacion</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-md-8 offset-md-0">
+                                            <div class="form-row mt-12">
+                                                <div class="col-sm-4 pb-1">
+                                                    <div>
+                                                        <label for="FechaPostEvaluacion">Fecha de Post Evaluación</label>
+                                                        <br /><div id="FechaPostEvaluacion" style="width:600px; color:#ffa231;">@Det.PddFechaPostEval</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-8 offset-md-0">
+                                            <div class="form-row mt-0" style="width:740px;">
+                                                <h7>Cuadro de KPI (s)</h7>
+                                                <br />
+                                                <br />
+                                                <table class="table table-bordered mb-0" width="740">
+                                                    <thead>
+                                                        <tr style='text-align:center;background-color:#5c808d;'>
+                                                            <th style="width:120px;">&nbsp;KPI ( s )</th>
+                                                            <th style="width:250px;">Descripción</th>
+                                                            <th style="width:120px;"><div align="center">Unidad</div></th>
+                                                            <th style="width:120px;"><div align="center">Actual</div></th>
+                                                            <th style="width:120px;"><div align="center">Target</div></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style='text-align:center;background-color:#5c808d;'><div align="center">KPI 1</div></td>
+                                                            <td><div id="PddDescripcion1" style=" color:#ffa231;">@Det.PddDescripcion1</div></td>
+                                                            <td><div id="PddUnidad1" style="text-align:center; color:#ffa231;">@Det.PddUnidad1</div></td>
+                                                            <td><div id="PddActual1" style="text-align:center; color:#ffa231;">@Det.PddActual1</div></td>
+                                                            <td><div id="PddTarget1" style="text-align:center;color:#ffa231;">@Det.PddTarget1</div></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style='text-align:center;background-color:#5c808d;'><div align="center">KPI 2</div></td>
+                                                            <td><div id="PddDescripcion2" style=" color:#ffa231;">@Det.PddDescripcion2</div></td>
+                                                            <td><div id="PddUnidad2" style="text-align:center; color:#ffa231;">@Det.PddUnidad2</div></td>
+                                                            <td><div id="PddActual2" style="text-align:center; color:#ffa231;">@Det.PddActual2</div></td>
+                                                            <td><div id="PddTarget2" style="text-align:center; color:#ffa231;">@Det.PddTarget2</div></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td style='text-align:center;background-color:#5c808d;'><div align="center">KPI 3</div></td>
+                                                            <td><div id="PddDescripcion3" style=" color:#ffa231;">@Det.PddDescripcion3</div></td>
+                                                            <td><div id="PddUnidad3" style="text-align:center; color:#ffa231;">@Det.PddUnidad3</div></td>
+                                                            <td><div id="PddActual3" style="text-align:center; color:#ffa231;">@Det.PddActual3</div></td>
+                                                            <td><div id="PddTarget3" style="text-align:center; color:#ffa231;">@Det.PddTarget3</div></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 offset-md-0">
+                                    <hr style="border-top:1px dashed #6995a1;" />
+                                </div>
+                            }
+
+                            <!--EVALUACION ECONOMICA-->
+                            @foreach (var Eve in ViewBag.EvaluacionEconomica)
+                            {
+                                <div class="container offset-md-0">
+                                    <div class="row">
+                                        <div class="col-xl-8 offset-md-0">
+                                            <div class="form-row mt-0" width="730">
+                                                <h6 class="m-0">Evaluación Económica</h6><br /><br />
+                                                <table class="table table-bordered mt-10" width="730">
+                                                    <thead>
+                                                        <tr style='text-align:center;background-color:#5c808d;'>
+                                                            <th width="120px;"><div align="center">VAN (KUS$)</div></th>
+                                                            <th width="120px;"><div align="center">TIR (%)</div></th>
+                                                            <th width="120px;"><div align="center">IVAN</div></th>
+                                                            <th width="120px;"><div align="center">PayBack</div></th>
+                                                            <th width="120px;"><div align="center">Vida Util (Años)</div></th>
+                                                            <th width="120px;"><div align="center">TC (CLP/US$)</div></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><div id="VAN" style="width:80px;text-align:center; color:#ffa231;">@Eve.EveVan</div></td>
+                                                            <td><div id="TIR" style="width:80px;text-align:center; color:#ffa231;">0</div></td>
+                                                            <td><div id="IVAN" style="width:80px;text-align:center; color:#ffa231;">@Eve.EveIvan</div></td>
+                                                            <td><div id="PayBack" style="width:80px;text-align:center; color:#ffa231;">@Eve.EvePayBack</div></td>
+                                                            <td><div id="Vida" style="width:80px;text-align:center; color:#ffa231;">@Eve.EveVidaUtil</div></td>
+                                                            <td><div id="TC" style="width:80px;text-align:center; color:#ffa231;">@Eve.EveTipoCambio</div></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 offset-md-0">
+                                    <hr style="border-top:1px dashed #6995a1;" />
+                                </div>
+                            }
+                            <!--EVALUACION RIESGO-->
+                            @foreach (var Evr in ViewBag.EvaluacionRiesgo)
+                            {
+                                <input id="EriItemMR" name="EriItemMR" type="hidden" value="@Evr.EriItemMR">
+                                <div class="container offset-md-0">
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <div class="form-row mt-0" style="width:730px;">
+                                                <h6 class="m-0">Evaluación de Riesgo</h6><br /><br />
+                                                <table class="table table-bordered mb-0" width="730">
+                                                    <tr style='text-align:center;background-color:#5c808d;'>
+                                                        <th colspan="5">Situación Sin Proyecto</th>
+                                                    </tr>
+                                                    <tr style='text-align:center;background-color:#5c808d; font-weight:bold;'>
+                                                        <td>Probabilidad</td>
+                                                        <td>Impacto</td>
+                                                        <td>Nivel de Riesgo</td>
+                                                        <td>Clasificación</td>
+                                                        <th>MFL (KUS$)</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><div style="width:80px;text-align:center; color:#ffa231;">@Evr.EriProb1</div></td>
+                                                        <td><div style="width:80px;text-align:center; color:#ffa231;">@Evr.EriImp1</div></td>
+                                                        <td><div style="width:80px;text-align:center; color:#ffa231;">@Evr.EriRies1</div></td>
+                                                        <td><div style="width:80px;text-align:center; color:#ffa231;">@Evr.EriClas1</div></td>
+                                                        <td><div style="width:80px;text-align:center; color:#ffa231;">@Evr.EriMFL1</div></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xl-12 offset-md-0">
+                                            <div class="form-row mt-0" style="width:730px;">
+                                                <table class="table table-bordered mb-0" width="730">
+                                                    <tr style='text-align:center;background-color:#5c808d;'>
+                                                        <th colspan="5">Situación Con Proyecto</th>
+                                                    </tr>
+                                                    <tr style='text-align:center;background-color:#5c808d;font-weight:bold;'>
+                                                        <td>Probabilidad</td>
+                                                        <td>Impacto</td>
+                                                        <td>Nivel de Riesgo</td>
+                                                        <td>Clasificación</td>
+                                                        <th>MPE (KUS$)</th>
+                                                    </tr>
+                                                    <tr>
+                                                    <tr>
+                                                        <td><div style="width:80px;text-align:center; color:#ffa231;">@Evr.EriProb2</div></td>
+                                                        <td><div style="width:80px;text-align:center; color:#ffa231;">@Evr.EriImp2</div></td>
+                                                        <td><div style="width:80px;text-align:center; color:#ffa231;">@Evr.EriRies2</div></td>
+                                                        <td><div style="width:80px;text-align:center; color:#ffa231;">@Evr.EriClas2</div></td>
+                                                        <td><div style="width:80px;text-align:center; color:#ffa231;">@Evr.EriMFL2</div></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="divMatrizRiesgo" style="display:none;">
+                                        <div class="col-md-8 offset-md-0">
+                                            <div class="form-row m-t-10">
+                                                <div class="col-sm-10">
+                                                    <div id="ContenedorRiesgoClaveEnPantalla" style="width:730px; margin-left:-5px;" class="alert alert-info" role="alert">
+                                                        <i class="fa fa-clipboard-list fa-2x"></i><span id="ConetenidoRiesgoClaveEnPantalla">@Evr.EriItemMR</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-12 offset-md-0">
+                                    <hr style="border-top:1px dashed #6995a1;" />
+                                </div>
+                            }
+
+                            <!--HITOS--->
+                            @foreach (var Hit in ViewBag.Hito)
+                            {
+                                <div class="container offset-md-0">
+                                    <div id="ContenedorResumenFinanciero">
+                                        <h6>Resumen Financiero</h6>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-xl-11 offset-md-0">
+                                                <div class="form-row mt-0" style="width:730px;">
+                                                    <table id="tabla10" class="table table-bordered dataTable no-footer" width="730" style="font-size:11px;">
+                                                        <thead>
+
+                                                            <div class="col-xl-12 offset-md-0">
+                                                                <button onclick="FNMostrarModalGraficoComprobacion1();" class="btn btn-success btn-sm">Total Valor Estimado Base</button>
+                                                                <button onclick="FNMostrarModalGraficoComprobacion2();" class="btn btn-success btn-sm">Fase Ingeniería</button>
+                                                                <button onclick="FNMostrarModalGraficoComprobacion3();" class="btn btn-success btn-sm">Fase Adquisiciones</button>
+                                                                <button onclick="FNMostrarModalGraficoComprobacion4();" class="btn btn-success btn-sm">Fase Construcción</button>
+                                                                <hr />
+                                                            </div>
+
+                                                            <tr style="background-color:#5c808d; height:100%;">
+                                                                <th valign="middle" style="width:180px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:Left;"><strong>Presupuesto Capex (KUS$)</strong></div></th>
+                                                                <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Años Anteriores</strong></div></th>
+                                                                <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Año 2020</strong></div></th>
+                                                                <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Años Posteriores</strong></div></th>
+                                                                <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Total Capex</strong></div></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                            @Html.Raw(ViewBag.HitoDetalle)
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-xl-11 offset-md-0">
+                                            <div class="form-row mt-0" style="width:730px;">
+                                                <div class="col-sm-11">
+                                                    <label for="PorcentajeNacional">% Nacional / % Extranjera</label>
+                                                    <div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitNacExt</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="ContenedorFechasClavesInversion" class="m-t-10">
+                                        <h7>Fechas Claves de Inversión</h7>
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-10 offset-md-0">
+                                                <div class="form-row m-t-10">
+                                                    <div class="col-sm-11">
+                                                        <table class="table table-bordered dataTable no-footer" style="width:730px;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td colspan="7" style="text-align:left;">Ruta Aprobación</td>
+                                                                    <td colspan="2" style="text-align:center;">Ejecución</td>
+                                                                    <td colspan="1" style="text-align:center;">Cierre</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td style="text-align:center;width:100px;">Ficha SAP</td>
+                                                                    <td style="text-align:center;width:100px;">CI</td>
+                                                                    <td style="text-align:center;width:100px;">CA</td>
+                                                                    <td style="text-align:center;width:100px;">OPR</td>
+                                                                    <td style="text-align:center;width:100px;">PE</td>
+                                                                    <td style="text-align:center;width:100px;">DIR CEN</td>
+                                                                    <td style="text-align:center;width:100px;">DIR PLC</td>
+                                                                    <td style="text-align:center;width:100px;">Inicio</td>
+                                                                    <td style="text-align:center;width:100px;">Término</td>
+                                                                    <td style="text-align:center;width:100px;">SAP</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align:center;"><div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitSAP</div></td>
+                                                                    <td style="text-align:center;"><div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitCI</div></td>
+                                                                    <td style="text-align:center;"><div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitCA</div></td>
+                                                                    <td style="text-align:center;"><div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitOPR</div></td>
+                                                                    <td style="text-align:center;"><div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitPE</div></td>
+                                                                    <td style="text-align:center;"><div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitDIRCEN</div></td>
+                                                                    <td style="text-align:center;"><div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitDirPLC</div></td>
+
+                                                                    <td style="text-align:center;"><div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitInicio</div></td>
+                                                                    <td style="text-align:center;"><div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitTermino</div></td>
+                                                                    <td style="text-align:center;"><div style="width:80px;text-align:left; color:#ffa231;">@Hit.HitCierreSAP</div></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+                            <!---FIN VER INICIATIVA-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+
+
+    <!-- Modal -->
+    <div class="modal inmodal" id="ModalGraficoComprobacion1" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:650px; font-size:12px;">
+                <div class="modal-header">
+                    <h6 class="modal-title">Comprobación</h6>
+                </div>
+                <div class="modal-body" style="margin-left:0px;width:650px; font-size:12px;">
+                    <div id="ContenedorGraficoComprobacion1" style="width:610px; height:360px;background:#fff;padding:5px; border:1px solid #808080;">
+                        <canvas id="GC1" width="600" height="350"></canvas>
+                    </div>
+                    <div class="modal-footer">
+                        <small> Información: Cifras representan porcentajes. </small>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalGraficoComprobacion1();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal inmodal" id="ModalGraficoComprobacion2" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:650px; font-size:12px;">
+                <div class="modal-header">
+                    <h6 class="modal-title">Comprobación</h6>
+                </div>
+                <div class="modal-body" style="margin-left:0px;width:650px; font-size:12px;">
+                    <div id="ContenedorGraficoComprobacion2" style="width:610px; height:360px;background:#fff;padding:5px; border:1px solid #808080;">
+                        <canvas id="GC2" width="600" height="350"></canvas>
+                    </div>
+                    <div class="modal-footer">
+                        <small> Información: Cifras representan porcentajes. </small>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalGraficoComprobacion2();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal inmodal" id="ModalGraficoComprobacion3" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:650px; font-size:12px;">
+                <div class="modal-header">
+                    <h6 class="modal-title">Comprobación</h6>
+                </div>
+                <div class="modal-body" style="margin-left:0px;width:650px; font-size:12px;">
+                    <div id="ContenedorGraficoComprobacion3" style="width:610px; height:360px;background:#fff;padding:5px; border:1px solid #808080;">
+                        <canvas id="GC3" width="600" height="350"></canvas>
+                    </div>
+                    <div class="modal-footer">
+                        <small> Información: Cifras representan porcentajes. </small>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalGraficoComprobacion3();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal inmodal" id="ModalGraficoComprobacion4" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:650px; font-size:12px;">
+                <div class="modal-header">
+                    <h6 class="modal-title">Comprobación</h6>
+                </div>
+                <div class="modal-body" style="margin-left:0px;width:650px; font-size:12px;">
+                    <div id="ContenedorGraficoComprobacion4" style="width:610px; height:360px;background:#fff;padding:5px; border:1px solid #808080;">
+                        <canvas id="GC4" width="600" height="350"></canvas>
+                    </div>
+                    <div class="modal-footer">
+                        <small> Información: Cifras representan porcentajes. </small>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalGraficoComprobacion4();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/Chart.bundle.js"></script>
+
+    <script src="~/Scripts/Modules/Gestion/Gestion.js"></script>
+    <script src="~/Scripts/Modules/Gestion/GestionVerIniciativa.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var EriItemMR = $('#EriItemMR').val();
+            console.log("VerIniciativa ready EriItemMR=", EriItemMR);
+            if (EriItemMR && EriItemMR != undefined && EriItemMR != "" && EriItemMR != "0") {
+                FNObtenerMatrizRiesgo(EriItemMR);
+            }
+        });
+    </script>
+
+</body>
+</html>
+

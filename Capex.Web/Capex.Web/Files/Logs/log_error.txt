@@ -1,0 +1,51 @@
+Planificaci?nPoblarVistaHitosDetalle, Mensaje: Conversion failed when converting date and/or time from character string.-, Detalle:    en System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   en System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   en System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   en System.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   en System.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   en System.Data.SqlClient.SqlDataReader.Read()
+   en Dapper.SqlMapper.<QueryImpl>d__138`1.MoveNext()
+   en System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   en System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   en Dapper.SqlMapper.Query[T](IDbConnection cnn, String sql, Object param, IDbTransaction transaction, Boolean buffered, Nullable`1 commandTimeout, Nullable`1 commandType)
+   en CapexInfraestructure.Bll.Business.Planificacion.Planificacion.PoblarVistaHitosDetalle(String token) en C:\Publicacion\Capex\CapexInfraestructure.Bll\Business\Planificacion\Planificacion.cs:l?nea 3693
+
+
+------------------------------------------------------------------------------------
+
+
+Date   :05-09-2019 0:00:00
+
+
+Domain :JUPITER
+
+User   :JUPITER
+
+
+-----------------------------------------------------------------------------------
+
+
+InsertarInformacionFinancieraResumida, Mensaje: Ya hay un DataReader abierto asociado a este Command, debe cerrarlo primero.-, Detalle:    en System.Data.SqlClient.SqlInternalConnectionTds.ValidateConnectionForExecute(SqlCommand command)
+   en System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async)
+   en System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   en System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   en Dapper.SqlMapper.ExecuteCommand(IDbConnection cnn, CommandDefinition& command, Action`2 paramReader)
+   en Dapper.SqlMapper.ExecuteImpl(IDbConnection cnn, CommandDefinition& command)
+   en Dapper.SqlMapper.Execute(IDbConnection cnn, String sql, Object param, IDbTransaction transaction, Nullable`1 commandTimeout, Nullable`1 commandType)
+   en Capex.Web.Controllers.PlanificacionController.InsertarInformacionFinancieraResumida(List`1 Datos) en C:\Publicacion\Capex\Capex.Web\Capex.Web\Controllers\PlanificacionController.cs:l?nea 3041
+
+
+------------------------------------------------------------------------------------
+
+
+Date   :10-09-2019 0:00:00
+
+
+Domain :JUPITER
+
+User   :JUPITER
+
+
+-----------------------------------------------------------------------------------
+
+

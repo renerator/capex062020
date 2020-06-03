@@ -1,0 +1,528 @@
+﻿@model CapexInfraestructure.Bll.Entities.Planificacion.Identificacion.SharedData
+@{
+    Layout = null;
+}
+
+@{
+    if (@Session["CAPEX_SESS_ROLNOMBRE"] == null)
+    {
+        Response.Redirect("/login");
+    }
+    else
+    {
+        if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionResumen")
+        {
+
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="12">Eliminar</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+        }
+        else if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionDesarrollo")
+        {
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="1">Editar</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="12">Eliminar</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.UserOwner) && Convert.ToString(@Session["CAPEX_SESS_USERNAME"]).Equals(@Model.UserOwner, StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="1">Editar</option>
+                        }
+                    }
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.UserOwner) && Convert.ToString(@Session["CAPEX_SESS_USERNAME"]).Equals(@Model.UserOwner, StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="12">Eliminar</option>
+                        }
+                    }
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.UserOwner) && Convert.ToString(@Session["CAPEX_SESS_USERNAME"]).Equals(@Model.UserOwner, StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="1">Editar</option>
+                        }
+                    }
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.UserOwner) && Convert.ToString(@Session["CAPEX_SESS_USERNAME"]).Equals(@Model.UserOwner, StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="12">Eliminar</option>
+                        }
+                    }
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.UserOwner) && Convert.ToString(@Session["CAPEX_SESS_USERNAME"]).Equals(@Model.UserOwner, StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="1">Editar</option>
+                        }
+                    }
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.UserOwner) && Convert.ToString(@Session["CAPEX_SESS_USERNAME"]).Equals(@Model.UserOwner, StringComparison.OrdinalIgnoreCase))
+                        {
+                            <option value="12">Eliminar</option>
+                        }
+                    }
+                </select>
+            }
+        }
+        else if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionVisacion")
+        {
+
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="1">Evaluar</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="19">No Aprobar</option>
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.IdAcc) && "20".Equals(@Model.IdAcc, StringComparison.OrdinalIgnoreCase))//OBSERVACION COMITE EJECUTIVO
+                        {
+                            <option value="16">Ver Comentario</option>
+                        }
+                    }
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.IdAcc) && "22".Equals(@Model.IdAcc, StringComparison.OrdinalIgnoreCase))//OBSERVACION COMITE AMSA
+                        {
+                            <option value="17">Ver Comentario</option>
+                        }
+                    }
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.IdAcc) && "20".Equals(@Model.IdAcc, StringComparison.OrdinalIgnoreCase))//OBSERVACION COMITE EJECUTIVO
+                        {
+                            <option value="16">Ver Comentario</option>
+                        }
+                    }
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.IdAcc) && "22".Equals(@Model.IdAcc, StringComparison.OrdinalIgnoreCase))//OBSERVACION COMITE AMSA
+                        {
+                            <option value="17">Ver Comentario</option>
+                        }
+                    }
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.IdAcc) && "20".Equals(@Model.IdAcc, StringComparison.OrdinalIgnoreCase))//OBSERVACION COMITE EJECUTIVO
+                        {
+                            <option value="16">Ver Comentario</option>
+                        }
+                    }
+                    @{if (@Model != null && !string.IsNullOrEmpty(@Model.IdAcc) && "22".Equals(@Model.IdAcc, StringComparison.OrdinalIgnoreCase))//OBSERVACION COMITE AMSA
+                        {
+                            <option value="17">Ver Comentario</option>
+                        }
+                    }
+                </select>
+            }
+        }
+        else if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionObservada")
+        {
+
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="15">Ver Comentario</option>
+                    <option value="14">Asignar</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="15">Ver Comentario</option>
+                    <option value="14">Asignar</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="15">Ver Comentario</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="15">Ver Comentario</option>
+                </select>
+            }
+        }
+        else if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionNoAprobada")
+        {
+
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="1">Editar</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="1">Editar</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="1">Editar</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="1">Editar</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+        }
+        else if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionIngresada")
+        {
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="1">Evaluar</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="18">No Aprobar</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+        }
+        else if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionEnRevision")
+        {
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="1">Evaluar</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+        }
+        else if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionNoAprobadaGAF")
+        {
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="20">Reintegrar</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+        }
+        else if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionNoAprobadaCE")
+        {
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="21">Reintegrar</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+        }
+        else if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionNoAprobadaAMSA")
+        {
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                    <option value="22">Reintegrar</option>
+                </select>
+            }
+        }
+        else if (Convert.ToString(@Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"]) == "GestionAprobadaAmsa")
+        {
+            if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+            else if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+            {
+                <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                    <option value="-1" selected>...</option>
+                    <option value="0">Ver</option>
+                    <option value="2">Adjuntos</option>
+                    <option value="3">Pdf</option>
+                </select>
+            }
+        }
+    }
+}

@@ -1,0 +1,4375 @@
+﻿using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using CapexIdentity.Utilities;
+using CapexInfraestructure.Bll.Entities.Planificacion;
+using CapexInfraestructure.Bll.Business.Planificacion;
+using CapexInfraestructure.Bll.Factory;
+using CapexInfraestructure.Utilities;
+using Newtonsoft.Json;
+using System.Web.Caching;
+using System.IO;
+using System.Data;
+using System.Data.SqlClient;
+using Dapper;
+using System.Text;
+using static System.Net.WebRequestMethods;
+using ClosedXML.Excel;
+using Rotativa.Options;
+using Rotativa;
+using System.Net.Mime;
+using Utils = CapexInfraestructure.Utilities.Utils;
+using System.Globalization;
+
+namespace Capex.Web.Controllers
+{
+    [AuthorizeAdminOrMember]
+    [RoutePrefix("Planificacion")]
+    public class PlanificacionController : Controller
+    {
+        /* ------------------------------------------------------------------------------------
+         * 
+         * PMO360
+         * Av. Nueva Tajamar 481 Of 1403 - Vitacura, Santiago
+         * http://www.pmo360.cl
+         * 
+         * -----------------------------------------------------------------------------------
+         * 
+         * CLIENTE          : AMSA - ANTOFAGASTA MINERALS
+         * PRODUCTO         : CAPEX
+         * RESPONABILIDAD   : IMPLEMENTACION
+         * TIPO             : CONTROLLER MVC
+         * DESARROLLADO POR : PMO360
+         * FECHA            : 2018
+         * VERSION          : 0.0.1
+         * 
+         * 
+         */
+
+        /// <remark>
+        ///     
+        ///     ----------------------------------------------------------------------------
+        ///     CONTROLADOR "PlanificacionController" 
+        ///     VERSION     0.0.1
+        ///     ----------------------------------------------------------------------------
+        ///     PROPOSITO
+        ///     ----------------------------------------------------------------------------
+        ///     IMPLEMENTAR ENTRADA Y SALIDA DE DATOS, ASI COMO OPERACIONES POR MEDIO
+        ///     DE PATRON CREACIONAL FACTORY QUE ES PROVISTO POR CAPA DDD DE INFRAESTRUCTURA
+        ///     
+        /// </remark>
+
+
+
+        #region "PROPIEDADES"
+        private List<string> Listar { get; set; }
+        private string JsonResponse { get; set; }
+        public string ExceptionResult { get; set; }
+        public string AppModule { get; set; }
+        #endregion
+
+        #region "CONSTANTES"
+        //IDENTIFICACION
+        private const PlanificacionFactory.tipo LP = PlanificacionFactory.tipo.ListarProcesos;
+        private const PlanificacionFactory.tipo LA = PlanificacionFactory.tipo.ListarAreas;
+        private const PlanificacionFactory.tipo LC = PlanificacionFactory.tipo.ListarCompanias;
+        private const PlanificacionFactory.tipo LE = PlanificacionFactory.tipo.ListarEtapas;
+        private const PlanificacionFactory.tipo LG = PlanificacionFactory.tipo.ListarGerencias;
+        private const PlanificacionFactory.tipo LI = PlanificacionFactory.tipo.ListarSuperintendencias;
+        private const PlanificacionFactory.tipo OG = PlanificacionFactory.tipo.ObtenerGerente;
+        private const PlanificacionFactory.tipo OE = PlanificacionFactory.tipo.ObtenerEncargado;
+        private const PlanificacionFactory.tipo OI = PlanificacionFactory.tipo.ObtenerIntendente;
+        private const PlanificacionFactory.tipo GI = PlanificacionFactory.tipo.GuardarIdentificacion;
+
+        private const PlanificacionFactory.tipo LCAT = PlanificacionFactory.tipo.ListarCategorias;
+        private const PlanificacionFactory.tipo LNII = PlanificacionFactory.tipo.ListarNivelIngenieria;
+        private const PlanificacionFactory.tipo LSSO = PlanificacionFactory.tipo.ListarClasificacionSSO;
+        private const PlanificacionFactory.tipo LESS = PlanificacionFactory.tipo.ListarEstandarSeguridad;
+        private const PlanificacionFactory.tipo OTC = PlanificacionFactory.tipo.ObtenerTokenCompania;
+        private const PlanificacionFactory.tipo AEA  = PlanificacionFactory.tipo.ActualizarEtapa;
+        private const PlanificacionFactory.tipo GCAT = PlanificacionFactory.tipo.GuardarCategorizacion;
+
+        private const PlanificacionFactory.tipo IT = PlanificacionFactory.tipo.Importar;
+        private const PlanificacionFactory.tipo PO = PlanificacionFactory.tipo.Poblar;
+        private const PlanificacionFactory.tipo ECD = PlanificacionFactory.tipo.EliminarContratoDotacion;
+        
+        private const PlanificacionFactory.tipo LDEP = PlanificacionFactory.tipo.ListarDepartamentos;
+        private const PlanificacionFactory.tipo LTUR = PlanificacionFactory.tipo.ListarTurnos;
+        private const PlanificacionFactory.tipo LUBI = PlanificacionFactory.tipo.ListarUbicaciones;
+        private const PlanificacionFactory.tipo LEEC = PlanificacionFactory.tipo.ListarTipoEECC;
+        private const PlanificacionFactory.tipo LCLA = PlanificacionFactory.tipo.ListarClasificacion;
+
+        private const PlanificacionFactory.tipo GD = PlanificacionFactory.tipo.GuardarDescripcionDetallada;
+
+        private const PlanificacionFactory.tipo GE = PlanificacionFactory.tipo.GuardarEvaluacionEconomica;
+        private const PlanificacionFactory.tipo GR = PlanificacionFactory.tipo.GuardarEvaluacionRiesgo;
+
+        private const PlanificacionFactory.tipo PH = PlanificacionFactory.tipo.PoblarVistaHitos;
+        private const PlanificacionFactory.tipo PVHG = PlanificacionFactory.tipo.Detallar;
+        private const PlanificacionFactory.tipo PVHR = PlanificacionFactory.tipo.Resumir;
+        private const PlanificacionFactory.tipo GH = PlanificacionFactory.tipo.GuardarHito;
+        private const PlanificacionFactory.tipo EI = PlanificacionFactory.tipo.EnviarIniciativa;
+
+        private const PlanificacionFactory.tipo VA = PlanificacionFactory.tipo.VerAdjunto;
+
+        private const PlanificacionFactory.tipo RA = PlanificacionFactory.tipo.RegistrarArchivo;
+        #endregion
+
+        #region "CAMPOS"
+        //IDENTIFICACION
+        public static PlanificacionFactory FactoryPlanificacion;
+        public static IPlanificacion IPlanificacion;
+        public SqlConnection ORM;
+        #endregion
+
+        #region "CONSTRUCTOR"
+        public PlanificacionController()
+        {
+            //IDENTIFICACION
+            FactoryPlanificacion = new PlanificacionFactory();
+            JsonResponse = string.Empty;
+            ORM = CapexInfraestructure.Utilities.Utils.Conectar();
+        }
+        #endregion
+
+        #region "METODOS IDENTIFICACION"
+        [Route("Ingreso",Name="Planificacion")]
+        public ActionResult Index()
+        {
+            if (!@User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Logout", "Login");
+            }
+            else
+            {
+                HttpContext.Session["CAPEX_SESS_USERNAME"] = @User.Identity.Name;
+            }
+            return View("Index");
+        }
+        /// <remark>
+        ///     
+        ///     ----------------------------------------------------------------------------
+        ///     GRUPO DE METODOS "Identificación"
+        ///     VERSION     0.0.1
+        ///     ----------------------------------------------------------------------------
+        ///     PROPOSITO
+        ///     ----------------------------------------------------------------------------
+        ///     IMPLEMENTAR ENTRADA Y SALIDA DE DATOS, ASI COMO OPERACIONES POR MEDIO
+        ///     DE PATRON CREACIONAL FACTORY QUE ES PROVISTO POR CAPA DDD DE INFRAESTRUCTURA
+        ///     
+        /// </remark>
+        /// 
+
+
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarProcesos()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LP);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_PROCESOS"] == null)
+                {
+                    JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarProcesos(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_PROCESOS", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_PROCESOS"];
+                    return Json(
+                       JsonResponse,
+                       JsonRequestBehavior.AllowGet
+                       );
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarAreas()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LA);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_AREAS"] == null)
+                {
+                    JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarAreas(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_AREAS", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                    );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_AREAS"];
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                    );
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// OBTENER LISTADO DE COMPAÑIAS
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarCompanias()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LC);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_COMPANIAS"] == null)
+                {
+                    JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarCompanias(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_COMPANIAS", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_COMPANIAS"];
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                    );
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// OBTENER LISTADO DE ETAPAS
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarEtapas()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LE);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_ETAPAS"] == null)
+                {
+                    JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarEtapas(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_ETAPAS", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                    );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_ETAPAS"];
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                    );
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// OBTENER LISTADO DE GERENCIAS
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarGerencias()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LG);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_GERENCIAS"] == null)
+                {
+                    string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarGerencias(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_GERENCIAS", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_GERENCIAS"];
+                    return Json(
+                       JsonResponse,
+                       JsonRequestBehavior.AllowGet
+                   );
+                }
+
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// OBTENER GERENTES
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <returns></returns>
+        [HttpGet]
+         public ActionResult ObtenerGerente(string Token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(OG);
+                string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ObtenerGerente(Token), Formatting.None);
+                return Json(
+                JsonResponse,
+                JsonRequestBehavior.AllowGet
+                );
+               
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// OBTENER ENCARGADOS
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ObtenerEncargado(int IdGerencia,int CodigoSuper)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(OE);
+                string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ObtenerEncargado(IdGerencia, CodigoSuper), Formatting.None);
+                return Json(
+                    JsonResponse,
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+
+        [HttpGet]
+        public ActionResult ListarSuperintendencias()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LI);
+                string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarSuperintendencias(), Formatting.None);
+                return Json(
+                    JsonResponse,
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// OBTENER INTENDENTE
+        /// </summary>
+        /// <param name="Token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ObtenerIntendente(string Token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(OI);
+                string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ObtenerIntendente(Token), Formatting.None);
+                return Json(
+                    JsonResponse,
+                    JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// GUARDAR IDENTIFICACION INICIATIVA
+        /// </summary>
+        /// <param name="Datos"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GuardarIdentificacion(Identificacion.IdentificacionIniciativa Datos)
+        {
+            string mensaje = String.Empty;
+            try
+            {
+                IPlanificacion  = FactoryPlanificacion.delega(GI);
+                var resultado   = IPlanificacion.GuardarIdentificacion(Datos);
+                string[] datos  = resultado.Split('|');
+
+                if (datos[0] == "Guardado")
+                {
+                    mensaje = string.Format("{0}|{1}|{2}", datos[0], datos[1], datos[2]);
+                    HttpContext.Session["_SESS_CAPEX_INCIATIVA_ID_"]    = datos[1];
+                    HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"] = datos[2];
+                    return Json(new { Mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO PARA ACTUALIZACION DE INICIATIVA
+        /// </summary>
+        /// <param name="Datos"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActualizarIdentificacion(Identificacion.IdentificacionIniciativa Datos)
+        {
+            string mensaje = String.Empty;
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GI);
+                var resultado = IPlanificacion.ActualizarIdentificacion(Datos);
+                string[] datos = resultado.Split('|');
+
+                if (datos[0] == "Actualizado")
+                {
+                    mensaje = string.Format("{0}|{1}|{2}", datos[0], datos[1], datos[2]);
+                    HttpContext.Session["_SESS_CAPEX_INCIATIVA_ID_"] = datos[1];
+                    HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"] = datos[2];
+                    return Json(new { Mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        #endregion
+
+        #region "METODOS CATEGORIZACION"
+        /// <remark>
+        ///     
+        ///     ----------------------------------------------------------------------------
+        ///     GRUPO DE METODOS "Categorizacion"
+        ///     VERSION     0.0.1
+        ///     ----------------------------------------------------------------------------
+        ///     PROPOSITO
+        ///     ----------------------------------------------------------------------------
+        ///     IMPLEMENTAR ENTRADA Y SALIDA DE DATOS, ASI COMO OPERACIONES POR MEDIO
+        ///     DE PATRON CREACIONAL FACTORY QUE ES PROVISTO POR CAPA DDD DE INFRAESTRUCTURA
+        ///     
+        /// </remark>
+        /// 
+
+        /// <summary>
+        /// LISTAR CATEGORIAS
+        /// </summary>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarCategorias()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LCAT);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_CATEGORIAS"] == null)
+                {
+                    string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarCategorias(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_CATEGORIAS", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_CATEGORIAS"];
+                    return Json(
+                       JsonResponse,
+                       JsonRequestBehavior.AllowGet
+                   );
+                }
+
+            }
+            catch (Exception exc)
+            {
+                return Redirect("Login");
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+
+        /// <summary>
+        /// LISTAR NIVELES DE INGENIERIA
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarNivelIngenieria()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LNII);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_NIVELINGENIERIA"] == null)
+                {
+                    string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarNivelIngenieria(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_NIVELINGENIERIA", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_NIVELINGENIERIA"];
+                    return Json(
+                       JsonResponse,
+                       JsonRequestBehavior.AllowGet
+                   );
+                }
+
+            }
+            catch (Exception exc)
+            {
+                string ExceptionResult = "ListarNivelIngenieria, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Redirect("Login");
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// LISTAR SSO
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarClasificacionSSO()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LSSO);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_SSO"] == null)
+                {
+                    string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarClasificacionSSO(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_SSO", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_SSO"];
+                    return Json(
+                       JsonResponse,
+                       JsonRequestBehavior.AllowGet
+                   );
+                }
+
+            }
+            catch (Exception exc)
+            {
+                string ExceptionResult = "ListarClasificacionSSO, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Redirect("Login");
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// LISTAR ESTANDARES DE SEGURIDAD
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ListarEstandarSeguridad(string EssComToken, string EssCSToken)
+        {
+            if (string.IsNullOrEmpty(EssComToken) || string.IsNullOrEmpty(EssCSToken))
+            {
+                return Redirect("Login");
+            }
+            else
+            {
+                try
+                {
+                    IPlanificacion = FactoryPlanificacion.delega(LESS);
+                    string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarEstandarSeguridad(EssComToken.ToString().Trim(), EssCSToken.ToString().Trim()), Formatting.None);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                catch (Exception exc)
+                {
+                    string ExceptionResult = "ListarEstandarSeguridad, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                    return Redirect("Login");
+                }
+                finally
+                {
+                    FactoryPlanificacion = null;
+                    IPlanificacion = null;
+                }
+            }
+        }
+        /// <summary>
+        /// LISTAR ESTANDARES DE SEGURIDAD
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ObtenerTokenCompania(string Tipo, string Valor)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(OTC);
+                string resultado = IPlanificacion.ObtenerTokenCompania(Tipo, Valor);
+                if (resultado != "Error")
+                {
+                    return Json(new { Mensaje = resultado.ToString().Trim() }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        ///  METODO PARA SUBIR ARCHIVO DE RESPALDO PARA DESARROLLO
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SubirArchivoDesarrollo()
+        {
+            string resultado = string.Empty;
+            if (string.IsNullOrEmpty(Convert.ToString(HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"])))
+            {
+                resultado = "ERROR";
+                return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                try
+                {
+                    string token = HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"].ToString();
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        HttpPostedFileBase file = Request.Files[i];
+                        int fileSize = file.ContentLength;
+                        string fileName = file.FileName;
+                        string mimeType = file.ContentType;
+                        System.IO.Stream fileContent = file.InputStream;
+
+                        string path = Server.MapPath("Scripts/Files/Iniciativas/Categorizacion/" + token);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        var donde = Path.Combine(Server.MapPath("Scripts/Files/Iniciativas/Categorizacion/" + token), fileName);
+                        file.SaveAs(donde);
+                        resultado = "OK";
+                    }
+                    return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception exc)
+                {
+                    return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+        /// <summary>
+        /// METODO PARA SUBIR ARCHIVO DE ANALISIS DE BAJA COMPLEJIDAD
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SubirArchivoBajaComplejidad()
+        {
+            string resultado = string.Empty;
+            if (string.IsNullOrEmpty(Convert.ToString(HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"])))
+            {
+                resultado = "ERROR";
+                return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                try
+                {
+                    string token = HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"].ToString();
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        HttpPostedFileBase file = Request.Files[i];
+                        int fileSize = file.ContentLength;
+                        string fileName = file.FileName;
+                        string mimeType = file.ContentType;
+                        System.IO.Stream fileContent = file.InputStream;
+
+                        string path = Server.MapPath("Scripts/Files/Iniciativas/Categorizacion/" + token);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        var donde = Path.Combine(Server.MapPath("Scripts/Files/Iniciativas/Categorizacion/" + token), fileName);
+                        file.SaveAs(donde);
+                        resultado = "OK";
+                    }
+                    return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception exc)
+                {
+                    return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+        /// <summary>
+        /// METODO GUARDAR CATEGORIZACION
+        /// </summary>
+        /// <param name="Datos"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GuardarCategorizacion(Categorizacion.DatosCategorizacion Datos)
+        {
+
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GCAT);
+                string resultado = IPlanificacion.GuardarCategorizacion(Datos);
+                if (resultado == "Guardado")
+                {
+                    return Json(new { Mensaje = "Guardado" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO ACTUALIZAR CATEGORIZACION
+        /// </summary>
+        /// <param name="Datos"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActualizarCategorizacion(Categorizacion.DatosCategorizacion Datos)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GCAT);
+                string resultado = IPlanificacion.ActualizarCategorizacion(Datos);
+                if (resultado == "Actualizado")
+                {
+                    return Json(new { Mensaje = "Actualizado" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        ///  REGISTRO DE ARCHIVOS EN DB
+        /// </summary>
+        /// <param name="IniToken"></param>
+        /// <param name="ParUsuario"></param>
+        /// <param name="ParNombre"></param>
+        /// <param name="ParPaso"></param>
+        /// <param name="ParCaso"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult RegistrarArchivo(string IniToken, string ParUsuario, string ParNombre, string ParPaso, string ParCaso)
+        {
+
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(RA);
+                string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.RegistrarArchivo(IniToken, ParUsuario, ParNombre, ParPaso, ParCaso), Formatting.None);
+                return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString()}, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+
+        }
+        /// <summary>
+        /// ACTUALIZA ETAPA EN INICIATIVA GUARDADA
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="etapa"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActualizarEtapa(string token, string etapa)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(AEA);
+                string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ActualizarEtapa(token,etapa), Formatting.None);
+                return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        #endregion
+
+        #region "METODOS PRESUPUESTO"
+        /// <remark>
+        ///     
+        ///     ----------------------------------------------------------------------------
+        ///     GRUPO DE METODOS "Presupuesto"
+        ///     VERSION     0.0.1
+        ///     ----------------------------------------------------------------------------
+        ///     PROPOSITO
+        ///     ----------------------------------------------------------------------------
+        ///     IMPLEMENTAR ENTRADA Y SALIDA DE DATOS, ASI COMO OPERACIONES POR MEDIO
+        ///     DE PATRON CREACIONAL FACTORY QUE ES PROVISTO POR CAPA DDD DE INFRAESTRUCTURA
+        ///     
+        /// </remark>
+        /// 
+        public JsonResult SubirTemplatePresupuesto()
+        {
+            string resultado = string.Empty;
+            try
+            {
+                if (string.IsNullOrEmpty(Convert.ToString(HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"])))
+                {
+                    resultado = "ERROR";
+                    return Json(new { Resultado = resultado });
+                }
+                else {
+                    string token = HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"].ToString();
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        HttpPostedFileBase file = Request.Files[i];
+                        int fileSize = file.ContentLength;
+                        string fileName = file.FileName;
+                        string mimeType = file.ContentType;
+                        System.IO.Stream fileContent = file.InputStream;
+
+                        string path = Server.MapPath("Scripts/Import/" + token);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        var donde = Path.Combine(Server.MapPath("Scripts/Import/" + token), fileName);
+                        file.SaveAs(donde);
+                        resultado = "OK";
+                    }
+                    return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        /// <summary>
+        /// PROCESO TEMPLATE
+        /// NOTA: TRASPASO DE BUSINESS A CONTROLLER POR CAMBIO SOLICITADO CLIENTE PARA ADOPCION DE AZURE STORAGE
+        ///       ANULACION DE INTERFAZ "IPlanificacion"
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="usuario"></param>
+        /// <param name="archivo"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ProcesarTemplatePresupuesto(string token, string usuario,string archivo, string tipo)
+        {
+            try
+            {
+                if (tipo == "CB" || tipo == "CD")
+                {
+                    string json = JsonConvert.SerializeObject(ImportarTemplateCasoBase(token, usuario, archivo), Formatting.None);
+                    return Json(
+                        json,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    IPlanificacion = FactoryPlanificacion.delega(IT);
+                    string json = JsonConvert.SerializeObject(ImportarTemplate(token, usuario, archivo), Formatting.None);
+                    return Json(
+                        json,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// IMPORTACION - CASO BASE 
+        /// NOTA: TRASPASO DE BUSINESS A CONTROLLER POR CAMBIO SOLICITADO CLIENTE PARA ADOPCION DE AZURE STORAGE
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="usuario"></param>
+        /// <param name="archivo"></param>
+        /// <returns></returns>
+        public string ImportarTemplateCasoBase(string token, string usuario, string archivo)
+        {
+
+            /*-------------------------- CONFIGURAR --------------------------------*/
+            List<String> registro = new List<String>();
+
+            //string path = ConfigurationManager.AppSettings.Get("CAPEX_IMPOR_PATH");
+            //var workbook = new XLWorkbook(path + token + "\\" + archivo);
+            string ruta = Path.Combine(Server.MapPath("Scripts/Import/" + token), archivo);
+            var workbook = new XLWorkbook(ruta);
+
+            /*-------------------------- FINANCIERO --------------------------------*/
+            var ws = workbook.Worksheet(2);
+            /*-------------------------- ESTRUCTURAR --------------------------------*/
+
+            for (int i = 5; i < 12; i++)
+            {
+                registro.Add(token);
+                registro.Add(usuario);
+                registro.Add(ws.Cell(i, 1).Value.ToString());
+
+                if (!string.IsNullOrEmpty(ws.Cell(i, 2).Value.ToString()))
+                {
+                    decimal d01 = decimal.Parse(ws.Cell(i, 2).Value.ToString()) * 100;
+                    string sd01 = d01.ToString("0.0");
+                    registro.Add(sd01);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+                registro.Add(ws.Cell(i, 3).Value.ToString());
+                registro.Add(ws.Cell(i, 4).Value.ToString());//ENE
+                registro.Add(ws.Cell(i, 5).Value.ToString());
+                registro.Add(ws.Cell(i, 6).Value.ToString());
+                registro.Add(ws.Cell(i, 7).Value.ToString());
+                registro.Add(ws.Cell(i, 8).Value.ToString());
+                registro.Add(ws.Cell(i, 9).Value.ToString());
+                registro.Add(ws.Cell(i, 10).Value.ToString());
+                registro.Add(ws.Cell(i, 11).Value.ToString());
+                registro.Add(ws.Cell(i, 12).Value.ToString());
+                registro.Add(ws.Cell(i, 13).Value.ToString());
+                registro.Add(ws.Cell(i, 14).Value.ToString());
+                registro.Add(ws.Cell(i, 15).Value.ToString());//DIC
+
+                registro.Add(ws.Cell(i, 16).Value.ToString());//TOTAL
+                registro.Add(ws.Cell(i, 17).Value.ToString());//2021
+                registro.Add(ws.Cell(i, 18).Value.ToString());//2022
+                registro.Add(ws.Cell(i, 19).Value.ToString());//2023
+                registro.Add(ws.Cell(i, 20).Value.ToString());//2024
+
+                //
+                // CASO BASE
+                //
+                //2025 - 2034
+
+                registro.Add(ws.Cell(i, 21).Value.ToString());
+                registro.Add(ws.Cell(i, 22).Value.ToString());
+                registro.Add(ws.Cell(i, 23).Value.ToString());
+                registro.Add(ws.Cell(i, 24).Value.ToString());
+                registro.Add(ws.Cell(i, 25).Value.ToString());
+                registro.Add(ws.Cell(i, 26).Value.ToString());
+                registro.Add(ws.Cell(i, 27).Value.ToString());
+                registro.Add(ws.Cell(i, 28).Value.ToString());
+                registro.Add(ws.Cell(i, 29).Value.ToString());
+                registro.Add(ws.Cell(i, 30).Value.ToString());
+
+                //2035 - 2044
+                registro.Add(ws.Cell(i, 31).Value.ToString());
+                registro.Add(ws.Cell(i, 32).Value.ToString());
+                registro.Add(ws.Cell(i, 33).Value.ToString());
+                registro.Add(ws.Cell(i, 34).Value.ToString());
+                registro.Add(ws.Cell(i, 35).Value.ToString());
+                registro.Add(ws.Cell(i, 36).Value.ToString());
+                registro.Add(ws.Cell(i, 37).Value.ToString());
+                registro.Add(ws.Cell(i, 38).Value.ToString());
+                registro.Add(ws.Cell(i, 39).Value.ToString());
+                registro.Add(ws.Cell(i, 40).Value.ToString());
+                //2045 - 2054
+                registro.Add(ws.Cell(i, 41).Value.ToString());
+                registro.Add(ws.Cell(i, 42).Value.ToString());
+                registro.Add(ws.Cell(i, 43).Value.ToString());
+                registro.Add(ws.Cell(i, 44).Value.ToString());
+                registro.Add(ws.Cell(i, 45).Value.ToString());
+                registro.Add(ws.Cell(i, 46).Value.ToString());
+                registro.Add(ws.Cell(i, 47).Value.ToString());
+                registro.Add(ws.Cell(i, 48).Value.ToString());
+                registro.Add(ws.Cell(i, 49).Value.ToString());
+                registro.Add(ws.Cell(i, 50).Value.ToString());
+
+                //2055 - 2064
+                registro.Add(ws.Cell(i, 51).Value.ToString());
+                registro.Add(ws.Cell(i, 52).Value.ToString());
+                registro.Add(ws.Cell(i, 53).Value.ToString());
+                registro.Add(ws.Cell(i, 54).Value.ToString());
+                registro.Add(ws.Cell(i, 55).Value.ToString());
+                registro.Add(ws.Cell(i, 56).Value.ToString());
+                registro.Add(ws.Cell(i, 57).Value.ToString());
+                registro.Add(ws.Cell(i, 58).Value.ToString());
+                registro.Add(ws.Cell(i, 59).Value.ToString());
+                registro.Add(ws.Cell(i, 60).Value.ToString());
+
+                //2065 - 2074
+                registro.Add(ws.Cell(i, 61).Value.ToString());
+                registro.Add(ws.Cell(i, 62).Value.ToString());
+                registro.Add(ws.Cell(i, 63).Value.ToString());
+                registro.Add(ws.Cell(i, 64).Value.ToString());
+                registro.Add(ws.Cell(i, 65).Value.ToString());
+                registro.Add(ws.Cell(i, 66).Value.ToString());
+                registro.Add(ws.Cell(i, 67).Value.ToString());
+                registro.Add(ws.Cell(i, 68).Value.ToString());
+                registro.Add(ws.Cell(i, 69).Value.ToString());
+                registro.Add(ws.Cell(i, 70).Value.ToString());
+
+                //2075 - 2084
+                registro.Add(ws.Cell(i, 71).Value.ToString());
+                registro.Add(ws.Cell(i, 72).Value.ToString());
+                registro.Add(ws.Cell(i, 73).Value.ToString());
+                registro.Add(ws.Cell(i, 74).Value.ToString());
+                registro.Add(ws.Cell(i, 75).Value.ToString());
+                registro.Add(ws.Cell(i, 76).Value.ToString());
+                registro.Add(ws.Cell(i, 77).Value.ToString());
+                registro.Add(ws.Cell(i, 78).Value.ToString());
+                registro.Add(ws.Cell(i, 79).Value.ToString());
+                registro.Add(ws.Cell(i, 80).Value.ToString());
+
+                //2085 - 2094
+                registro.Add(ws.Cell(i, 81).Value.ToString());
+                registro.Add(ws.Cell(i, 82).Value.ToString());
+                registro.Add(ws.Cell(i, 83).Value.ToString());
+                registro.Add(ws.Cell(i, 84).Value.ToString());
+                registro.Add(ws.Cell(i, 85).Value.ToString());
+                registro.Add(ws.Cell(i, 96).Value.ToString());
+                registro.Add(ws.Cell(i, 87).Value.ToString());
+                registro.Add(ws.Cell(i, 88).Value.ToString());
+                registro.Add(ws.Cell(i, 89).Value.ToString());
+                registro.Add(ws.Cell(i, 90).Value.ToString());
+
+                //2095 - 2100
+                registro.Add(ws.Cell(i, 91).Value.ToString());
+                registro.Add(ws.Cell(i, 92).Value.ToString());
+                registro.Add(ws.Cell(i, 93).Value.ToString());
+                registro.Add(ws.Cell(i, 94).Value.ToString());
+                registro.Add(ws.Cell(i, 95).Value.ToString());
+                registro.Add(ws.Cell(i, 96).Value.ToString());
+                registro.Add(ws.Cell(i, 97).Value.ToString());
+                registro.Add(ws.Cell(i, 98).Value.ToString());
+
+                InsertarInformacionFinancieraCasoBase(registro);
+                registro.Clear();
+
+            }
+            /*-------------------------- FINANCIERO RESUMEN--------------------------------*/
+            for (int X = 15; X < 17; X++)
+            {
+                registro.Add(token);
+                registro.Add(usuario);
+                registro.Add(ws.Cell(X, 1).Value.ToString());
+                if (!string.IsNullOrEmpty(ws.Cell(X, 2).Value.ToString()))
+                {
+                    decimal p02 = decimal.Parse(ws.Cell(X, 2).Value.ToString()) * 100;
+                    string sp02 = p02.ToString("0.0");
+                    registro.Add(sp02);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+                if (!string.IsNullOrEmpty(ws.Cell(X, 3).Value.ToString()))
+                {
+                    decimal p03 = decimal.Parse(ws.Cell(X, 3).Value.ToString()) * 100;
+                    string sp03 = p03.ToString("0.0");
+                    registro.Add(sp03);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+                InsertarInformacionFinancieraResumidaCasoBase(registro);
+                registro.Clear();
+            }
+            /*-------------------------- FISICO --------------------------------*/
+            var ws1 = workbook.Worksheet(3);
+            /*-------------------------- ESTRUCTURAR --------------------------------*/
+
+            for (int e = 5; e < 10; e++)
+            {
+                registro.Add(token);
+                registro.Add(usuario);
+                registro.Add(ws1.Cell(e, 1).Value.ToString());
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 2).Value.ToString()))
+                {
+                    decimal t01 = decimal.Parse(ws1.Cell(e, 2).Value.ToString()) * 100;
+                    string st01 = t01.ToString("0.0");
+                    registro.Add(st01);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 3).Value.ToString()))
+                {
+                    decimal t03 = decimal.Parse(ws1.Cell(e, 3).Value.ToString()) * 100;
+                    string st03 = t03.ToString("0.0");
+                    registro.Add(st03);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 4).Value.ToString()))
+                {
+                    decimal t04 = decimal.Parse(ws1.Cell(e, 4).Value.ToString()) * 100;
+                    string st04 = t04.ToString("0.0");
+                    registro.Add(st04);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 5).Value.ToString()))
+                {
+                    decimal t05 = decimal.Parse(ws1.Cell(e, 5).Value.ToString()) * 100;
+                    string st05 = t05.ToString("0.0");
+                    registro.Add(st05);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 6).Value.ToString()))
+                {
+                    decimal t06 = decimal.Parse(ws1.Cell(e, 6).Value.ToString()) * 100;
+                    string st06 = t06.ToString("0.0");
+                    registro.Add(st06);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 7).Value.ToString()))
+                {
+                    decimal t07 = decimal.Parse(ws1.Cell(e, 7).Value.ToString()) * 100;
+                    string st07 = t07.ToString("0.0");
+                    registro.Add(st07);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 8).Value.ToString()))
+                {
+                    decimal t08 = decimal.Parse(ws1.Cell(e, 8).Value.ToString()) * 100;
+                    string st08 = t08.ToString("0.0");
+                    registro.Add(st08);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 9).Value.ToString()))
+                {
+                    decimal t09 = decimal.Parse(ws1.Cell(e, 9).Value.ToString()) * 100;
+                    string st09 = t09.ToString("0.0");
+                    registro.Add(st09);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 10).Value.ToString()))
+                {
+                    decimal t10 = decimal.Parse(ws1.Cell(e, 10).Value.ToString()) * 100;
+                    string st10 = t10.ToString("0.0");
+                    registro.Add(st10);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 11).Value.ToString()))
+                {
+                    decimal t11 = decimal.Parse(ws1.Cell(e, 11).Value.ToString()) * 100;
+                    string st11 = t11.ToString("0.0");
+                    registro.Add(st11);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 12).Value.ToString()))
+                {
+                    decimal t12 = decimal.Parse(ws1.Cell(e, 12).Value.ToString()) * 100;
+                    string st12 = t12.ToString("0.0");
+                    registro.Add(st12);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 13).Value.ToString()))
+                {
+                    decimal t13 = decimal.Parse(ws1.Cell(e, 13).Value.ToString()) * 100;
+                    string st13 = t13.ToString("0.0");
+                    registro.Add(st13);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 14).Value.ToString()))
+                {
+                    decimal t14 = decimal.Parse(ws1.Cell(e, 14).Value.ToString()) * 100;
+                    string st14 = t14.ToString("0.0");
+                    registro.Add(st14);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 15).Value.ToString()))
+                {
+                    decimal t15 = decimal.Parse(ws1.Cell(e, 15).Value.ToString()) * 100;
+                    string st15 = t15.ToString("0.0");
+                    registro.Add(st15);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 16).Value.ToString()))
+                {
+                    decimal t16 = decimal.Parse(ws1.Cell(e, 16).Value.ToString()) * 100;
+                    string st16 = t16.ToString("0.0");
+                    registro.Add(st16);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 17).Value.ToString()))
+                {
+                    decimal t17 = decimal.Parse(ws1.Cell(e, 17).Value.ToString()) * 100;
+                    string st17 = t17.ToString("0.0");
+                    registro.Add(st17);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 18).Value.ToString()))
+                {
+                    decimal t18 = decimal.Parse(ws1.Cell(e, 18).Value.ToString()) * 100;
+                    string st18 = t18.ToString("0.0");
+                    registro.Add(st18);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 19).Value.ToString()))
+                {
+                    decimal t19 = decimal.Parse(ws1.Cell(e, 19).Value.ToString()) * 100;
+                    string st19 = t19.ToString("0.0");
+                    registro.Add(st19);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 20).Value.ToString()))
+                {
+                    decimal t20 = decimal.Parse(ws1.Cell(e, 20).Value.ToString()) * 100;
+                    string st20 = t20.ToString("0.0");
+                    registro.Add(st20);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+                ///
+                /// 21-30
+                ///
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 21).Value.ToString()))
+                {
+                    decimal t21 = decimal.Parse(ws1.Cell(e, 21).Value.ToString()) * 100;
+                    string st21 = t21.ToString("0.0");
+                    registro.Add(st21);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 22).Value.ToString()))
+                {
+                    decimal t22 = decimal.Parse(ws1.Cell(e, 22).Value.ToString()) * 100;
+                    string st22 = t22.ToString("0.0");
+                    registro.Add(st22);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 23).Value.ToString()))
+                {
+                    decimal t23 = decimal.Parse(ws1.Cell(e, 23).Value.ToString()) * 100;
+                    string st23 = t23.ToString("0.0");
+                    registro.Add(st23);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 24).Value.ToString()))
+                {
+                    decimal t24 = decimal.Parse(ws1.Cell(e, 24).Value.ToString()) * 100;
+                    string st24 = t24.ToString("0.0");
+                    registro.Add(st24);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 25).Value.ToString()))
+                {
+                    decimal t25 = decimal.Parse(ws1.Cell(e, 25).Value.ToString()) * 100;
+                    string st25 = t25.ToString("0.0");
+                    registro.Add(st25);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 26).Value.ToString()))
+                {
+                    decimal t26 = decimal.Parse(ws1.Cell(e, 26).Value.ToString()) * 100;
+                    string st26 = t26.ToString("0.0");
+                    registro.Add(st26);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 27).Value.ToString()))
+                {
+                    decimal t27 = decimal.Parse(ws1.Cell(e, 27).Value.ToString()) * 100;
+                    string st27 = t27.ToString("0.0");
+                    registro.Add(st27);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 28).Value.ToString()))
+                {
+                    decimal t28 = decimal.Parse(ws1.Cell(e, 28).Value.ToString()) * 100;
+                    string st28 = t28.ToString("0.0");
+                    registro.Add(st28);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 29).Value.ToString()))
+                {
+                    decimal t29 = decimal.Parse(ws1.Cell(e, 29).Value.ToString()) * 100;
+                    string st29 = t29.ToString("0.0");
+                    registro.Add(st29);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 30).Value.ToString()))
+                {
+                    decimal t30 = decimal.Parse(ws1.Cell(e, 30).Value.ToString()) * 100;
+                    string st30 = t30.ToString("0.0");
+                    registro.Add(st30);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+                ///
+                /// 31-40
+                ///
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 31).Value.ToString()))
+                {
+                    decimal t31 = decimal.Parse(ws1.Cell(e, 31).Value.ToString()) * 100;
+                    string st31 = t31.ToString("0.0");
+                    registro.Add(st31);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 32).Value.ToString()))
+                {
+                    decimal t32 = decimal.Parse(ws1.Cell(e, 32).Value.ToString()) * 100;
+                    string st32 = t32.ToString("0.0");
+                    registro.Add(st32);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 33).Value.ToString()))
+                {
+                    decimal t33 = decimal.Parse(ws1.Cell(e, 33).Value.ToString()) * 100;
+                    string st33 = t33.ToString("0.0");
+                    registro.Add(st33);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 34).Value.ToString()))
+                {
+                    decimal t34 = decimal.Parse(ws1.Cell(e, 34).Value.ToString()) * 100;
+                    string st34 = t34.ToString("0.0");
+                    registro.Add(st34);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 35).Value.ToString()))
+                {
+                    decimal t35 = decimal.Parse(ws1.Cell(e, 35).Value.ToString()) * 100;
+                    string st35 = t35.ToString("0.0");
+                    registro.Add(st35);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 36).Value.ToString()))
+                {
+                    decimal t36 = decimal.Parse(ws1.Cell(e, 36).Value.ToString()) * 100;
+                    string st36 = t36.ToString("0.0");
+                    registro.Add(st36);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 37).Value.ToString()))
+                {
+                    decimal t37 = decimal.Parse(ws1.Cell(e, 37).Value.ToString()) * 100;
+                    string st37 = t37.ToString("0.0");
+                    registro.Add(st37);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 38).Value.ToString()))
+                {
+                    decimal t38 = decimal.Parse(ws1.Cell(e, 38).Value.ToString()) * 100;
+                    string st38 = t38.ToString("0.0");
+                    registro.Add(st38);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 39).Value.ToString()))
+                {
+                    decimal t39 = decimal.Parse(ws1.Cell(e, 39).Value.ToString()) * 100;
+                    string st39 = t39.ToString("0.0");
+                    registro.Add(st39);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 40).Value.ToString()))
+                {
+
+                    decimal t40 = decimal.Parse(ws1.Cell(e, 40).Value.ToString()) * 100;
+                    string st40 = t40.ToString("0.0");
+                    registro.Add(st40);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 41).Value.ToString()))
+                {
+                    decimal t41 = decimal.Parse(ws1.Cell(e, 41).Value.ToString()) * 100;
+                    string st41 = t41.ToString("0.0");
+                    registro.Add(st41);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 42).Value.ToString()))
+                {
+                    decimal t42 = decimal.Parse(ws1.Cell(e, 42).Value.ToString()) * 100;
+                    string st42 = t42.ToString("0.0");
+                    registro.Add(st42);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 43).Value.ToString()))
+                {
+                    decimal t43 = decimal.Parse(ws1.Cell(e, 43).Value.ToString()) * 100;
+                    string st43 = t43.ToString("0.0");
+                    registro.Add(st43);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 44).Value.ToString()))
+                {
+                    decimal t44 = decimal.Parse(ws1.Cell(e, 44).Value.ToString()) * 100;
+                    string st44 = t44.ToString("0.0");
+                    registro.Add(st44);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 45).Value.ToString()))
+                {
+                    decimal t45 = decimal.Parse(ws1.Cell(e, 45).Value.ToString()) * 100;
+                    string st45 = t45.ToString("0.0");
+                    registro.Add(st45);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 46).Value.ToString()))
+                {
+                    decimal t46 = decimal.Parse(ws1.Cell(e, 46).Value.ToString()) * 100;
+                    string st46 = t46.ToString("0.0");
+                    registro.Add(st46);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 47).Value.ToString()))
+                {
+                    decimal t47 = decimal.Parse(ws1.Cell(e, 47).Value.ToString()) * 100;
+                    string st47 = t47.ToString("0.0");
+                    registro.Add(st47);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 48).Value.ToString()))
+                {
+                    decimal t48 = decimal.Parse(ws1.Cell(e, 48).Value.ToString()) * 100;
+                    string st48 = t48.ToString("0.0");
+                    registro.Add(st48);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 49).Value.ToString()))
+                {
+                    decimal t49 = decimal.Parse(ws1.Cell(e, 49).Value.ToString()) * 100;
+                    string st49 = t49.ToString("0.0");
+                    registro.Add(st49);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 50).Value.ToString()))
+                {
+                    decimal t50 = decimal.Parse(ws1.Cell(e, 50).Value.ToString()) * 100;
+                    string st50 = t50.ToString("0.0");
+                    registro.Add(st50);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+                ///
+                /// 51-60
+                ///
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 51).Value.ToString()))
+                {
+                    decimal t51 = decimal.Parse(ws1.Cell(e, 51).Value.ToString()) * 100;
+                    string st51 = t51.ToString("0.0");
+                    registro.Add(st51);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 52).Value.ToString()))
+                {
+                    decimal t52 = decimal.Parse(ws1.Cell(e, 52).Value.ToString()) * 100;
+                    string st52 = t52.ToString("0.0");
+                    registro.Add(st52);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 53).Value.ToString()))
+                {
+                    decimal t53 = decimal.Parse(ws1.Cell(e, 53).Value.ToString()) * 100;
+                    string st53 = t53.ToString("0.0");
+                    registro.Add(st53);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 54).Value.ToString()))
+                {
+                    decimal t54 = decimal.Parse(ws1.Cell(e, 54).Value.ToString()) * 100;
+                    string st54 = t54.ToString("0.0");
+                    registro.Add(st54);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 55).Value.ToString()))
+                {
+                    decimal t55 = decimal.Parse(ws1.Cell(e, 55).Value.ToString()) * 100;
+                    string st55 = t55.ToString("0.0");
+                    registro.Add(st55);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 56).Value.ToString()))
+                {
+                    decimal t56 = decimal.Parse(ws1.Cell(e, 56).Value.ToString()) * 100;
+                    string st56 = t56.ToString("0.0");
+                    registro.Add(st56);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 57).Value.ToString()))
+                {
+                    decimal t57 = decimal.Parse(ws1.Cell(e, 57).Value.ToString()) * 100;
+                    string st57 = t57.ToString("0.0");
+                    registro.Add(st57);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 58).Value.ToString()))
+                {
+                    decimal t58 = decimal.Parse(ws1.Cell(e, 58).Value.ToString()) * 100;
+                    string st58 = t58.ToString("0.0");
+                    registro.Add(st58);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 59).Value.ToString()))
+                {
+                    decimal t59 = decimal.Parse(ws1.Cell(e, 59).Value.ToString()) * 100;
+                    string st59 = t59.ToString("0.0");
+                    registro.Add(st59);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 60).Value.ToString()))
+                {
+                    decimal t60 = decimal.Parse(ws1.Cell(e, 60).Value.ToString()) * 100;
+                    string st60 = t60.ToString("0.0");
+                    registro.Add(st60);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                ///
+                /// 61-70
+                ///
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 61).Value.ToString()))
+                {
+                    decimal t61 = decimal.Parse(ws1.Cell(e, 61).Value.ToString()) * 100;
+                    string st61 = t61.ToString("0.0");
+                    registro.Add(st61);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 62).Value.ToString()))
+                {
+                    decimal t62 = decimal.Parse(ws1.Cell(e, 62).Value.ToString()) * 100;
+                    string st62 = t62.ToString("0.0");
+                    registro.Add(st62);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 63).Value.ToString()))
+                {
+                    decimal t63 = decimal.Parse(ws1.Cell(e, 63).Value.ToString()) * 100;
+                    string st63 = t63.ToString("0.0");
+                    registro.Add(st63);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 64).Value.ToString()))
+                {
+                    decimal t64 = decimal.Parse(ws1.Cell(e, 64).Value.ToString()) * 100;
+                    string st64 = t64.ToString("0.0");
+                    registro.Add(st64);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 65).Value.ToString()))
+                {
+                    decimal t65 = decimal.Parse(ws1.Cell(e, 65).Value.ToString()) * 100;
+                    string st65 = t65.ToString("0.0");
+                    registro.Add(st65);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 66).Value.ToString()))
+                {
+                    decimal t66 = decimal.Parse(ws1.Cell(e, 66).Value.ToString()) * 100;
+                    string st66 = t66.ToString("0.0");
+                    registro.Add(st66);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 67).Value.ToString()))
+                {
+                    decimal t67 = decimal.Parse(ws1.Cell(e, 67).Value.ToString()) * 100;
+                    string st67 = t67.ToString("0.0");
+                    registro.Add(st67);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 68).Value.ToString()))
+                {
+                    decimal t68 = decimal.Parse(ws1.Cell(e, 68).Value.ToString()) * 100;
+                    string st68 = t68.ToString("0.0");
+                    registro.Add(st68);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 69).Value.ToString()))
+                {
+                    decimal t69 = decimal.Parse(ws1.Cell(e, 69).Value.ToString()) * 100;
+                    string st69 = t69.ToString("0.0");
+                    registro.Add(st69);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 70).Value.ToString()))
+                {
+                    decimal t70 = decimal.Parse(ws1.Cell(e, 70).Value.ToString()) * 100;
+                    string st70 = t70.ToString("0.0");
+                    registro.Add(st70);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                ///
+                /// 71-80
+                ///
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 71).Value.ToString()))
+                {
+                    decimal t71 = decimal.Parse(ws1.Cell(e, 71).Value.ToString()) * 100;
+                    string st71 = t71.ToString("0.0");
+                    registro.Add(st71);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 72).Value.ToString()))
+                {
+                    decimal t72 = decimal.Parse(ws1.Cell(e, 72).Value.ToString()) * 100;
+                    string st72 = t72.ToString("0.0");
+                    registro.Add(st72);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 73).Value.ToString()))
+                {
+                    decimal t73 = decimal.Parse(ws1.Cell(e, 73).Value.ToString()) * 100;
+                    string st73 = t73.ToString("0.0");
+                    registro.Add(st73);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 74).Value.ToString()))
+                {
+                    decimal t74 = decimal.Parse(ws1.Cell(e, 74).Value.ToString()) * 100;
+                    string st74 = t74.ToString("0.0");
+                    registro.Add(st74);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 75).Value.ToString()))
+                {
+                    decimal t75 = decimal.Parse(ws1.Cell(e, 75).Value.ToString()) * 100;
+                    string st75 = t75.ToString("0.0");
+                    registro.Add(st75);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 76).Value.ToString()))
+                {
+                    decimal t76 = decimal.Parse(ws1.Cell(e, 76).Value.ToString()) * 100;
+                    string st76 = t76.ToString("0.0");
+                    registro.Add(st76);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 77).Value.ToString()))
+                {
+                    decimal t77 = decimal.Parse(ws1.Cell(e, 77).Value.ToString()) * 100;
+                    string st77 = t77.ToString("0.0");
+                    registro.Add(st77);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 78).Value.ToString()))
+                {
+                    decimal t78 = decimal.Parse(ws1.Cell(e, 78).Value.ToString()) * 100;
+                    string st78 = t78.ToString("0.0");
+                    registro.Add(st78);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 79).Value.ToString()))
+                {
+                    decimal t79 = decimal.Parse(ws1.Cell(e, 79).Value.ToString()) * 100;
+                    string st79 = t79.ToString("0.0");
+                    registro.Add(st79);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 80).Value.ToString()))
+                {
+                    decimal t80 = decimal.Parse(ws1.Cell(e, 80).Value.ToString()) * 100;
+                    string st80 = t80.ToString("0.0");
+                    registro.Add(st80);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+
+                ///
+                /// 81-90
+                ///
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 81).Value.ToString()))
+                {
+                    decimal t81 = decimal.Parse(ws1.Cell(e, 81).Value.ToString()) * 100;
+                    string st81 = t81.ToString("0.0");
+                    registro.Add(st81);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 82).Value.ToString()))
+                {
+                    decimal t82 = decimal.Parse(ws1.Cell(e, 82).Value.ToString()) * 100;
+                    string st82 = t82.ToString("0.0");
+                    registro.Add(st82);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 83).Value.ToString()))
+                {
+                    decimal t83 = decimal.Parse(ws1.Cell(e, 83).Value.ToString()) * 100;
+                    string st83 = t83.ToString("0.0");
+                    registro.Add(st83);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 84).Value.ToString()))
+                {
+                    decimal t84 = decimal.Parse(ws1.Cell(e, 84).Value.ToString()) * 100;
+                    string st84 = t84.ToString("0.0");
+                    registro.Add(st84);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 85).Value.ToString()))
+                {
+                    decimal t85 = decimal.Parse(ws1.Cell(e, 85).Value.ToString()) * 100;
+                    string st85 = t85.ToString("0.0");
+                    registro.Add(st85);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 86).Value.ToString()))
+                {
+                    decimal t86 = decimal.Parse(ws1.Cell(e, 86).Value.ToString()) * 100;
+                    string st86 = t86.ToString("0.0");
+                    registro.Add(st86);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 87).Value.ToString()))
+                {
+                    decimal t87 = decimal.Parse(ws1.Cell(e, 87).Value.ToString()) * 100;
+                    string st87 = t87.ToString("0.0");
+                    registro.Add(st87);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 88).Value.ToString()))
+                {
+                    decimal t88 = decimal.Parse(ws1.Cell(e, 88).Value.ToString()) * 100;
+                    string st88 = t88.ToString("0.0");
+                    registro.Add(st88);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 89).Value.ToString()))
+                {
+                    decimal t89 = decimal.Parse(ws1.Cell(e, 89).Value.ToString()) * 100;
+                    string st89 = t89.ToString("0.0");
+                    registro.Add(st89);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 90).Value.ToString()))
+                {
+                    decimal t90 = decimal.Parse(ws1.Cell(e, 90).Value.ToString()) * 100;
+                    string st90 = t90.ToString("0.0");
+                    registro.Add(st90);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                ///
+                /// 91-100
+                ///
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 91).Value.ToString()))
+                {
+                    decimal t91 = decimal.Parse(ws1.Cell(e, 91).Value.ToString()) * 100;
+                    string st91 = t91.ToString("0.0");
+                    registro.Add(st91);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 92).Value.ToString()))
+                {
+                    decimal t92 = decimal.Parse(ws1.Cell(e, 92).Value.ToString()) * 100;
+                    string st92 = t92.ToString("0.0");
+                    registro.Add(st92);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 93).Value.ToString()))
+                {
+                    decimal t93 = decimal.Parse(ws1.Cell(e, 93).Value.ToString()) * 100;
+                    string st93 = t93.ToString("0.0");
+                    registro.Add(st93);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 94).Value.ToString()))
+                {
+                    decimal t94 = decimal.Parse(ws1.Cell(e, 94).Value.ToString()) * 100;
+                    string st94 = t94.ToString("0.0");
+                    registro.Add(st94);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 95).Value.ToString()))
+                {
+                    decimal t95 = decimal.Parse(ws1.Cell(e, 95).Value.ToString()) * 100;
+                    string st95 = t95.ToString("0.0");
+                    registro.Add(st95);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 96).Value.ToString()))
+                {
+                    decimal t96 = decimal.Parse(ws1.Cell(e, 96).Value.ToString()) * 100;
+                    string st96 = t96.ToString("0.0");
+                    registro.Add(st96);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 97).Value.ToString()))
+                {
+                    decimal t97 = decimal.Parse(ws1.Cell(e, 97).Value.ToString()) * 100;
+                    string st97 = t97.ToString("0.0");
+                    registro.Add(st97);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 98).Value.ToString()))
+                {
+                    registro.Add(ws1.Cell(e, 98).Value.ToString());
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                InsertarInformacionFisicoCasoBase(registro);
+                registro.Clear();
+            }
+            /*-------------------------- GENERAL --------------------------------*/
+            var ws2 = workbook.Worksheet(1);
+            /*-------------------------- ESTRUCTURAR --------------------------------*/
+
+            registro.Add(token);
+            registro.Add(usuario);
+            registro.Add(ws2.Cell("C4").Value.ToString());
+            registro.Add(ws2.Cell("C5").Value.ToString());
+            registro.Add(ws2.Cell("C6").Value.ToString());
+            registro.Add(ws2.Cell("C7").Value.ToString());
+            InsertarInformacionGeneralCasoBase(registro);
+            registro.Clear();
+
+            return "OK";
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Datos"></param>
+        public void InsertarInformacionFinancieraCasoBase(List<String> Datos)
+        {
+            try
+            {
+                var parametos = new DynamicParameters();
+                parametos.Add("IniToken", Datos[0].ToString());
+                parametos.Add("IniUsuario", Datos[1].ToString());
+                parametos.Add("IfDato0", Datos[2].ToString());
+                parametos.Add("IfDato1", Datos[3].ToString());
+                parametos.Add("IfDato2", Datos[4].ToString());
+
+                parametos.Add("IfDato3", Datos[5].ToString());
+                parametos.Add("IfDato4", Datos[6].ToString());
+                parametos.Add("IfDato5", Datos[7].ToString());
+                parametos.Add("IfDato6", Datos[8].ToString());
+                parametos.Add("IfDato7", Datos[9].ToString());
+                parametos.Add("IfDato8", Datos[10].ToString());
+                parametos.Add("IfDato9", Datos[11].ToString());
+                parametos.Add("IfDato10", Datos[12].ToString());
+                parametos.Add("IfDato11", Datos[13].ToString());
+                parametos.Add("IfDato12", Datos[14].ToString());
+                parametos.Add("IfDato13", Datos[15].ToString());
+                parametos.Add("IfDato14", Datos[16].ToString());
+
+                parametos.Add("IfDato15", Datos[17].ToString());
+
+                parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
+                parametos.Add("IfDato17", Datos[19].ToString());
+                parametos.Add("IfDato18", Datos[20].ToString());
+                parametos.Add("IfDato19", Datos[21].ToString());
+                parametos.Add("IfDato20", Datos[22].ToString());
+                parametos.Add("IfDato21", Datos[23].ToString());
+                parametos.Add("IfDato22", Datos[24].ToString());
+                parametos.Add("IfDato23", Datos[25].ToString());
+                parametos.Add("IfDato24", Datos[26].ToString());
+                parametos.Add("IfDato25", Datos[27].ToString());
+
+                parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
+                parametos.Add("IfDato27", Datos[29].ToString());
+                parametos.Add("IfDato28", Datos[30].ToString());
+                parametos.Add("IfDato29", Datos[31].ToString());
+                parametos.Add("IfDato30", Datos[32].ToString());
+                parametos.Add("IfDato31", Datos[33].ToString());
+                parametos.Add("IfDato32", Datos[34].ToString());
+                parametos.Add("IfDato33", Datos[35].ToString());
+                parametos.Add("IfDato34", Datos[36].ToString());
+                parametos.Add("IfDato35", Datos[37].ToString());
+
+                parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
+                parametos.Add("IfDato37", Datos[39].ToString());
+                parametos.Add("IfDato38", Datos[40].ToString());
+                parametos.Add("IfDato39", Datos[41].ToString());
+                parametos.Add("IfDato40", Datos[42].ToString());
+                parametos.Add("IfDato41", Datos[43].ToString());
+                parametos.Add("IfDato42", Datos[44].ToString());
+                parametos.Add("IfDato43", Datos[45].ToString());
+                parametos.Add("IfDato44", Datos[46].ToString());
+                parametos.Add("IfDato45", Datos[47].ToString());
+
+                parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
+                parametos.Add("IfDato47", Datos[49].ToString());
+                parametos.Add("IfDato48", Datos[50].ToString());
+                parametos.Add("IfDato49", Datos[51].ToString());
+                parametos.Add("IfDato50", Datos[52].ToString());
+                parametos.Add("IfDato51", Datos[53].ToString());
+                parametos.Add("IfDato52", Datos[54].ToString());
+                parametos.Add("IfDato53", Datos[55].ToString());
+                parametos.Add("IfDato54", Datos[56].ToString());
+                parametos.Add("IfDato55", Datos[57].ToString());
+
+                parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
+                parametos.Add("IfDato57", Datos[59].ToString());
+                parametos.Add("IfDato58", Datos[60].ToString());
+                parametos.Add("IfDato59", Datos[61].ToString());
+                parametos.Add("IfDato60", Datos[62].ToString());
+                parametos.Add("IfDato61", Datos[63].ToString());
+                parametos.Add("IfDato62", Datos[64].ToString());
+                parametos.Add("IfDato63", Datos[65].ToString());
+                parametos.Add("IfDato64", Datos[66].ToString());
+                parametos.Add("IfDato65", Datos[67].ToString());
+
+                parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
+                parametos.Add("IfDato67", Datos[69].ToString());
+                parametos.Add("IfDato68", Datos[70].ToString());
+                parametos.Add("IfDato69", Datos[71].ToString());
+                parametos.Add("IfDato70", Datos[72].ToString());
+                parametos.Add("IfDato71", Datos[73].ToString());
+                parametos.Add("IfDato72", Datos[74].ToString());
+                parametos.Add("IfDato73", Datos[75].ToString());
+                parametos.Add("IfDato74", Datos[76].ToString());
+                parametos.Add("IfDato75", Datos[77].ToString());
+
+                parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
+                parametos.Add("IfDato77", Datos[79].ToString());
+                parametos.Add("IfDato78", Datos[80].ToString());
+                parametos.Add("IfDato79", Datos[81].ToString());
+                parametos.Add("IfDato80", Datos[82].ToString());
+                parametos.Add("IfDato81", Datos[83].ToString());
+                parametos.Add("IfDato82", Datos[84].ToString());
+                parametos.Add("IfDato83", Datos[85].ToString());
+                parametos.Add("IfDato84", Datos[86].ToString());
+                parametos.Add("IfDato85", Datos[87].ToString());
+
+                parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
+                parametos.Add("IfDato87", Datos[89].ToString());
+                parametos.Add("IfDato88", Datos[90].ToString());
+                parametos.Add("IfDato89", Datos[91].ToString());
+                parametos.Add("IfDato90", Datos[92].ToString());
+                parametos.Add("IfDato91", Datos[93].ToString());
+                parametos.Add("IfDato92", Datos[94].ToString());
+                parametos.Add("IfDato93", Datos[95].ToString());
+                parametos.Add("IfDato94", Datos[96].ToString());
+                parametos.Add("IfDato95", Datos[97].ToString());
+
+                parametos.Add("IfDato96", Datos[98].ToString());//TOTAL
+
+                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA_CASOBASE", parametos, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = AppModule + "InsertarInformacionFinancieraCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Datos"></param>
+        public void InsertarInformacionFisicoCasoBase(List<String> Datos)
+        {
+            try
+            {
+                var parametos = new DynamicParameters();
+                parametos.Add("IniToken", Datos[0].ToString());
+                parametos.Add("IniUsuario", Datos[1].ToString());
+                parametos.Add("IfDato0", Datos[2].ToString());
+                parametos.Add("IfDato1", Datos[3].ToString());
+                parametos.Add("IfDato2", Datos[4].ToString());
+
+                parametos.Add("IfDato3", Datos[5].ToString());
+                parametos.Add("IfDato4", Datos[6].ToString());
+                parametos.Add("IfDato5", Datos[7].ToString());
+                parametos.Add("IfDato6", Datos[8].ToString());
+                parametos.Add("IfDato7", Datos[9].ToString());
+                parametos.Add("IfDato8", Datos[10].ToString());
+                parametos.Add("IfDato9", Datos[11].ToString());
+                parametos.Add("IfDato10", Datos[12].ToString());
+                parametos.Add("IfDato11", Datos[13].ToString());
+                parametos.Add("IfDato12", Datos[14].ToString());
+                parametos.Add("IfDato13", Datos[15].ToString());
+                parametos.Add("IfDato14", Datos[16].ToString());
+
+                parametos.Add("IfDato15", Datos[17].ToString());
+
+                parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
+                parametos.Add("IfDato17", Datos[19].ToString());
+                parametos.Add("IfDato18", Datos[20].ToString());
+                parametos.Add("IfDato19", Datos[21].ToString());
+                parametos.Add("IfDato20", Datos[22].ToString());
+                parametos.Add("IfDato21", Datos[23].ToString());
+                parametos.Add("IfDato22", Datos[24].ToString());
+                parametos.Add("IfDato23", Datos[25].ToString());
+                parametos.Add("IfDato24", Datos[26].ToString());
+                parametos.Add("IfDato25", Datos[27].ToString());
+
+                parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
+                parametos.Add("IfDato27", Datos[29].ToString());
+                parametos.Add("IfDato28", Datos[30].ToString());
+                parametos.Add("IfDato29", Datos[31].ToString());
+                parametos.Add("IfDato30", Datos[32].ToString());
+                parametos.Add("IfDato31", Datos[33].ToString());
+                parametos.Add("IfDato32", Datos[34].ToString());
+                parametos.Add("IfDato33", Datos[35].ToString());
+                parametos.Add("IfDato34", Datos[36].ToString());
+                parametos.Add("IfDato35", Datos[37].ToString());
+
+                parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
+                parametos.Add("IfDato37", Datos[39].ToString());
+                parametos.Add("IfDato38", Datos[40].ToString());
+                parametos.Add("IfDato39", Datos[41].ToString());
+                parametos.Add("IfDato40", Datos[42].ToString());
+                parametos.Add("IfDato41", Datos[43].ToString());
+                parametos.Add("IfDato42", Datos[44].ToString());
+                parametos.Add("IfDato43", Datos[45].ToString());
+                parametos.Add("IfDato44", Datos[46].ToString());
+                parametos.Add("IfDato45", Datos[47].ToString());
+
+                parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
+                parametos.Add("IfDato47", Datos[49].ToString());
+                parametos.Add("IfDato48", Datos[50].ToString());
+                parametos.Add("IfDato49", Datos[51].ToString());
+                parametos.Add("IfDato50", Datos[52].ToString());
+                parametos.Add("IfDato51", Datos[53].ToString());
+                parametos.Add("IfDato52", Datos[54].ToString());
+                parametos.Add("IfDato53", Datos[55].ToString());
+                parametos.Add("IfDato54", Datos[56].ToString());
+                parametos.Add("IfDato55", Datos[57].ToString());
+
+                parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
+                parametos.Add("IfDato57", Datos[59].ToString());
+                parametos.Add("IfDato58", Datos[60].ToString());
+                parametos.Add("IfDato59", Datos[61].ToString());
+                parametos.Add("IfDato60", Datos[62].ToString());
+                parametos.Add("IfDato61", Datos[63].ToString());
+                parametos.Add("IfDato62", Datos[64].ToString());
+                parametos.Add("IfDato63", Datos[65].ToString());
+                parametos.Add("IfDato64", Datos[66].ToString());
+                parametos.Add("IfDato65", Datos[67].ToString());
+
+                parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
+                parametos.Add("IfDato67", Datos[69].ToString());
+                parametos.Add("IfDato68", Datos[70].ToString());
+                parametos.Add("IfDato69", Datos[71].ToString());
+                parametos.Add("IfDato70", Datos[72].ToString());
+                parametos.Add("IfDato71", Datos[73].ToString());
+                parametos.Add("IfDato72", Datos[74].ToString());
+                parametos.Add("IfDato73", Datos[75].ToString());
+                parametos.Add("IfDato74", Datos[76].ToString());
+                parametos.Add("IfDato75", Datos[77].ToString());
+
+                parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
+                parametos.Add("IfDato77", Datos[79].ToString());
+                parametos.Add("IfDato78", Datos[80].ToString());
+                parametos.Add("IfDato79", Datos[81].ToString());
+                parametos.Add("IfDato80", Datos[82].ToString());
+                parametos.Add("IfDato81", Datos[83].ToString());
+                parametos.Add("IfDato82", Datos[84].ToString());
+                parametos.Add("IfDato83", Datos[85].ToString());
+                parametos.Add("IfDato84", Datos[86].ToString());
+                parametos.Add("IfDato85", Datos[87].ToString());
+
+                parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
+
+                parametos.Add("IfDato87", Datos[89].ToString());
+                parametos.Add("IfDato88", Datos[90].ToString());
+                parametos.Add("IfDato89", Datos[91].ToString());
+                parametos.Add("IfDato90", Datos[92].ToString());
+                parametos.Add("IfDato91", Datos[93].ToString());
+                parametos.Add("IfDato92", Datos[94].ToString());
+                parametos.Add("IfDato93", Datos[95].ToString());
+                parametos.Add("IfDato94", Datos[96].ToString());
+                parametos.Add("IfDato95", Datos[97].ToString());
+                parametos.Add("IfDato96", Datos[98].ToString());
+
+                ORM.Execute("CAPEX_INS_INFORMACION_FISICO_CASOBASE", parametos, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = AppModule + "InsertarInformacionFisicoCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Datos"></param>
+        private void InsertarInformacionFinancieraResumidaCasoBase(List<String> Datos)
+        {
+            try
+            {
+                var parametos = new DynamicParameters();
+                parametos.Add("IniToken", Datos[0].ToString());
+                parametos.Add("IniUsuario", Datos[1].ToString());
+                parametos.Add("IrDato0", Datos[2].ToString());
+                parametos.Add("IrDato1", Datos[3].ToString());
+                parametos.Add("IrDato2", Datos[4].ToString());
+
+                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA_RESUMIDA", parametos, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = AppModule + "InsertarInformacionFinancieraResumida, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Datos"></param>
+        private void InsertarInformacionGeneralCasoBase(List<String> Datos)
+        {
+            try
+            {
+                var parametos = new DynamicParameters();
+                parametos.Add("IniToken", Datos[0].ToString());
+                parametos.Add("IniUsuario", Datos[1].ToString());
+                parametos.Add("IgPresupuesto", Datos[2].ToString());
+                parametos.Add("IgFechaInicio", Datos[3].ToString());
+                parametos.Add("IgTermino", Datos[4].ToString());
+                parametos.Add("IgCierre", Datos[5].ToString());
+
+                ORM.Execute("CAPEX_INS_INFORMACION_GENERAL", parametos, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = AppModule + "InsertarInformacionGeneralCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+            }
+        }
+
+        /// <summary>
+        /// IMPORATCION PP EX
+        /// NOTA: TRASPASO DE BUSINESS A CONTROLLER POR CAMBIO SOLICITADO CLIENTE PARA ADOPCION DE AZURE STORAGE
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="usuario"></param>
+        /// <param name="archivo"></param>
+        /// <returns></returns>
+
+        public string ImportarTemplate(string token, string usuario, string archivo)
+        {
+            /*-------------------------- CONFIGURAR --------------------------------*/
+            List<String> registro = new List<String>();
+            //string path = ConfigurationManager.AppSettings.Get("CAPEX_IMPOR_PATH");
+            //var workbook = new XLWorkbook(path + token + "\\" + archivo);
+
+            string ruta = Path.Combine(Server.MapPath("Scripts/Import/" + token), archivo);
+            var workbook = new XLWorkbook(ruta);
+
+            /*-------------------------- FINANCIERO --------------------------------*/
+            var ws = workbook.Worksheet(2);
+            /*-------------------------- ESTRUCTURAR --------------------------------*/
+            for (int i = 5; i < 12; i++)
+            {
+                registro.Add(token);
+                registro.Add(usuario);
+                registro.Add(ws.Cell(i, 1).Value.ToString());
+
+                if (!string.IsNullOrEmpty(ws.Cell(i, 2).Value.ToString()))
+                {
+                    decimal d01 = decimal.Parse(ws.Cell(i, 2).Value.ToString()) * 100;
+                    string sd01 = d01.ToString("0.0");
+                    registro.Add(sd01);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+                registro.Add(ws.Cell(i, 3).Value.ToString());
+
+                registro.Add(ws.Cell(i, 4).Value.ToString());
+                registro.Add(ws.Cell(i, 5).Value.ToString());
+                registro.Add(ws.Cell(i, 6).Value.ToString());
+                registro.Add(ws.Cell(i, 7).Value.ToString());
+                registro.Add(ws.Cell(i, 8).Value.ToString());
+                registro.Add(ws.Cell(i, 9).Value.ToString());
+                registro.Add(ws.Cell(i, 10).Value.ToString());
+                registro.Add(ws.Cell(i, 11).Value.ToString());
+                registro.Add(ws.Cell(i, 12).Value.ToString());
+                registro.Add(ws.Cell(i, 13).Value.ToString());
+                registro.Add(ws.Cell(i, 14).Value.ToString());
+                registro.Add(ws.Cell(i, 15).Value.ToString());
+
+                registro.Add(ws.Cell(i, 16).Value.ToString());
+
+                registro.Add(ws.Cell(i, 17).Value.ToString());
+                registro.Add(ws.Cell(i, 18).Value.ToString());
+                registro.Add(ws.Cell(i, 19).Value.ToString());
+
+                registro.Add(ws.Cell(i, 20).Value.ToString());
+
+                registro.Add(ws.Cell(i, 21).Value.ToString());
+
+                InsertarInformacionFinanciera(registro);
+                registro.Clear();
+
+            }
+            /*-------------------------- FINANCIERO RESUMEN--------------------------------*/
+            for (int X = 15; X < 17; X++)
+            {
+                registro.Add(token);
+                registro.Add(usuario);
+                registro.Add(ws.Cell(X, 1).Value.ToString());
+                if (!string.IsNullOrEmpty(ws.Cell(X, 2).Value.ToString()))
+                {
+                    decimal p02 = decimal.Parse(ws.Cell(X, 2).Value.ToString()) * 100;
+                    string sp02 = p02.ToString("0.0");
+                    registro.Add(sp02);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+                if (!string.IsNullOrEmpty(ws.Cell(X, 3).Value.ToString()))
+                {
+                    decimal p03 = decimal.Parse(ws.Cell(X, 3).Value.ToString()) * 100;
+                    string sp03 = p03.ToString("0.0");
+                    registro.Add(sp03);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+                InsertarInformacionFinancieraResumida(registro);
+                registro.Clear();
+            }
+
+            /*-------------------------- FISICO --------------------------------*/
+            var ws1 = workbook.Worksheet(3);
+            /*-------------------------- ESTRUCTURAR --------------------------------*/
+
+            for (int e = 5; e < 10; e++)
+            {
+                registro.Add(token);
+                registro.Add(usuario);
+                registro.Add(ws1.Cell(e, 1).Value.ToString());
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 2).Value.ToString()))
+                {
+                    decimal t01 = decimal.Parse(ws1.Cell(e, 2).Value.ToString()) * 100;
+                    string st01 = t01.ToString("0.0");
+                    registro.Add(st01);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 3).Value.ToString()))
+                {
+                    decimal t03 = decimal.Parse(ws1.Cell(e, 3).Value.ToString()) * 100;
+                    string st03 = t03.ToString("0.0");
+                    registro.Add(st03);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 4).Value.ToString()))
+                {
+                    decimal t04 = decimal.Parse(ws1.Cell(e, 4).Value.ToString()) * 100;
+                    string st04 = t04.ToString("0.0");
+                    registro.Add(st04);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 5).Value.ToString()))
+                {
+                    decimal t05 = decimal.Parse(ws1.Cell(e, 5).Value.ToString()) * 100;
+                    string st05 = t05.ToString("0.0");
+                    registro.Add(st05);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 6).Value.ToString()))
+                {
+                    decimal t06 = decimal.Parse(ws1.Cell(e, 6).Value.ToString()) * 100;
+                    string st06 = t06.ToString("0.0");
+                    registro.Add(st06);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 7).Value.ToString()))
+                {
+                    decimal t07 = decimal.Parse(ws1.Cell(e, 7).Value.ToString()) * 100;
+                    string st07 = t07.ToString("0.0");
+                    registro.Add(st07);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 8).Value.ToString()))
+                {
+                    decimal t08 = decimal.Parse(ws1.Cell(e, 8).Value.ToString()) * 100;
+                    string st08 = t08.ToString("0.0");
+                    registro.Add(st08);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 9).Value.ToString()))
+                {
+                    decimal t09 = decimal.Parse(ws1.Cell(e, 9).Value.ToString()) * 100;
+                    string st09 = t09.ToString("0.0");
+                    registro.Add(st09);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 10).Value.ToString()))
+                {
+                    decimal t10 = decimal.Parse(ws1.Cell(e, 10).Value.ToString()) * 100;
+                    string st10 = t10.ToString("0.0");
+                    registro.Add(st10);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 11).Value.ToString()))
+                {
+                    decimal t11 = decimal.Parse(ws1.Cell(e, 11).Value.ToString()) * 100;
+                    string st11 = t11.ToString("0.0");
+                    registro.Add(st11);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 12).Value.ToString()))
+                {
+                    decimal t12 = decimal.Parse(ws1.Cell(e, 12).Value.ToString()) * 100;
+                    string st12 = t12.ToString("0.0");
+                    registro.Add(st12);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 13).Value.ToString()))
+                {
+                    decimal t13 = decimal.Parse(ws1.Cell(e, 13).Value.ToString()) * 100;
+                    string st13 = t13.ToString("0.0");
+                    registro.Add(st13);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 14).Value.ToString()))
+                {
+                    decimal t14 = decimal.Parse(ws1.Cell(e, 14).Value.ToString()) * 100;
+                    string st14 = t14.ToString("0.0");
+                    registro.Add(st14);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 15).Value.ToString()))
+                {
+                    decimal t15 = decimal.Parse(ws1.Cell(e, 15).Value.ToString()) * 100;
+                    string st15 = t15.ToString("0.0");
+                    registro.Add(st15);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 16).Value.ToString()))
+                {
+                    decimal t16 = decimal.Parse(ws1.Cell(e, 16).Value.ToString()) * 100;
+                    string st16 = t16.ToString("0.0");
+                    registro.Add(st16);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 17).Value.ToString()))
+                {
+                    decimal t17 = decimal.Parse(ws1.Cell(e, 17).Value.ToString()) * 100;
+                    string st17 = t17.ToString("0.0");
+                    registro.Add(st17);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 18).Value.ToString()))
+                {
+                    decimal t18 = decimal.Parse(ws1.Cell(e, 18).Value.ToString()) * 100;
+                    string st18 = t18.ToString("0.0");
+                    registro.Add(st18);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 19).Value.ToString()))
+                {
+                    decimal t19 = decimal.Parse(ws1.Cell(e, 19).Value.ToString()) * 100;
+                    string st19 = t19.ToString("0.0");
+                    registro.Add(st19);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 20).Value.ToString()))
+                {
+                    decimal t20 = decimal.Parse(ws1.Cell(e, 20).Value.ToString()) * 100;
+                    string st20 = t20.ToString("0.0");
+                    registro.Add(st20);
+                }
+                else
+                {
+                    registro.Add("0");
+                }
+
+
+                InsertarInformacionFisico(registro);
+                registro.Clear();
+            }
+            /*-------------------------- GENERAL --------------------------------*/
+            var ws2 = workbook.Worksheet(1);
+            /*-------------------------- ESTRUCTURAR --------------------------------*/
+
+            registro.Add(token);
+            registro.Add(usuario);
+            registro.Add(ws2.Cell("C4").Value.ToString());
+            registro.Add(ws2.Cell("C5").Value.ToString());
+            registro.Add(ws2.Cell("C6").Value.ToString());
+            registro.Add(ws2.Cell("C7").Value.ToString());
+            InsertarInformacionGeneral(registro);
+            registro.Clear();
+
+            return "OK";
+        }
+        /// <summary>
+        /// INSERTAR DATOS
+        /// </summary>
+        /// <param name="Datos"></param>
+        private void InsertarInformacionFinanciera(List<String> Datos)
+        {
+            try
+            {
+                var parametos = new DynamicParameters();
+                parametos.Add("IniToken", Datos[0].ToString());
+                parametos.Add("IniUsuario", Datos[1].ToString());
+                parametos.Add("IfDato0", Datos[2].ToString());
+                parametos.Add("IfDato1", Datos[3].ToString());
+                parametos.Add("IfDato2", Datos[4].ToString());
+                parametos.Add("IfDato3", Datos[5].ToString());
+                parametos.Add("IfDato4", Datos[6].ToString());
+                parametos.Add("IfDato5", Datos[7].ToString());
+                parametos.Add("IfDato6", Datos[8].ToString());
+                parametos.Add("IfDato7", Datos[9].ToString());
+                parametos.Add("IfDato8", Datos[10].ToString());
+                parametos.Add("IfDato9", Datos[11].ToString());
+                parametos.Add("IfDato10", Datos[12].ToString());
+                parametos.Add("IfDato11", Datos[13].ToString());
+                parametos.Add("IfDato12", Datos[14].ToString());
+                parametos.Add("IfDato13", Datos[15].ToString());
+                parametos.Add("IfDato14", Datos[16].ToString());
+                parametos.Add("IfDato15", Datos[17].ToString());
+                parametos.Add("IfDato16", Datos[18].ToString());
+                parametos.Add("IfDato17", Datos[19].ToString());
+                parametos.Add("IfDato18", Datos[20].ToString());
+                parametos.Add("IfDato19", Datos[21].ToString());
+                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA", parametos, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = AppModule + "InsertarInformacionFinanciera, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+            }
+        }
+        /// <summary>
+        /// INSERTAR DATOS DE FINANCIERO RESUMIDA
+        /// </summary>
+        /// <param name="Datos"></param>
+        private void InsertarInformacionFinancieraResumida(List<String> Datos)
+        {
+            try
+            {
+                var parametos = new DynamicParameters();
+                parametos.Add("IniToken", Datos[0].ToString());
+                parametos.Add("IniUsuario", Datos[1].ToString());
+                parametos.Add("IrDato0", Datos[2].ToString());
+                parametos.Add("IrDato1", Datos[3].ToString());
+                parametos.Add("IrDato2", Datos[4].ToString());
+
+                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA_RESUMIDA", parametos, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = AppModule + "InsertarInformacionFinancieraResumida, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+            }
+        }
+        /// <summary>
+        /// INSERTAR DATOS DE FISICO
+        /// </summary>
+        /// <param name="Datos"></param>
+        private void InsertarInformacionFisico(List<String> Datos)
+        {
+            try
+            {
+                var parametos = new DynamicParameters();
+                parametos.Add("IniToken", Datos[0].ToString());
+                parametos.Add("IniUsuario", Datos[1].ToString());
+                parametos.Add("FiDato0", Datos[2].ToString());
+                parametos.Add("FiDato1", Datos[3].ToString());
+                parametos.Add("FiDato2", Datos[4].ToString());
+                parametos.Add("FiDato3", Datos[5].ToString());
+                parametos.Add("FiDato4", Datos[6].ToString());
+                parametos.Add("FiDato5", Datos[7].ToString());
+                parametos.Add("FiDato6", Datos[8].ToString());
+                parametos.Add("FiDato7", Datos[9].ToString());
+                parametos.Add("FiDato8", Datos[10].ToString());
+                parametos.Add("FiDato9", Datos[11].ToString());
+                parametos.Add("FiDato10", Datos[12].ToString());
+                parametos.Add("FiDato11", Datos[13].ToString());
+                parametos.Add("FiDato12", Datos[14].ToString());
+                parametos.Add("FiDato13", Datos[15].ToString());
+                parametos.Add("FiDato14", Datos[16].ToString());
+                parametos.Add("FiDato15", Datos[17].ToString());
+                parametos.Add("FiDato16", Datos[18].ToString());
+                parametos.Add("FiDato17", Datos[19].ToString());
+                parametos.Add("FiDato18", Datos[20].ToString());
+                parametos.Add("FiDato19", Datos[21].ToString());
+                ORM.Execute("CAPEX_INS_INFORMACION_FISICO", parametos, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = AppModule + "InsertarInformacionFisico, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+            }
+        }
+        /// <summary>
+        /// INSERTAR INFORMACION GENERAL DE IMPORTACION
+        /// </summary>
+        /// <param name="Datos"></param>
+        private void InsertarInformacionGeneral(List<String> Datos)
+        {
+            var FechaInicio = string.Empty;
+            var FechaTermino = string.Empty;
+            var FechaCierre = string.Empty;
+            try
+            {
+                try
+                {
+                    FechaInicio = String.Format("{0:dd/MM/yyyy}", Datos[3]);
+                    FechaTermino = String.Format("{0:dd/MM/yyyy}", Datos[4]);
+                    FechaCierre = String.Format("{0:dd/MM/yyyy}", Datos[5]);
+                }
+                catch(Exception y)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionGeneral, Mensaje: FORMATO FECHA TEMPLATE " + y.Message.ToString() + "-" + ", Detalle: " + y.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                }
+                var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IgPresupuesto", Datos[2].ToString());
+                    parametos.Add("IgFechaInicio", FechaInicio);
+                    parametos.Add("IgTermino", FechaTermino);
+                    parametos.Add("IgCierre", FechaCierre);
+                    ORM.Execute("CAPEX_INS_INFORMACION_GENERAL", parametos, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = AppModule + "InsertarInformacionGeneral, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+            }
+        }
+
+        /// <summary>
+        /// DESPLIEGUE DE DATOS FINANCIERO
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string PoblarVistaPresupuestoTabla1(string token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(IT);
+                return IPlanificacion.PoblarVistaPresupuestoFinanciero(token);
+            }
+            catch (Exception exc)
+            {
+                return exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                //eturn null;
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// DESPLIEGUE DE DATOS FISICO 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string PoblarVistaPresupuestoTabla2(string token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(PO);
+                return IPlanificacion.PoblarVistaPresupuestoFisico(token);
+            }
+            catch (Exception exc)
+            {
+                //return null;
+                return exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// DESPLIEGUE DE DATOS FINANCIERO -  CASO BASE 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string PoblarVistaPresupuestoCasoBaseTabla1(string token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(IT);
+                return IPlanificacion.PoblarVistaPresupuestoFinancieroCasoBase(token);
+            }
+            catch (Exception exc)
+            {
+                return null;
+                //return exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// DESPLIEGUE DE DATOS FISICO - CASO BASE
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string PoblarVistaPresupuestoCasoBaseTabla2(string token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(IT);
+                return IPlanificacion.PoblarVistaPresupuestoFisicoCasoBase(token);
+            }
+            catch (Exception exc)
+            {
+                return null;
+                //return exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO PARA SUBIR ARCHIVO CARTA GANTT
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SubirCartaGanttPresupuesto()
+        {
+            string resultado = string.Empty;
+            if (string.IsNullOrEmpty(Convert.ToString(HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"])))
+            {
+                resultado = "ERROR";
+                return Json(new { Resultado = resultado });
+            }
+            else
+            {
+                try
+                {
+                    string token = HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"].ToString();
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        HttpPostedFileBase file = Request.Files[i];
+                        int fileSize = file.ContentLength;
+                        string fileName = file.FileName;
+                        string mimeType = file.ContentType;
+
+                        System.IO.Stream fileContent = file.InputStream;
+
+                        string path = Server.MapPath("Scripts/Files/Iniciativas/Presupuesto/Gantt/" + token);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        var donde = Path.Combine(Server.MapPath("Scripts/Files/Iniciativas/Presupuesto/Gantt/" + token), fileName);
+                        file.SaveAs(donde);
+                        resultado = "OK";
+                    }
+                    return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception exc)
+                {
+                    return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+        #endregion
+
+        #region "METODOS DOTACION"
+        /// <remark>
+        ///     
+        ///     ----------------------------------------------------------------------------
+        ///     GRUPO DE METODOS "Dotacion"
+        ///     VERSION     0.0.1
+        ///     ----------------------------------------------------------------------------
+        ///     PROPOSITO
+        ///     ----------------------------------------------------------------------------
+        ///     IMPLEMENTAR ENTRADA Y SALIDA DE DATOS, ASI COMO OPERACIONES POR MEDIO
+        ///     DE PATRON CREACIONAL FACTORY QUE ES PROVISTO POR CAPA DDD DE INFRAESTRUCTURA
+        ///     
+        /// </remark>
+        /// 
+
+        /// <summary>
+        /// METODO LISTAR DEPARTAMENTOS DOTACION
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarDepartamentos()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LDEP);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_DEPTOS"] == null)
+                {
+                    string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarDepartamentos(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_DEPTOS", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_DEPTOS"];
+                    return Json(
+                       JsonResponse,
+                       JsonRequestBehavior.AllowGet
+                   );
+                }
+
+            }
+            catch (Exception exc)
+            {
+                string ExceptionResult = "ListarDepartamentos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Redirect("Login");
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO LISTAR TURNOS DOTACION
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarTurnos()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LTUR);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_TURNOS"] == null)
+                {
+                    string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarTurnos(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_TURNOS", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_TURNOS"];
+                    return Json(
+                       JsonResponse,
+                       JsonRequestBehavior.AllowGet
+                   );
+                }
+
+            }
+            catch (Exception exc)
+            {
+                string ExceptionResult = "ListarTurnos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Redirect("Login");
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO LISTAR UBICACIONWS DOTACION
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarUbicaciones()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LUBI);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_UBICACIONES"] == null)
+                {
+                    string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarUbicaciones(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_UBICACIONES", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_UBICACIONES"];
+                    return Json(
+                       JsonResponse,
+                       JsonRequestBehavior.AllowGet
+                   );
+                }
+
+            }
+            catch (Exception exc)
+            {
+                string ExceptionResult = "ListarUbicaciones, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Redirect("Login");
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO LISTAR CLASIFICACION DOTACION
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListaClasificaciones()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LCLA);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_CLASIFICACION_DOTACION"] == null)
+                {
+                    string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarClasificacion(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_CLASIFICACION_DOTACION", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_CLASIFICACION_DOTACION"];
+                    return Json(
+                       JsonResponse,
+                       JsonRequestBehavior.AllowGet
+                   );
+                }
+
+            }
+            catch (Exception exc)
+            {
+                string ExceptionResult = "ListaClasificaciones, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Redirect("Login");
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO LISTAR TIPO EECC
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [OutputCache(Duration = 60, VaryByParam = "none", Location = System.Web.UI.OutputCacheLocation.Server)]
+        public ActionResult ListarTipoEECC()
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(LTUR);
+                if (System.Web.HttpContext.Current.Cache["CAPEX_LIST_TIPOEECC"] == null)
+                {
+                    string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarTipoEECC(), Formatting.None);
+                    System.Web.HttpContext.Current.Cache.Add("CAPEX_LIST_TIPOEECC", JsonResponse, null, DateTime.Now.AddMinutes(60), Cache.NoSlidingExpiration, CacheItemPriority.AboveNormal, null);
+                    return Json(
+                        JsonResponse,
+                        JsonRequestBehavior.AllowGet
+                        );
+                }
+                else
+                {
+                    JsonResponse = (string)System.Web.HttpContext.Current.Cache["CAPEX_LIST_TIPOEECC"];
+                    return Json(
+                       JsonResponse,
+                       JsonRequestBehavior.AllowGet
+                   );
+                }
+
+            }
+            catch (Exception exc)
+            {
+                string ExceptionResult = "ListarTipoEECC, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Redirect("Login");
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO LISTAR CONTRATOS DE DOTACION
+        /// </summary>
+        /// <param name="DotToken"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string ListarContratosDotacionResumen(string IniToken)
+        {
+         
+            string Desplegable = String.Empty;
+            try
+            {
+                var resultado = ORM.Query("CAPEX_SEL_CONTRATO_DOTACION_RESUMIDO", new { IniToken }, commandType: CommandType.StoredProcedure).ToList();
+                var contenedor = new StringBuilder();
+                var contador = 1;
+                if (resultado.Count > 0)
+                {
+                    foreach (var result in resultado)
+                    {
+                        // UI
+                        //INICIO CONTENEDOR DE DATOS PRINCIPAL
+                        contenedor.Append("<div>");
+                        contenedor.Append("<table>");
+                        contenedor.Append("<tr>");
+                        //INICIO PRIMER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO  Y ETIQUETA COD. CONTRATO
+                        contenedor.Append("<th valign='top'><label for='TablaDotacionDatos" + contador + "'> Contrato de Dotación - "+result.DotNumContrato + "</label>");
+                        //TABLA DATOS DE CONTRATO
+                        contenedor.Append("<table id='TablaDotacionDatos" + contador + "' style='width:600px; text-align:center;font-size:11px;' class='table table-bordered'>");
+                        contenedor.Append("<tr>");
+                        contenedor.Append("<th>Año</th>");
+                        contenedor.Append("<th>Contrato</th>");
+                        contenedor.Append("<th>Nombre EECC</th>");
+                        contenedor.Append("<th>Turno</th>");
+                        contenedor.Append("<th>Ubicación</th>");
+                        contenedor.Append("<th>Promedio Año</th>");
+                        contenedor.Append("</tr>");
+                        contenedor.Append("<tr>");
+                        contenedor.Append("<td>"+result.DotAnn+"</td>");
+                        contenedor.Append("<td>"+result.DotNumContrato+"</td>");
+                        contenedor.Append("<td>" + result.DotNombEECC + "</td>");
+                        contenedor.Append("<td>" + result.TurNombre + "</td>");
+                        contenedor.Append("<td>" + result.UbiNombre + "</td>");
+                        contenedor.Append("<td>" + result.DotacionPromedio + "</td>");
+                        contenedor.Append("</tr>");
+                        contenedor.Append("</table>");
+                        contenedor.Append("</th>");
+                        //FIN PRIMER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
+                        //INICIO SEGUNDO ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
+                        contenedor.Append("<th rowspan='2'>");
+                        contenedor.Append("<label for='TablaDotacion"+contador+"' style='margin-left:50px;'> Dotación Mensual</label>");
+                        //INICIO TABLA CALENDARIO DOTACIONES
+                        contenedor.Append("<table id='TablaDotacion"+contador+"' style='margin-left:50px;width:100px; text-align:center;font-size:11px;' class='table table-bordered'>");
+                        contenedor.Append("<tr>");
+                        contenedor.Append("<td>ENE<br/><span>" + result.DotEne + "</span></td>");
+                        contenedor.Append("<td>FEB<br/><span>" + result.DotFeb + "</span></td>");
+                        contenedor.Append("<td>MAR<br/><span>" + result.DotMar + "</span></td>");
+                        contenedor.Append("<td>ABR<br/><span>" + result.DotAbr + "</span></td>");
+                        contenedor.Append("</tr>");
+                        contenedor.Append("<tr>");
+                        contenedor.Append("<td>MAY<br/><span>" + result.DotMay + "</span></td>");
+                        contenedor.Append("<td>JUN<br/><span>" + result.DotJun + "</span></td>");
+                        contenedor.Append("<td>JUL<br/><span>" + result.DotJul + "</span></td>");
+                        contenedor.Append("<td>AGO<br/><span>" + result.DotAgo + "</span></td>");
+                        contenedor.Append("</tr>");
+                        contenedor.Append("<tr>");
+                        contenedor.Append("<td>SEP<br/><span>" + result.DotSep + "</span></td>");
+                        contenedor.Append("<td>OCT<br/><span>" + result.DotOct + "</span></td>");
+                        contenedor.Append("<td>NOV<br/><span>" + result.DotNov + "</span></td>");
+                        contenedor.Append("<td>DIC<br/><span>" + result.DotDic + "</span></td>");
+                        contenedor.Append("</tr>");
+                        contenedor.Append("</table>");
+                        //FIN TABLA CALENDARIO DOTACIONES
+                        contenedor.Append("</th>");
+                        contenedor.Append("</tr>");
+                        //FIN SEGUNDO ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
+                        //INICIO TERCER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
+                        contenedor.Append("<tr>");
+                        contenedor.Append("<td>");
+                        //contenedor.Append("<input type='button' class='btn btn-primary btn-sm' onclick='FNModificarContratoDotacion("+ Convert.ToChar(34) + result.DotToken + Convert.ToChar(34) + ")' value='Modificar' />");
+                        contenedor.Append("<input type='button' class='btn btn-warning btn-sm' onclick='FNEliminarContratoDotacion(" + Convert.ToChar(34) + result.DotToken + Convert.ToChar(34) + ")' value='Eliminar' />");
+                        contenedor.Append("</td>");
+                        contenedor.Append("</tr>");
+                        //FIN TERCER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
+                        contenedor.Append("</table>");
+                        contenedor.Append(" </div>");
+                        //FIN CONTENEDOR DE DATOS PRINCIPAL
+                        contador++;
+                    }
+                    Desplegable = contenedor.ToString();
+                    contenedor = null;
+                }
+                else
+                {
+                    contenedor = null;
+                    Desplegable = "";
+                }
+
+            }
+            catch (Exception exc)
+            {
+                Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+            }
+            return Desplegable.ToString();
+        }
+        /// <summary>
+        /// METODO GUARDAR CONTRATO DOTACION
+        /// </summary>
+        /// <param name="DatosContrato"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GuardarContratoDotacion(Dotacion.ContratoDotacion DatosContrato)
+        {
+            string mensaje = String.Empty;
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GI);
+                var resultado = IPlanificacion.GuardarContratoDotacion(DatosContrato);
+                return Json(new { Mensaje = resultado }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO ELIMINAR DOTACION
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult EliminarContratoDotacion(string token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(ECD);
+                var resultado = IPlanificacion.EliminarContratoDotacion(token);
+                return Json(new { Mensaje = resultado }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        #endregion
+
+        #region "METODOS DESCRIPCION DETALLADA"
+
+        /// <remark>
+        ///     
+        ///     ----------------------------------------------------------------------------
+        ///     GRUPO DE METODOS "Descripción Detallada"
+        ///     VERSION     0.0.1
+        ///     ----------------------------------------------------------------------------
+        ///     PROPOSITO
+        ///     ----------------------------------------------------------------------------
+        ///     IMPLEMENTAR ENTRADA Y SALIDA DE DATOS, ASI COMO OPERACIONES POR MEDIO
+        ///     DE PATRON CREACIONAL FACTORY QUE ES PROVISTO POR CAPA DDD DE INFRAESTRUCTURA
+        ///     
+        /// </remark>
+        /// 
+
+        /// <summary>
+        /// METODO SUBIR ARCHIVO DESCRIPCION DETALLADA
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult SubirDescripcionDetallada()
+        {
+            string resultado = string.Empty;
+            if (string.IsNullOrEmpty(Convert.ToString(HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"])))
+            {
+                resultado = "ERROR";
+                return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                try
+                {
+                    string token = HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"].ToString();
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        HttpPostedFileBase file = Request.Files[i];
+                        int fileSize = file.ContentLength;
+                        string fileName = file.FileName;
+                        string mimeType = file.ContentType;
+
+                        System.IO.Stream fileContent = file.InputStream;
+
+                        string path = Server.MapPath("Scripts/Files/Iniciativas/Descripcion/" + token);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        var donde = Path.Combine(Server.MapPath("Scripts/Files/Iniciativas/Descripcion/" + token), fileName);
+                        file.SaveAs(donde);
+                        resultado = "OK";
+                    }
+                    return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception exc)
+                {
+                    return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+        /// <summary>
+        /// METDODO GUARDAR DATOS DE DESCRIPCION DETALLADA
+        /// </summary>
+        /// <param name="Datos"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GuardarDescripcionDetallada(Descripcion.DescripcionDetallada Datos)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GD);
+                var resultado = IPlanificacion.GuardarDescripcionDetallada(Datos);
+                if (resultado == "Guardado")
+                {
+                    return Json(new { Mensaje = "Guardado" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO DE ACTUALIZACION PARA DESCRIPCION DETALLADA
+        /// </summary>
+        /// <param name="Datos"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActualizarDescripcionDetallada(Descripcion.DescripcionDetallada Datos)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GD);
+                var resultado = IPlanificacion.ActualizarDescripcionDetallada(Datos);
+                if (resultado == "Actualizado")
+                {
+                    return Json(new { Mensaje = "Actualizado" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+
+        #endregion
+
+        #region "METODOS EVALUACION ECONOMICA"
+        /// <remark>
+        ///     
+        ///     ----------------------------------------------------------------------------
+        ///     GRUPO DE METODOS "Evaluación Económica"
+        ///     VERSION     0.0.1
+        ///     ----------------------------------------------------------------------------
+        ///     PROPOSITO
+        ///     ----------------------------------------------------------------------------
+        ///     IMPLEMENTAR ENTRADA Y SALIDA DE DATOS, ASI COMO OPERACIONES POR MEDIO
+        ///     DE PATRON CREACIONAL FACTORY QUE ES PROVISTO POR CAPA DDD DE INFRAESTRUCTURA
+        ///     
+        /// </remark>
+        /// 
+
+        public JsonResult SubirEvaluacionEconomica()
+        {
+            string resultado = string.Empty;
+            if (string.IsNullOrEmpty(Convert.ToString(HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"])))
+            {
+                resultado = "ERROR";
+                return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                try
+                {
+                    string token = HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"].ToString();
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        HttpPostedFileBase file = Request.Files[i];
+                        int fileSize = file.ContentLength;
+                        string fileName = file.FileName;
+                        string mimeType = file.ContentType;
+
+                        System.IO.Stream fileContent = file.InputStream;
+
+                        string path = Server.MapPath("Scripts/Files/Iniciativas/EvaluacionEconomica/" + token);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        var donde = Path.Combine(Server.MapPath("Scripts/Files/Iniciativas/EvaluacionEconomica/" + token), fileName);
+                        file.SaveAs(donde);
+                        resultado = "OK";
+                    }
+                    return Json(new { Resultado = resultado },JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception exc)
+                {
+                    return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+        /// <summary>
+        /// METODO GUARDAR EVALUACION ECONOMICA
+        /// </summary>
+        /// <param name="DatosEvaluacion"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GuardarEvaluacionEconomica(EvaluacionEconomica.GuardarEvaluacion DatosEvaluacion)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GE);
+                string resultado = IPlanificacion.GuardarEvaluacionEconomica(DatosEvaluacion);
+                if (resultado == "Guardado")
+                {
+                    return Json(new { Mensaje = "Guardado" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO DE ACTUALIZACION DE DESCRIPCION DETALLADA
+        /// </summary>
+        /// <param name="DatosEvaluacion"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActualizarEvaluacionEconomica(EvaluacionEconomica.GuardarEvaluacion DatosEvaluacion)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GE);
+                string resultado = IPlanificacion.ActualizarEvaluacionEconomica(DatosEvaluacion);
+                if (resultado == "Actualizado")
+                {
+                    return Json(new { Mensaje = "Actualizado" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        #endregion
+
+        #region "METODOS EVALUACION RIESGO"
+        /// <remark>
+        ///     
+        ///     ----------------------------------------------------------------------------
+        ///     GRUPO DE METODOS "Evaluación Riesgo"
+        ///     VERSION     0.0.1
+        ///     ----------------------------------------------------------------------------
+        ///     PROPOSITO
+        ///     ----------------------------------------------------------------------------
+        ///     IMPLEMENTAR ENTRADA Y SALIDA DE DATOS, ASI COMO OPERACIONES POR MEDIO
+        ///     DE PATRON CREACIONAL FACTORY QUE ES PROVISTO POR CAPA DDD DE INFRAESTRUCTURA
+        ///     
+        /// </remark>
+        /// 
+        public JsonResult SubirEvaluacionRiesgo()
+        {
+            string resultado = string.Empty;
+            if (string.IsNullOrEmpty(Convert.ToString(HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"])))
+            {
+                resultado = "ERROR";
+                return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                try
+                {
+                    string token = HttpContext.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"].ToString();
+                    for (int i = 0; i < Request.Files.Count; i++)
+                    {
+                        HttpPostedFileBase file = Request.Files[i];
+                        int fileSize = file.ContentLength;
+                        string fileName = file.FileName;
+                        string mimeType = file.ContentType;
+
+                        System.IO.Stream fileContent = file.InputStream;
+
+                        string path = Server.MapPath("Scripts/Files/Iniciativas/EvaluacionRiesgo/" + token);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        var donde = Path.Combine(Server.MapPath("Scripts/Files/Iniciativas/EvaluacionRiesgo/" + token), fileName);
+                        file.SaveAs(donde);
+                        resultado = "OK";
+                    }
+                    return Json(new { Resultado = resultado }, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception exc)
+                {
+                    return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
+        /// <summary>
+        /// METODO GUARDAR DATOS DE EVALUACION DE RIESGO
+        /// </summary>
+        /// <param name="DatosEvaluacion"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GuardarEvaluacionRiesgo(EvaluacionRiesgo.GuardarEvaluacion DatosEvaluacion)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GE);
+                string resultado = IPlanificacion.GuardarEvaluacionRiesgo(DatosEvaluacion);
+                if (resultado == "Guardado")
+                {
+                    return Json(new { Mensaje = "Guardado" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO DE ACTUALIZACION DE EVALUACION DE RIESGO
+        /// </summary>
+        /// <param name="DatosEvaluacion"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActualizarEvaluacionRiesgo(EvaluacionRiesgo.GuardarEvaluacion DatosEvaluacion)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GE);
+                string resultado = IPlanificacion.ActualizarEvaluacionRiesgo(DatosEvaluacion);
+                if (resultado == "Actualizado")
+                {
+                    return Json(new { Mensaje = "Actualizado" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        #endregion
+
+        #region "METODOS HITOS"
+        /// <remark>
+        ///     
+        ///     ----------------------------------------------------------------------------
+        ///     GRUPO DE METODOS "Hitos - Capex"
+        ///     VERSION     0.0.1
+        ///     ----------------------------------------------------------------------------
+        ///     PROPOSITO
+        ///     ----------------------------------------------------------------------------
+        ///     IMPLEMENTAR ENTRADA Y SALIDA DE DATOS, ASI COMO OPERACIONES POR MEDIO
+        ///     DE PATRON CREACIONAL FACTORY QUE ES PROVISTO POR CAPA DDD DE INFRAESTRUCTURA
+        ///     
+        /// </remark>
+        ///
+
+        /// <summary>
+        /// METODO GUARDAR CAPEX HITOS
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GuardarHito(Hito.HitoGuardar Datos)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GH);
+                string resultado = IPlanificacion.GuardarHito(Datos);
+                if (resultado == "Guardado")
+                {
+                    return Json(new { Mensaje = "Guardado" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+
+        }
+        /// <summary>
+        /// METODO DE ACTUALIZACION DE HITO
+        /// </summary>
+        /// <param name="Datos"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActualizarHito(Hito.HitoGuardar Datos)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(GH);
+                string resultado = IPlanificacion.ActualizarHito(Datos);
+                if (resultado == "Actualizado")
+                {
+                    return Json(new { Mensaje = "Actualizado" }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+
+            }
+            catch (Exception exc)
+            {
+                return null;
+                //return Json(new { Resultado = exc.Message.ToString() + "-----" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+
+        }
+        /// <summary>
+        /// METODO POBLAR HITOS
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string PoblarVistaHitos(string token)
+        {   try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(PH);
+                return IPlanificacion.PoblarVistaHitos(token);
+            }
+            catch (Exception exc)
+            {
+                return null;
+                //return exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO PARA POBLAR VISTA CAPEX HITOS - COMPONENTE GENERAL
+        /// </summary>
+        /// <returns></returns>                  
+        [HttpGet]
+        public ActionResult PoblarVistaHitosGeneral(string token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(PVHG);
+                string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.PoblarVistaHitosDetalle(token), Formatting.None);
+                return Json(
+                JsonResponse,
+                JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception exc)
+            {
+                return null;
+                //return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO PARA POBLAR VISTA CAPEX HITOS - COMPONENTE RESUMEN
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult PoblarVistaHitosResumen(string token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(PVHR);
+                string JsonResponse = JsonConvert.SerializeObject(IPlanificacion.PoblarVistaHitosResumen(token), Formatting.None);
+                return Json(
+                JsonResponse,
+                JsonRequestBehavior.AllowGet
+                );
+            }
+            catch (Exception exc)
+            {
+                return null;
+                //return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult EnviarIniciativa(string IniToken, string WrfUsuario, string WrfObservacion)
+        {
+              try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(EI);
+                var mensaje = IPlanificacion.EnviarIniciativa(IniToken, WrfUsuario, WrfObservacion);
+                return Json(new { Mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Mensaje = exc.Message.ToString() + " " + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO GENERADOR PDF
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public ActionResult PdfCasoBase(string token)
+        {
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    var Cuerpo = SqlMapper.Query(objConnection,"CAPEX_SEL_PDF_CASO_BASE", new { @IniToken = token }, commandType: CommandType.StoredProcedure).ToList();
+                    foreach (var c in Cuerpo)
+                    {
+                        ViewBag.IniPeriodo = c.IniPeriodo;
+                        ViewBag.IrFecha = c.IrFecha;
+                    }
+
+                    ViewBag.Identificacion      = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_IDENTIFICACION_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.Categorizacion      = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_CATEGORIZACION_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.DescripcionDetallada= SqlMapper.Query(objConnection, "CAPEX_SEL_VER_DESCRIPCIONDETALLADA_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.EvaluacionEconomica = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_EVALUACIONECONOMICA_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.EvaluacionRiesgo    = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_EVALUACIONRIESGO_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.Hito                = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_HITO_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.ResumenFinanciero   = SqlMapper.Query(objConnection, "CAPEX_SEL_RESUMEN_FINANCIERO", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return new ViewAsPdf("PdfCasoBase")
+            {
+                FileName = "PdfCasoBase.pdf",
+                PageSize = Size.A4,
+                PageOrientation = Orientation.Portrait,
+                PageMargins = { Left = 0, Right = 0 }
+            };
+        }
+        /// <summary>
+        /// METODO GENERADOR PDF
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public ActionResult PdfPresupuesto(string token)
+        {
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    var Cuerpo = SqlMapper.Query(objConnection, "CAPEX_SEL_PDF_CASO_BASE", new { @IniToken = token }, commandType: CommandType.StoredProcedure).ToList();
+                    foreach (var c in Cuerpo)
+                    {
+                        ViewBag.IniPeriodo = c.IniPeriodo;
+                        ViewBag.IrFecha = c.IrFecha;
+                    }
+
+                    ViewBag.Identificacion          = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_IDENTIFICACION_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.Categorizacion          = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_CATEGORIZACION_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.DescripcionDetallada    = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_DESCRIPCIONDETALLADA_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.EvaluacionEconomica     = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_EVALUACIONECONOMICA_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.EvaluacionRiesgo        = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_EVALUACIONRIESGO_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.Hito                    = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_HITO_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.ResumenFinanciero       = SqlMapper.Query(objConnection, "CAPEX_SEL_RESUMEN_FINANCIERO", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return new ViewAsPdf("PdfPresupuesto")
+            {
+                FileName = "PdfCasoBase.pdf",
+                PageSize = Size.A4,
+                PageOrientation = Orientation.Portrait,
+                PageMargins = { Left = 0, Right = 0 }
+            };
+        }
+        #endregion
+
+        #region "METODOS ADJUNTOS-DOCUMENTOS"
+        /// <summary>
+        /// METODO PARA ELIMINAR ADJUNTOS TEMPORALES
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+
+        [HttpGet]
+        public ActionResult EliminarAdjunto(string token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(VA);
+                var mensaje =  IPlanificacion.EliminarAdjunto(token);
+                return Json(new { Mensaje = mensaje }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception exc)
+            {
+                return Json(new { Mensaje = exc.Message.ToString() + " " + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// METODO PARA VISUALIZACION DE ADJUNTOS
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public string VerAdjuntos(string token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(VA);
+                return IPlanificacion.VerAdjuntos(token);
+            }
+            catch (Exception exc)
+            {
+                return exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+            }
+            finally
+            {
+                FactoryPlanificacion = null;
+                IPlanificacion = null;
+            }
+        }
+        /// <summary>
+        /// DESCARGAR ARCHIVO O ADJUNTO
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="paso"></param>
+        /// <param name="archivo"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public FileResult DescargarArchivo(string token, string paso, string archivo)
+        {
+            var ruta = string.Empty;
+            switch (paso)
+            {
+                case "Presupuesto-Gantt":
+                    ruta = Server.MapPath("~/Files/Iniciativas/Presupuesto/Gantt/" + token+"/"+archivo);
+                break;
+                case "Evaluacion-Economica":
+                    ruta = Server.MapPath("~/Files/Iniciativas/EvaluacionEconomica/" + token + "/" + archivo);
+                break;
+                case "Evaluacion-Riesgo":
+                    ruta = Server.MapPath("~/Files/Iniciativas/EvaluacionRiesgo/" + token + "/" + archivo);
+                break;
+                case "Categorizacion":
+                    ruta = Server.MapPath("~/Files/Iniciativas/Categorizacion/" + token + "/" + archivo);
+                break;
+                case "Descripcion-Detallada":
+                    ruta = Server.MapPath("~/Files/Iniciativas/Descripcion/" + token + "/" + archivo);
+                break;
+            }
+            byte[] fileBytes = System.IO.File.ReadAllBytes(ruta);
+            string fileName = archivo;
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
+        #endregion
+
+
+    }
+}

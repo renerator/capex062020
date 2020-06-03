@@ -1,0 +1,352 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+}
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="~/Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewBag.Title</title>
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+
+    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/select2.min.css" rel="stylesheet" />
+
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+
+    <!-- DataTables -->
+    <link href="~/Content/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <!-- Arbol Documental -->
+    <link href="~/Content/file-explore.css" rel="stylesheet" />
+    <style>
+
+        div.pager {
+            text-align: center;
+            margin: 1em 0;
+        }
+
+            div.pager span {
+                display: inline-block;
+                width: 1.8em;
+                height: 1.8em;
+                line-height: 1.8;
+                text-align: center;
+                cursor: pointer;
+                background: transparent;
+                color: #fff;
+                margin-right: 0.5em;
+            }
+
+                div.pager span.active {
+                    background: #4a848e;
+                }
+
+        .active {
+            color: gold;
+            font-weight: bolder;
+        }
+    </style>
+</head>
+<body style="overflow: visible;">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="~/Content/logos/logo-centinela-190x50.png" border="0" height="45" style="margin-top:0px;">
+                    </a>
+                </div>
+                <!--Fi Logo Container-->
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end topbar-main -->
+    </header>
+
+    <!-- Wrapper -->
+    <div class="wrapper dashboard" style="margin-top:-50px;">
+        <div class="container-fluid">
+            <div class="row" style="margin-top:0px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active">Biblioteca</li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">Biblioteca</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Contenido -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card mail-inbox">
+                        <div class="card-body">
+                            <div class="card-title mb-3">
+                                <div class="d-inline-block ml-2">
+                                    <h6>Listado de Documentos</h6>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 m-t-15">
+                                    @{
+                                        if (@Session["CAPEX_SESS_ROLNOMBRE"] == null)
+                                        {
+                                            Response.Redirect("/");
+                                        }
+                                        else
+                                        {
+                                            if (@Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador1" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador2")
+                                            {
+                                                <button class="btn btn-primary btn-block" alt="Crear Documento" onclick="FNMostrarModalNuevoDocumento()">Nuevo Documento</button>
+                                                <button class="btn btn-primary btn-block" alt="Crear Categoria" onclick="FNAbrirPopUpCrearCategoria()">Nueva Categoría</button>
+                                            }
+                                        }
+                                    }
+                                    <div class="card border-0 p-0  mt-3">
+                                        <div class="card-body p-0">
+                                            <div class="list-group" style="padding:10px 10px 10px 10px;">
+
+                                                @foreach (var item in ViewBag.Categoria)
+                                                {
+                                                    <a href="#" id="@item.DocCatToken" onclick="FNFiltrarVista('@item.DocCatToken')" style="text-transform:uppercase;"><i class="fa fa-folder mr-2"></i><span id="@item.DocCatToken">@item.DocCatNombre</span></a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-10">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="btn-toolbar mb-3" role="toolbar">
+                                                <div class="btn-group mr-2 m-t-15">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-lg" name="buscador" id="buscador" onblur="FNEvaluarEstadoFiltro(this.value);" placeholder="Buscar y Filtrar.." style="text-transform:uppercase;font-size:11px; width:400px; margin-right:5px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <table class="table table-hover mails paginated" id="documentos">
+                                                <thead style="background-color:#4a848e;text-transform:uppercase;">
+                                                    <tr>
+                                                        <th scope="col"><strong>Nombre de Documento</strong></th>
+                                                        <th scope="col"><strong>Tipo</strong></th>
+                                                        <th scope="col"><strong>Tamaño</strong></th>
+                                                        <th scope="col" align="center"> <div align="center"><strong>Descarga</strong></div></th>
+                                                        <th scope="col" align="center"> <div align="center"><strong>Fecha</strong></div></th>
+                                                        @if (@Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador1" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador2" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador3")
+                                                        {
+                                                            <th scope="col" align="center"> <div align="center"><strong>Acción</strong></div></th>
+                                                        }
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var doc in ViewBag.Documentos)
+                                                    {
+                                                        <tr>
+                                                            <td>
+                                                                <span style="text-transform:uppercase;">@doc.DocNombre</span>
+                                                            </td>
+                                                            <td>
+                                                                <span style="text-transform:uppercase;">@doc.DocTipo</span>
+                                                            </td>
+                                                            <td>
+                                                                <span style="text-transform:uppercase;">@doc.DocTam KB</span>
+                                                            </td>
+                                                            <td>
+                                                                <div align="center"><i class="fa fa-paperclip" style="cursor:pointer;" alt="Descargar documento" onclick="FNDescargarDocumento('@doc.DocToken')"></i></div>
+                                                            </td>
+                                                            <td align="center">
+                                                                <div align="center">@doc.DocFecha</div>
+                                                            </td>
+                                                            @if (@Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador1" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador2" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador3")
+                                                            {
+                                                                <td align="center">
+                                                                    <a href="#" onclick="FNModalEliminarDocumento('@doc.DocToken');">ELIMINAR</a>&nbsp;
+                                                                </td>
+                                                            }
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin Contenido -->
+
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal inmodal" id="ModalCrearCategoria" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:470px; height:150px; font-size:12px;">
+                <div id="ContenedorCrearCategoria" class="modal-body" style="margin-left:5px;width:450px; font-size:12px;">
+                    <div>
+                        <h6 style="color:#333;"><strong>Nueva Categoría</strong></h6>
+                        <br />
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="DocCatNombre" style="font-size:11px; text-transform:uppercase;" value="" placeholder="Nombre de categoría.." maxlength="50" />
+
+                            <button id="BotonCrearCategoria" class="btn btn-primary btn-sm" onclick="FNCrearCategoriaDocumental('@Session["CAPEX_SESS_COMTOKEN"]')" style="font-size:11px; margin-left:5px;">Aceptar</button>
+                            <button id="BotonCerrarCrearCategoria" class="btn btn-white" onclick="FNCerrarPopUpCrearCategoria()" data-dismiss="modal" type="button">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="ModalNuevoDocumento" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:550px; font-size:12px; height:220px;">
+                <div id="ContenedorCrearCategoria" class="modal-body" style="margin-left:5px;width:500px; font-size:12px;">
+                    <div>
+                        <h6 style="color:#333;"><strong>Nuevo Documento</strong></h6>
+                        <br />
+                        <div class="input-group">
+                            <form id="form_nuevodocumento">
+                                <div>
+                                    <table style="text-transform:uppercase;">
+                                        <tr>
+                                            <th width="150px">Categoria</th>
+                                            <th>
+                                                <select class="form-control" style="padding-left:2px;height:30px; font-size:11px;text-transform:uppercase;" id="Categoria">
+                                                    <option selected>Seleccionar..</option>
+                                                </select>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <td width="150px" valign="middle">Archivo</td>
+                                            <td valign="middle">
+                                                <iframe src="~/WebForm1.aspx?type=100" scrolling="no" id="frame1" frameborder="0" height="50" width="390"></iframe>
+                                                &nbsp;&nbsp;<small>Max. 10 MB.</small>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div align="right">
+                                    <button type="button" class="btn btn-white" data-dismiss="modal" style="" onclick="FNCerrarModalNuevoDocumento()">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="ModalEliminarDocumento" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:450px; font-size:12px;">
+                <div id="ContenedorEliminarDocumento" class="modal-body" style="margin-left:5px;width:440px; font-size:12px;">
+                    <div>
+                        <h6 style="color:#333;"><strong>Eliminar Documento</strong></h6>
+                        <br />
+                        <div class="input-group">
+                            Se eliminará el documento seleccionado, Proceder?
+                        </div>
+                        <div class="m-t-10">
+                            <button class="btn btn-danger btn-sm" id="BotonFechaAprobacion" onclick="FNEliminarDocumento()" style="font-size:11px;">Eliminar</button>
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalEliminarDocumento()">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+    <!--Preloader-->
+    @Html.Partial("_PreLoader")
+    <!--End Preloader-->
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
+    <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
+    <script src="~/Scripts/file-explore.js"></script>
+    <script src="~/Scripts/Modules/Documentacion/Documentos.js"></script>
+    <script src="~/Scripts/Modules/Contexto/Contexto.js"></script>
+
+
+</body>
+</html>
+
+
+

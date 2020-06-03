@@ -1,0 +1,182 @@
+﻿@{
+    Layout = null;
+}
+<!--Inicio Vista Parcial Capex Hitos-->
+<div class="card offset-md-0">
+    <div class="card-body offset-md-0">
+        <form name="form_hitos" id="form_hitos" action="" style="width:1680px;">
+            <div class="container offset-md-0">
+                <div id="ContenedorSinDatosResumenFinanciero">
+                    <h7>Resumen Financiero</h7>
+                    <br />
+                    <span>Sin Datos</span>
+                </div>
+                <div id="ContenedorResumenFinanciero" style="display:none;">
+                    <h7>Resumen Financiero</h7>
+                    <br />
+                    <div class="row">
+                        <div class="col-xl-11 offset-md-0">
+                            <div class="form-row mt-0" style="width:100%;">
+
+                                <div class="col-sm-11 pb-1">
+
+                                    <table id="tabla10" class="table table-bordered dataTable no-footer" width="775" style="font-size:11px;">
+                                        <thead>
+                                            <tr style="background-color:#5c808d; height:100%;">
+                                                <th valign="middle" style="width:180px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:Left;"><strong>Presupuesto Capex (KUS$)</strong></div></th>
+                                                <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Años Anteriores</strong></div></th>
+                                                <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Año 2020</strong></div></th>
+                                                <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Años Posteriores</strong></div></th>
+                                                <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Total Capex</strong></div></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-xl-11 offset-md-0">
+                        <div class="form-row mt-0" style="width:100%;">
+                            <div class="col-sm-11 pb-1">
+                                <label for="PorcentajeNacional">% Nacional / % Extranjera</label>
+                            </div>
+                            <div class="col-sm-11 ml-3">
+                                <span id="PorInvNacExt" style="font-size:11px; border:0px;font-weight:bold;background-color: transparent; color:#fff; text-align:center; width:80px;"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div id="ContenedorSinDatosFechasClavesInversion">
+                    <h7>Fechas Claves de Inversión</h7>
+                    <br />
+                    <span>Sin Datos</span>
+                </div>
+                <div id="ContenedorFechasClavesInversion" style="display:none;">
+                    <h7>Fechas Claves de Inversión</h7>
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-10 offset-md-0">
+                            <div class="form-row mt-10">
+                                <div class="col-sm-11 pb-3">
+                                    <table class="table table-bordered dataTable no-footer" style="width:100%;">
+                                        <thead>
+                                            <tr>
+                                                <td colspan="7" style="text-align:left;">Ruta Aprobación</td>
+                                                <td colspan="2" style="text-align:center;">Ejecución</td>
+                                                <td colspan="1" style="text-align:center;">Cierre</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="text-align:center;width:100px;">Ficha SAP</td>
+                                                <td style="text-align:center;width:100px;">CI</td>
+                                                <td style="text-align:center;width:100px;">CA</td>
+                                                <td style="text-align:center;width:100px;">OPR</td>
+                                                <td style="text-align:center;width:100px;">PE</td>
+                                                <td style="text-align:center;width:100px;">DIR CEN</td>
+                                                <td style="text-align:center;width:100px;">DIR PLC</td>
+                                                <td style="text-align:center;width:100px;">Inicio</td>
+                                                <td style="text-align:center;width:100px;">Término</td>
+                                                <td style="text-align:center;width:100px;">SAP</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align:center;"><span id="BotonAgregarSAP" style="display:none;" class="btn btn-info btn-sm" onclick="FNMostrarIngresoFechaIndividual('SAP');">Ingresar</span><input type="text" id="HitSAP" value="" style="display:none; font-size:11px; border:0px; background-color: transparent; color:#f0f0f0; text-align:center; width:80px;" readonly /></td>
+                                                <td style="text-align:center;"><span id="BotonAgregarCI" style="display:none;" class="btn btn-info btn-sm" onclick="FNMostrarIngresoFechaIndividual('CI');">Ingresar</span><input type="text" id="HitCI" value="" style="display:none; font-size:11px; border:0px; background-color: transparent; color:#f0f0f0; text-align:center;width:80px;" readonly /></td>
+                                                <td style="text-align:center;"><span id="BotonAgregarCA" style="display:none;" class="btn btn-info btn-sm" onclick="FNMostrarIngresoFechaIndividual('CA');">Ingresar</span><input type="text" id="HitCA" value="" style="display:none; font-size:11px; border:0px; background-color: transparent; color:#f0f0f0; text-align:center;width:80px;" readonly /></td>
+                                                <td style="text-align:center;"><span id="BotonAgregarOPR" style="display:none;" class="btn btn-info btn-sm" onclick="FNMostrarIngresoFechaIndividual('OPR');">Ingresar</span><input type="text" id="HitOPR" value="" style="display:none; font-size:11px; border:0px; background-color: transparent; color:#f0f0f0; text-align:center;width:80px;" readonly /></td>
+                                                <td style="text-align:center;"><span id="BotonAgregarPE" style="display:none;" class="btn btn-info btn-sm" onclick="FNMostrarIngresoFechaIndividual('PE');">Ingresar</span><input type="text" id="HitPE" value="" style="display:none; font-size:11px; border:0px; background-color: transparent; color:#f0f0f0; text-align:center;width:80px;" readonly /></td>
+                                                <td style="text-align:center;"><span id="BotonAgregarDIRCEN" style="display:none;" class="btn btn-info btn-sm" onclick="FNMostrarIngresoFechaIndividual('DIRCEN')" ;>Ingresar</span><input type="text" id="HitDIRCEN" value="" style="display:none; font-size:11px; border:0px; background-color: transparent; color:#f0f0f0; text-align:center;width:80px;" readonly /></td>
+                                                <td style="text-align:center;"><span id="BotonAgregarDIRPLC" style="display:none;" class="btn btn-info btn-sm" onclick="FNMostrarIngresoFechaIndividual('DIRPLC')" ;>Ingresar</span><input type="text" id="HitDirPLC" value="" style="display:none; font-size:11px; border:0px; background-color: transparent; color:#f0f0f0; text-align:center;width:80px;" readonly /></td>
+
+                                                <td style="text-align:center;"><span id="HitoInicio"></span></td>
+                                                <td style="text-align:center;"><span id="HitoTermino"></span></td>
+                                                <td style="text-align:center;"><span id="HitoCierre"></span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <span>
+                    <span style="font-size:11px; text-decoration:underline"> <i class="fas fa-clipboard-list fa-1x" style="color:white;"></i> <a href="#" style="color:white;" onclick="FNVerGraficaRutaAprobacion()"> Ver Gráfica de Ruta de Aprobación</a></span>
+                </span>
+
+            </div>
+        </form>
+        <div class="clearfix"></div>
+        <div style="margin-top:5px;">
+            <button class="btn btn-primary" id="BotonGuardarHito" onclick="FNGuardarHitos('Guardar', true)">Guardar</button>
+            <button class="btn btn-warning" id="BotonActualizarHito" onclick="FNActualizarHitos()" style="display:none;">Actualizar</button>
+            <button class="btn btn-primary" id="BotonGuardarEnviarIniciativa" onclick="FNGuardarEnviarIniciativa()" style="margin-left:30px;display:none;">Guardar y Enviar</button>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal inmodal" id="ModalQuarter" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:-200px;width:1000px; font-size:12px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Gráfica Ruta Aprobación</h6>
+            </div>
+            <div id="ContenedorQuarter" class="modal-body" style="margin-left:5px;width:1000px; font-size:12px;">
+                <div style="height:300px;font-size:11px;margin-top:0px;">
+                    <div id="ContenedorImagenQuarter"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalQuarter()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal inmodal" id="ModalRutaAprobacionGrafica" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:-200px;width:1000px; font-size:12px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Gráfica Ruta Aprobación</h6>
+            </div>
+            <div id="ContenedorRutaAprobacionGrafica" class="modal-body" style="margin-left:5px;width:1000px; font-size:12px;">
+                <div style="height:300px;font-size:11px;margin-top:0px;">
+                    <div id="ContenedorImagenRutaAprobacion"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalRutaAprobacionGrafica()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal inmodal" id="ModalIngresoFechaIndividual" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="margin-left:0px;width:400px; font-size:12px;">
+            <div id="ContenedorIngresoFechaIndividual" class="modal-body" style="margin-left:5px;width:400px; font-size:12px;">
+                <div>
+                    <h7 style="color:#333;">Ingresar <span id="TituloTipoFecha"></span></h7>
+                    <br />
+                    <br />
+                    <div class="input-group">
+                        <input class="form-control" type="date" id="ValorFechaAprobacion" style="width:120px; font-size:11px; ">&nbsp;<button class="btn btn-primary btn-sm" id="BotonFechaAprobacion" onclick="FNAsignarFechaAprobacion()" style="font-size:11px;">Aceptar</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarFechaAprobacion()">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

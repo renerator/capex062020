@@ -1,0 +1,339 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+}
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="~/Content/-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewBag.Title</title>
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/glyphicons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/fonts/all.css" rel="stylesheet" />
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker-1-7-1.min.css" rel="stylesheet" />
+    <!--
+    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    -->
+    <link href="~/Content/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/select2.min.css" rel="stylesheet" />
+
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+
+    <!-- Arbol de Contenido -->
+    <link href="~/Content/file-explore.css" rel="stylesheet" />
+
+
+    <style>
+        input {
+            border-radius: 0px;
+        }
+
+        .form-control {
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+        }
+
+        input.error {
+            border: 1px dotted red;
+        }
+
+        select.error {
+            border: 1px dotted red;
+        }
+
+        textarea.error {
+            border: 1px dotted red;
+        }
+    </style>
+
+</head>
+<body style="overflow: visible;">
+
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="~/Content/logos/logo-centinela-190x50.png" border="0" height="45" style="margin-top:0px;">
+                    </a>
+                </div>
+                <!--Fi Logo Container-->
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end topbar-main -->
+        <!-- Menu -->
+        @Html.Partial("_MenuAdministrador")
+        <!-- Fin Menu-->
+
+    </header>
+
+    <div class="wrapper dashboard" style="margin-top:30px;">
+        <div class="container-fluid">
+            <!-- Navegación -->
+            <div class="row" style="margin-top:-30px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+
+                                <!--
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Logout", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active">Ejercicio de Planificación</li>
+                                -->
+                                <li class="breadcrumb-item active">Capex</li>
+                                <li class="breadcrumb-item active">Login</li>
+                                <li class="breadcrumb-item active">Panel</li>
+                                <li class="breadcrumb-item active">Ejercicio de Planificación</li>
+                            </ol>
+                        </div>
+                        <input type="button" id="BotonVolverGeneral" onclick="document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&nbsp;
+                        <h6 class="page-title">Ejercicio de Planificación - <span id="TipoIniTit"></span></h6>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Fin Navegación-->
+            <!-- Indicadores-->
+            <!--div-- class="row" style="margin-top:-30px; margin-bottom:10px;">
+            <div class="col-sm-12">
+                <div class="page-title-box">
+                    <div class="btn-group float-right">
+                        <span style="color:#fff; font-size:11px;">Estado Iniciativas&nbsp; </span>
+                        <span class="indicador-verde" title="Pendientes" id="IndicadorPendientes">0</span>&nbsp;
+                        <span class="indicador-naranja" title="Por Vencer" id="IndicadorPorVencer">0</span>&nbsp;
+                        <span class="indicador-rojo" title="Vencidas" id="IndicadorVencidas">0</span>&nbsp;
+                        <span class="indicador-blanco" title="Cerradas" id="IndicadorCerradas">0</span>&nbsp;&nbsp;&nbsp;
+
+                    </div>
+
+                </div>
+            </div>
+            </!--div-->
+            <!-- Fin Indicadores-->
+            <div class="row" id="contenedorNuevaIniciativa" style="display: none;">
+                <div class="col-md-3"></div>
+                <div class="col-lg-9">
+                    <div class="card-header form-row mt-0" style="height:45px;margin-left:2px; margin-right:2px;">
+                        <div class="col-sm-10 pb-0"><h6>Código Iniciativa #<span id="contenedorNuevaIniciativaCodigoIniciativa" style="color:#ffa231;"> Oooooooooo </span> Fecha <span id="contenedorNuevaIniciativaFechaIniciativa" style="color:#ffa231;"> 12/02/2020</span></h6></div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <!-- Contenido -->
+            <div class="row">
+                <!--Card  Opciones-->
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body" style="height:1100px;">
+
+                            <div id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingOne">
+                                        <h5 class="mb-0 mt-0 font-12">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="text-muted">
+                                                <i class="fa fa-cog"></i> Herramientas
+                                            </a>
+                                        </h5>
+                                    </div>
+
+                                    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                                        <div class="card-body" style="font-size:11px;">
+                                            <i class="fa fa-chevron-right"></i> <a href="#" onclick="FNRegistrarEventoIngresoIniciativa();" style="color:#fff;">Ingresar Iniciativa</a><br />
+                                            <i class="fa fa-chevron-right"></i> <a href="#" onclick="document.location='@Url.Action("Index", "Documentacion")'" style="color:#fff;">Documentos</a><br />
+                                            <i class="fa fa-chevron-right"></i> <a href="#" onclick="document.location='@Url.Action("Index", "Contacto")'" style="color:#fff;">Contacto Administrador</a><br />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header" role="tab" id="headingTwo">
+                                        <h5 class="mb-0 mt-0 font-12">
+                                            <a class="collapsed text-muted" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                <i class="fa fa-info"></i> Información
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo" class="" role="tabpanel" aria-labelledby="headingTwo">
+                                        <div class="card-body" style="font-size:11px;">
+                                            <div id="ContenedorInformacionLateralIzquierdo">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Proceso-->
+                <div class="col-lg-9">
+                    <div class="card m-b-30" style="height:1100px;">
+
+                        <div class="card-header">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs card-header-tabs" id="navegacion" role="tablist">
+
+                                <!-- <li id="NI1" class="nav-item" onclick="FNObtenerTextoAyuda('IDENTIFICACION', ''); FNVerificarEstadoGuardadoDatos('IDENTIFICACION');">                      <a class="nav-link active" data-toggle="tab" id="t1" href="#t-1" style=" color:#fff;"><span class="badge badge-info">1</span><small> Identificación</small></a></li> -->
+                                <li id="NI1" class="nav-item" onclick="FNObtenerTextoAyuda('IDENTIFICACION', '');">                      <a class="nav-link active" data-toggle="tab" id="t1" href="#t-1" style=" color:#fff;"><span class="badge badge-info">1</span><small> Identificación</small></a></li>
+                                <!-- <li id="NI2" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('CATEGORIZACION');FNObtenerTextoAyuda('CATEGORIZACION','');">  <a class="nav-link" data-toggle="tab" id="t2" href="#t-2" style=" color:#fff;"><span class="badge badge-info">2</span><small> Categorización</small></a></li> -->
+                                <li id="NI2" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNObtenerTextoAyuda('CATEGORIZACION','');">  <a class="nav-link" data-toggle="tab" id="t2" href="#t-2" style=" color:#fff;"><span class="badge badge-info">2</span><small> Categorización</small></a></li>
+                                <li id="NI3" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNObtenerTextoAyuda('PRESUPUESTO','');">                                                      <a class="nav-link" data-toggle="tab" id="t3" href="#t-3" style=" color:#fff;"><span class="badge badge-info">3</span><small> Presupuesto (Flujos)</small></a></li>
+                                <li id="NI4" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('DESCRIPCION');FNObtenerTextoAyuda('DESCRIPCION','');">        <a class="nav-link" data-toggle="tab" id="t4" href="#t-4" style=" color:#fff;"><span class="badge badge-info">4</span><small> Descripción Detallada</small></a></li>
+                                <li id="NI5" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('ECONOMICA');FNObtenerTextoAyuda('ECONOMICA','');">            <a class="nav-link" data-toggle="tab" id="t5" href="#t-5" style=" color:#fff;"><span class="badge badge-info">5</span><small> Evaluación Económica</small></a></li>
+                                <li id="NI6" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('RIESGO');FNObtenerTextoAyuda('RIESGO','');">                  <a class="nav-link" data-toggle="tab" id="t6" href="#t-6" style=" color:#fff;"><span class="badge badge-info">6</span><small> Evaluación Riesgo</small></a></li>
+                                <li id="NI7" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('HITO');FNObtenerTextoAyuda('HITO','');">                      <a class="nav-link" data-toggle="tab" id="t7" href="#t-7" style=" color:#fff;"><span class="badge badge-info">7</span><small> Capex /Hitos</small></a></li>
+                                <li id="NI8" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('ARCHIVO');FNObtenerTextoAyuda('ARCHIVO','');">                <a class="nav-link" data-toggle="tab" id="t8" href="#t-8" style=" color:#fff;"><span class="badge badge-info">8</span><small> Adjuntos</small></a></li>
+
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane p-3 active show" id="t-1" role="tabpanel" style="width:100%; margin-top:-20px;margin-bottom:0px; margin-left:0px; margin-right:-520px;height:370px;">
+                                    @Html.Partial("Identificacion")
+                                </div>
+                                <div class="tab-pane p-3" id="t-2" role="tabpanel" style="width:100%; margin-top:-20px;margin-bottom:0px; margin-left:0px;height:370px;">
+                                    @Html.Partial("Categorizacion")
+                                </div>
+                                <div class="tab-pane p-3" id="t-3" role="tabpanel" style="width:100%; margin-top:-20px;margin-bottom:0px; margin-left:0px;height:370px;">
+                                    @Html.Partial("Presupuestos")
+                                </div>
+                                <div class="tab-pane p-3" id="t-4" role="tabpanel" style="width:100%; margin-top:-20px;margin-bottom:0px; margin-left:0px;height:370px;">
+                                    @Html.Partial("Descripcion")
+                                </div>
+                                <div class="tab-pane p-3" id="t-5" role="tabpanel" style="width:100%; margin-top:-20px;margin-bottom:0px; margin-left:0px;height:370px;">
+                                    @Html.Partial("EvalEconomica")
+                                </div>
+                                <div class="tab-pane p-3" id="t-6" role="tabpanel" style="width:100%; margin-top:-20px;margin-bottom:0px; margin-left:0px;height:370px;">
+                                    @Html.Partial("EvalRiesgo")
+                                </div>
+                                <div class="tab-pane p-3" id="t-7" role="tabpanel" style="width:100%; margin-top:-20px;margin-bottom:0px; margin-left:0px;height:370px;">
+                                    @Html.Partial("Hitos")
+                                </div>
+                                <div class="tab-pane p-3" id="t-8" role="tabpanel" style="width:100%; margin-top:-20px;margin-bottom:0px; margin-left:0px;height:370px;">
+                                    @Html.Partial("Adjuntos")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="ModalAdvertenciaPerdidaCambios" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:450px; font-size:12px;">
+                <div id="ContenedorAdvertenciaPerdidaCambios" class="modal-body" style="margin-left:5px;width:440px; font-size:12px;">
+                    <div>
+                        <h7 style="color:#333;"><strong>ATENCION</strong></h7>
+                        <br />
+                        <div class="input-group">
+                            Debe guardar los cambios o los perderá, oprima  "Continuar" para continuar trabajando y guardar los cambios o "Cancelar" para seguir, esta acción cancelara los cambios y se perderán.
+                        </div>
+                        <div class="m-t-10">
+                            <button class="btn btn-danger btn-sm" id="BotonFechaAprobacion" onclick="FNRelocalizarEtapa();" style="font-size:11px;">Continuar</button>
+                            <button type="button" class="btn btn-white" data-dismiss="modal" onclick="document.location.reload();" style="font-size:11px;">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/Login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+    <!--Preloader-->
+    @Html.Partial("_PreLoader")
+    <!--End Preloader-->
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker-1-7-1.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.es.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <!--
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+        -->
+    <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
+    <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
+    <script src="~/Scripts/Chart.bundle.js"></script>
+    <script src="~/Scripts/jquery.number.min.js"></script>
+    <script src="~/Scripts/jquery.mask.min.js"></script>
+    <!-- Paginacion de Contenido -->
+    <script src="~/Scripts/paginga.jquery.min.js"></script>
+    <!-- Arbol de Contenido-->
+    <script src="~/Scripts/file-explore.js"></script>
+    <!-- Carga de Modulos -->
+    <script src="~/Scripts/Modules/Planificacion/Comun.js"></script>
+    <script src="~/Scripts/Modules/Planificacion/Identificacion.js"></script>
+    <script src="~/Scripts/Modules/Planificacion/Categorizacion.js"></script>
+    <script src="~/Scripts/Modules/Planificacion/Presupuesto.js"></script>
+    <script src="~/Scripts/Modules/Planificacion/Descripcion.js"></script>
+    <script src="~/Scripts/Modules/Planificacion/EvaluacionEconomica.js"></script>
+    <script src="~/Scripts/Modules/Planificacion/EvaluacionRiesgo.js"></script>
+    <script src="~/Scripts/Modules/Planificacion/Hito.js"></script>
+    <script src="~/Scripts/Modules/Planificacion/Adjuntos.js"></script>
+    <script src="~/Scripts/Modules/Contexto/Contexto.js"></script>
+    <script src="~/Scripts/Modules/Planificacion/Planificacion.js"></script>
+</body>
+</html>

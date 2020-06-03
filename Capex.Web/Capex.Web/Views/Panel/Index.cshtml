@@ -1,0 +1,416 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+}
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewBag.Title</title>
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="~/Content/logos/logo-centinela-190x50.png" border="0" height="45" style="margin-top:0px;" />
+                    </a>
+                </div>
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Wrapper -->
+    <div class="wrapper" style="margin-top:-60px;">
+        <div class="container-fluid">
+
+            <div class="row" style="margin-top:0px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item active"><a href="#">Panel</a></li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">Panel de Selección</h6>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjetas-->
+
+            <div class="row">
+
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Ejercicio de Planificación</h6>
+                            <p class="card-text">Creación o Importación de Iniciativas para ejercicios de presupuesto base o caso de Desarrollo.</p>
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ModalTipEjercioPlanificacion">Ingresar</a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Ejercicios Oficiales</h6>
+                            <p class="card-text">Contiene Ejercicios anteriores oficiales de la compañía. Presupuesto anual, Caso Base y Caso de Desarrollo.</p>
+                            <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Index", "Ejercicios")';">Ingresar</a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body ">
+                            <h6 class="card-title">Biblioteca</h6>
+                            <p class="card-text">Biblioteca  de documentación, instructivos y lineamientos necesarios  y de consulta para Gestión de Iniciativas CAPEX.</p>
+                            <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Index", "Documentacion")';">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+                @{
+                    if (Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1" || Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2" || Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+                    {
+                        <div class="col-md-12 col-xl-3">
+                            <div class="card m-b-30">
+                                <div class="card-body ">
+                                    <h6 class="card-title">Mantenedores</h6>
+                                    <p class="card-text">Herramientas para el mantenimiento de información y parámetros del sistema.</p>
+                                    <br />&nbsp;
+                                    <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Index", "Mantenedor")'">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Gestión de Iniciativas</h6>
+                            <p class="card-text">Administrador de status de iniciativas asociado a cada perfil de usuario. Gestionador, Sponsor, Revisor u Otros.</p>
+                            <!--<a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("Index", "Gestion")'">Ingresar</a>-->
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ModalTipoIniciativa">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Estadísticas</h6>
+                            <p class="card-text">Módulo de representación gráfica de ejercicios oficiales e iniciativas en gestión.<br />&nbsp;</p>
+                            <a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("Index", "Estadistica")'" data-toggle="modal" data-target="">Ingresar</a>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body ">
+                            <h6 class="card-title">Contacto Administrador</h6>
+                            <p class="card-text">Apoyo a la solución de funcionalidades del sistema.</p>
+                            <br />&nbsp;
+                            <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Index", "Contacto")'">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal inmodal" id="ModalTipEjercioPlanificacion" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Crear Ejercicio - <span id="PeriodoIniTit">@DateTime.Now.Year</span></h6>
+                </div>
+                <div>
+                    <span>
+                        <input type="number" class="form-control EPfieldBox" id="caso_ann" style="display:none; width: 90%" placeholder="Ingresar Año" />
+                    </span>
+                </div>
+                <div id="ContenedorIniciativasCasos" class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                    <div style="height:130px;">
+                        <div class="" style="margin-top:0px;">
+                            <div class="row" style="height:50px;">
+                                <div class="col-md-12">
+                                    <div style="float: left;width: 30px;margin-right: 20px;text-align: center;">
+                                    </div>
+                                    <h7 style="color:#333"><strong>Seleccione ejercicio de planificación</strong></h7>
+                                    <div class="form-group mb-1 row">
+                                        <div class="col-md-12">
+                                            <select id="TipoIniciativa" class="form-control" onchange="FnRegistrarTipoIniciativa(this.value)" style="font-size:12px;">
+                                                <option value="" selected>Seleccionar..</option>
+                                                <option value="CB">Caso Base</option>
+                                                <option value="CD">Caso Desarrollo</option>
+                                                <option value="PP">Presupuesto</option>
+                                                <option value="EX">Extraordinario</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <h7 style="color:#333"><strong>Crear Nuevo</strong></h7>
+                                    <div class="form-group mb-1 row">
+                                        <div class="col-md-12">
+                                            <select id="TipoEjercicio" class="form-control" onchange="FNRegistrarTipoEjercicio(this.value)" style="font-size:12px;">
+                                                <option value="" selected>Seleccionar..</option>
+                                                <option value="CREAR">Crear Nueva Ficha</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="FnProcesarSeleccionEP();">Ingresar</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="document.location.reload();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="ModalTipoIniciativa" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Tipo Iniciativa</h6>
+                </div>
+                <div id="ContenedorTipoIniciativa" class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                    <div style="height:130px;">
+                        <div class="" style="margin-top:0px;">
+                            <div class="row" style="height:50px;">
+                                <div class="col-md-12">
+                                    <div style="float: left;width: 30px;margin-right: 20px;text-align: center;">
+                                    </div>
+                                    <h7 style="color:#333"><strong>Seleccione tipo de iniciativa</strong></h7>
+                                    <div class="form-group mb-1 row">
+                                        <div class="col-md-12">
+                                            <select id="idTipoIniciativa" class="form-control" onchange="FnSeleccionarTipoIniciativa(this.value)" style="font-size:12px;">
+                                                <option value="-1" selected>Seleccionar..</option>
+                                                <option value="1">Presupuesto</option>
+                                                <option value="2">Caso Base</option>
+                                                <option value="0">Ambos</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="idBotonTipoIniciativa" disabled='disabled' onclick="FnProcesarSeleccionTipoIniciativa();">Ingresar</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="document.location.reload();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/Login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+    <script src="~/Scripts/Modules/Contexto/Contexto.js"></script>
+
+    <script>
+    // ----------------------------------------------
+    //
+    // SISTEMA          : CAPEX
+    // CLIENTE          : ANTOFAGASTA MINERALS S.A.
+    // MODULO           : PANEL
+    // FECHA            : MAYO 2018
+    // DESARROLLADO POR : PMO 360 SpA
+    //
+    // ----------------------------------------------
+    // METODOS          : AUXILIARES Y REST
+    //
+    //
+    FnRegistrarTipoIniciativa = function (tipo) {
+        localStorage.setItem("CAPEX_TIPO_INICIATIVA", tipo);
+    }
+
+     FnSeleccionarTipoIniciativa = function (tipo) {
+         console.log("FnSeleccionarTipoIniciativa tipo=", tipo);
+         localStorage.setItem("CAPEX_FILTRO_TIPO_INICIATIVA", tipo);
+         if (tipo == '-1') {
+             $('#idBotonTipoIniciativa').prop('disabled', true);
+         } else {
+            $('#idBotonTipoIniciativa').prop('disabled', false);
+         }
+    }
+    //
+    // RESGISTRO DE DATOS PARA EJERICICIO
+    //
+    FNRegistrarTipoEjercicio = function (tipo) {
+        var tipo_iniciativa = localStorage.getItem("CAPEX_TIPO_INICIATIVA");
+        var ann_actual = (new Date).getFullYear();
+        switch (tipo) {
+            case "CREAR":
+            /*
+            * REGLA DE NEGOCIO 0
+            * RN000
+            */
+                if (tipo_iniciativa == "PP") {
+                    var ann_siguiente = parseInt(ann_actual) + 1
+                    $("#PeriodoIniTit").html(ann_siguiente);
+                    localStorage.setItem("CAPEX_PERIODO_EP", ann_siguiente);
+                }
+                else
+                {
+                    $("#PeriodoIniTit").html(ann_actual);
+                    localStorage.setItem("CAPEX_PERIODO_EP", ann_actual);
+                }
+                localStorage.setItem("CAPEX_TIPO_EJERCICIO", tipo);
+            break;
+            case "IMPORTAR":
+                localStorage.setItem("CAPEX_PERIODO_EP", ann_actual);
+                localStorage.setItem("CAPEX_TIPO_EJERCICIO", tipo);
+                break;
+        }
+        return;
+    }
+    //
+    // PROCESAR SELECCION - EJERCICIO
+    //
+    FnProcesarSeleccionEP = function () {
+        var periodo = localStorage.getItem("CAPEX_PERIODO_EP");
+        var tipo_ini = localStorage.getItem("CAPEX_TIPO_INICIATIVA");
+        var tipo_eje = localStorage.getItem("CAPEX_TIPO_EJERCICIO");
+
+        if (tipo_ini == "" || tipo_ini == null) {
+            toastr.error('Debe seleccionar un tipo de iniciativa.');
+            return false;
+        }
+        else if (tipo_eje == "" || tipo_eje == null) {
+            toastr.error('Debe seleccionar un tipo de ejercicio.');
+            return false;
+        }
+        else {
+            window.location.href = '@Url.RouteUrl("Planificacion")';
+
+        }
+    }
+
+    FnProcesarSeleccionTipoIniciativa = function () {
+        var url = '@Url.Action("Index", "Gestion", new { tipoIniciativaSeleccionado = "__id__" })';
+        var param = localStorage.getItem("CAPEX_FILTRO_TIPO_INICIATIVA");
+        window.location.href = url.replace('__id__', param);
+    }
+    //
+    // INICIALIZAR
+    //
+    $(document).ready(function () {
+
+        $('#ModalTipoIniciativa').on('shown.bs.modal', function (e) {
+            console.log("ModalTipoIniciativa shown.bs.modal");
+            $('#idBotonTipoIniciativa').prop('disabled', true);
+            $('#idTipoIniciativa').val("-1");
+        });
+
+        var estado_menu_opcion_ingresar_iniciativa = localStorage.getItem("CAPEX_MENU_INGRESAR_INICIATIVA");
+        if (estado_menu_opcion_ingresar_iniciativa == "SI") {
+            localStorage.setItem("CAPEX_MENU_INGRESAR_INICIATIVA", "");
+            $("#ModalTipEjercioPlanificacion").show();
+            return true;
+        }
+        localStorage.setItem("CAPEX_PERIODO_EP","");
+        localStorage.setItem("CAPEX_TIPO_INICIATIVA","");
+        localStorage.setItem("CAPEX_CASO_INICIATIVA", "");
+        localStorage.setItem("CAPEX_TIPO_EJERCICIO", "");
+        localStorage.setItem("CAPEX_FILTRO_TIPO_INICIATIVA", "-1");
+        //
+        $('.tooltip-demo').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+        });
+        //NOTIFICACIONES
+        toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "showDuration": "400",
+        "hideDuration": "1000",
+        "timeOut": "7000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+        }
+    });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+﻿@using CapexIdentity.Entities
+@model LoginInfo
+@{
+    ViewBag.Title = "Sistema de Gestión de Iniciativas CAPEX";
+}
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <title>@ViewBag.Title</title>
+    <meta content="CAPEX" name="description">
+    <meta content="AMSA S.A." name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/site.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/sweetalert2.css" rel="stylesheet" />
+    <link href="~/fonts/css/all.css" rel="stylesheet" />
+</head>
+<body style="overflow: visible;">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <!-- Navigation Bar-->
+    <header id="topnav">
+        <div class="topbar-main">
+            <div class="container-fluid">
+                <!-- Logo container-->
+                <div class="logo" style="margin-top:0px;">
+                    <a href="#" class="logo">
+                        <img src="Content/logos/logo-centinela-190x50.png" border="0" height="45" style="margin-top:0px;">
+                    </a>
+                </div>
+                <!--Fi Logo Container-->
+                <!--System Bar-->
+                @Html.Partial("_SystemBar")
+                <!--Fin System Bar-->
+                <!-- Top Bar-->
+                @Html.Partial("_TopBar")
+                <!--Fin Top Bar-->
+
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end topbar-main -->
+
+
+    </header>
+
+    <!-- Wrapper -->
+    <div class="wrapper dashboard" style="margin-top:-50px;">
+        <div class="container-fluid">
+            <div class="row" style="margin-top:0px;">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <div class="btn-group float-right">
+                            <ol class="breadcrumb hide-phone p-0 m-0">
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item active">Contacto Administrador</li>
+                            </ol>
+                        </div>
+                        <h6 class="page-title">Contacto Administrador</h6>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido -->
+            <div class="row">
+                <!--Card Informacion Administrador-->
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="m-b-md">
+                                        <div style="font-size:14px;">Información del Administrador</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <img src="~/Content/avatars/MarcelaMedina.jpg" alt="" class="rounded-circle  mx-auto d-block w-80">
+                            <div class="text-center">
+                                <h5 class="mt-2 mb-0">Marcela Medina Valenzuela</h5>
+                                <span class="text-muted">Ingeniero Control Gestión y Negocios</span>
+                                <blockquote>
+                                    mmedina@mineracentinela.cl <br>
+                                    +56 2 27986570<br />
+                                </blockquote>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Formulario de Solicitud-->
+                <div class="col-md-12 col-xl-8">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="m-b-md">
+                                        <div style="font-size:14px;">Formulario de solicitud</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-10 offset-md-1">
+                                <div class="form-row mt-4" style="font-size:11px;">
+                                    <div class="col-sm-2 pb-3">
+                                        <label for="TipoSolicitud">Tipo Solicitud</label>
+                                        <select class="form-control" style="height:30px; font-size:11px;" name="TipoSolicitud" id="TipoSolicitud" onchange="FNGuardarSeleccion('COMBO_TIPO', this.value);">
+                                            <option value="" selected>Seleccionar tipo..</option>
+                                            <option value="CB">Caso Base</option>
+                                            <option value="CD">Caso Desarrollo</option>
+                                            <option value="EX">Extraordinario</option>
+                                            <option value="PP">Presupuesto</option>
+                                        </select>
+                                    </div>
+                                    @*<div class="col-sm-3 pb-3">
+                                            <label for="Gerencia">Gerencia</label>
+                                            <select class="form-control" style="height:30px;  font-size:11px;" id="Gerencia" onchange="FNGuardarSeleccion('COMBO_GERENCIA', this.value);">
+                                                <option selected>Seleccionar..</option>
+                                            </select>
+                                        </div>*@
+                                    @*<div class="col-sm-3 pb-3">
+                                            <label for="Superintendencia">Superintendencia</label>
+                                            <select class="form-control" style="height:30px;  font-size:11px;" id="Superintendencia" onchange="FNGuardarSeleccion('COMBO_SUPER', this.value);">
+                                                <option selected>Seleccionar..</option>
+                                            </select>
+                                        </div>*@
+
+                                    @*<div class="col-sm-5 pb-3">
+                                            <label for="NombreSolicitante">Nombre del Solicitante</label>
+                                            <input type="text" class="form-control"  style="height:30px;  font-size:11px;" id="NombreSolicitante">
+                                        </div>*@
+                                    @*<div class="col-sm-3 pb-3">
+                                            <label for="ApellidoSolicitante">Apellido Solicitante</label>
+                                            <input type="text" class="form-control"  style="height:30px;  font-size:11px;" id="ApellidoSolicitante">
+                                        </div>*@
+
+                                    @*<div class="col-sm-5 pb-3">
+                                            <label for="EmailSolicitante">E-mail Solicitante</label>
+                                            <input type="text" class="form-control"   style="height:30px;  font-size:11px;"id="EmailSolicitante">
+                                        </div>*@
+
+                                    <div class="col-sm-3 pb-3">
+                                        <label for="OtroTelefono">Otro Móvil (Ej: 973547852)</label>
+                                        <input type="text" class="form-control mb-4" style="height:30px;  font-size:11px;" id="OtroTelefono">
+                                    </div>
+                                    <div class="col-sm-8 pb-3">
+                                        <label for="Comentarios">Comentarios</label>
+                                        <br />
+                                        <textarea cols="6" style="width:635px; height:100px;font-size:11px; background-color:transparent; color:#f0f0f0;" id="Comentarios"></textarea><br /><small>[Máximo 600 caracteres]</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 pl-0 pt-0">
+                                    <button class="btn btn-primary" onclick="FnEnviarSolicitud();">Enviar Solicitud</button>&nbsp;<button class="btn btn-success pl-2" onclick="document.location.href='/Panel'">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin del Contenido-->
+
+
+
+        </div>
+    </div>
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+    <script src="~/Scripts/Modules/Contacto/Contacto.js"></script>
+    <script src="~/Scripts/Modules/Contexto/Contexto.js"></script>
+
+</body>
+</html>
+
+

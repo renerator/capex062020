@@ -1,0 +1,32 @@
+﻿@{
+    Layout = null;
+}
+<!--COMENTAR-->
+<div class="modal inmodal" id="ModalRechazoSponsor" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Rechazar Iniciativa</h6>
+            </div>
+
+            <div class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                <div id="ContenedorRechazoSponsor">
+                    <div style="font-size:11px;">
+
+                        <div>
+                            <label for="ObservacionRechazoSponsor">Observación</label>
+                            <textarea id="ObservacionRechazoSponsor" class="form-control" style="font-size:11px; color:#333;height:100px;" placeholder="Ingresar observación.."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="FNRechazoIniciativaSponsor();">Aceptar</button>
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarRechazoSponsor()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,35 @@
+﻿@{
+    Layout = null;
+}
+<!--COMENTAR-->
+<div class="modal inmodal" id="ModalAdjuntos" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:600px;">
+            <div class="modal-header">
+                <h6 class="modal-title">Adjuntos</h6>
+            </div>
+
+            <div class="modal-body" style="margin-left:5px;width:600px; font-size:12px; color:#0094ff;">
+                <div id="ContenedorAdjuntos">
+                   
+                    <div id="ContenedorTablaDocumentosAdjuntos" style="color:#0094ff; text-transform:uppercase;">
+                        <ul class="file-tree">
+                            <li>
+                                <i class="fa fa-archive fa-1x" style="color:#676868"></i><span style="color:#333"><strong> Documentos Adjuntos de Iniciativa </strong></span>
+                                <ul id="ContenedorElementosAdjuntos" style="color:#0094ff;">
+                                    @Html.Raw(ViewBag.Adjuntos)
+                                </ul>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalAdjuntos()">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
