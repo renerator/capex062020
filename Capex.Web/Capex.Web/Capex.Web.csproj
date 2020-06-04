@@ -154,11 +154,13 @@
     <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Rotativa.1.6.4\lib\net40\Rotativa.dll</HintPath>
     </Reference>
-    <Reference Include="SHARED.AzureStorage">
-      <HintPath>C:\Users\Enrique Cuevas\Desktop\SharedAmsa\SHARED.AzureStorage.dll</HintPath>
+    <Reference Include="SHARED.AzureStorage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Files\Downloads\SHARED.AzureStorage.dll</HintPath>
     </Reference>
-    <Reference Include="SHARED.EMail">
-      <HintPath>C:\Users\Enrique Cuevas\Desktop\SharedAmsa\SHARED.EMail.dll</HintPath>
+    <Reference Include="SHARED.EMail, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Files\Downloads\SHARED.EMail.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -366,6 +368,8 @@
     <Content Include="Content\MetroJs.min.css" />
     <Content Include="Content\morris.css" />
     <Content Include="favicon.ico" />
+    <Content Include="Files\Downloads\SHARED.AzureStorage.dll" />
+    <Content Include="Files\Downloads\SHARED.EMail.dll" />
     <Content Include="fonts\css\all.css" />
     <Content Include="fonts\css\all.min.css" />
     <Content Include="fonts\css\brands.css" />
