@@ -161,7 +161,33 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-2 pb-0" style="margin-top:-5px;"><input type="button" id="BotonVolverGrillaIniciativa" onclick="history.back();" class="btn btn-primary btn-sm" value="Volver" />&nbsp;<button type="button" class="btn btn-warning btn-sm" alt="Ver PDF" onclick="document.location.href='../../Planificacion/descargaPdfPresupuesto?token=@ViewBag.IniToken'">Descargar PDF</button></div>
+                            <div class="col-sm-2 pb-0" style="margin-top:-5px;">
+                                @{
+                                    if (Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"] == null)
+                                    {
+                                        <input type="button" id="BotonVolverGrillaIniciativa" onclick="history.back()" class="btn btn-primary btn-sm" value="Volver" />
+                                    }
+                                    else
+                                    {
+                                        if (Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"].ToString().StartsWith("GestionNoAprobada") && Session["CAPEX_SESS_OPCION_ENVIADA"] != null)
+                                        {
+                                            if (Session["CAPEX_SESS_OPCION_ENVIADA"].ToString() == "1" || Session["CAPEX_SESS_OPCION_ENVIADA"].ToString() == "2" || Session["CAPEX_SESS_OPCION_ENVIADA"].ToString() == "3")
+                                            {
+                                                <input type="button" id="BotonVolverGrillaIniciativa" onclick="location.href='@Url.Action("Index", "GestionNoAprobada", new { opcion = Session["CAPEX_SESS_OPCION_ENVIADA"].ToString() } )'" class="btn btn-primary btn-sm" value="Volver" />
+                                            }
+                                            else
+                                            {
+                                                <input type="button" id="BotonVolverGrillaIniciativa" onclick="history.back()" class="btn btn-primary btn-sm" value="Volver" />
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <input type="button" id="BotonVolverGrillaIniciativa" onclick="location.href='@Url.Action("Index", Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"].ToString())'" class="btn btn-primary btn-sm" value="Volver" />
+                                        }
+                                    }
+                                }
+                                &nbsp;<button type="button" class="btn btn-warning btn-sm" alt="Ver PDF" onclick="document.location.href='../../Planificacion/descargaPdfPresupuesto?token=@ViewBag.IniToken'">Descargar PDF</button>
+                            </div>
                         </div>
                         <!--FIN CABECERA-->
                         <br />

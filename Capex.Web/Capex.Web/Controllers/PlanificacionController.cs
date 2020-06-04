@@ -8177,14 +8177,21 @@ namespace Capex.Web.Controllers
                             sheetOne.Cell("K10").Value = ini.DESCRIPCION;
 
                             ViewBag.Anio = ini.IniPeriodo;
-                            sheetOne.Cell("L43").Value = ViewBag.Anio;
-                            ViewBag.AnioUno = ini.IniPeriodo + 1;
+
+                            string iniTipo = ini.IniTipo;
+                            int anioIni = ViewBag.Anio;
+                            if (iniTipo != null && !string.IsNullOrEmpty(iniTipo.ToString()) && ("CB".Equals(iniTipo.ToString()) || "CD".Equals(iniTipo.ToString())))
+                            {
+                                anioIni += 1;
+                            }
+                            sheetOne.Cell("L43").Value = anioIni;
+                            ViewBag.AnioUno = anioIni + 1;
                             sheetOne.Cell("M18").Value = ViewBag.AnioUno;
                             sheetOne.Cell("M43").Value = ViewBag.AnioUno;
-                            ViewBag.AnioDos = ini.IniPeriodo + 2;
+                            ViewBag.AnioDos = anioIni + 2;
                             sheetOne.Cell("O18").Value = ViewBag.AnioDos;
                             sheetOne.Cell("N43").Value = ViewBag.AnioDos;
-                            ViewBag.AnioTres = ini.IniPeriodo + 3;
+                            ViewBag.AnioTres = anioIni + 3;
                             sheetOne.Cell("Q18").Value = ViewBag.AnioTres;
                             sheetOne.Cell("O43").Value = ViewBag.AnioTres;
 
