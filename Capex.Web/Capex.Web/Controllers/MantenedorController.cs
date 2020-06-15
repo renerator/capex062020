@@ -16,6 +16,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Dapper;
 using System.Text;
+using CapexInfraestructure.Bll.Entities.Planificacion;
 
 namespace Capex.Web.Controllers
 {
@@ -313,7 +314,27 @@ namespace Capex.Web.Controllers
                 {
                     try
                     {
-
+                        var list_usuario_token = ORM.Query("CAPEX_SEL_MANTENEDOR_BUSCAR_USUARIO_TOKEN", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                        foreach (var usuarioSeleccionado in list_usuario_token)
+                        {
+                            ViewBag.UsuToken = usuarioSeleccionado.UsuToken;
+                            ViewBag.UserName = usuarioSeleccionado.UserName;
+                            ViewBag.Email = usuarioSeleccionado.Email;
+                            ViewBag.Password = usuarioSeleccionado.Password;
+                            ViewBag.ComToken = usuarioSeleccionado.ComToken;
+                            ViewBag.AreaToken = usuarioSeleccionado.AreaToken;
+                            ViewBag.UsuTipo = usuarioSeleccionado.UsuTipo;
+                            ViewBag.UsuRut = usuarioSeleccionado.UsuRut;
+                            ViewBag.UsuNombre = usuarioSeleccionado.UsuNombre;
+                            ViewBag.UsuApellido = usuarioSeleccionado.UsuApellido;
+                            ViewBag.UsuEmail = usuarioSeleccionado.UsuEmail;
+                            ViewBag.UsuTelefono = usuarioSeleccionado.UsuTelefono;
+                            ViewBag.UsuMovil = usuarioSeleccionado.UsuMovil;
+                            ViewBag.UserRoleID = usuarioSeleccionado.UserRoleID;
+                            ViewBag.RoleID = usuarioSeleccionado.RoleID;
+                            ViewBag.GrvToken = usuarioSeleccionado.GrvToken;
+                            ViewBag.GrvAreaRevToken = usuarioSeleccionado.GrvAreaRevToken;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -330,49 +351,34 @@ namespace Capex.Web.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Usuario/Accion/Modificar")]
-        public ActionResult UsuarioModificarDatos(Usuario.ModificarUsuario DatosUsuario)
+        public ActionResult UsuarioModificarDatos(Usuario.ModificarUsuarioCorregido DatosUsuario)
         {
-            if (!@User.Identity.IsAuthenticated)
+            if (!@User.Identity.IsAuthenticated || Session["CAPEX_SESS_USERNAME"] == null)
             {
-                return RedirectToAction("Logout", "Login");
+                return Json(new { redirectUrlLogout = "true" }, JsonRequestBehavior.AllowGet);
             }
             else
             {
                 try
                 {
                     var parametos = new DynamicParameters();
-                    parametos.Add("ID", DatosUsuario.ID);
+                    parametos.Add("IdToken", DatosUsuario.IdToken);
+                    parametos.Add("IdRolToken", DatosUsuario.IdRolToken);
+                    parametos.Add("IdGrvToken", DatosUsuario.IdGrvToken);
                     parametos.Add("UserName", DatosUsuario.UserName);
                     parametos.Add("Password", DatosUsuario.Password);
                     parametos.Add("Email", DatosUsuario.Email);
-                    parametos.Add("Status", DatosUsuario.Status);
-
-                    parametos.Add("UsuToken", DatosUsuario.UsuToken);
-                    parametos.Add("ComToken", DatosUsuario.ComToken);
-                    parametos.Add("AreaToken", DatosUsuario.AreaToken);
-                    parametos.Add("IdEmpresa", DatosUsuario.IdEmpresa);
-                    parametos.Add("UsuTipo", DatosUsuario.UsuTipo);
+                    parametos.Add("RoleID", DatosUsuario.RoleID);
                     parametos.Add("UsuRut", DatosUsuario.UsuRut);
                     parametos.Add("UsuNombre", DatosUsuario.UsuNombre);
                     parametos.Add("UsuApellido", DatosUsuario.UsuApellido);
-                    parametos.Add("UsuEmail", DatosUsuario.UsuEmail);
                     parametos.Add("UsuTelefono", DatosUsuario.UsuTelefono);
                     parametos.Add("UsuMovil", DatosUsuario.UsuMovil);
-                    parametos.Add("UsuImagen", DatosUsuario.UsuImagen);
-
-                    parametos.Add("GrvToken", DatosUsuario.GrvToken);
-                    parametos.Add("GrvUser", DatosUsuario.GrvUser);
-                    parametos.Add("GrvUserToken", DatosUsuario.GrvUserToken);
-                    parametos.Add("GrvAreaRevToken", DatosUsuario.GrvAreaRevToken);
-                    parametos.Add("GrvAreaRevNombre", DatosUsuario.GrvAreaRevNombre);
-
-                    parametos.Add("UserRolId", DatosUsuario.UserRolID);
-                    parametos.Add("UserID", DatosUsuario.UserID);
-                    parametos.Add("RoleID", DatosUsuario.RoleID);
-
+                    parametos.Add("ComToken", DatosUsuario.ComToken);
+                    parametos.Add("AreaToken", DatosUsuario.AreaToken);
                     parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
 
-                    ORM.Query("CAPEX_UPD_MANTENEDOR_USUARIO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    ORM.Query("CAPEX_UPD_MANTENEDOR_CORREGIDO_USUARIO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
                     if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
                     {
                         return Json(new { Mensaje = parametos.Get<string>("Respuesta") }, JsonRequestBehavior.AllowGet);
@@ -388,9 +394,9 @@ namespace Capex.Web.Controllers
                     CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
                     return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
                 }
-
             }
         }
+
         /// <summary>
         /// ELIMINAR /CERRAR CUENTA DE USUARIO
         /// </summary>
@@ -1632,6 +1638,233 @@ namespace Capex.Web.Controllers
             catch (Exception err)
             {
                 var ExceptionResult = "DesactivarMatrizRiesgo, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region "METODOS MANTENEDORES DE TEMPLATE"
+        /// <summary>
+        ///  METIDO DESPLEGAR MATRIZ RIESGO
+        /// </summary>
+        /// <returns></returns>
+        [Route("TemplateIniciativa")]
+        public ActionResult TemplateIniciativa()
+        {
+            if (!@User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Logout", "Login");
+            }
+            else
+            {
+                var tipoIniciativaSeleccionadoMantenedor = Request.QueryString["tipoIniciativaSeleccionado"];
+                //1 CASO BASE//2 PRESUPUESTO
+                if (string.IsNullOrEmpty(tipoIniciativaSeleccionadoMantenedor))
+                {
+                    tipoIniciativaSeleccionadoMantenedor = "1";
+                }
+                DateTime now = DateTime.Today;
+                ViewBag.anioMin = Convert.ToInt32(now.ToString("yyyy"));
+                if (tipoIniciativaSeleccionadoMantenedor.Equals("2"))
+                {
+                    ViewBag.anioMin += 1;
+                }
+                Session["tipoIniciativaSeleccionadoMantenedor"] = tipoIniciativaSeleccionadoMantenedor;
+                ViewBag.tipoIniciativaSeleccionadoMantenedor = tipoIniciativaSeleccionadoMantenedor;
+                var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
+                if (string.IsNullOrEmpty(Convert.ToString(Session["CAPEX_SESS_USERNAME"])) || string.IsNullOrEmpty(rol) || string.IsNullOrEmpty(usuario))
+                {
+                    return RedirectToAction("Logout", "Login");
+                }
+                else
+                {
+                    ViewBag.Templates = ORM.Query("CAPEX_SEL_MANTENEDOR_TEMPLATE_PARAM_COMERCIALES", new { @tipoIniciativaSeleccionadoMantenedor = tipoIniciativaSeleccionadoMantenedor }, commandType: CommandType.StoredProcedure).ToList();
+                }
+            }
+            return View("TemplateIniciativa");
+        }
+        /// <summary>
+        /// METODO PARA GUARDAR MATRIZ RIESGO
+        /// </summary>
+        /// <param name="Datos"></param>
+        /// <returns></returns>
+        //[HttpPost]
+        //[Route("TemplateIniciativa/Guardar")]
+        //public ActionResult GuardarTemplateIniciativa(Template.GuardarTemplate Datos)
+        //{
+        //    try
+        //    {
+        //        var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+        //        var parametos = new DynamicParameters();
+        //        parametos.Add("USUARIO", usuario);
+        //        parametos.Add("TPEPERIODO", Datos.TPEPERIODO);
+        //        parametos.Add("TipoIniciativaSeleccionado", Datos.TipoIniciativaSeleccionado);
+        //        parametos.Add("TPEPERIODOS", Datos.TPEPERIODOS);
+        //        parametos.Add("PARAMANIOMASUNO", Datos.PARAMANIOMASUNO);
+        //        parametos.Add("PARAMANIOMASDOS", Datos.PARAMANIOMASDOS);
+        //        parametos.Add("PARAMANIOMASTRES", Datos.PARAMANIOMASTRES);
+        //        parametos.Add("VALUEANIOTC", Datos.VALUEANIOTC);
+        //        parametos.Add("VALUEANIOTCMASUNO", Datos.VALUEANIOTCMASUNO);
+        //        parametos.Add("VALUEANIOTCMASDOS", Datos.VALUEANIOTCMASDOS);
+        //        parametos.Add("VALUEANIOTCMASTRES", Datos.VALUEANIOTCMASTRES);
+        //        parametos.Add("VALUEANIOIPC", Datos.VALUEANIOIPC);
+        //        parametos.Add("VALUEANIOIPCMASUNO", Datos.VALUEANIOIPCMASUNO);
+        //        parametos.Add("VALUEANIOIPCMASDOS", Datos.VALUEANIOIPCMASDOS);
+        //        parametos.Add("VALUEANIOIPCMASTRES", Datos.VALUEANIOIPCMASTRES);
+        //        parametos.Add("VALUEANIOCPI", Datos.VALUEANIOCPI);
+        //        parametos.Add("VALUEANIOCPIMASUNO", Datos.VALUEANIOCPIMASUNO);
+        //        parametos.Add("VALUEANIOCPIMASDOS", Datos.VALUEANIOCPIMASDOS);
+        //        parametos.Add("VALUEANIOCPIMASTRES", Datos.VALUEANIOCPIMASTRES);
+        //        parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 100);
+        //        ORM.Query("CAPEX_INS_MANTENEDOR_TEMPLATE", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+        //        string respuesta = parametos.Get<string>("Respuesta");
+        //        if (respuesta != null && !string.IsNullOrEmpty(respuesta.Trim()))
+        //        {
+        //            return Json(new { Mensaje = respuesta.Trim() }, JsonRequestBehavior.AllowGet);
+        //        }
+        //        else
+        //        {
+        //            return Json(new { Mensaje = "1|Error" }, JsonRequestBehavior.AllowGet);
+        //        }
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        var ExceptionResult = "GuardarTemplateIniciativa, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+        //        CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+        //        return Json(new { Mensaje = "1|Error|No es posible guardar el template.Por favor, inténtelo más tarde." }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
+        //[HttpGet]
+        //[Route("TemplateIniciativa/BuscarPorToken")]
+        //public ActionResult BuscarPorTemplateIniciativa(string TemplateToken, string TipoIniciativaSeleccionado)
+        //{
+        //    TemplateToken = TemplateToken.Replace(System.Environment.NewLine, "");
+        //    try
+        //    {
+        //        List<Template.ObtenerTemplate> results = ORM.Query<Template.ObtenerTemplate>("CAPEX_SEL_MANTENEDOR_BUSCAR_TEMPLATE_TOKEN", new { TemplateToken, TipoIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
+        //        return Json(new { Mensaje = "Ok", Resultados = results }, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        var ExceptionResult = "BuscarPorTemplateIniciativa, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+        //        CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+        //        return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
+        /// <summary>
+        /// METODO ACTUALIZAR MATRIZ RIESGO
+        /// </summary>
+        /// <param name="DatosCategoria"></param>
+        /// <returns></returns>
+        //[HttpPost]
+        //[Route("TemplateIniciativa/Actualizar")]
+        //public ActionResult ActualizarTemplateIniciativa(Template.ActualizarTemplate Datos)
+        //{
+        //    try
+        //    {
+        //        var parametos = new DynamicParameters();
+        //        parametos.Add("TipoIniciativaSeleccionado", Datos.TipoIniciativaSeleccionado);
+        //        parametos.Add("ITPEToken", Datos.ITPEToken);
+        //        parametos.Add("TPEPERIODO", Datos.TPEPERIODO);
+        //        parametos.Add("TPEPERIODORESPALDO", Datos.TPEPERIODORESPALDO);
+        //        parametos.Add("PARAMANIOMASUNO", Datos.PARAMANIOMASUNO);
+        //        parametos.Add("PARAMANIOMASDOS", Datos.PARAMANIOMASDOS);
+        //        parametos.Add("PARAMANIOMASTRES", Datos.PARAMANIOMASTRES);
+        //        parametos.Add("PETokenTC", Datos.PETokenTC);
+        //        parametos.Add("IdParamEconomicoDetalleTCANIO", Datos.IdParamEconomicoDetalleTCANIO);
+        //        parametos.Add("VALUEANIOTC", Datos.VALUEANIOTC);
+        //        parametos.Add("IdParamEconomicoDetalleTCANIOMASUNO", Datos.IdParamEconomicoDetalleTCANIOMASUNO);
+        //        parametos.Add("VALUEANIOTCMASUNO", Datos.VALUEANIOTCMASUNO);
+        //        parametos.Add("IdParamEconomicoDetalleTCANIOMASDOS", Datos.IdParamEconomicoDetalleTCANIOMASDOS);
+        //        parametos.Add("VALUEANIOTCMASDOS", Datos.VALUEANIOTCMASDOS);
+        //        parametos.Add("IdParamEconomicoDetalleTCANIOMASTRES", Datos.IdParamEconomicoDetalleTCANIOMASTRES);
+        //        parametos.Add("VALUEANIOTCMASTRES", Datos.VALUEANIOTCMASTRES);
+        //        parametos.Add("PETokenIPC", Datos.PETokenIPC);
+        //        parametos.Add("IdParamEconomicoDetalleIPCANIO", Datos.IdParamEconomicoDetalleIPCANIO);
+        //        parametos.Add("VALUEANIOIPC", Datos.VALUEANIOIPC);
+        //        parametos.Add("IdParamEconomicoDetalleIPCANIOMASUNO", Datos.IdParamEconomicoDetalleIPCANIOMASUNO);
+        //        parametos.Add("VALUEANIOIPCMASUNO", Datos.VALUEANIOIPCMASUNO);
+        //        parametos.Add("IdParamEconomicoDetalleIPCANIOMASDOS", Datos.IdParamEconomicoDetalleIPCANIOMASDOS);
+        //        parametos.Add("VALUEANIOIPCMASDOS", Datos.VALUEANIOIPCMASDOS);
+        //        parametos.Add("IdParamEconomicoDetalleIPCANIOMASTRES", Datos.IdParamEconomicoDetalleIPCANIOMASTRES);
+        //        parametos.Add("VALUEANIOIPCMASTRES", Datos.VALUEANIOIPCMASTRES);
+        //        parametos.Add("PETokenCPI", Datos.PETokenCPI);
+        //        parametos.Add("IdParamEconomicoDetalleCPIANIO", Datos.IdParamEconomicoDetalleCPIANIO);
+        //        parametos.Add("VALUEANIOCPI", Datos.VALUEANIOCPI);
+        //        parametos.Add("IdParamEconomicoDetalleCPIANIOMASUNO", Datos.IdParamEconomicoDetalleCPIANIOMASUNO);
+        //        parametos.Add("VALUEANIOCPIMASUNO", Datos.VALUEANIOCPIMASUNO);
+        //        parametos.Add("IdParamEconomicoDetalleCPIANIOMASDOS", Datos.IdParamEconomicoDetalleCPIANIOMASDOS);
+        //        parametos.Add("VALUEANIOCPIMASDOS", Datos.VALUEANIOCPIMASDOS);
+        //        parametos.Add("IdParamEconomicoDetalleCPIANIOMASTRES", Datos.IdParamEconomicoDetalleCPIANIOMASTRES);
+        //        parametos.Add("VALUEANIOCPIMASTRES", Datos.VALUEANIOCPIMASTRES);
+        //        parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 120);
+        //        ORM.Query("CAPEX_UPD_MANTENEDOR_TEMPLATE", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+        //        var respuestaSP = parametos.Get<string>("Respuesta");
+        //        if (!string.IsNullOrEmpty(respuestaSP) && !string.IsNullOrEmpty(respuestaSP.Trim()))
+        //        {
+        //            if (respuestaSP.Trim().Equals("Actualizado"))
+        //            {
+        //                return Json(new { Mensaje = "Actualizado" }, JsonRequestBehavior.AllowGet);
+        //            }
+        //            else
+        //            {
+        //                return Json(new { Mensaje = respuestaSP.Trim() }, JsonRequestBehavior.AllowGet);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+        //        }
+        //    }
+        //    catch (Exception err)
+        //    {
+        //        var ExceptionResult = "TemplateIniciativa, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+        //        CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+        //        return Json(new { Mensaje = "Error al actualizar" }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+
+        /// <summary>
+        /// METODO DESCATIVAR MATRIZ RIESGO
+        /// </summary>
+        /// <param name="CatToken"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("TemplateIniciativa/Desactivar")]
+        public ActionResult DesactivarTemplateIniciativa(string TemplateToken)
+        {
+            try
+            {
+                var TemplateEstado = 0;
+                var parametos = new DynamicParameters();
+                parametos.Add("TemplateToken", TemplateToken);
+                parametos.Add("TemplateEstado", TemplateEstado);
+                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 120);
+                ORM.Query("CAPEX_UPD_MANTENEDOR_DESACTIVAR_TEMPLATE", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                var respuestaSP = parametos.Get<string>("Respuesta");
+                if (!string.IsNullOrEmpty(respuestaSP) && !string.IsNullOrEmpty(respuestaSP.Trim()))
+                {
+                    if (respuestaSP.Trim().Equals("Actualizado"))
+                    {
+                        return Json(new { Mensaje = "Descativado" }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new { Mensaje = respuestaSP.Trim() }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception err)
+            {
+                var ExceptionResult = "TemplateIniciativa, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
                 CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
                 return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
             }

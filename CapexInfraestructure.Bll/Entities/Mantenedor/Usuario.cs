@@ -13,7 +13,7 @@ namespace CapexInfraestructure.Bll.Entities.Mantenedor
             public string UserName { get; set; }
             public string Email { get; set; }
             public string Password { get; set; }
-            public int    Status { get; set; }
+            public int Status { get; set; }
 
             public string ComToken { get; set; }
             public string AreaToken { get; set; }
@@ -69,5 +69,24 @@ namespace CapexInfraestructure.Bll.Entities.Mantenedor
             public string RoleID { get; set; }
 
         }
+
+        public class ModificarUsuarioCorregido
+        {
+            public string UserName { get; set; }
+            public string Password { get; set; }
+            public string RoleID { get; set; }
+            public string UsuRut { get; set; }
+            public string UsuNombre { get; set; }
+            public string UsuApellido { get; set; }
+            public string UsuTelefono { get; set; }
+            public string UsuMovil { get; set; }
+            public string Email { get; set; }
+            public string ComToken { get; set; }
+            public string AreaToken { get; set; }
+            public string IdToken { get; set; }
+            public string IdRolToken { get; set; }
+            public string IdGrvToken { get; set; }
+        }
+
     }
 }

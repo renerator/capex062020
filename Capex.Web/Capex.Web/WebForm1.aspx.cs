@@ -955,7 +955,7 @@ namespace Capex.Web
 
         protected void Button100_Click(object sender, EventArgs e)
         {
-            if (!@User.Identity.IsAuthenticated || HttpContext.Current.Session == null || HttpContext.Current.Session["_SESS_CAPEX_INCIATIVA_TOKEN_"] == null)
+            if (!@User.Identity.IsAuthenticated || HttpContext.Current.Session == null || HttpContext.Current.Session["CAPEX_SESS_USERNAME"] == null)
             {
                 ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "laterUploadLogout", "laterUploadLogout()", true);
             }

@@ -56,6 +56,7 @@ FNObtenerListadoCompanias = function () {
                 else if (cuantos > 1) {
                     Compania.append('<option selected="true">Compania..</option>')
                 }
+                console.log("Mantenedor.js FNObtenerListadoCompanias final");
             }, 500);
         }
     });
@@ -94,6 +95,7 @@ FNObtenerListadoAreas = function () {
                 else if (cuantos > 1) {
                     Area.append('<option selected="true">Area..</option>')
                 }
+                console.log("Mantenedor.js FNObtenerListadoAreas final");
             }, 500);
         }
     });
@@ -106,6 +108,36 @@ FNGuardarNombreAreaRevisora = function (valor) {
     localStorage.setItem("CAPEX_USR_NOMBRE_AREA_REVISORA", nombre);
     return;
 }
+
+FNValidaRut = function (rutCompleto) {
+    if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto))
+        return false;
+    var tmp = rutCompleto.split('-');
+    var digv = tmp[1];
+    var rut = tmp[0];
+    if (digv == 'K') digv = 'k';
+    return (FNDV(rut) == digv);
+}
+
+FNDV = function (T) {
+    var M = 0, S = 1;
+    for (; T; T = Math.floor(T / 10))
+        S = (S + T % 10 * (9 - M++ % 6)) % 11;
+    return S ? S - 1 : 'k';
+}
+
+FNValidateEmail = function (email) {
+    var expr = /^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    return expr.test(email);
+};
+
+FNIsNumberKey = function (evt) {
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+}
+
 //
 // CREAR USUARIO
 //
@@ -129,74 +161,223 @@ FNCrearUsuario = function () {
     var UsuImagen = "";
     var GrvUser = $("#UserName").val();
     var GrvUserToken = ""; //PROVISTO POR NEGOCIO
-    var GrvAreaRevToken = $("#ArevToken").val();
-    var GrvAreaRevNombre = localStorage.getItem("CAPEX_USR_NOMBRE_AREA_REVISORA");
     var UserID = "";//PROVISTO POR NEGOCIO
     var RoleID = $("#RoleID").val();
 
     /*********************************** VALIDAR ENTRADA**********************************/
-    if (GrvAreaRevNombre == "Seleccionar.." || GrvAreaRevNombre == "" || RoleID == "-1" || RoleID == "" || ComToken == "" || ComToken == "-1" || AreaToken == "-1" || AreaToken == "") {
-        swal("", "Debe seleccionar y copletar todos los campos.", "info");
+
+    if (!UsuNombre || UsuNombre == undefined || UsuNombre == "") {
+        swal("", "El campo nombres es requerido.", "info");
         return false;
     }
-    else {
-        //PREPARAR
-        var DTO = {
-            'UserName': UserName,
-            'Email': Email,
-            'Password': Password,
-            'Status': Status,
-            'ComToken': ComToken,
-            'AreaToken': AreaToken,
-            'IdEmpresa': IdEmpresa,
-            'UsuTipo': UsuTipo,
-            'UsuRut': UsuRut,
-            'UsuNombre': UsuNombre,
-            'UsuApellido': UsuApellido,
-            'UsuEmail': UsuEmail,
-            'UsuTelefono': UsuTelefono,
-            'UsuMovil': UsuMovil,
-            'UsuImagen': UsuImagen,
-            'GrvUser': GrvUser,
-            'GrvUserToken': GrvUserToken,
-            'GrvAreaRevToken': GrvAreaRevToken,
-            'GrvAreaRevNombre': GrvAreaRevNombre,
-            'UserID': UserID,
-            'RoleID': RoleID
-        };
-
-        $.ajax({
-            url: "../../Usuario/Accion/Crear",
-            type: "POST",
-            dataType: "json",
-            data: (DTO),
-            success: function (r) {
-                //PARSEAR RESPUESTA
-                var respuesta = JSON.parse(JSON.stringify(r));
-                respuesta = respuesta.Mensaje;
-                //PROCESAR RESPUESTA
-                if (respuesta == "ERROR") {
-                    swal("", "Error al intentar crear el usuario.", "error");
-                    setTimeout(function () {
-                        document.location.reload();
-                    }, 3000);
-                }
-                else if (respuesta == "EXISTE") {
-                    swal("", "El usuario ya existe.", "error");
-                    setTimeout(function () {
-                        document.location.reload();
-                    }, 3000);
-                }
-                else if (respuesta == "CREADO") {
-                    swal("", "Usuario creado con éxito", "success");
-                    setTimeout(function () {
-                        document.location.href = '../../Usuario';
-                    }, 3000);
-                }
-            }
-        });
+    if (!UsuApellido || UsuApellido == undefined || UsuApellido == "") {
+        swal("", "El campo apellidos es requerido.", "info");
+        return false;
     }
+    if (!Email || Email == undefined || Email == "") {
+        swal("", "El campo e-mail es requerido.", "info");
+        return false;
+    }
+    if (!FNValidateEmail(Email)) {
+        swal("", "El campo email no es valido.", "info");
+        return false;
+    }
+    if (!ComToken || ComToken == undefined || ComToken == "-1") {
+        swal("", "El campo compañia es requerido.", "info");
+        return false;
+    }
+    if (!AreaToken || AreaToken == undefined || AreaToken == "-1") {
+        swal("", "El campo area es requerido.", "info");
+        return false;
+    }
+    if (!UserName || UserName == undefined || UserName == "") {
+        swal("", "El campo nombre de usuario es requerido.", "info");
+        return false;
+    }
+    if (!Password || Password == undefined || Password == "") {
+        swal("", "El campo contraseña es requerido.", "info");
+        return false;
+    }
+    if (!RoleID || RoleID == undefined || RoleID == "-1") {
+        swal("", "El campo rol es requerido.", "info");
+        return false;
+    }
+
+    if (UsuRut && UsuRut != undefined && UsuRut.trim() != "" && UsuRut.trim().length > 0 && !FNValidaRut(UsuRut.trim())) {
+        swal("", "El campo rut no es valido.", "info");
+        return false;
+    }
+
+
+    //PREPARAR
+    var DTO = {
+        'UserName': UserName,
+        'Email': Email,
+        'Password': Password,
+        'Status': Status,
+        'ComToken': ComToken,
+        'AreaToken': AreaToken,
+        'IdEmpresa': IdEmpresa,
+        'UsuTipo': UsuTipo,
+        'UsuRut': UsuRut,
+        'UsuNombre': UsuNombre,
+        'UsuApellido': UsuApellido,
+        'UsuEmail': UsuEmail,
+        'UsuTelefono': UsuTelefono,
+        'UsuMovil': UsuMovil,
+        'UsuImagen': UsuImagen,
+        'GrvUser': GrvUser,
+        'GrvUserToken': GrvUserToken,
+        'UserID': UserID,
+        'RoleID': RoleID
+    };
+
+    $.ajax({
+        url: "../../Usuario/Accion/Crear",
+        type: "POST",
+        dataType: "json",
+        data: (DTO),
+        success: function (r) {
+            //PARSEAR RESPUESTA
+            var respuesta = JSON.parse(JSON.stringify(r));
+            respuesta = respuesta.Mensaje;
+            //PROCESAR RESPUESTA
+            if (respuesta == "ERROR") {
+                swal("", "Error al intentar crear el usuario.", "error");
+                setTimeout(function () {
+                    document.location.reload();
+                }, 3000);
+            }
+            else if (respuesta == "EXISTE") {
+                swal("", "El usuario ya existe.", "error");
+                setTimeout(function () {
+                    document.location.reload();
+                }, 3000);
+            }
+            else if (respuesta == "CREADO") {
+                swal("", "Usuario creado con éxito", "success");
+                setTimeout(function () {
+                    document.location.href = '../../Usuario';
+                }, 3000);
+            }
+        }
+    });
 }
+
+
+// CREAR USUARIO
+//
+FNActualizarUsuario = function () {
+
+    /*********************************** PARAMETROS BASE ***********************************/
+    var UsuRut = $("#UsuRut").val();
+    var UsuNombre = $("#UsuNombre").val();
+    var UsuApellido = $("#UsuApellido").val();
+    var UsuTelefono = $("#UsuTelefono").val();
+    var UsuMovil = $("#UsuMovil").val();
+    var Email = $("#Email").val();
+    var ComToken = $("#ComToken").val();
+    var AreaToken = $("#AreaToken").val();
+
+    var UserName = $("#UserName").val();
+    var Password = $("#Password").val();
+    var RoleID = $("#RoleID").val();
+
+
+    var idToken = $("#idToken").val();
+    var idRolToken = $("#idRolToken").val();
+    var idGrvToken = $("#idGrvToken").val();
+
+    /*********************************** VALIDAR ENTRADA**********************************/
+    if (!UsuNombre || UsuNombre == undefined || UsuNombre == "") {
+        swal("", "El campo nombres es requerido.", "info");
+        return false;
+    }
+    if (!UsuApellido || UsuApellido == undefined || UsuApellido == "") {
+        swal("", "El campo apellidos es requerido.", "info");
+        return false;
+    }
+    if (!Email || Email == undefined || Email == "") {
+        swal("", "El campo e-mail es requerido.", "info");
+        return false;
+    }
+    if (!FNValidateEmail(Email)) {
+        swal("", "El campo email no es valido.", "info");
+        return false;
+    }
+    if (!ComToken || ComToken == undefined || ComToken == "-1") {
+        swal("", "El campo compañia es requerido.", "info");
+        return false;
+    }
+    if (!AreaToken || AreaToken == undefined || AreaToken == "-1") {
+        swal("", "El campo area es requerido.", "info");
+        return false;
+    }
+    if (!UserName || UserName == undefined || UserName == "") {
+        swal("", "El campo nombre de usuario es requerido.", "info");
+        return false;
+    }
+    if (!Password || Password == undefined || Password == "") {
+        swal("", "El campo contraseña es requerido.", "info");
+        return false;
+    }
+    if (!RoleID || RoleID == undefined || RoleID == "-1") {
+        swal("", "El campo rol es requerido.", "info");
+        return false;
+    }
+
+    if (UsuRut && UsuRut != undefined && UsuRut.trim() != "" && UsuRut.trim().length > 0 && !FNValidaRut(UsuRut.trim())) {
+        swal("", "El campo rut no es valido.", "info");
+        return false;
+    }
+
+    //PREPARAR
+    var DTO = {
+        'UserName': UserName,
+        'Password': Password,
+        'RoleID': RoleID,
+        'UsuRut': UsuRut,
+        'UsuNombre': UsuNombre,
+        'UsuApellido': UsuApellido,
+        'UsuTelefono': UsuTelefono,
+        'UsuMovil': UsuMovil,
+        'Email': Email,
+        'ComToken': ComToken,
+        'AreaToken': AreaToken,
+        'IdToken': idToken,
+        'IdRolToken': idRolToken,
+        'IdGrvToken': idGrvToken
+    };
+
+    $.ajax({
+        url: "/Mantenedor/Usuario/Accion/Modificar",
+        type: "POST",
+        dataType: "json",
+        data: (DTO),
+        success: function (r) {
+            if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                document.getElementById('linkToLogout').click();
+                return;
+            }
+            //PARSEAR RESPUESTA
+            var respuesta = JSON.parse(JSON.stringify(r));
+            respuesta = respuesta.Mensaje;
+            //PROCESAR RESPUESTA
+            if (respuesta == "ERROR") {
+                swal("", "Error al intentar crear el usuario.", "error");
+                setTimeout(function () {
+                    document.location.reload();
+                }, 3000);
+            } else if (respuesta == "ACTUALIZADO") {
+                swal("", "Usuario actualizado con éxito", "success");
+                setTimeout(function () {
+                    document.location.href = '/Mantenedor/Usuario';
+                }, 3000);
+            }
+        }
+    });
+}
+
 //
 //  CAMBIO DE ESTADO
 //
@@ -588,11 +769,10 @@ FNBuscarEnTabla = function (value) {
 FNEvaluarEstadoFiltro = function (valor) {
     var contenido = valor;
     if (contenido.length > 1) {
-        console.log(contenido);
+        console.log("if ", contenido);
         $("#paginador").hide();
-    }
-    else {
-        console.log(contenido);
+    } else {
+        console.log("else ", contenido);
         $("#paginador").html("");
         FNPaginar();
         $("#paginador").show();

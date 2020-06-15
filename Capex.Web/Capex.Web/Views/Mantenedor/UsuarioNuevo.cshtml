@@ -136,7 +136,7 @@
                                                     <img src="~/Images/IMG-003.png" class="rounded-circle  mx-auto d-block w-80" />
                                                 </div>
                                                 <div style="margin-top:5px;">
-                                                    <button class="btn btn-danger btn-block " onclick="FNCargarImagenPerfil()">Cargar Imagen de Perfil</button>
+                                                    @*<button class="btn btn-danger btn-block " onclick="FNCargarImagenPerfil()">Cargar Imagen de Perfil</button>*@
                                                 </div>
                                             </div>
                                         </div>
@@ -154,7 +154,7 @@
                                                             <div class="form-row mt-0" style="width:100%; font-size:11px;">
                                                                 <div class="col-sm-4 pb-1">
                                                                     <label for="UsuRut">RUT</label>
-                                                                    <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="UsuRut" maxlength="12" onmouseout="javascript:return Rut(document.form1.UsuRut.value)" placeholder="Rut" required>
+                                                                    <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" onkeypress="return FNIsNumberKey(event)" id="UsuRut" maxlength="12" placeholder="Rut" required>
                                                                     <label><code>Sin puntos. Ejemplo: 123456789-0</code></label>
                                                                 </div>
                                                                 <div class="col-sm-4 pb-1">
@@ -203,19 +203,18 @@
                                                             <div class="form-row mt-0" style="width:100%; font-size:11px;">
                                                                 <div class="col-sm-4 pb-1">
                                                                     <label for="UserName">Nombre de Usuario</label>
-                                                                    <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="UserName" maxlength="30" onblur="" placeholder="Nombre de Usuario" required>
+                                                                    <input type="text" class="form-control" style="font-size:11px;height:36px; font-size:11px;" id="UserName" maxlength="30" onblur="" placeholder="Nombre de Usuario" required>
                                                                     <label><code>Max. 30 Caracteres</code></label>
                                                                 </div>
                                                                 <div class="col-sm-4 pb-1">
                                                                     <label for="Password">Contraseña</label>
-                                                                    <input type="password" class="form-control" style="text-transform:uppercase; font-size:11px;height:36px; font-size:11px;" id="Password" maxlength="30" onblur="" placeholder="Contraseña" required>
+                                                                    <input type="password" class="form-control" style="font-size:11px;height:36px; font-size:11px;" id="Password" maxlength="30" onblur="" placeholder="Contraseña" required>
                                                                     <label><code>Max. 30 Caracteres</code></label>
                                                                 </div>
-
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div style="border-bottom:1px solid #4a848e; margin-bottom:10px;margin-top:10px;"><h6>Rol & Permisos</h6></div>
+                                                    <div style="border-bottom:1px solid #4a848e; margin-bottom:10px;margin-top:10px;"><h6>Rol & Autorización</h6></div>
                                                     <div class="row">
                                                         <div class="col-xl-10 offset-md-0">
                                                             <div class="form-row mt-0" style="width:100%; font-size:11px;">
@@ -223,39 +222,19 @@
                                                                     <label for="RoleID">Rol</label>
                                                                     <select class="form-control" style="height:36px; font-size:11px;" id="RoleID">
                                                                         <option value="-1" selected>Seleccionar..</option>
-                                                                        <option value="3F312A81-127E-492B-90AC-15046FB45EA2">Revisor</option>
                                                                         <option value="5B00C837-DE33-4E46-A30F-154A1DAD5EF0">Gestor</option>
-                                                                        <option value="775961B6-341F-4EFD-9C29-A0F4D64D2E04">Sponsor</option>
-                                                                        <option value="ADB9A75E-46E0-4379-8A93-2ED438CE8F30">Cliente</option>
-                                                                        <option value="B60E4FBC-E8EE-4431-BA14-6D798E4C3BB5">Administrador1</option>
-                                                                        <option value="D4491070-7125-4432-99EE-41F1AA3B96BF">Administrador2</option>
-                                                                        <option value="E4E4DE7C-B909-497D-A0D6-458D95EA415B">Administrador3</option>
+                                                                        <option value="B60E4FBC-E8EE-4431-BA14-6D798E4C3BB5">Administrador GAF</option>
+                                                                        <option value="D4491070-7125-4432-99EE-41F1AA3B96BF">Administrador C.E.</option>
+                                                                        <option value="E4E4DE7C-B909-497D-A0D6-458D95EA415B">Administrador AMSA</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div style="border-bottom:1px solid #4a848e; margin-bottom:10px;margin-top:10px;"><h6>Privilegios</h6></div>
+                                                    <div style="border-bottom:1px solid #4a848e; margin-bottom:10px;margin-top:10px;"><h6>&nbsp;&nbsp;</h6></div>
                                                     <div class="row">
-                                                        <div class="col-xl-10 offset-md-0">
-                                                            <div class="form-row mt-0" style="width:100%; font-size:11px;">
-                                                                <div class="col-sm-4 pb-1">
-                                                                    <label for="ArevToken">Area de Revisión</label>
-                                                                    <select class="form-control" style="height:36px; font-size:11px;" id="ArevToken" onchange="FNGuardarNombreAreaRevisora(this.value);">
-                                                                        <option value="-1" selected>Seleccionar..</option>
-                                                                        <option value="633A2F56-F23F-495C-9001-9FC0FDCB307F">Medio Ambiente</option>
-                                                                        <option value="6CF4D9F9-C313-46B9-96C7-29463C02B465">Gerencia de Administracion y Finanzas</option>
-                                                                        <option value="8BF41E67-46C7-48A9-BA81-5575CB049A0E">Servicio de Seguridad Operacional</option>
-                                                                        <option value="91F36E64-68CC-4EE3-B7D7-A59675D34075">Gerencia de Proyectos</option>
-                                                                        <option value="9476C6E8-ADFA-4887-88F0-F6D3906DB814">Contabilidad</option>
-                                                                        <option value="D59E988E-7967-4B5F-A009-F8D5B5FA8143">Riesgos</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
                                                         <div style="margin-top:5px; margin-left:15px; margin-bottom:30px; width:300px;">
                                                             <button class="btn btn-primary " onclick="FNCrearUsuario()">Guardar</button>
-                                                            <button class="btn btn-warning " onclick="FNModificarUsuario()" disabled>Modificar</button>
                                                         </div>
                                                     </div>
                                                 </form> <!-- /form -->
@@ -296,6 +275,7 @@
     <!-- End Footer -->
     <!-- jQuery  -->
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.mask.min.js"></script>
     <script src="~/Scripts/popper.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/toastr.min.js"></script>
@@ -316,6 +296,66 @@
     <script src="~/Scripts/validarut.js"></script>
     <script src="~/Scripts/Modules/Contexto/Contexto.js"></script>
     <script src="~/Scripts/Modules/Mantenedor/Mantenedor.js"></script>
+    <script>
+        $("#UsuTelefono").on("click", function () {
+            $(this).select();
+        });
+        $("#UsuTelefono").focus(function () {
+            $(this).select();
+        });
+        $("#UsuTelefono").focusin(function () {
+            $(this).select();
+        });
+        $('#UsuTelefono').on('change', function () {
+            console.log('Change event.');
+            var val = $('#UsuTelefono').val();
+            console.log('Change event. val=', val);
+        });
+        $('#UsuTelefono').change(function () {
+            console.log('Second change event...');
+        });
+        $('#UsuTelefono').mask('+(56) 2 00000000', { placeholder: "+(__) _ ________" });
+
+
+        $("#UsuMovil").on("click", function () {
+            $(this).select();
+        });
+        $("#UsuMovil").focus(function () {
+            $(this).select();
+        });
+        $("#UsuMovil").focusin(function () {
+            $(this).select();
+        });
+        $('#UsuMovil').on('change', function () {
+            console.log('Change event.');
+            var val = $('#UsuMovil').val();
+            console.log('Change event. val=', val);
+        });
+        $('#UsuMovil').change(function () {
+            console.log('Second change event...');
+        });
+        $('#UsuMovil').mask('+(56) 9 00000000', { placeholder: "+(__) _ ________" });
+
+        $("#UsuRut").blur(function () {
+            var usuRut = $("#UsuRut").val();
+            if (usuRut && usuRut != undefined && usuRut.trim() != "" && usuRut.trim().length > 0) {
+                usuRut = usuRut.trim().replace("-", "");
+                if (usuRut.trim() != "" && usuRut.trim().length > 0) {
+                    usuRut = usuRut.substr(0, (usuRut.length - 1)) + '-' + usuRut.substr(-1, 1);
+                    $("#UsuRut").val(usuRut);
+                }
+            }
+        });
+        $("#UsuRut").on("click", function () {
+            $(this).select();
+        });
+        $("#UsuRut").focus(function () {
+            $(this).select();
+        });
+        $("#UsuRut").focusin(function () {
+            $(this).select();
+        });
+    </script>
 </body>
 </html>
 

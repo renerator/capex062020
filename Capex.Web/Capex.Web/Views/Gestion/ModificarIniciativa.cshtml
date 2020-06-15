@@ -93,6 +93,25 @@
                 position: relative;
                 top: 1px;
             }
+
+            .table-fixed thead {
+                width: 97%;
+            }
+
+            .table-fixed tbody {
+                height: 230px;
+                overflow-y: auto;
+                width: 100%;
+            }
+
+            .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+                display: block;
+            }
+
+            .table-fixed tbody td, .table-fixed thead > tr > th {
+                float: left;
+                border-bottom-width: 0;
+            }
     </style>
 </head>
 <body>
@@ -1529,21 +1548,49 @@
                                                     </div>
 
                                                     <div id="ContenedorMatrizRiesgo" class="modal-body" style="margin-left:5px;width:750px; font-size:12px;">
-                                                        <div style="height:750px;height:550px;font-size:11px;margin-top:0px;">
-                                                            <table class="tableizer-table" id="tablaMatrizRiesgo">
-                                                                <thead>
-                                                                    <tr class="tableizer-firstrow">
-                                                                        <th></th>
-                                                                        <th style="border-bottom:1px solid #ddd; width:30px; text-align:center;">RR</th>
-                                                                        <th style="border-bottom:1px solid #ddd">Riesgo Clave</th>
-                                                                        <th style="border-bottom:1px solid #ddd">Impacto</th>
-                                                                        <th style="border-bottom:1px solid #ddd">Probabilidad</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody style="text-align:center;">
-                                                                    <tr><td></td><td></td><td></td><td></td><td></td></tr>
-                                                                </tbody>
-                                                            </table>
+                                                        <div style="font-size:11px;margin-top:0px;" class="container">
+                                                            <div class="row">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h4>
+                                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                        </h4>
+                                                                    </div>
+                                                                    <table id="tablaMatrizRiesgo" class="table table-fixed">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="col-sm-2 text-center"><strong>Seleccionar</strong></th>
+                                                                                <th class="col-sm-6 text-center"><strong>Riesgo Clave</strong></th>
+                                                                                <th class="col-sm-2 text-center"><strong>Impacto</strong></th>
+                                                                                <th class="col-sm-2 text-center"><strong>Probabilidad</strong></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td align="center" class="col-sm-2">
+                                                                                    <a href="#">
+                                                                                        <span class="glyphicon glyphicon-ok" style="color:green"></span>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td class="col-sm-6">Accidente </td>
+                                                                                <td align="center" class="col-sm-2">5</td>
+                                                                                <td align="center" class="col-sm-2">3</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td align="center" class="col-sm-2">
+                                                                                    <a href="#">
+                                                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td class="col-sm-6">Incumplimi</td>
+                                                                                <td align="center" class="col-sm-2">4</td>
+                                                                                <td align="center" class="col-sm-2">3</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-white" data-dismiss="modal" onclick="FNCerrarModalMatrizRiesgo()">Cerrar</button>

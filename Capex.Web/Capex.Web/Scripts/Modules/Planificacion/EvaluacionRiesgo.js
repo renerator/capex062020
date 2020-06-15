@@ -350,12 +350,23 @@ FNObtenerMatrizRiesgo = function () {
             var content = '';
             var contador = 1;
             $.each(JSON && JSON.parse(r) || $.parseJSON(r), function (key, value) {
+                /* content += '<tr>';
+                content += '<td style="width:10%"><button class="btn btn-warning btn-sm" style="font-size:10px" onclick="FNSeleccionarItemMatrizRiesgo(' + contador + ',' + value.IdMatrizRiesgo + ',\'' + value.MatrizRiesgoNombre + '\',\'' + value.MatrizRiesgoImpacto + '\',\'' + value.MatrizRiesgoProbabilidad + '\')">Seleccionar</button></td>';
+                content += '<td style="width:6%"><div align="center">' + value.IdMatrizRiesgo + '</div></td>';
+                content += '<td style="width:58%" align="left">' + value.MatrizRiesgoNombre + '</td>';
+                content += '<td style="width:13%" align="right">' + value.MatrizRiesgoImpacto + '</td>';
+                content += '<td style="width:13%" align="right">' + value.MatrizRiesgoProbabilidad + '</td>';
+                content += '</tr>';
+                contador++;*/
                 content += '<tr>';
-                content += '<td><button class="btn btn-warning btn-sm" style="font-size:10px" onclick="FNSeleccionarItemMatrizRiesgo(' + contador + ',' + value.IdMatrizRiesgo + ',\'' + value.MatrizRiesgoNombre + '\',\'' + value.MatrizRiesgoImpacto + '\',\'' + value.MatrizRiesgoProbabilidad + '\')">Seleccionar</button></td>';
-                content += '<td><div align="center">' + value.IdMatrizRiesgo + '</div></td>';
-                content += '<td align="left">' + value.MatrizRiesgoNombre + '</td>';
-                content += '<td>' + value.MatrizRiesgoImpacto + '</td>';
-                content += '<td>' + value.MatrizRiesgoProbabilidad + '</td>';
+                content += '<td align="center" class="col-sm-2"><a href="#"> <span class="glyphicon glyphicon-ok" style="color:green" onclick="FNSeleccionarItemMatrizRiesgo(' + contador + ',' + value.IdMatrizRiesgo + ',\'' + value.MatrizRiesgoNombre + '\',\'' + value.MatrizRiesgoImpacto + '\',\'' + value.MatrizRiesgoProbabilidad + '\')"></span> </a></td>';
+                if (value.MatrizRiesgoNombre && value.MatrizRiesgoNombre.length > 64) {
+                    content += '<td style="cursor:pointer;" title="' + value.MatrizRiesgoNombre + '" class="col-sm-6">' + value.MatrizRiesgoNombre.substr(0, 61) + '...</td>';
+                } else {
+                    content += '<td class="col-sm-6">' + value.MatrizRiesgoNombre + '</td>';
+                }
+                content += '<td align="center" class="col-sm-2">' + value.MatrizRiesgoImpacto + '</td>';
+                content += '<td align="center" class="col-sm-2">' + value.MatrizRiesgoProbabilidad + '</td>';
                 content += '</tr>';
                 contador++;
             });
