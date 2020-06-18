@@ -2662,11 +2662,12 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
                 var table = new StringBuilder();
                 if (resultado.Count > 0)
                 {
+                    CultureInfo ciCL = new CultureInfo("es-CL", false);
                     foreach (var result in resultado)
                     {
                         table.Append("<tr>");
                         table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato2)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                        /*table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato2)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                         table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato3)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                         table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato4)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                         table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato5)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
@@ -2769,7 +2770,111 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
                         table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato93)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                         table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato94)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                         table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato95)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato96)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato96)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");*/
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato2, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato3, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato4, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato5, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato6, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato7, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato8, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato9, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato10, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato11, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato12, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato13, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato14, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato15, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato16, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato17, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato18, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato19, ciCL)) + "</td>");
+
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato20, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato21, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato22, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato23, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato24, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato25, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato26, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato27, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato28, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato29, ciCL)) + "</td>");
+
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato30, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato31, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato32, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato33, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato34, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato35, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato36, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato37, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato38, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato39, ciCL)) + "</td>");
+
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato40, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato41, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato42, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato43, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato44, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato45, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato46, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato47, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato48, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato49, ciCL)) + "</td>");
+
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato50, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato51, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato52, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato53, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato54, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato55, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato56, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato57, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato58, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato59, ciCL)) + "</td>");
+
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato60, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato61, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato62, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato63, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato64, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato65, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato66, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato67, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato68, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato69, ciCL)) + "</td>");
+
+
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato70, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato71, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato72, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato73, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato74, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato75, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato76, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato77, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato78, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato79, ciCL)) + "</td>");
+
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato80, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato81, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato82, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato83, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato84, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato85, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato86, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato87, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato88, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato89, ciCL)) + "</td>");
+
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato90, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato91, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato92, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato93, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato94, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato95, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato96, ciCL)) + "</td>");
 
                         table.Append("</tr>");
                     }
@@ -3507,10 +3612,11 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
                 var table = new StringBuilder();
                 if (resultado.Count > 0)
                 {
+                    CultureInfo ciCL = new CultureInfo("es-CL", false);
                     foreach (var result in resultado)
                     {
                         table.Append("<tr>");
-                        table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
+                        /*table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
                         table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato2)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                         table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato3)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                         table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato4)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
@@ -3528,7 +3634,26 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
                         table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato16)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                         table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato17)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                         table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato18)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato19)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato19)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");*/
+                        table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
+                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato2, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato3, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato4, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato5, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato6, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato7, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato8, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato9, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato10, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato11, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato12, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato13, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato14, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato15, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato16, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato17, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato18, ciCL)) + "</td>");
+                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato19, ciCL)) + "</td>");
                         table.Append("</tr>");
                     }
                     Desplegable = table.ToString();
@@ -4190,20 +4315,28 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
                             {
                                 table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> " + result.Fase + "</td>");
                             }
-
+                            CultureInfo ciCL = new CultureInfo("es-CL", false);
                             if (contador < 6)
                             {
-                                table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                /*table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                                 table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                                 table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");
+                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");*/
+                                table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert) + "</td>");
+                                table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert) + "</td>");
+                                table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores) + "</td>");
+                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "'></td>");
                             }
                             else
                             {
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                /*table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                                 table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
                                 table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");
+                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");*/
+                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert) + "</td>");
+                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert) + "</td>");
+                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores) + "</td>");
+                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "'></td>");
                             }
                             table.Append("</tr>");
                         }

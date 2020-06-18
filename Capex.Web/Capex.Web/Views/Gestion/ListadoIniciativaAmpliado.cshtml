@@ -58,7 +58,7 @@
                                 </td>
                                 <td class="text-center" width="140px">
 
-                                    @((string.IsNullOrEmpty(ini.TotalCapex) || ini.TotalCapex.Equals("0")) ? "0" : String.Format("{0:0,0}", double.Parse(ini.TotalCapex, System.Globalization.CultureInfo.InvariantCulture)))
+                                    @((string.IsNullOrEmpty(ini.TotalCapex) || ini.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(ini.TotalCapex, System.Globalization.CultureInfo.GetCultureInfo("es-CL"))))
                                 </td>
                                 <td class="text-center" width="100px" onclick="exitFilterPanel();FNRegistrarIniciativa('@ini.PidToken')">
 
