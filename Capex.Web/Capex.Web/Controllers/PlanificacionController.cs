@@ -1897,6 +1897,7 @@ namespace Capex.Web.Controllers
         /// <param name="usuario"></param>
         /// <param name="archivo"></param>
         /// <returns></returns>
+      
         public string ImportarTemplateCasoBaseFinal(string token, string usuario, string archivo)
         {
 
@@ -2344,7 +2345,7 @@ namespace Capex.Web.Controllers
                 registro.Add(ws1.Cell(e, 1).Value.ToString());
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 2).Value.ToString()))
                 {
-                    decimal t01 = decimal.Parse(ws1.Cell(e, 2).Value.ToString()) * 100;
+                    decimal t01 = decimal.Parse(ws1.Cell(e, 2).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st01 = t01.ToString("0.0");
                     registro.Add(st01);
                 }
@@ -2355,7 +2356,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 3).Value.ToString()))
                 {
-                    decimal t03 = decimal.Parse(ws1.Cell(e, 3).Value.ToString()) * 100;
+                    decimal t03 = decimal.Parse(ws1.Cell(e, 3).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st03 = t03.ToString("0.0");
                     registro.Add(st03);
                 }
@@ -2366,7 +2367,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 4).Value.ToString()))
                 {
-                    decimal t04 = decimal.Parse(ws1.Cell(e, 4).Value.ToString()) * 100;
+                    decimal t04 = decimal.Parse(ws1.Cell(e, 4).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st04 = t04.ToString("0.0");
                     registro.Add(st04);
                 }
@@ -2377,7 +2378,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 5).Value.ToString()))
                 {
-                    decimal t05 = decimal.Parse(ws1.Cell(e, 5).Value.ToString()) * 100;
+                    decimal t05 = decimal.Parse(ws1.Cell(e, 5).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st05 = t05.ToString("0.0");
                     registro.Add(st05);
                 }
@@ -2388,7 +2389,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 6).Value.ToString()))
                 {
-                    decimal t06 = decimal.Parse(ws1.Cell(e, 6).Value.ToString()) * 100;
+                    decimal t06 = decimal.Parse(ws1.Cell(e, 6).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st06 = t06.ToString("0.0");
                     registro.Add(st06);
                 }
@@ -2399,7 +2400,8 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 7).Value.ToString()))
                 {
-                    decimal t07 = decimal.Parse(ws1.Cell(e, 7).Value.ToString()) * 100;
+                    //decimal t07 = decimal.Parse(ws1.Cell(e, 7).Value.ToString()) * 100;
+                    decimal t07 = decimal.Parse(ws1.Cell(e, 7).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st07 = t07.ToString("0.0");
                     registro.Add(st07);
                 }
@@ -2410,7 +2412,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 8).Value.ToString()))
                 {
-                    decimal t08 = decimal.Parse(ws1.Cell(e, 8).Value.ToString()) * 100;
+                    decimal t08 = decimal.Parse(ws1.Cell(e, 8).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st08 = t08.ToString("0.0");
                     registro.Add(st08);
                 }
@@ -2421,7 +2423,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 9).Value.ToString()))
                 {
-                    decimal t09 = decimal.Parse(ws1.Cell(e, 9).Value.ToString()) * 100;
+                    decimal t09 = decimal.Parse(ws1.Cell(e, 9).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st09 = t09.ToString("0.0");
                     registro.Add(st09);
                 }
@@ -2432,7 +2434,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 10).Value.ToString()))
                 {
-                    decimal t10 = decimal.Parse(ws1.Cell(e, 10).Value.ToString()) * 100;
+                    decimal t10 = decimal.Parse(ws1.Cell(e, 10).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st10 = t10.ToString("0.0");
                     registro.Add(st10);
                 }
@@ -2443,7 +2445,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 11).Value.ToString()))
                 {
-                    decimal t11 = decimal.Parse(ws1.Cell(e, 11).Value.ToString()) * 100;
+                    decimal t11 = decimal.Parse(ws1.Cell(e, 11).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st11 = t11.ToString("0.0");
                     registro.Add(st11);
                 }
@@ -2454,7 +2456,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 12).Value.ToString()))
                 {
-                    decimal t12 = decimal.Parse(ws1.Cell(e, 12).Value.ToString()) * 100;
+                    decimal t12 = decimal.Parse(ws1.Cell(e, 12).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st12 = t12.ToString("0.0");
                     registro.Add(st12);
                 }
@@ -2465,7 +2467,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 13).Value.ToString()))
                 {
-                    decimal t13 = decimal.Parse(ws1.Cell(e, 13).Value.ToString()) * 100;
+                    decimal t13 = decimal.Parse(ws1.Cell(e, 13).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st13 = t13.ToString("0.0");
                     registro.Add(st13);
                 }
@@ -2476,7 +2478,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 14).Value.ToString()))
                 {
-                    decimal t14 = decimal.Parse(ws1.Cell(e, 14).Value.ToString()) * 100;
+                    decimal t14 = decimal.Parse(ws1.Cell(e, 14).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st14 = t14.ToString("0.0");
                     registro.Add(st14);
                 }
@@ -2487,7 +2489,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 15).Value.ToString()))
                 {
-                    decimal t15 = decimal.Parse(ws1.Cell(e, 15).Value.ToString()) * 100;
+                    decimal t15 = decimal.Parse(ws1.Cell(e, 15).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st15 = t15.ToString("0.0");
                     registro.Add(st15);
                 }
@@ -2498,7 +2500,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 16).Value.ToString()))
                 {
-                    decimal t16 = decimal.Parse(ws1.Cell(e, 16).Value.ToString()) * 100;
+                    decimal t16 = decimal.Parse(ws1.Cell(e, 16).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st16 = t16.ToString("0.0");
                     registro.Add(st16);
                 }
@@ -2509,7 +2511,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 17).Value.ToString()))
                 {
-                    decimal t17 = decimal.Parse(ws1.Cell(e, 17).Value.ToString()) * 100;
+                    decimal t17 = decimal.Parse(ws1.Cell(e, 17).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st17 = t17.ToString("0.0");
                     registro.Add(st17);
                 }
@@ -2520,7 +2522,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 18).Value.ToString()))
                 {
-                    decimal t18 = decimal.Parse(ws1.Cell(e, 18).Value.ToString()) * 100;
+                    decimal t18 = decimal.Parse(ws1.Cell(e, 18).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st18 = t18.ToString("0.0");
                     registro.Add(st18);
                 }
@@ -2531,7 +2533,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 19).Value.ToString()))
                 {
-                    decimal t19 = decimal.Parse(ws1.Cell(e, 19).Value.ToString()) * 100;
+                    decimal t19 = decimal.Parse(ws1.Cell(e, 19).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st19 = t19.ToString("0.0");
                     registro.Add(st19);
                 }
@@ -2542,7 +2544,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 20).Value.ToString()))
                 {
-                    decimal t20 = decimal.Parse(ws1.Cell(e, 20).Value.ToString()) * 100;
+                    decimal t20 = decimal.Parse(ws1.Cell(e, 20).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st20 = t20.ToString("0.0");
                     registro.Add(st20);
                 }
@@ -2555,7 +2557,7 @@ namespace Capex.Web.Controllers
                 ///
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 21).Value.ToString()))
                 {
-                    decimal t21 = decimal.Parse(ws1.Cell(e, 21).Value.ToString()) * 100;
+                    decimal t21 = decimal.Parse(ws1.Cell(e, 21).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st21 = t21.ToString("0.0");
                     registro.Add(st21);
                 }
@@ -2566,7 +2568,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 22).Value.ToString()))
                 {
-                    decimal t22 = decimal.Parse(ws1.Cell(e, 22).Value.ToString()) * 100;
+                    decimal t22 = decimal.Parse(ws1.Cell(e, 22).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st22 = t22.ToString("0.0");
                     registro.Add(st22);
                 }
@@ -2577,7 +2579,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 23).Value.ToString()))
                 {
-                    decimal t23 = decimal.Parse(ws1.Cell(e, 23).Value.ToString()) * 100;
+                    decimal t23 = decimal.Parse(ws1.Cell(e, 23).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st23 = t23.ToString("0.0");
                     registro.Add(st23);
                 }
@@ -2588,7 +2590,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 24).Value.ToString()))
                 {
-                    decimal t24 = decimal.Parse(ws1.Cell(e, 24).Value.ToString()) * 100;
+                    decimal t24 = decimal.Parse(ws1.Cell(e, 24).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st24 = t24.ToString("0.0");
                     registro.Add(st24);
                 }
@@ -2599,7 +2601,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 25).Value.ToString()))
                 {
-                    decimal t25 = decimal.Parse(ws1.Cell(e, 25).Value.ToString()) * 100;
+                    decimal t25 = decimal.Parse(ws1.Cell(e, 25).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st25 = t25.ToString("0.0");
                     registro.Add(st25);
                 }
@@ -2610,7 +2612,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 26).Value.ToString()))
                 {
-                    decimal t26 = decimal.Parse(ws1.Cell(e, 26).Value.ToString()) * 100;
+                    decimal t26 = decimal.Parse(ws1.Cell(e, 26).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st26 = t26.ToString("0.0");
                     registro.Add(st26);
                 }
@@ -2621,7 +2623,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 27).Value.ToString()))
                 {
-                    decimal t27 = decimal.Parse(ws1.Cell(e, 27).Value.ToString()) * 100;
+                    decimal t27 = decimal.Parse(ws1.Cell(e, 27).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st27 = t27.ToString("0.0");
                     registro.Add(st27);
                 }
@@ -2632,7 +2634,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 28).Value.ToString()))
                 {
-                    decimal t28 = decimal.Parse(ws1.Cell(e, 28).Value.ToString()) * 100;
+                    decimal t28 = decimal.Parse(ws1.Cell(e, 28).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st28 = t28.ToString("0.0");
                     registro.Add(st28);
                 }
@@ -2643,7 +2645,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 29).Value.ToString()))
                 {
-                    decimal t29 = decimal.Parse(ws1.Cell(e, 29).Value.ToString()) * 100;
+                    decimal t29 = decimal.Parse(ws1.Cell(e, 29).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st29 = t29.ToString("0.0");
                     registro.Add(st29);
                 }
@@ -2654,7 +2656,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 30).Value.ToString()))
                 {
-                    decimal t30 = decimal.Parse(ws1.Cell(e, 30).Value.ToString()) * 100;
+                    decimal t30 = decimal.Parse(ws1.Cell(e, 30).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st30 = t30.ToString("0.0");
                     registro.Add(st30);
                 }
@@ -2667,7 +2669,7 @@ namespace Capex.Web.Controllers
                 ///
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 31).Value.ToString()))
                 {
-                    decimal t31 = decimal.Parse(ws1.Cell(e, 31).Value.ToString()) * 100;
+                    decimal t31 = decimal.Parse(ws1.Cell(e, 31).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st31 = t31.ToString("0.0");
                     registro.Add(st31);
                 }
@@ -2678,7 +2680,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 32).Value.ToString()))
                 {
-                    decimal t32 = decimal.Parse(ws1.Cell(e, 32).Value.ToString()) * 100;
+                    decimal t32 = decimal.Parse(ws1.Cell(e, 32).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st32 = t32.ToString("0.0");
                     registro.Add(st32);
                 }
@@ -2689,7 +2691,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 33).Value.ToString()))
                 {
-                    decimal t33 = decimal.Parse(ws1.Cell(e, 33).Value.ToString()) * 100;
+                    decimal t33 = decimal.Parse(ws1.Cell(e, 33).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st33 = t33.ToString("0.0");
                     registro.Add(st33);
                 }
@@ -2700,7 +2702,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 34).Value.ToString()))
                 {
-                    decimal t34 = decimal.Parse(ws1.Cell(e, 34).Value.ToString()) * 100;
+                    decimal t34 = decimal.Parse(ws1.Cell(e, 34).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st34 = t34.ToString("0.0");
                     registro.Add(st34);
                 }
@@ -2711,7 +2713,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 35).Value.ToString()))
                 {
-                    decimal t35 = decimal.Parse(ws1.Cell(e, 35).Value.ToString()) * 100;
+                    decimal t35 = decimal.Parse(ws1.Cell(e, 35).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st35 = t35.ToString("0.0");
                     registro.Add(st35);
                 }
@@ -2722,7 +2724,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 36).Value.ToString()))
                 {
-                    decimal t36 = decimal.Parse(ws1.Cell(e, 36).Value.ToString()) * 100;
+                    decimal t36 = decimal.Parse(ws1.Cell(e, 36).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st36 = t36.ToString("0.0");
                     registro.Add(st36);
                 }
@@ -2733,7 +2735,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 37).Value.ToString()))
                 {
-                    decimal t37 = decimal.Parse(ws1.Cell(e, 37).Value.ToString()) * 100;
+                    decimal t37 = decimal.Parse(ws1.Cell(e, 37).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st37 = t37.ToString("0.0");
                     registro.Add(st37);
                 }
@@ -2744,7 +2746,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 38).Value.ToString()))
                 {
-                    decimal t38 = decimal.Parse(ws1.Cell(e, 38).Value.ToString()) * 100;
+                    decimal t38 = decimal.Parse(ws1.Cell(e, 38).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st38 = t38.ToString("0.0");
                     registro.Add(st38);
                 }
@@ -2755,7 +2757,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 39).Value.ToString()))
                 {
-                    decimal t39 = decimal.Parse(ws1.Cell(e, 39).Value.ToString()) * 100;
+                    decimal t39 = decimal.Parse(ws1.Cell(e, 39).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st39 = t39.ToString("0.0");
                     registro.Add(st39);
                 }
@@ -2767,7 +2769,7 @@ namespace Capex.Web.Controllers
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 40).Value.ToString()))
                 {
 
-                    decimal t40 = decimal.Parse(ws1.Cell(e, 40).Value.ToString()) * 100;
+                    decimal t40 = decimal.Parse(ws1.Cell(e, 40).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st40 = t40.ToString("0.0");
                     registro.Add(st40);
                 }
@@ -2778,7 +2780,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 41).Value.ToString()))
                 {
-                    decimal t41 = decimal.Parse(ws1.Cell(e, 41).Value.ToString()) * 100;
+                    decimal t41 = decimal.Parse(ws1.Cell(e, 41).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st41 = t41.ToString("0.0");
                     registro.Add(st41);
                 }
@@ -2789,7 +2791,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 42).Value.ToString()))
                 {
-                    decimal t42 = decimal.Parse(ws1.Cell(e, 42).Value.ToString()) * 100;
+                    decimal t42 = decimal.Parse(ws1.Cell(e, 42).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st42 = t42.ToString("0.0");
                     registro.Add(st42);
                 }
@@ -2800,7 +2802,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 43).Value.ToString()))
                 {
-                    decimal t43 = decimal.Parse(ws1.Cell(e, 43).Value.ToString()) * 100;
+                    decimal t43 = decimal.Parse(ws1.Cell(e, 43).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st43 = t43.ToString("0.0");
                     registro.Add(st43);
                 }
@@ -2812,7 +2814,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 44).Value.ToString()))
                 {
-                    decimal t44 = decimal.Parse(ws1.Cell(e, 44).Value.ToString()) * 100;
+                    decimal t44 = decimal.Parse(ws1.Cell(e, 44).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st44 = t44.ToString("0.0");
                     registro.Add(st44);
                 }
@@ -2823,7 +2825,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 45).Value.ToString()))
                 {
-                    decimal t45 = decimal.Parse(ws1.Cell(e, 45).Value.ToString()) * 100;
+                    decimal t45 = decimal.Parse(ws1.Cell(e, 45).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st45 = t45.ToString("0.0");
                     registro.Add(st45);
                 }
@@ -2834,7 +2836,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 46).Value.ToString()))
                 {
-                    decimal t46 = decimal.Parse(ws1.Cell(e, 46).Value.ToString()) * 100;
+                    decimal t46 = decimal.Parse(ws1.Cell(e, 46).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st46 = t46.ToString("0.0");
                     registro.Add(st46);
                 }
@@ -2845,7 +2847,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 47).Value.ToString()))
                 {
-                    decimal t47 = decimal.Parse(ws1.Cell(e, 47).Value.ToString()) * 100;
+                    decimal t47 = decimal.Parse(ws1.Cell(e, 47).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st47 = t47.ToString("0.0");
                     registro.Add(st47);
                 }
@@ -2856,7 +2858,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 48).Value.ToString()))
                 {
-                    decimal t48 = decimal.Parse(ws1.Cell(e, 48).Value.ToString()) * 100;
+                    decimal t48 = decimal.Parse(ws1.Cell(e, 48).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st48 = t48.ToString("0.0");
                     registro.Add(st48);
                 }
@@ -2867,7 +2869,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 49).Value.ToString()))
                 {
-                    decimal t49 = decimal.Parse(ws1.Cell(e, 49).Value.ToString()) * 100;
+                    decimal t49 = decimal.Parse(ws1.Cell(e, 49).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st49 = t49.ToString("0.0");
                     registro.Add(st49);
                 }
@@ -2879,7 +2881,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 50).Value.ToString()))
                 {
-                    decimal t50 = decimal.Parse(ws1.Cell(e, 50).Value.ToString()) * 100;
+                    decimal t50 = decimal.Parse(ws1.Cell(e, 50).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st50 = t50.ToString("0.0");
                     registro.Add(st50);
                 }
@@ -2892,7 +2894,7 @@ namespace Capex.Web.Controllers
                 ///
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 51).Value.ToString()))
                 {
-                    decimal t51 = decimal.Parse(ws1.Cell(e, 51).Value.ToString()) * 100;
+                    decimal t51 = decimal.Parse(ws1.Cell(e, 51).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st51 = t51.ToString("0.0");
                     registro.Add(st51);
                 }
@@ -2903,7 +2905,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 52).Value.ToString()))
                 {
-                    decimal t52 = decimal.Parse(ws1.Cell(e, 52).Value.ToString()) * 100;
+                    decimal t52 = decimal.Parse(ws1.Cell(e, 52).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st52 = t52.ToString("0.0");
                     registro.Add(st52);
                 }
@@ -2914,7 +2916,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 53).Value.ToString()))
                 {
-                    decimal t53 = decimal.Parse(ws1.Cell(e, 53).Value.ToString()) * 100;
+                    decimal t53 = decimal.Parse(ws1.Cell(e, 53).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st53 = t53.ToString("0.0");
                     registro.Add(st53);
                 }
@@ -2925,7 +2927,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 54).Value.ToString()))
                 {
-                    decimal t54 = decimal.Parse(ws1.Cell(e, 54).Value.ToString()) * 100;
+                    decimal t54 = decimal.Parse(ws1.Cell(e, 54).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st54 = t54.ToString("0.0");
                     registro.Add(st54);
                 }
@@ -2936,7 +2938,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 55).Value.ToString()))
                 {
-                    decimal t55 = decimal.Parse(ws1.Cell(e, 55).Value.ToString()) * 100;
+                    decimal t55 = decimal.Parse(ws1.Cell(e, 55).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st55 = t55.ToString("0.0");
                     registro.Add(st55);
                 }
@@ -2947,7 +2949,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 56).Value.ToString()))
                 {
-                    decimal t56 = decimal.Parse(ws1.Cell(e, 56).Value.ToString()) * 100;
+                    decimal t56 = decimal.Parse(ws1.Cell(e, 56).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st56 = t56.ToString("0.0");
                     registro.Add(st56);
                 }
@@ -2958,7 +2960,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 57).Value.ToString()))
                 {
-                    decimal t57 = decimal.Parse(ws1.Cell(e, 57).Value.ToString()) * 100;
+                    decimal t57 = decimal.Parse(ws1.Cell(e, 57).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st57 = t57.ToString("0.0");
                     registro.Add(st57);
                 }
@@ -2969,7 +2971,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 58).Value.ToString()))
                 {
-                    decimal t58 = decimal.Parse(ws1.Cell(e, 58).Value.ToString()) * 100;
+                    decimal t58 = decimal.Parse(ws1.Cell(e, 58).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st58 = t58.ToString("0.0");
                     registro.Add(st58);
                 }
@@ -2980,7 +2982,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 59).Value.ToString()))
                 {
-                    decimal t59 = decimal.Parse(ws1.Cell(e, 59).Value.ToString()) * 100;
+                    decimal t59 = decimal.Parse(ws1.Cell(e, 59).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st59 = t59.ToString("0.0");
                     registro.Add(st59);
                 }
@@ -2991,7 +2993,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 60).Value.ToString()))
                 {
-                    decimal t60 = decimal.Parse(ws1.Cell(e, 60).Value.ToString()) * 100;
+                    decimal t60 = decimal.Parse(ws1.Cell(e, 60).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st60 = t60.ToString("0.0");
                     registro.Add(st60);
                 }
@@ -3005,7 +3007,7 @@ namespace Capex.Web.Controllers
                 ///
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 61).Value.ToString()))
                 {
-                    decimal t61 = decimal.Parse(ws1.Cell(e, 61).Value.ToString()) * 100;
+                    decimal t61 = decimal.Parse(ws1.Cell(e, 61).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st61 = t61.ToString("0.0");
                     registro.Add(st61);
                 }
@@ -3016,7 +3018,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 62).Value.ToString()))
                 {
-                    decimal t62 = decimal.Parse(ws1.Cell(e, 62).Value.ToString()) * 100;
+                    decimal t62 = decimal.Parse(ws1.Cell(e, 62).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st62 = t62.ToString("0.0");
                     registro.Add(st62);
                 }
@@ -3027,7 +3029,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 63).Value.ToString()))
                 {
-                    decimal t63 = decimal.Parse(ws1.Cell(e, 63).Value.ToString()) * 100;
+                    decimal t63 = decimal.Parse(ws1.Cell(e, 63).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st63 = t63.ToString("0.0");
                     registro.Add(st63);
                 }
@@ -3038,7 +3040,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 64).Value.ToString()))
                 {
-                    decimal t64 = decimal.Parse(ws1.Cell(e, 64).Value.ToString()) * 100;
+                    decimal t64 = decimal.Parse(ws1.Cell(e, 64).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st64 = t64.ToString("0.0");
                     registro.Add(st64);
                 }
@@ -3049,7 +3051,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 65).Value.ToString()))
                 {
-                    decimal t65 = decimal.Parse(ws1.Cell(e, 65).Value.ToString()) * 100;
+                    decimal t65 = decimal.Parse(ws1.Cell(e, 65).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st65 = t65.ToString("0.0");
                     registro.Add(st65);
                 }
@@ -3060,7 +3062,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 66).Value.ToString()))
                 {
-                    decimal t66 = decimal.Parse(ws1.Cell(e, 66).Value.ToString()) * 100;
+                    decimal t66 = decimal.Parse(ws1.Cell(e, 66).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st66 = t66.ToString("0.0");
                     registro.Add(st66);
                 }
@@ -3071,7 +3073,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 67).Value.ToString()))
                 {
-                    decimal t67 = decimal.Parse(ws1.Cell(e, 67).Value.ToString()) * 100;
+                    decimal t67 = decimal.Parse(ws1.Cell(e, 67).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st67 = t67.ToString("0.0");
                     registro.Add(st67);
                 }
@@ -3082,7 +3084,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 68).Value.ToString()))
                 {
-                    decimal t68 = decimal.Parse(ws1.Cell(e, 68).Value.ToString()) * 100;
+                    decimal t68 = decimal.Parse(ws1.Cell(e, 68).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st68 = t68.ToString("0.0");
                     registro.Add(st68);
                 }
@@ -3093,7 +3095,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 69).Value.ToString()))
                 {
-                    decimal t69 = decimal.Parse(ws1.Cell(e, 69).Value.ToString()) * 100;
+                    decimal t69 = decimal.Parse(ws1.Cell(e, 69).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st69 = t69.ToString("0.0");
                     registro.Add(st69);
                 }
@@ -3104,7 +3106,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 70).Value.ToString()))
                 {
-                    decimal t70 = decimal.Parse(ws1.Cell(e, 70).Value.ToString()) * 100;
+                    decimal t70 = decimal.Parse(ws1.Cell(e, 70).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st70 = t70.ToString("0.0");
                     registro.Add(st70);
                 }
@@ -3118,7 +3120,7 @@ namespace Capex.Web.Controllers
                 ///
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 71).Value.ToString()))
                 {
-                    decimal t71 = decimal.Parse(ws1.Cell(e, 71).Value.ToString()) * 100;
+                    decimal t71 = decimal.Parse(ws1.Cell(e, 71).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st71 = t71.ToString("0.0");
                     registro.Add(st71);
                 }
@@ -3129,7 +3131,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 72).Value.ToString()))
                 {
-                    decimal t72 = decimal.Parse(ws1.Cell(e, 72).Value.ToString()) * 100;
+                    decimal t72 = decimal.Parse(ws1.Cell(e, 72).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st72 = t72.ToString("0.0");
                     registro.Add(st72);
                 }
@@ -3140,7 +3142,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 73).Value.ToString()))
                 {
-                    decimal t73 = decimal.Parse(ws1.Cell(e, 73).Value.ToString()) * 100;
+                    decimal t73 = decimal.Parse(ws1.Cell(e, 73).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st73 = t73.ToString("0.0");
                     registro.Add(st73);
                 }
@@ -3151,7 +3153,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 74).Value.ToString()))
                 {
-                    decimal t74 = decimal.Parse(ws1.Cell(e, 74).Value.ToString()) * 100;
+                    decimal t74 = decimal.Parse(ws1.Cell(e, 74).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st74 = t74.ToString("0.0");
                     registro.Add(st74);
                 }
@@ -3162,7 +3164,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 75).Value.ToString()))
                 {
-                    decimal t75 = decimal.Parse(ws1.Cell(e, 75).Value.ToString()) * 100;
+                    decimal t75 = decimal.Parse(ws1.Cell(e, 75).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st75 = t75.ToString("0.0");
                     registro.Add(st75);
                 }
@@ -3173,7 +3175,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 76).Value.ToString()))
                 {
-                    decimal t76 = decimal.Parse(ws1.Cell(e, 76).Value.ToString()) * 100;
+                    decimal t76 = decimal.Parse(ws1.Cell(e, 76).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st76 = t76.ToString("0.0");
                     registro.Add(st76);
                 }
@@ -3184,7 +3186,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 77).Value.ToString()))
                 {
-                    decimal t77 = decimal.Parse(ws1.Cell(e, 77).Value.ToString()) * 100;
+                    decimal t77 = decimal.Parse(ws1.Cell(e, 77).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st77 = t77.ToString("0.0");
                     registro.Add(st77);
                 }
@@ -3195,7 +3197,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 78).Value.ToString()))
                 {
-                    decimal t78 = decimal.Parse(ws1.Cell(e, 78).Value.ToString()) * 100;
+                    decimal t78 = decimal.Parse(ws1.Cell(e, 78).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st78 = t78.ToString("0.0");
                     registro.Add(st78);
                 }
@@ -3206,7 +3208,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 79).Value.ToString()))
                 {
-                    decimal t79 = decimal.Parse(ws1.Cell(e, 79).Value.ToString()) * 100;
+                    decimal t79 = decimal.Parse(ws1.Cell(e, 79).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st79 = t79.ToString("0.0");
                     registro.Add(st79);
                 }
@@ -3217,7 +3219,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 80).Value.ToString()))
                 {
-                    decimal t80 = decimal.Parse(ws1.Cell(e, 80).Value.ToString()) * 100;
+                    decimal t80 = decimal.Parse(ws1.Cell(e, 80).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st80 = t80.ToString("0.0");
                     registro.Add(st80);
                 }
@@ -3232,7 +3234,7 @@ namespace Capex.Web.Controllers
                 ///
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 81).Value.ToString()))
                 {
-                    decimal t81 = decimal.Parse(ws1.Cell(e, 81).Value.ToString()) * 100;
+                    decimal t81 = decimal.Parse(ws1.Cell(e, 81).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st81 = t81.ToString("0.0");
                     registro.Add(st81);
                 }
@@ -3243,7 +3245,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 82).Value.ToString()))
                 {
-                    decimal t82 = decimal.Parse(ws1.Cell(e, 82).Value.ToString()) * 100;
+                    decimal t82 = decimal.Parse(ws1.Cell(e, 82).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st82 = t82.ToString("0.0");
                     registro.Add(st82);
                 }
@@ -3254,7 +3256,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 83).Value.ToString()))
                 {
-                    decimal t83 = decimal.Parse(ws1.Cell(e, 83).Value.ToString()) * 100;
+                    decimal t83 = decimal.Parse(ws1.Cell(e, 83).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st83 = t83.ToString("0.0");
                     registro.Add(st83);
                 }
@@ -3265,7 +3267,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 84).Value.ToString()))
                 {
-                    decimal t84 = decimal.Parse(ws1.Cell(e, 84).Value.ToString()) * 100;
+                    decimal t84 = decimal.Parse(ws1.Cell(e, 84).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st84 = t84.ToString("0.0");
                     registro.Add(st84);
                 }
@@ -3276,7 +3278,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 85).Value.ToString()))
                 {
-                    decimal t85 = decimal.Parse(ws1.Cell(e, 85).Value.ToString()) * 100;
+                    decimal t85 = decimal.Parse(ws1.Cell(e, 85).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st85 = t85.ToString("0.0");
                     registro.Add(st85);
                 }
@@ -3287,7 +3289,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 86).Value.ToString()))
                 {
-                    decimal t86 = decimal.Parse(ws1.Cell(e, 86).Value.ToString()) * 100;
+                    decimal t86 = decimal.Parse(ws1.Cell(e, 86).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st86 = t86.ToString("0.0");
                     registro.Add(st86);
                 }
@@ -3298,7 +3300,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 87).Value.ToString()))
                 {
-                    decimal t87 = decimal.Parse(ws1.Cell(e, 87).Value.ToString()) * 100;
+                    decimal t87 = decimal.Parse(ws1.Cell(e, 87).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st87 = t87.ToString("0.0");
                     registro.Add(st87);
                 }
@@ -3309,7 +3311,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 88).Value.ToString()))
                 {
-                    decimal t88 = decimal.Parse(ws1.Cell(e, 88).Value.ToString()) * 100;
+                    decimal t88 = decimal.Parse(ws1.Cell(e, 88).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st88 = t88.ToString("0.0");
                     registro.Add(st88);
                 }
@@ -3320,7 +3322,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 89).Value.ToString()))
                 {
-                    decimal t89 = decimal.Parse(ws1.Cell(e, 89).Value.ToString()) * 100;
+                    decimal t89 = decimal.Parse(ws1.Cell(e, 89).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st89 = t89.ToString("0.0");
                     registro.Add(st89);
                 }
@@ -3331,7 +3333,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 90).Value.ToString()))
                 {
-                    decimal t90 = decimal.Parse(ws1.Cell(e, 90).Value.ToString()) * 100;
+                    decimal t90 = decimal.Parse(ws1.Cell(e, 90).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st90 = t90.ToString("0.0");
                     registro.Add(st90);
                 }
@@ -3345,7 +3347,7 @@ namespace Capex.Web.Controllers
                 ///
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 91).Value.ToString()))
                 {
-                    decimal t91 = decimal.Parse(ws1.Cell(e, 91).Value.ToString()) * 100;
+                    decimal t91 = decimal.Parse(ws1.Cell(e, 91).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st91 = t91.ToString("0.0");
                     registro.Add(st91);
                 }
@@ -3356,7 +3358,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 92).Value.ToString()))
                 {
-                    decimal t92 = decimal.Parse(ws1.Cell(e, 92).Value.ToString()) * 100;
+                    decimal t92 = decimal.Parse(ws1.Cell(e, 92).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st92 = t92.ToString("0.0");
                     registro.Add(st92);
                 }
@@ -3367,7 +3369,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 93).Value.ToString()))
                 {
-                    decimal t93 = decimal.Parse(ws1.Cell(e, 93).Value.ToString()) * 100;
+                    decimal t93 = decimal.Parse(ws1.Cell(e, 93).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st93 = t93.ToString("0.0");
                     registro.Add(st93);
                 }
@@ -3378,7 +3380,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 94).Value.ToString()))
                 {
-                    decimal t94 = decimal.Parse(ws1.Cell(e, 94).Value.ToString()) * 100;
+                    decimal t94 = decimal.Parse(ws1.Cell(e, 94).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st94 = t94.ToString("0.0");
                     registro.Add(st94);
                 }
@@ -3389,7 +3391,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 95).Value.ToString()))
                 {
-                    decimal t95 = decimal.Parse(ws1.Cell(e, 95).Value.ToString()) * 100;
+                    decimal t95 = decimal.Parse(ws1.Cell(e, 95).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st95 = t95.ToString("0.0");
                     registro.Add(st95);
                 }
@@ -3400,7 +3402,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 96).Value.ToString()))
                 {
-                    decimal t96 = decimal.Parse(ws1.Cell(e, 96).Value.ToString()) * 100;
+                    decimal t96 = decimal.Parse(ws1.Cell(e, 96).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st96 = t96.ToString("0.0");
                     registro.Add(st96);
                 }
@@ -3411,7 +3413,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws1.Cell(e, 97).Value.ToString()))
                 {
-                    decimal t97 = decimal.Parse(ws1.Cell(e, 97).Value.ToString()) * 100;
+                    decimal t97 = decimal.Parse(ws1.Cell(e, 97).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st97 = t97.ToString("0.0");
                     registro.Add(st97);
                 }
@@ -3446,6 +3448,17 @@ namespace Capex.Web.Controllers
             registro.Clear();
 
             return "OK";
+        }
+
+
+
+
+
+
+        private bool IsExponentialFormat(string str)
+        {
+            double dummy;
+            return (str.Contains("E") || str.Contains("e")) && double.TryParse(str, out dummy);
         }
 
 
@@ -7913,8 +7926,14 @@ namespace Capex.Web.Controllers
                         foreach (var ini in IniciativaPdfPresupuesto)
                         {
                             ViewBag.Anio = ini.IniPeriodo;
-                            ViewBag.AnioUno = ini.IniPeriodo + 1;
-                            ViewBag.AnioDos = ini.IniPeriodo + 2;
+                            ViewBag.IniTipo = ini.IniTipo;
+                            ViewBag.anioIni = ViewBag.Anio;
+                            if (ViewBag.IniTipo != null && !string.IsNullOrEmpty(ViewBag.IniTipo.ToString()) && ("CB".Equals(ViewBag.IniTipo.ToString()) || "CD".Equals(ViewBag.IniTipo.ToString())))
+                            {
+                                ViewBag.anioIni += 1;
+                            }
+                            ViewBag.AnioUno = ViewBag.anioIni + 1;
+                            ViewBag.AnioDos = ViewBag.anioIni + 2;
                             ViewBag.NombreProyecto = ini.PidNombreProyecto;
                             ViewBag.NombreProyectoAlias = ini.PidNombreProyectoAlias;
                             ViewBag.CodigoIniciativa = ini.PidCodigoIniciativa;
@@ -8536,8 +8555,8 @@ namespace Capex.Web.Controllers
                             sheetOne.Cell("P29").Value = ViewBag.Clasif2;
 
                             ViewBag.IniPeriodo = ini.IniPeriodo;
-                            sheetOne.Cell("E10").Value = ini.IniPeriodo;
-                            sheetOne.Cell("O10").Value = ini.IniPeriodo;
+                            sheetOne.Cell("E10").Value = anioIni;
+                            sheetOne.Cell("O10").Value = anioIni;
                             ViewBag.IrFecha = DateTime.Today.ToString("dd-MM-yyyy");
                             sheetOne.Cell("H10").Value = ViewBag.IrFecha;
                             sheetOne.Cell("V10").Value = ViewBag.IrFecha;
