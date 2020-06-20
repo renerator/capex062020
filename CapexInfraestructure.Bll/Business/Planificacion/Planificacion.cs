@@ -3950,6 +3950,40 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         ///     
         /// </remark>
 
+        private string escapeString(string text)
+        {
+            if (text != null && !string.IsNullOrEmpty(text))
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int counter = 0; counter < text.Length; counter++)
+                {
+                    if (text[counter] == '\'')
+                    {
+                        if (counter > 0)
+                        {
+                            if (text[counter - 1] == '\\')
+                            {
+                                stringBuilder.Append(text[counter]);
+                            }
+                            else
+                            {
+                                stringBuilder.Append("\\").Append(text[counter]);
+                            }
+                        }
+                        else
+                        {
+                            stringBuilder.Append("\\").Append(text[counter]);
+                        }
+                    }
+                    else
+                    {
+                        stringBuilder.Append(text[counter]);
+                    }
+                }
+                return stringBuilder.ToString();
+            }
+            return text;
+        }
 
         /// <summary>
         /// METODO PARA GUARDAR DESCRIPCION DETALLADA
@@ -3963,9 +3997,9 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
                 var parametos = new DynamicParameters();
                 parametos.Add("IniUsuario", DatosDescripcion.IniUsuario);
                 parametos.Add("IniToken", DatosDescripcion.IniToken);
-                parametos.Add("PddObjetivo", DatosDescripcion.PddObjetivo);
-                parametos.Add("PddAlcance", DatosDescripcion.PddAlcance);
-                parametos.Add("PddJustificacion", DatosDescripcion.PddJustificacion);
+                parametos.Add("PddObjetivo", escapeString(DatosDescripcion.PddObjetivo));
+                parametos.Add("PddAlcance", escapeString(DatosDescripcion.PddAlcance));
+                parametos.Add("PddJustificacion", escapeString(DatosDescripcion.PddJustificacion));
                 parametos.Add("PddDescripcion1", DatosDescripcion.PddDescripcion1);
                 parametos.Add("PddUnidad1", DatosDescripcion.PddUnidad1);
                 parametos.Add("PddActual1", DatosDescripcion.PddActual1);
@@ -4011,9 +4045,9 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
                 var parametos = new DynamicParameters();
                 parametos.Add("IniUsuario", DatosDescripcion.IniUsuario);
                 parametos.Add("IniToken", DatosDescripcion.IniToken);
-                parametos.Add("PddObjetivo", DatosDescripcion.PddObjetivo);
-                parametos.Add("PddAlcance", DatosDescripcion.PddAlcance);
-                parametos.Add("PddJustificacion", DatosDescripcion.PddJustificacion);
+                parametos.Add("PddObjetivo", escapeString(DatosDescripcion.PddObjetivo));
+                parametos.Add("PddAlcance", escapeString(DatosDescripcion.PddAlcance));
+                parametos.Add("PddJustificacion", escapeString(DatosDescripcion.PddJustificacion));
                 parametos.Add("PddDescripcion1", DatosDescripcion.PddDescripcion1);
                 parametos.Add("PddUnidad1", DatosDescripcion.PddUnidad1);
                 parametos.Add("PddActual1", DatosDescripcion.PddActual1);
