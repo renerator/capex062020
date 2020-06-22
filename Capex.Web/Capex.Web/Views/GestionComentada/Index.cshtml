@@ -211,25 +211,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Fin Modulo-->
-            <!-- Indicadores-->
-            <div class="row" style="margin-top:-30px; margin-bottom:10px;">
-                <div class="col-sm-12">
-                    <div class="page-title-box">
-                        <div class="btn-group float-right">
-                            <span style="color:#fff; font-size:11px;">Estado Iniciativas&nbsp; </span>
-                            <span class="indicador-verde" title="Pendientes">0</span>&nbsp;
-                            <span class="indicador-naranja" title="Por Vencer">0</span>&nbsp;
-                            <span class="indicador-rojo" title="Vencidas">0</span>&nbsp;
-                            <span class="indicador-blanco" title="Cerradas">0</span>&nbsp;&nbsp;&nbsp;
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!-- Fin Indicadores-->
-            <!-- Contenido 2 -->
-
+          
             <div class="row">
                 <div class="col-12">
                     <div class="card mail-inbox">
@@ -391,8 +373,7 @@
                                                                         @ini.MacroCategoria
                                                                     </td>
                                                                     <td class="text-center" width="140px">
-
-                                                                        @((string.IsNullOrEmpty(ini.TotalCapex) || ini.TotalCapex.Equals("0")) ? "0" : String.Format("{0:0,0}", double.Parse(ini.TotalCapex, System.Globalization.CultureInfo.InvariantCulture)))
+                                                                        @((string.IsNullOrEmpty(ini.TotalCapex) || ini.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(ini.TotalCapex, System.Globalization.CultureInfo.GetCultureInfo("es-CL"))))
                                                                     </td>
                                                                     <td class="text-center" width="100px" onclick="exitFilterPanel();FNRegistrarIniciativa('@ini.PidToken')">
                                                                         @if (Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Gestor")

@@ -128,7 +128,7 @@ namespace Capex.Web.Controllers
         //IDENTIFICACION
         public static PlanificacionFactory FactoryPlanificacion;
         public static IPlanificacion IPlanificacion;
-        public SqlConnection ORM;
+        //public SqlConnection ORM;
         #endregion
 
         #region "CONSTRUCTOR"
@@ -137,7 +137,7 @@ namespace Capex.Web.Controllers
             //IDENTIFICACION
             FactoryPlanificacion = new PlanificacionFactory();
             JsonResponse = string.Empty;
-            ORM = CapexInfraestructure.Utilities.Utils.Conectar();
+            //ORM = CapexInfraestructure.Utilities.Utils.Conectar();
         }
         #endregion
 
@@ -4773,682 +4773,690 @@ namespace Capex.Web.Controllers
         /// <param name="Datos"></param>
         public void InsertarInformacionFinancieraCasoBase(List<String> Datos, string PorInvNacExt, int numIngreso)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                if (Datos.Count == 293)
+                try
                 {
-                    parametos.Add("IniToken", Datos[0].ToString());
-                    parametos.Add("IniUsuario", Datos[1].ToString());
-                    parametos.Add("IfDato0", Datos[2].ToString());
-                    parametos.Add("IfDato1", Datos[3].ToString());
-                    parametos.Add("IfDato2", Datos[4].ToString());
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    if (Datos.Count == 293)
+                    {
+                        parametos.Add("IniToken", Datos[0].ToString());
+                        parametos.Add("IniUsuario", Datos[1].ToString());
+                        parametos.Add("IfDato0", Datos[2].ToString());
+                        parametos.Add("IfDato1", Datos[3].ToString());
+                        parametos.Add("IfDato2", Datos[4].ToString());
 
-                    parametos.Add("IfDato3", Datos[5].ToString());
-                    parametos.Add("IfDato4", Datos[6].ToString());
-                    parametos.Add("IfDato5", Datos[7].ToString());
-                    parametos.Add("IfDato6", Datos[8].ToString());
-                    parametos.Add("IfDato7", Datos[9].ToString());
-                    parametos.Add("IfDato8", Datos[10].ToString());
-                    parametos.Add("IfDato9", Datos[11].ToString());
-                    parametos.Add("IfDato10", Datos[12].ToString());
-                    parametos.Add("IfDato11", Datos[13].ToString());
-                    parametos.Add("IfDato12", Datos[14].ToString());
-                    parametos.Add("IfDato13", Datos[15].ToString());
-                    parametos.Add("IfDato14", Datos[16].ToString());
+                        parametos.Add("IfDato3", Datos[5].ToString());
+                        parametos.Add("IfDato4", Datos[6].ToString());
+                        parametos.Add("IfDato5", Datos[7].ToString());
+                        parametos.Add("IfDato6", Datos[8].ToString());
+                        parametos.Add("IfDato7", Datos[9].ToString());
+                        parametos.Add("IfDato8", Datos[10].ToString());
+                        parametos.Add("IfDato9", Datos[11].ToString());
+                        parametos.Add("IfDato10", Datos[12].ToString());
+                        parametos.Add("IfDato11", Datos[13].ToString());
+                        parametos.Add("IfDato12", Datos[14].ToString());
+                        parametos.Add("IfDato13", Datos[15].ToString());
+                        parametos.Add("IfDato14", Datos[16].ToString());
 
-                    parametos.Add("IfDato15", Datos[17].ToString());
+                        parametos.Add("IfDato15", Datos[17].ToString());
 
-                    parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
-                    parametos.Add("IfDato17", Datos[19].ToString());
-                    parametos.Add("IfDato18", Datos[20].ToString());
-                    parametos.Add("IfDato19", Datos[21].ToString());
-                    parametos.Add("IfDato20", Datos[22].ToString());
-                    parametos.Add("IfDato21", Datos[23].ToString());
-                    parametos.Add("IfDato22", Datos[24].ToString());
-                    parametos.Add("IfDato23", Datos[25].ToString());
-                    parametos.Add("IfDato24", Datos[26].ToString());
-                    parametos.Add("IfDato25", Datos[27].ToString());
+                        parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
+                        parametos.Add("IfDato17", Datos[19].ToString());
+                        parametos.Add("IfDato18", Datos[20].ToString());
+                        parametos.Add("IfDato19", Datos[21].ToString());
+                        parametos.Add("IfDato20", Datos[22].ToString());
+                        parametos.Add("IfDato21", Datos[23].ToString());
+                        parametos.Add("IfDato22", Datos[24].ToString());
+                        parametos.Add("IfDato23", Datos[25].ToString());
+                        parametos.Add("IfDato24", Datos[26].ToString());
+                        parametos.Add("IfDato25", Datos[27].ToString());
 
-                    parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
-                    parametos.Add("IfDato27", Datos[29].ToString());
-                    parametos.Add("IfDato28", Datos[30].ToString());
-                    parametos.Add("IfDato29", Datos[31].ToString());
-                    parametos.Add("IfDato30", Datos[32].ToString());
-                    parametos.Add("IfDato31", Datos[33].ToString());
-                    parametos.Add("IfDato32", Datos[34].ToString());
-                    parametos.Add("IfDato33", Datos[35].ToString());
-                    parametos.Add("IfDato34", Datos[36].ToString());
-                    parametos.Add("IfDato35", Datos[37].ToString());
+                        parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
+                        parametos.Add("IfDato27", Datos[29].ToString());
+                        parametos.Add("IfDato28", Datos[30].ToString());
+                        parametos.Add("IfDato29", Datos[31].ToString());
+                        parametos.Add("IfDato30", Datos[32].ToString());
+                        parametos.Add("IfDato31", Datos[33].ToString());
+                        parametos.Add("IfDato32", Datos[34].ToString());
+                        parametos.Add("IfDato33", Datos[35].ToString());
+                        parametos.Add("IfDato34", Datos[36].ToString());
+                        parametos.Add("IfDato35", Datos[37].ToString());
 
-                    parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
-                    parametos.Add("IfDato37", Datos[39].ToString());
-                    parametos.Add("IfDato38", Datos[40].ToString());
-                    parametos.Add("IfDato39", Datos[41].ToString());
-                    parametos.Add("IfDato40", Datos[42].ToString());
-                    parametos.Add("IfDato41", Datos[43].ToString());
-                    parametos.Add("IfDato42", Datos[44].ToString());
-                    parametos.Add("IfDato43", Datos[45].ToString());
-                    parametos.Add("IfDato44", Datos[46].ToString());
-                    parametos.Add("IfDato45", Datos[47].ToString());
+                        parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
+                        parametos.Add("IfDato37", Datos[39].ToString());
+                        parametos.Add("IfDato38", Datos[40].ToString());
+                        parametos.Add("IfDato39", Datos[41].ToString());
+                        parametos.Add("IfDato40", Datos[42].ToString());
+                        parametos.Add("IfDato41", Datos[43].ToString());
+                        parametos.Add("IfDato42", Datos[44].ToString());
+                        parametos.Add("IfDato43", Datos[45].ToString());
+                        parametos.Add("IfDato44", Datos[46].ToString());
+                        parametos.Add("IfDato45", Datos[47].ToString());
 
-                    parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
-                    parametos.Add("IfDato47", Datos[49].ToString());
-                    parametos.Add("IfDato48", Datos[50].ToString());
-                    parametos.Add("IfDato49", Datos[51].ToString());
-                    parametos.Add("IfDato50", Datos[52].ToString());
-                    parametos.Add("IfDato51", Datos[53].ToString());
-                    parametos.Add("IfDato52", Datos[54].ToString());
-                    parametos.Add("IfDato53", Datos[55].ToString());
-                    parametos.Add("IfDato54", Datos[56].ToString());
-                    parametos.Add("IfDato55", Datos[57].ToString());
+                        parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
+                        parametos.Add("IfDato47", Datos[49].ToString());
+                        parametos.Add("IfDato48", Datos[50].ToString());
+                        parametos.Add("IfDato49", Datos[51].ToString());
+                        parametos.Add("IfDato50", Datos[52].ToString());
+                        parametos.Add("IfDato51", Datos[53].ToString());
+                        parametos.Add("IfDato52", Datos[54].ToString());
+                        parametos.Add("IfDato53", Datos[55].ToString());
+                        parametos.Add("IfDato54", Datos[56].ToString());
+                        parametos.Add("IfDato55", Datos[57].ToString());
 
-                    parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
-                    parametos.Add("IfDato57", Datos[59].ToString());
-                    parametos.Add("IfDato58", Datos[60].ToString());
-                    parametos.Add("IfDato59", Datos[61].ToString());
-                    parametos.Add("IfDato60", Datos[62].ToString());
-                    parametos.Add("IfDato61", Datos[63].ToString());
-                    parametos.Add("IfDato62", Datos[64].ToString());
-                    parametos.Add("IfDato63", Datos[65].ToString());
-                    parametos.Add("IfDato64", Datos[66].ToString());
-                    parametos.Add("IfDato65", Datos[67].ToString());
+                        parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
+                        parametos.Add("IfDato57", Datos[59].ToString());
+                        parametos.Add("IfDato58", Datos[60].ToString());
+                        parametos.Add("IfDato59", Datos[61].ToString());
+                        parametos.Add("IfDato60", Datos[62].ToString());
+                        parametos.Add("IfDato61", Datos[63].ToString());
+                        parametos.Add("IfDato62", Datos[64].ToString());
+                        parametos.Add("IfDato63", Datos[65].ToString());
+                        parametos.Add("IfDato64", Datos[66].ToString());
+                        parametos.Add("IfDato65", Datos[67].ToString());
 
-                    parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
-                    parametos.Add("IfDato67", Datos[69].ToString());
-                    parametos.Add("IfDato68", Datos[70].ToString());
-                    parametos.Add("IfDato69", Datos[71].ToString());
-                    parametos.Add("IfDato70", Datos[72].ToString());
-                    parametos.Add("IfDato71", Datos[73].ToString());
-                    parametos.Add("IfDato72", Datos[74].ToString());
-                    parametos.Add("IfDato73", Datos[75].ToString());
-                    parametos.Add("IfDato74", Datos[76].ToString());
-                    parametos.Add("IfDato75", Datos[77].ToString());
+                        parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
+                        parametos.Add("IfDato67", Datos[69].ToString());
+                        parametos.Add("IfDato68", Datos[70].ToString());
+                        parametos.Add("IfDato69", Datos[71].ToString());
+                        parametos.Add("IfDato70", Datos[72].ToString());
+                        parametos.Add("IfDato71", Datos[73].ToString());
+                        parametos.Add("IfDato72", Datos[74].ToString());
+                        parametos.Add("IfDato73", Datos[75].ToString());
+                        parametos.Add("IfDato74", Datos[76].ToString());
+                        parametos.Add("IfDato75", Datos[77].ToString());
 
-                    parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
-                    parametos.Add("IfDato77", Datos[79].ToString());
-                    parametos.Add("IfDato78", Datos[80].ToString());
-                    parametos.Add("IfDato79", Datos[81].ToString());
-                    parametos.Add("IfDato80", Datos[82].ToString());
-                    parametos.Add("IfDato81", Datos[83].ToString());
-                    parametos.Add("IfDato82", Datos[84].ToString());
-                    parametos.Add("IfDato83", Datos[85].ToString());
-                    parametos.Add("IfDato84", Datos[86].ToString());
-                    parametos.Add("IfDato85", Datos[87].ToString());
+                        parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
+                        parametos.Add("IfDato77", Datos[79].ToString());
+                        parametos.Add("IfDato78", Datos[80].ToString());
+                        parametos.Add("IfDato79", Datos[81].ToString());
+                        parametos.Add("IfDato80", Datos[82].ToString());
+                        parametos.Add("IfDato81", Datos[83].ToString());
+                        parametos.Add("IfDato82", Datos[84].ToString());
+                        parametos.Add("IfDato83", Datos[85].ToString());
+                        parametos.Add("IfDato84", Datos[86].ToString());
+                        parametos.Add("IfDato85", Datos[87].ToString());
 
-                    parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
-                    parametos.Add("IfDato87", Datos[89].ToString());
-                    parametos.Add("IfDato88", Datos[90].ToString());
-                    parametos.Add("IfDato89", Datos[91].ToString());
-                    parametos.Add("IfDato90", Datos[92].ToString());
-                    parametos.Add("IfDato91", Datos[93].ToString());
-                    parametos.Add("IfDato92", Datos[94].ToString());
-                    parametos.Add("IfDato93", Datos[95].ToString());
-                    parametos.Add("IfDato94", Datos[96].ToString());
-                    parametos.Add("IfDato95", Datos[97].ToString());
+                        parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
+                        parametos.Add("IfDato87", Datos[89].ToString());
+                        parametos.Add("IfDato88", Datos[90].ToString());
+                        parametos.Add("IfDato89", Datos[91].ToString());
+                        parametos.Add("IfDato90", Datos[92].ToString());
+                        parametos.Add("IfDato91", Datos[93].ToString());
+                        parametos.Add("IfDato92", Datos[94].ToString());
+                        parametos.Add("IfDato93", Datos[95].ToString());
+                        parametos.Add("IfDato94", Datos[96].ToString());
+                        parametos.Add("IfDato95", Datos[97].ToString());
 
-                    parametos.Add("IfDato96", Datos[98].ToString());//TOTAL
+                        parametos.Add("IfDato96", Datos[98].ToString());//TOTAL
 
-                    //fila 2
-                    parametos.Add("IfD1Dato0", Datos[99].ToString());
-                    parametos.Add("IfD1Dato1", Datos[100].ToString());
-                    parametos.Add("IfD1Dato2", Datos[101].ToString());
-                    parametos.Add("IfD1Dato3", Datos[102].ToString());
-                    parametos.Add("IfD1Dato4", Datos[103].ToString());
-                    parametos.Add("IfD1Dato5", Datos[104].ToString());
-                    parametos.Add("IfD1Dato6", Datos[105].ToString());
-                    parametos.Add("IfD1Dato7", Datos[106].ToString());
-                    parametos.Add("IfD1Dato8", Datos[107].ToString());
-                    parametos.Add("IfD1Dato9", Datos[108].ToString());
-                    parametos.Add("IfD1Dato10", Datos[109].ToString());
-                    parametos.Add("IfD1Dato11", Datos[110].ToString());
-                    parametos.Add("IfD1Dato12", Datos[111].ToString());
-                    parametos.Add("IfD1Dato13", Datos[112].ToString());
-                    parametos.Add("IfD1Dato14", Datos[113].ToString());
+                        //fila 2
+                        parametos.Add("IfD1Dato0", Datos[99].ToString());
+                        parametos.Add("IfD1Dato1", Datos[100].ToString());
+                        parametos.Add("IfD1Dato2", Datos[101].ToString());
+                        parametos.Add("IfD1Dato3", Datos[102].ToString());
+                        parametos.Add("IfD1Dato4", Datos[103].ToString());
+                        parametos.Add("IfD1Dato5", Datos[104].ToString());
+                        parametos.Add("IfD1Dato6", Datos[105].ToString());
+                        parametos.Add("IfD1Dato7", Datos[106].ToString());
+                        parametos.Add("IfD1Dato8", Datos[107].ToString());
+                        parametos.Add("IfD1Dato9", Datos[108].ToString());
+                        parametos.Add("IfD1Dato10", Datos[109].ToString());
+                        parametos.Add("IfD1Dato11", Datos[110].ToString());
+                        parametos.Add("IfD1Dato12", Datos[111].ToString());
+                        parametos.Add("IfD1Dato13", Datos[112].ToString());
+                        parametos.Add("IfD1Dato14", Datos[113].ToString());
 
-                    parametos.Add("IfD1Dato15", Datos[114].ToString());
+                        parametos.Add("IfD1Dato15", Datos[114].ToString());
 
-                    parametos.Add("IfD1Dato16", Datos[115].ToString()); //2021 - 2030
-                    parametos.Add("IfD1Dato17", Datos[116].ToString());
-                    parametos.Add("IfD1Dato18", Datos[117].ToString());
-                    parametos.Add("IfD1Dato19", Datos[118].ToString());
-                    parametos.Add("IfD1Dato20", Datos[119].ToString());
-                    parametos.Add("IfD1Dato21", Datos[120].ToString());
-                    parametos.Add("IfD1Dato22", Datos[121].ToString());
-                    parametos.Add("IfD1Dato23", Datos[122].ToString());
-                    parametos.Add("IfD1Dato24", Datos[123].ToString());
-                    parametos.Add("IfD1Dato25", Datos[124].ToString());
+                        parametos.Add("IfD1Dato16", Datos[115].ToString()); //2021 - 2030
+                        parametos.Add("IfD1Dato17", Datos[116].ToString());
+                        parametos.Add("IfD1Dato18", Datos[117].ToString());
+                        parametos.Add("IfD1Dato19", Datos[118].ToString());
+                        parametos.Add("IfD1Dato20", Datos[119].ToString());
+                        parametos.Add("IfD1Dato21", Datos[120].ToString());
+                        parametos.Add("IfD1Dato22", Datos[121].ToString());
+                        parametos.Add("IfD1Dato23", Datos[122].ToString());
+                        parametos.Add("IfD1Dato24", Datos[123].ToString());
+                        parametos.Add("IfD1Dato25", Datos[124].ToString());
 
-                    parametos.Add("IfD1Dato26", Datos[125].ToString()); //2031 - 2040
-                    parametos.Add("IfD1Dato27", Datos[126].ToString());
-                    parametos.Add("IfD1Dato28", Datos[127].ToString());
-                    parametos.Add("IfD1Dato29", Datos[128].ToString());
-                    parametos.Add("IfD1Dato30", Datos[129].ToString());
-                    parametos.Add("IfD1Dato31", Datos[130].ToString());
-                    parametos.Add("IfD1Dato32", Datos[131].ToString());
-                    parametos.Add("IfD1Dato33", Datos[132].ToString());
-                    parametos.Add("IfD1Dato34", Datos[133].ToString());
-                    parametos.Add("IfD1Dato35", Datos[134].ToString());
+                        parametos.Add("IfD1Dato26", Datos[125].ToString()); //2031 - 2040
+                        parametos.Add("IfD1Dato27", Datos[126].ToString());
+                        parametos.Add("IfD1Dato28", Datos[127].ToString());
+                        parametos.Add("IfD1Dato29", Datos[128].ToString());
+                        parametos.Add("IfD1Dato30", Datos[129].ToString());
+                        parametos.Add("IfD1Dato31", Datos[130].ToString());
+                        parametos.Add("IfD1Dato32", Datos[131].ToString());
+                        parametos.Add("IfD1Dato33", Datos[132].ToString());
+                        parametos.Add("IfD1Dato34", Datos[133].ToString());
+                        parametos.Add("IfD1Dato35", Datos[134].ToString());
 
-                    parametos.Add("IfD1Dato36", Datos[135].ToString()); //2041 - 2050
-                    parametos.Add("IfD1Dato37", Datos[136].ToString());
-                    parametos.Add("IfD1Dato38", Datos[137].ToString());
-                    parametos.Add("IfD1Dato39", Datos[138].ToString());
-                    parametos.Add("IfD1Dato40", Datos[139].ToString());
-                    parametos.Add("IfD1Dato41", Datos[140].ToString());
-                    parametos.Add("IfD1Dato42", Datos[141].ToString());
-                    parametos.Add("IfD1Dato43", Datos[142].ToString());
-                    parametos.Add("IfD1Dato44", Datos[143].ToString());
-                    parametos.Add("IfD1Dato45", Datos[144].ToString());
+                        parametos.Add("IfD1Dato36", Datos[135].ToString()); //2041 - 2050
+                        parametos.Add("IfD1Dato37", Datos[136].ToString());
+                        parametos.Add("IfD1Dato38", Datos[137].ToString());
+                        parametos.Add("IfD1Dato39", Datos[138].ToString());
+                        parametos.Add("IfD1Dato40", Datos[139].ToString());
+                        parametos.Add("IfD1Dato41", Datos[140].ToString());
+                        parametos.Add("IfD1Dato42", Datos[141].ToString());
+                        parametos.Add("IfD1Dato43", Datos[142].ToString());
+                        parametos.Add("IfD1Dato44", Datos[143].ToString());
+                        parametos.Add("IfD1Dato45", Datos[144].ToString());
 
-                    parametos.Add("IfD1Dato46", Datos[145].ToString()); //2051 - 2060
-                    parametos.Add("IfD1Dato47", Datos[146].ToString());
-                    parametos.Add("IfD1Dato48", Datos[147].ToString());
-                    parametos.Add("IfD1Dato49", Datos[148].ToString());
-                    parametos.Add("IfD1Dato50", Datos[149].ToString());
-                    parametos.Add("IfD1Dato51", Datos[150].ToString());
-                    parametos.Add("IfD1Dato52", Datos[151].ToString());
-                    parametos.Add("IfD1Dato53", Datos[152].ToString());
-                    parametos.Add("IfD1Dato54", Datos[153].ToString());
-                    parametos.Add("IfD1Dato55", Datos[154].ToString());
+                        parametos.Add("IfD1Dato46", Datos[145].ToString()); //2051 - 2060
+                        parametos.Add("IfD1Dato47", Datos[146].ToString());
+                        parametos.Add("IfD1Dato48", Datos[147].ToString());
+                        parametos.Add("IfD1Dato49", Datos[148].ToString());
+                        parametos.Add("IfD1Dato50", Datos[149].ToString());
+                        parametos.Add("IfD1Dato51", Datos[150].ToString());
+                        parametos.Add("IfD1Dato52", Datos[151].ToString());
+                        parametos.Add("IfD1Dato53", Datos[152].ToString());
+                        parametos.Add("IfD1Dato54", Datos[153].ToString());
+                        parametos.Add("IfD1Dato55", Datos[154].ToString());
 
-                    parametos.Add("IfD1Dato56", Datos[155].ToString()); //2061 - 2070
-                    parametos.Add("IfD1Dato57", Datos[156].ToString());
-                    parametos.Add("IfD1Dato58", Datos[157].ToString());
-                    parametos.Add("IfD1Dato59", Datos[158].ToString());
-                    parametos.Add("IfD1Dato60", Datos[159].ToString());
-                    parametos.Add("IfD1Dato61", Datos[160].ToString());
-                    parametos.Add("IfD1Dato62", Datos[161].ToString());
-                    parametos.Add("IfD1Dato63", Datos[162].ToString());
-                    parametos.Add("IfD1Dato64", Datos[163].ToString());
-                    parametos.Add("IfD1Dato65", Datos[164].ToString());
+                        parametos.Add("IfD1Dato56", Datos[155].ToString()); //2061 - 2070
+                        parametos.Add("IfD1Dato57", Datos[156].ToString());
+                        parametos.Add("IfD1Dato58", Datos[157].ToString());
+                        parametos.Add("IfD1Dato59", Datos[158].ToString());
+                        parametos.Add("IfD1Dato60", Datos[159].ToString());
+                        parametos.Add("IfD1Dato61", Datos[160].ToString());
+                        parametos.Add("IfD1Dato62", Datos[161].ToString());
+                        parametos.Add("IfD1Dato63", Datos[162].ToString());
+                        parametos.Add("IfD1Dato64", Datos[163].ToString());
+                        parametos.Add("IfD1Dato65", Datos[164].ToString());
 
-                    parametos.Add("IfD1Dato66", Datos[165].ToString()); //2071 - 2080
-                    parametos.Add("IfD1Dato67", Datos[166].ToString());
-                    parametos.Add("IfD1Dato68", Datos[167].ToString());
-                    parametos.Add("IfD1Dato69", Datos[168].ToString());
-                    parametos.Add("IfD1Dato70", Datos[169].ToString());
-                    parametos.Add("IfD1Dato71", Datos[170].ToString());
-                    parametos.Add("IfD1Dato72", Datos[171].ToString());
-                    parametos.Add("IfD1Dato73", Datos[172].ToString());
-                    parametos.Add("IfD1Dato74", Datos[173].ToString());
-                    parametos.Add("IfD1Dato75", Datos[174].ToString());
+                        parametos.Add("IfD1Dato66", Datos[165].ToString()); //2071 - 2080
+                        parametos.Add("IfD1Dato67", Datos[166].ToString());
+                        parametos.Add("IfD1Dato68", Datos[167].ToString());
+                        parametos.Add("IfD1Dato69", Datos[168].ToString());
+                        parametos.Add("IfD1Dato70", Datos[169].ToString());
+                        parametos.Add("IfD1Dato71", Datos[170].ToString());
+                        parametos.Add("IfD1Dato72", Datos[171].ToString());
+                        parametos.Add("IfD1Dato73", Datos[172].ToString());
+                        parametos.Add("IfD1Dato74", Datos[173].ToString());
+                        parametos.Add("IfD1Dato75", Datos[174].ToString());
 
-                    parametos.Add("IfD1Dato76", Datos[175].ToString()); //2081 - 2090
-                    parametos.Add("IfD1Dato77", Datos[176].ToString());
-                    parametos.Add("IfD1Dato78", Datos[177].ToString());
-                    parametos.Add("IfD1Dato79", Datos[178].ToString());
-                    parametos.Add("IfD1Dato80", Datos[179].ToString());
-                    parametos.Add("IfD1Dato81", Datos[180].ToString());
-                    parametos.Add("IfD1Dato82", Datos[181].ToString());
-                    parametos.Add("IfD1Dato83", Datos[182].ToString());
-                    parametos.Add("IfD1Dato84", Datos[183].ToString());
-                    parametos.Add("IfD1Dato85", Datos[184].ToString());
+                        parametos.Add("IfD1Dato76", Datos[175].ToString()); //2081 - 2090
+                        parametos.Add("IfD1Dato77", Datos[176].ToString());
+                        parametos.Add("IfD1Dato78", Datos[177].ToString());
+                        parametos.Add("IfD1Dato79", Datos[178].ToString());
+                        parametos.Add("IfD1Dato80", Datos[179].ToString());
+                        parametos.Add("IfD1Dato81", Datos[180].ToString());
+                        parametos.Add("IfD1Dato82", Datos[181].ToString());
+                        parametos.Add("IfD1Dato83", Datos[182].ToString());
+                        parametos.Add("IfD1Dato84", Datos[183].ToString());
+                        parametos.Add("IfD1Dato85", Datos[184].ToString());
 
-                    parametos.Add("IfD1Dato86", Datos[185].ToString()); //2091 - 2100
-                    parametos.Add("IfD1Dato87", Datos[186].ToString());
-                    parametos.Add("IfD1Dato88", Datos[187].ToString());
-                    parametos.Add("IfD1Dato89", Datos[188].ToString());
-                    parametos.Add("IfD1Dato90", Datos[189].ToString());
-                    parametos.Add("IfD1Dato91", Datos[190].ToString());
-                    parametos.Add("IfD1Dato92", Datos[191].ToString());
-                    parametos.Add("IfD1Dato93", Datos[192].ToString());
-                    parametos.Add("IfD1Dato94", Datos[193].ToString());
-                    parametos.Add("IfD1Dato95", Datos[194].ToString());
+                        parametos.Add("IfD1Dato86", Datos[185].ToString()); //2091 - 2100
+                        parametos.Add("IfD1Dato87", Datos[186].ToString());
+                        parametos.Add("IfD1Dato88", Datos[187].ToString());
+                        parametos.Add("IfD1Dato89", Datos[188].ToString());
+                        parametos.Add("IfD1Dato90", Datos[189].ToString());
+                        parametos.Add("IfD1Dato91", Datos[190].ToString());
+                        parametos.Add("IfD1Dato92", Datos[191].ToString());
+                        parametos.Add("IfD1Dato93", Datos[192].ToString());
+                        parametos.Add("IfD1Dato94", Datos[193].ToString());
+                        parametos.Add("IfD1Dato95", Datos[194].ToString());
 
-                    parametos.Add("IfD1Dato96", Datos[195].ToString());//TOTAL
-                    //fila 3
-                    parametos.Add("IfD2Dato0", Datos[196].ToString());
-                    parametos.Add("IfD2Dato1", Datos[197].ToString());
-                    parametos.Add("IfD2Dato2", Datos[198].ToString());
+                        parametos.Add("IfD1Dato96", Datos[195].ToString());//TOTAL
+                        //fila 3
+                        parametos.Add("IfD2Dato0", Datos[196].ToString());
+                        parametos.Add("IfD2Dato1", Datos[197].ToString());
+                        parametos.Add("IfD2Dato2", Datos[198].ToString());
 
-                    parametos.Add("IfD2Dato3", Datos[199].ToString());
-                    parametos.Add("IfD2Dato4", Datos[200].ToString());
-                    parametos.Add("IfD2Dato5", Datos[201].ToString());
-                    parametos.Add("IfD2Dato6", Datos[202].ToString());
-                    parametos.Add("IfD2Dato7", Datos[203].ToString());
-                    parametos.Add("IfD2Dato8", Datos[204].ToString());
-                    parametos.Add("IfD2Dato9", Datos[205].ToString());
-                    parametos.Add("IfD2Dato10", Datos[206].ToString());
-                    parametos.Add("IfD2Dato11", Datos[207].ToString());
-                    parametos.Add("IfD2Dato12", Datos[208].ToString());
-                    parametos.Add("IfD2Dato13", Datos[209].ToString());
-                    parametos.Add("IfD2Dato14", Datos[210].ToString());
+                        parametos.Add("IfD2Dato3", Datos[199].ToString());
+                        parametos.Add("IfD2Dato4", Datos[200].ToString());
+                        parametos.Add("IfD2Dato5", Datos[201].ToString());
+                        parametos.Add("IfD2Dato6", Datos[202].ToString());
+                        parametos.Add("IfD2Dato7", Datos[203].ToString());
+                        parametos.Add("IfD2Dato8", Datos[204].ToString());
+                        parametos.Add("IfD2Dato9", Datos[205].ToString());
+                        parametos.Add("IfD2Dato10", Datos[206].ToString());
+                        parametos.Add("IfD2Dato11", Datos[207].ToString());
+                        parametos.Add("IfD2Dato12", Datos[208].ToString());
+                        parametos.Add("IfD2Dato13", Datos[209].ToString());
+                        parametos.Add("IfD2Dato14", Datos[210].ToString());
 
-                    parametos.Add("IfD2Dato15", Datos[211].ToString());
+                        parametos.Add("IfD2Dato15", Datos[211].ToString());
 
-                    parametos.Add("IfD2Dato16", Datos[212].ToString()); //2021 - 2030
-                    parametos.Add("IfD2Dato17", Datos[213].ToString());
-                    parametos.Add("IfD2Dato18", Datos[214].ToString());
-                    parametos.Add("IfD2Dato19", Datos[215].ToString());
-                    parametos.Add("IfD2Dato20", Datos[216].ToString());
-                    parametos.Add("IfD2Dato21", Datos[217].ToString());
-                    parametos.Add("IfD2Dato22", Datos[218].ToString());
-                    parametos.Add("IfD2Dato23", Datos[219].ToString());
-                    parametos.Add("IfD2Dato24", Datos[220].ToString());
-                    parametos.Add("IfD2Dato25", Datos[221].ToString());
+                        parametos.Add("IfD2Dato16", Datos[212].ToString()); //2021 - 2030
+                        parametos.Add("IfD2Dato17", Datos[213].ToString());
+                        parametos.Add("IfD2Dato18", Datos[214].ToString());
+                        parametos.Add("IfD2Dato19", Datos[215].ToString());
+                        parametos.Add("IfD2Dato20", Datos[216].ToString());
+                        parametos.Add("IfD2Dato21", Datos[217].ToString());
+                        parametos.Add("IfD2Dato22", Datos[218].ToString());
+                        parametos.Add("IfD2Dato23", Datos[219].ToString());
+                        parametos.Add("IfD2Dato24", Datos[220].ToString());
+                        parametos.Add("IfD2Dato25", Datos[221].ToString());
 
-                    parametos.Add("IfD2Dato26", Datos[222].ToString()); //2031 - 2040
-                    parametos.Add("IfD2Dato27", Datos[223].ToString());
-                    parametos.Add("IfD2Dato28", Datos[224].ToString());
-                    parametos.Add("IfD2Dato29", Datos[225].ToString());
-                    parametos.Add("IfD2Dato30", Datos[226].ToString());
-                    parametos.Add("IfD2Dato31", Datos[227].ToString());
-                    parametos.Add("IfD2Dato32", Datos[228].ToString());
-                    parametos.Add("IfD2Dato33", Datos[229].ToString());
-                    parametos.Add("IfD2Dato34", Datos[230].ToString());
-                    parametos.Add("IfD2Dato35", Datos[231].ToString());
+                        parametos.Add("IfD2Dato26", Datos[222].ToString()); //2031 - 2040
+                        parametos.Add("IfD2Dato27", Datos[223].ToString());
+                        parametos.Add("IfD2Dato28", Datos[224].ToString());
+                        parametos.Add("IfD2Dato29", Datos[225].ToString());
+                        parametos.Add("IfD2Dato30", Datos[226].ToString());
+                        parametos.Add("IfD2Dato31", Datos[227].ToString());
+                        parametos.Add("IfD2Dato32", Datos[228].ToString());
+                        parametos.Add("IfD2Dato33", Datos[229].ToString());
+                        parametos.Add("IfD2Dato34", Datos[230].ToString());
+                        parametos.Add("IfD2Dato35", Datos[231].ToString());
 
-                    parametos.Add("IfD2Dato36", Datos[232].ToString()); //2041 - 2050
-                    parametos.Add("IfD2Dato37", Datos[233].ToString());
-                    parametos.Add("IfD2Dato38", Datos[234].ToString());
-                    parametos.Add("IfD2Dato39", Datos[235].ToString());
-                    parametos.Add("IfD2Dato40", Datos[236].ToString());
-                    parametos.Add("IfD2Dato41", Datos[237].ToString());
-                    parametos.Add("IfD2Dato42", Datos[238].ToString());
-                    parametos.Add("IfD2Dato43", Datos[239].ToString());
-                    parametos.Add("IfD2Dato44", Datos[240].ToString());
-                    parametos.Add("IfD2Dato45", Datos[241].ToString());
+                        parametos.Add("IfD2Dato36", Datos[232].ToString()); //2041 - 2050
+                        parametos.Add("IfD2Dato37", Datos[233].ToString());
+                        parametos.Add("IfD2Dato38", Datos[234].ToString());
+                        parametos.Add("IfD2Dato39", Datos[235].ToString());
+                        parametos.Add("IfD2Dato40", Datos[236].ToString());
+                        parametos.Add("IfD2Dato41", Datos[237].ToString());
+                        parametos.Add("IfD2Dato42", Datos[238].ToString());
+                        parametos.Add("IfD2Dato43", Datos[239].ToString());
+                        parametos.Add("IfD2Dato44", Datos[240].ToString());
+                        parametos.Add("IfD2Dato45", Datos[241].ToString());
 
-                    parametos.Add("IfD2Dato46", Datos[242].ToString()); //2051 - 2060
-                    parametos.Add("IfD2Dato47", Datos[243].ToString());
-                    parametos.Add("IfD2Dato48", Datos[244].ToString());
-                    parametos.Add("IfD2Dato49", Datos[245].ToString());
-                    parametos.Add("IfD2Dato50", Datos[246].ToString());
-                    parametos.Add("IfD2Dato51", Datos[247].ToString());
-                    parametos.Add("IfD2Dato52", Datos[248].ToString());
-                    parametos.Add("IfD2Dato53", Datos[249].ToString());
-                    parametos.Add("IfD2Dato54", Datos[250].ToString());
-                    parametos.Add("IfD2Dato55", Datos[251].ToString());
+                        parametos.Add("IfD2Dato46", Datos[242].ToString()); //2051 - 2060
+                        parametos.Add("IfD2Dato47", Datos[243].ToString());
+                        parametos.Add("IfD2Dato48", Datos[244].ToString());
+                        parametos.Add("IfD2Dato49", Datos[245].ToString());
+                        parametos.Add("IfD2Dato50", Datos[246].ToString());
+                        parametos.Add("IfD2Dato51", Datos[247].ToString());
+                        parametos.Add("IfD2Dato52", Datos[248].ToString());
+                        parametos.Add("IfD2Dato53", Datos[249].ToString());
+                        parametos.Add("IfD2Dato54", Datos[250].ToString());
+                        parametos.Add("IfD2Dato55", Datos[251].ToString());
 
-                    parametos.Add("IfD2Dato56", Datos[252].ToString()); //2061 - 2070
-                    parametos.Add("IfD2Dato57", Datos[253].ToString());
-                    parametos.Add("IfD2Dato58", Datos[254].ToString());
-                    parametos.Add("IfD2Dato59", Datos[255].ToString());
-                    parametos.Add("IfD2Dato60", Datos[256].ToString());
-                    parametos.Add("IfD2Dato61", Datos[257].ToString());
-                    parametos.Add("IfD2Dato62", Datos[258].ToString());
-                    parametos.Add("IfD2Dato63", Datos[259].ToString());
-                    parametos.Add("IfD2Dato64", Datos[260].ToString());
-                    parametos.Add("IfD2Dato65", Datos[261].ToString());
+                        parametos.Add("IfD2Dato56", Datos[252].ToString()); //2061 - 2070
+                        parametos.Add("IfD2Dato57", Datos[253].ToString());
+                        parametos.Add("IfD2Dato58", Datos[254].ToString());
+                        parametos.Add("IfD2Dato59", Datos[255].ToString());
+                        parametos.Add("IfD2Dato60", Datos[256].ToString());
+                        parametos.Add("IfD2Dato61", Datos[257].ToString());
+                        parametos.Add("IfD2Dato62", Datos[258].ToString());
+                        parametos.Add("IfD2Dato63", Datos[259].ToString());
+                        parametos.Add("IfD2Dato64", Datos[260].ToString());
+                        parametos.Add("IfD2Dato65", Datos[261].ToString());
 
-                    parametos.Add("IfD2Dato66", Datos[262].ToString()); //2071 - 2080
-                    parametos.Add("IfD2Dato67", Datos[263].ToString());
-                    parametos.Add("IfD2Dato68", Datos[264].ToString());
-                    parametos.Add("IfD2Dato69", Datos[265].ToString());
-                    parametos.Add("IfD2Dato70", Datos[266].ToString());
-                    parametos.Add("IfD2Dato71", Datos[267].ToString());
-                    parametos.Add("IfD2Dato72", Datos[268].ToString());
-                    parametos.Add("IfD2Dato73", Datos[269].ToString());
-                    parametos.Add("IfD2Dato74", Datos[270].ToString());
-                    parametos.Add("IfD2Dato75", Datos[271].ToString());
+                        parametos.Add("IfD2Dato66", Datos[262].ToString()); //2071 - 2080
+                        parametos.Add("IfD2Dato67", Datos[263].ToString());
+                        parametos.Add("IfD2Dato68", Datos[264].ToString());
+                        parametos.Add("IfD2Dato69", Datos[265].ToString());
+                        parametos.Add("IfD2Dato70", Datos[266].ToString());
+                        parametos.Add("IfD2Dato71", Datos[267].ToString());
+                        parametos.Add("IfD2Dato72", Datos[268].ToString());
+                        parametos.Add("IfD2Dato73", Datos[269].ToString());
+                        parametos.Add("IfD2Dato74", Datos[270].ToString());
+                        parametos.Add("IfD2Dato75", Datos[271].ToString());
 
-                    parametos.Add("IfD2Dato76", Datos[272].ToString()); //2081 - 2090
-                    parametos.Add("IfD2Dato77", Datos[273].ToString());
-                    parametos.Add("IfD2Dato78", Datos[274].ToString());
-                    parametos.Add("IfD2Dato79", Datos[275].ToString());
-                    parametos.Add("IfD2Dato80", Datos[276].ToString());
-                    parametos.Add("IfD2Dato81", Datos[277].ToString());
-                    parametos.Add("IfD2Dato82", Datos[278].ToString());
-                    parametos.Add("IfD2Dato83", Datos[279].ToString());
-                    parametos.Add("IfD2Dato84", Datos[280].ToString());
-                    parametos.Add("IfD2Dato85", Datos[281].ToString());
+                        parametos.Add("IfD2Dato76", Datos[272].ToString()); //2081 - 2090
+                        parametos.Add("IfD2Dato77", Datos[273].ToString());
+                        parametos.Add("IfD2Dato78", Datos[274].ToString());
+                        parametos.Add("IfD2Dato79", Datos[275].ToString());
+                        parametos.Add("IfD2Dato80", Datos[276].ToString());
+                        parametos.Add("IfD2Dato81", Datos[277].ToString());
+                        parametos.Add("IfD2Dato82", Datos[278].ToString());
+                        parametos.Add("IfD2Dato83", Datos[279].ToString());
+                        parametos.Add("IfD2Dato84", Datos[280].ToString());
+                        parametos.Add("IfD2Dato85", Datos[281].ToString());
 
-                    parametos.Add("IfD2Dato86", Datos[282].ToString()); //2091 - 2100
-                    parametos.Add("IfD2Dato87", Datos[283].ToString());
-                    parametos.Add("IfD2Dato88", Datos[284].ToString());
-                    parametos.Add("IfD2Dato89", Datos[285].ToString());
-                    parametos.Add("IfD2Dato90", Datos[286].ToString());
-                    parametos.Add("IfD2Dato91", Datos[287].ToString());
-                    parametos.Add("IfD2Dato92", Datos[288].ToString());
-                    parametos.Add("IfD2Dato93", Datos[289].ToString());
-                    parametos.Add("IfD2Dato94", Datos[290].ToString());
-                    parametos.Add("IfD2Dato95", Datos[291].ToString());
+                        parametos.Add("IfD2Dato86", Datos[282].ToString()); //2091 - 2100
+                        parametos.Add("IfD2Dato87", Datos[283].ToString());
+                        parametos.Add("IfD2Dato88", Datos[284].ToString());
+                        parametos.Add("IfD2Dato89", Datos[285].ToString());
+                        parametos.Add("IfD2Dato90", Datos[286].ToString());
+                        parametos.Add("IfD2Dato91", Datos[287].ToString());
+                        parametos.Add("IfD2Dato92", Datos[288].ToString());
+                        parametos.Add("IfD2Dato93", Datos[289].ToString());
+                        parametos.Add("IfD2Dato94", Datos[290].ToString());
+                        parametos.Add("IfD2Dato95", Datos[291].ToString());
 
-                    parametos.Add("IfD2Dato96", Datos[292].ToString());//TOTAL
-                    parametos.Add("PorInvNacExt", PorInvNacExt);
-                    parametos.Add("Opcion", 1);
-                    parametos.Add("NumIngreso", numIngreso);
+                        parametos.Add("IfD2Dato96", Datos[292].ToString());//TOTAL
+                        parametos.Add("PorInvNacExt", PorInvNacExt);
+                        parametos.Add("Opcion", 1);
+                        parametos.Add("NumIngreso", numIngreso);
+                    }
+                    else
+                    {
+                        parametos.Add("IniToken", Datos[0].ToString());
+                        parametos.Add("IniUsuario", Datos[1].ToString());
+                        parametos.Add("IfDato0", Datos[2].ToString());
+                        parametos.Add("IfDato1", Datos[3].ToString());
+                        parametos.Add("IfDato2", Datos[4].ToString());
+
+                        parametos.Add("IfDato3", Datos[5].ToString());
+                        parametos.Add("IfDato4", Datos[6].ToString());
+                        parametos.Add("IfDato5", Datos[7].ToString());
+                        parametos.Add("IfDato6", Datos[8].ToString());
+                        parametos.Add("IfDato7", Datos[9].ToString());
+                        parametos.Add("IfDato8", Datos[10].ToString());
+                        parametos.Add("IfDato9", Datos[11].ToString());
+                        parametos.Add("IfDato10", Datos[12].ToString());
+                        parametos.Add("IfDato11", Datos[13].ToString());
+                        parametos.Add("IfDato12", Datos[14].ToString());
+                        parametos.Add("IfDato13", Datos[15].ToString());
+                        parametos.Add("IfDato14", Datos[16].ToString());
+
+                        parametos.Add("IfDato15", Datos[17].ToString());
+
+                        parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
+                        parametos.Add("IfDato17", Datos[19].ToString());
+                        parametos.Add("IfDato18", Datos[20].ToString());
+                        parametos.Add("IfDato19", Datos[21].ToString());
+                        parametos.Add("IfDato20", Datos[22].ToString());
+                        parametos.Add("IfDato21", Datos[23].ToString());
+                        parametos.Add("IfDato22", Datos[24].ToString());
+                        parametos.Add("IfDato23", Datos[25].ToString());
+                        parametos.Add("IfDato24", Datos[26].ToString());
+                        parametos.Add("IfDato25", Datos[27].ToString());
+
+                        parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
+                        parametos.Add("IfDato27", Datos[29].ToString());
+                        parametos.Add("IfDato28", Datos[30].ToString());
+                        parametos.Add("IfDato29", Datos[31].ToString());
+                        parametos.Add("IfDato30", Datos[32].ToString());
+                        parametos.Add("IfDato31", Datos[33].ToString());
+                        parametos.Add("IfDato32", Datos[34].ToString());
+                        parametos.Add("IfDato33", Datos[35].ToString());
+                        parametos.Add("IfDato34", Datos[36].ToString());
+                        parametos.Add("IfDato35", Datos[37].ToString());
+
+                        parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
+                        parametos.Add("IfDato37", Datos[39].ToString());
+                        parametos.Add("IfDato38", Datos[40].ToString());
+                        parametos.Add("IfDato39", Datos[41].ToString());
+                        parametos.Add("IfDato40", Datos[42].ToString());
+                        parametos.Add("IfDato41", Datos[43].ToString());
+                        parametos.Add("IfDato42", Datos[44].ToString());
+                        parametos.Add("IfDato43", Datos[45].ToString());
+                        parametos.Add("IfDato44", Datos[46].ToString());
+                        parametos.Add("IfDato45", Datos[47].ToString());
+
+                        parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
+                        parametos.Add("IfDato47", Datos[49].ToString());
+                        parametos.Add("IfDato48", Datos[50].ToString());
+                        parametos.Add("IfDato49", Datos[51].ToString());
+                        parametos.Add("IfDato50", Datos[52].ToString());
+                        parametos.Add("IfDato51", Datos[53].ToString());
+                        parametos.Add("IfDato52", Datos[54].ToString());
+                        parametos.Add("IfDato53", Datos[55].ToString());
+                        parametos.Add("IfDato54", Datos[56].ToString());
+                        parametos.Add("IfDato55", Datos[57].ToString());
+
+                        parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
+                        parametos.Add("IfDato57", Datos[59].ToString());
+                        parametos.Add("IfDato58", Datos[60].ToString());
+                        parametos.Add("IfDato59", Datos[61].ToString());
+                        parametos.Add("IfDato60", Datos[62].ToString());
+                        parametos.Add("IfDato61", Datos[63].ToString());
+                        parametos.Add("IfDato62", Datos[64].ToString());
+                        parametos.Add("IfDato63", Datos[65].ToString());
+                        parametos.Add("IfDato64", Datos[66].ToString());
+                        parametos.Add("IfDato65", Datos[67].ToString());
+
+                        parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
+                        parametos.Add("IfDato67", Datos[69].ToString());
+                        parametos.Add("IfDato68", Datos[70].ToString());
+                        parametos.Add("IfDato69", Datos[71].ToString());
+                        parametos.Add("IfDato70", Datos[72].ToString());
+                        parametos.Add("IfDato71", Datos[73].ToString());
+                        parametos.Add("IfDato72", Datos[74].ToString());
+                        parametos.Add("IfDato73", Datos[75].ToString());
+                        parametos.Add("IfDato74", Datos[76].ToString());
+                        parametos.Add("IfDato75", Datos[77].ToString());
+
+                        parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
+                        parametos.Add("IfDato77", Datos[79].ToString());
+                        parametos.Add("IfDato78", Datos[80].ToString());
+                        parametos.Add("IfDato79", Datos[81].ToString());
+                        parametos.Add("IfDato80", Datos[82].ToString());
+                        parametos.Add("IfDato81", Datos[83].ToString());
+                        parametos.Add("IfDato82", Datos[84].ToString());
+                        parametos.Add("IfDato83", Datos[85].ToString());
+                        parametos.Add("IfDato84", Datos[86].ToString());
+                        parametos.Add("IfDato85", Datos[87].ToString());
+
+                        parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
+                        parametos.Add("IfDato87", Datos[89].ToString());
+                        parametos.Add("IfDato88", Datos[90].ToString());
+                        parametos.Add("IfDato89", Datos[91].ToString());
+                        parametos.Add("IfDato90", Datos[92].ToString());
+                        parametos.Add("IfDato91", Datos[93].ToString());
+                        parametos.Add("IfDato92", Datos[94].ToString());
+                        parametos.Add("IfDato93", Datos[95].ToString());
+                        parametos.Add("IfDato94", Datos[96].ToString());
+                        parametos.Add("IfDato95", Datos[97].ToString());
+
+                        parametos.Add("IfDato96", Datos[98].ToString());//TOTAL
+                        //fila 2
+                        parametos.Add("IfD1Dato0", "");
+                        parametos.Add("IfD1Dato1", "");
+                        parametos.Add("IfD1Dato2", "");
+
+                        parametos.Add("IfD1Dato3", "");
+                        parametos.Add("IfD1Dato4", "");
+                        parametos.Add("IfD1Dato5", "");
+                        parametos.Add("IfD1Dato6", "");
+                        parametos.Add("IfD1Dato7", "");
+                        parametos.Add("IfD1Dato8", "");
+                        parametos.Add("IfD1Dato9", "");
+                        parametos.Add("IfD1Dato10", "");
+                        parametos.Add("IfD1Dato11", "");
+                        parametos.Add("IfD1Dato12", "");
+                        parametos.Add("IfD1Dato13", "");
+                        parametos.Add("IfD1Dato14", "");
+
+                        parametos.Add("IfD1Dato15", "");
+
+                        parametos.Add("IfD1Dato16", ""); //2021 - 2030
+                        parametos.Add("IfD1Dato17", "");
+                        parametos.Add("IfD1Dato18", "");
+                        parametos.Add("IfD1Dato19", "");
+                        parametos.Add("IfD1Dato20", "");
+                        parametos.Add("IfD1Dato21", "");
+                        parametos.Add("IfD1Dato22", "");
+                        parametos.Add("IfD1Dato23", "");
+                        parametos.Add("IfD1Dato24", "");
+                        parametos.Add("IfD1Dato25", "");
+
+                        parametos.Add("IfD1Dato26", ""); //2031 - 2040
+                        parametos.Add("IfD1Dato27", "");
+                        parametos.Add("IfD1Dato28", "");
+                        parametos.Add("IfD1Dato29", "");
+                        parametos.Add("IfD1Dato30", "");
+                        parametos.Add("IfD1Dato31", "");
+                        parametos.Add("IfD1Dato32", "");
+                        parametos.Add("IfD1Dato33", "");
+                        parametos.Add("IfD1Dato34", "");
+                        parametos.Add("IfD1Dato35", "");
+
+                        parametos.Add("IfD1Dato36", ""); //2041 - 2050
+                        parametos.Add("IfD1Dato37", "");
+                        parametos.Add("IfD1Dato38", "");
+                        parametos.Add("IfD1Dato39", "");
+                        parametos.Add("IfD1Dato40", "");
+                        parametos.Add("IfD1Dato41", "");
+                        parametos.Add("IfD1Dato42", "");
+                        parametos.Add("IfD1Dato43", "");
+                        parametos.Add("IfD1Dato44", "");
+                        parametos.Add("IfD1Dato45", "");
+
+                        parametos.Add("IfD1Dato46", ""); //2051 - 2060
+                        parametos.Add("IfD1Dato47", "");
+                        parametos.Add("IfD1Dato48", "");
+                        parametos.Add("IfD1Dato49", "");
+                        parametos.Add("IfD1Dato50", "");
+                        parametos.Add("IfD1Dato51", "");
+                        parametos.Add("IfD1Dato52", "");
+                        parametos.Add("IfD1Dato53", "");
+                        parametos.Add("IfD1Dato54", "");
+                        parametos.Add("IfD1Dato55", "");
+
+                        parametos.Add("IfD1Dato56", ""); //2061 - 2070
+                        parametos.Add("IfD1Dato57", "");
+                        parametos.Add("IfD1Dato58", "");
+                        parametos.Add("IfD1Dato59", "");
+                        parametos.Add("IfD1Dato60", "");
+                        parametos.Add("IfD1Dato61", "");
+                        parametos.Add("IfD1Dato62", "");
+                        parametos.Add("IfD1Dato63", "");
+                        parametos.Add("IfD1Dato64", "");
+                        parametos.Add("IfD1Dato65", "");
+
+                        parametos.Add("IfD1Dato66", ""); //2071 - 2080
+                        parametos.Add("IfD1Dato67", "");
+                        parametos.Add("IfD1Dato68", "");
+                        parametos.Add("IfD1Dato69", "");
+                        parametos.Add("IfD1Dato70", "");
+                        parametos.Add("IfD1Dato71", "");
+                        parametos.Add("IfD1Dato72", "");
+                        parametos.Add("IfD1Dato73", "");
+                        parametos.Add("IfD1Dato74", "");
+                        parametos.Add("IfD1Dato75", "");
+
+                        parametos.Add("IfD1Dato76", ""); //2081 - 2090
+                        parametos.Add("IfD1Dato77", "");
+                        parametos.Add("IfD1Dato78", "");
+                        parametos.Add("IfD1Dato79", "");
+                        parametos.Add("IfD1Dato80", "");
+                        parametos.Add("IfD1Dato81", "");
+                        parametos.Add("IfD1Dato82", "");
+                        parametos.Add("IfD1Dato83", "");
+                        parametos.Add("IfD1Dato84", "");
+                        parametos.Add("IfD1Dato85", "");
+
+                        parametos.Add("IfD1Dato86", ""); //2091 - 2100
+                        parametos.Add("IfD1Dato87", "");
+                        parametos.Add("IfD1Dato88", "");
+                        parametos.Add("IfD1Dato89", "");
+                        parametos.Add("IfD1Dato90", "");
+                        parametos.Add("IfD1Dato91", "");
+                        parametos.Add("IfD1Dato92", "");
+                        parametos.Add("IfD1Dato93", "");
+                        parametos.Add("IfD1Dato94", "");
+                        parametos.Add("IfD1Dato95", "");
+                        parametos.Add("IfD1Dato96", "");//TOTAL
+                        //fila 3
+                        parametos.Add("IfD2Dato0", "");
+                        parametos.Add("IfD2Dato1", "");
+                        parametos.Add("IfD2Dato2", "");
+
+                        parametos.Add("IfD2Dato3", "");
+                        parametos.Add("IfD2Dato4", "");
+                        parametos.Add("IfD2Dato5", "");
+                        parametos.Add("IfD2Dato6", "");
+                        parametos.Add("IfD2Dato7", "");
+                        parametos.Add("IfD2Dato8", "");
+                        parametos.Add("IfD2Dato9", "");
+                        parametos.Add("IfD2Dato10", "");
+                        parametos.Add("IfD2Dato11", "");
+                        parametos.Add("IfD2Dato12", "");
+                        parametos.Add("IfD2Dato13", "");
+                        parametos.Add("IfD2Dato14", "");
+
+                        parametos.Add("IfD2Dato15", "");
+
+                        parametos.Add("IfD2Dato16", ""); //2021 - 2030
+                        parametos.Add("IfD2Dato17", "");
+                        parametos.Add("IfD2Dato18", "");
+                        parametos.Add("IfD2Dato19", "");
+                        parametos.Add("IfD2Dato20", "");
+                        parametos.Add("IfD2Dato21", "");
+                        parametos.Add("IfD2Dato22", "");
+                        parametos.Add("IfD2Dato23", "");
+                        parametos.Add("IfD2Dato24", "");
+                        parametos.Add("IfD2Dato25", "");
+
+                        parametos.Add("IfD2Dato26", ""); //2031 - 2040
+                        parametos.Add("IfD2Dato27", "");
+                        parametos.Add("IfD2Dato28", "");
+                        parametos.Add("IfD2Dato29", "");
+                        parametos.Add("IfD2Dato30", "");
+                        parametos.Add("IfD2Dato31", "");
+                        parametos.Add("IfD2Dato32", "");
+                        parametos.Add("IfD2Dato33", "");
+                        parametos.Add("IfD2Dato34", "");
+                        parametos.Add("IfD2Dato35", "");
+
+                        parametos.Add("IfD2Dato36", ""); //2041 - 2050
+                        parametos.Add("IfD2Dato37", "");
+                        parametos.Add("IfD2Dato38", "");
+                        parametos.Add("IfD2Dato39", "");
+                        parametos.Add("IfD2Dato40", "");
+                        parametos.Add("IfD2Dato41", "");
+                        parametos.Add("IfD2Dato42", "");
+                        parametos.Add("IfD2Dato43", "");
+                        parametos.Add("IfD2Dato44", "");
+                        parametos.Add("IfD2Dato45", "");
+
+                        parametos.Add("IfD2Dato46", ""); //2051 - 2060
+                        parametos.Add("IfD2Dato47", "");
+                        parametos.Add("IfD2Dato48", "");
+                        parametos.Add("IfD2Dato49", "");
+                        parametos.Add("IfD2Dato50", "");
+                        parametos.Add("IfD2Dato51", "");
+                        parametos.Add("IfD2Dato52", "");
+                        parametos.Add("IfD2Dato53", "");
+                        parametos.Add("IfD2Dato54", "");
+                        parametos.Add("IfD2Dato55", "");
+
+                        parametos.Add("IfD2Dato56", ""); //2061 - 2070
+                        parametos.Add("IfD2Dato57", "");
+                        parametos.Add("IfD2Dato58", "");
+                        parametos.Add("IfD2Dato59", "");
+                        parametos.Add("IfD2Dato60", "");
+                        parametos.Add("IfD2Dato61", "");
+                        parametos.Add("IfD2Dato62", "");
+                        parametos.Add("IfD2Dato63", "");
+                        parametos.Add("IfD2Dato64", "");
+                        parametos.Add("IfD2Dato65", "");
+
+                        parametos.Add("IfD2Dato66", ""); //2071 - 2080
+                        parametos.Add("IfD2Dato67", "");
+                        parametos.Add("IfD2Dato68", "");
+                        parametos.Add("IfD2Dato69", "");
+                        parametos.Add("IfD2Dato70", "");
+                        parametos.Add("IfD2Dato71", "");
+                        parametos.Add("IfD2Dato72", "");
+                        parametos.Add("IfD2Dato73", "");
+                        parametos.Add("IfD2Dato74", "");
+                        parametos.Add("IfD2Dato75", "");
+
+                        parametos.Add("IfD2Dato76", ""); //2081 - 2090
+                        parametos.Add("IfD2Dato77", "");
+                        parametos.Add("IfD2Dato78", "");
+                        parametos.Add("IfD2Dato79", "");
+                        parametos.Add("IfD2Dato80", "");
+                        parametos.Add("IfD2Dato81", "");
+                        parametos.Add("IfD2Dato82", "");
+                        parametos.Add("IfD2Dato83", "");
+                        parametos.Add("IfD2Dato84", "");
+                        parametos.Add("IfD2Dato85", "");
+
+                        parametos.Add("IfD2Dato86", ""); //2091 - 2100
+                        parametos.Add("IfD2Dato87", "");
+                        parametos.Add("IfD2Dato88", "");
+                        parametos.Add("IfD2Dato89", "");
+                        parametos.Add("IfD2Dato90", "");
+                        parametos.Add("IfD2Dato91", "");
+                        parametos.Add("IfD2Dato92", "");
+                        parametos.Add("IfD2Dato93", "");
+                        parametos.Add("IfD2Dato94", "");
+                        parametos.Add("IfD2Dato95", "");
+
+                        parametos.Add("IfD2Dato96", "");//TOTAL
+                        parametos.Add("PorInvNacExt", PorInvNacExt);
+                        parametos.Add("Opcion", 0);
+                        parametos.Add("NumIngreso", numIngreso);
+                    }
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FINANCIERA_CASOBASE_2", parametos, commandType: CommandType.StoredProcedure);
                 }
-                else
+                catch (Exception err)
                 {
-                    parametos.Add("IniToken", Datos[0].ToString());
-                    parametos.Add("IniUsuario", Datos[1].ToString());
-                    parametos.Add("IfDato0", Datos[2].ToString());
-                    parametos.Add("IfDato1", Datos[3].ToString());
-                    parametos.Add("IfDato2", Datos[4].ToString());
-
-                    parametos.Add("IfDato3", Datos[5].ToString());
-                    parametos.Add("IfDato4", Datos[6].ToString());
-                    parametos.Add("IfDato5", Datos[7].ToString());
-                    parametos.Add("IfDato6", Datos[8].ToString());
-                    parametos.Add("IfDato7", Datos[9].ToString());
-                    parametos.Add("IfDato8", Datos[10].ToString());
-                    parametos.Add("IfDato9", Datos[11].ToString());
-                    parametos.Add("IfDato10", Datos[12].ToString());
-                    parametos.Add("IfDato11", Datos[13].ToString());
-                    parametos.Add("IfDato12", Datos[14].ToString());
-                    parametos.Add("IfDato13", Datos[15].ToString());
-                    parametos.Add("IfDato14", Datos[16].ToString());
-
-                    parametos.Add("IfDato15", Datos[17].ToString());
-
-                    parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
-                    parametos.Add("IfDato17", Datos[19].ToString());
-                    parametos.Add("IfDato18", Datos[20].ToString());
-                    parametos.Add("IfDato19", Datos[21].ToString());
-                    parametos.Add("IfDato20", Datos[22].ToString());
-                    parametos.Add("IfDato21", Datos[23].ToString());
-                    parametos.Add("IfDato22", Datos[24].ToString());
-                    parametos.Add("IfDato23", Datos[25].ToString());
-                    parametos.Add("IfDato24", Datos[26].ToString());
-                    parametos.Add("IfDato25", Datos[27].ToString());
-
-                    parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
-                    parametos.Add("IfDato27", Datos[29].ToString());
-                    parametos.Add("IfDato28", Datos[30].ToString());
-                    parametos.Add("IfDato29", Datos[31].ToString());
-                    parametos.Add("IfDato30", Datos[32].ToString());
-                    parametos.Add("IfDato31", Datos[33].ToString());
-                    parametos.Add("IfDato32", Datos[34].ToString());
-                    parametos.Add("IfDato33", Datos[35].ToString());
-                    parametos.Add("IfDato34", Datos[36].ToString());
-                    parametos.Add("IfDato35", Datos[37].ToString());
-
-                    parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
-                    parametos.Add("IfDato37", Datos[39].ToString());
-                    parametos.Add("IfDato38", Datos[40].ToString());
-                    parametos.Add("IfDato39", Datos[41].ToString());
-                    parametos.Add("IfDato40", Datos[42].ToString());
-                    parametos.Add("IfDato41", Datos[43].ToString());
-                    parametos.Add("IfDato42", Datos[44].ToString());
-                    parametos.Add("IfDato43", Datos[45].ToString());
-                    parametos.Add("IfDato44", Datos[46].ToString());
-                    parametos.Add("IfDato45", Datos[47].ToString());
-
-                    parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
-                    parametos.Add("IfDato47", Datos[49].ToString());
-                    parametos.Add("IfDato48", Datos[50].ToString());
-                    parametos.Add("IfDato49", Datos[51].ToString());
-                    parametos.Add("IfDato50", Datos[52].ToString());
-                    parametos.Add("IfDato51", Datos[53].ToString());
-                    parametos.Add("IfDato52", Datos[54].ToString());
-                    parametos.Add("IfDato53", Datos[55].ToString());
-                    parametos.Add("IfDato54", Datos[56].ToString());
-                    parametos.Add("IfDato55", Datos[57].ToString());
-
-                    parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
-                    parametos.Add("IfDato57", Datos[59].ToString());
-                    parametos.Add("IfDato58", Datos[60].ToString());
-                    parametos.Add("IfDato59", Datos[61].ToString());
-                    parametos.Add("IfDato60", Datos[62].ToString());
-                    parametos.Add("IfDato61", Datos[63].ToString());
-                    parametos.Add("IfDato62", Datos[64].ToString());
-                    parametos.Add("IfDato63", Datos[65].ToString());
-                    parametos.Add("IfDato64", Datos[66].ToString());
-                    parametos.Add("IfDato65", Datos[67].ToString());
-
-                    parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
-                    parametos.Add("IfDato67", Datos[69].ToString());
-                    parametos.Add("IfDato68", Datos[70].ToString());
-                    parametos.Add("IfDato69", Datos[71].ToString());
-                    parametos.Add("IfDato70", Datos[72].ToString());
-                    parametos.Add("IfDato71", Datos[73].ToString());
-                    parametos.Add("IfDato72", Datos[74].ToString());
-                    parametos.Add("IfDato73", Datos[75].ToString());
-                    parametos.Add("IfDato74", Datos[76].ToString());
-                    parametos.Add("IfDato75", Datos[77].ToString());
-
-                    parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
-                    parametos.Add("IfDato77", Datos[79].ToString());
-                    parametos.Add("IfDato78", Datos[80].ToString());
-                    parametos.Add("IfDato79", Datos[81].ToString());
-                    parametos.Add("IfDato80", Datos[82].ToString());
-                    parametos.Add("IfDato81", Datos[83].ToString());
-                    parametos.Add("IfDato82", Datos[84].ToString());
-                    parametos.Add("IfDato83", Datos[85].ToString());
-                    parametos.Add("IfDato84", Datos[86].ToString());
-                    parametos.Add("IfDato85", Datos[87].ToString());
-
-                    parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
-                    parametos.Add("IfDato87", Datos[89].ToString());
-                    parametos.Add("IfDato88", Datos[90].ToString());
-                    parametos.Add("IfDato89", Datos[91].ToString());
-                    parametos.Add("IfDato90", Datos[92].ToString());
-                    parametos.Add("IfDato91", Datos[93].ToString());
-                    parametos.Add("IfDato92", Datos[94].ToString());
-                    parametos.Add("IfDato93", Datos[95].ToString());
-                    parametos.Add("IfDato94", Datos[96].ToString());
-                    parametos.Add("IfDato95", Datos[97].ToString());
-
-                    parametos.Add("IfDato96", Datos[98].ToString());//TOTAL
-                    //fila 2
-                    parametos.Add("IfD1Dato0", "");
-                    parametos.Add("IfD1Dato1", "");
-                    parametos.Add("IfD1Dato2", "");
-
-                    parametos.Add("IfD1Dato3", "");
-                    parametos.Add("IfD1Dato4", "");
-                    parametos.Add("IfD1Dato5", "");
-                    parametos.Add("IfD1Dato6", "");
-                    parametos.Add("IfD1Dato7", "");
-                    parametos.Add("IfD1Dato8", "");
-                    parametos.Add("IfD1Dato9", "");
-                    parametos.Add("IfD1Dato10", "");
-                    parametos.Add("IfD1Dato11", "");
-                    parametos.Add("IfD1Dato12", "");
-                    parametos.Add("IfD1Dato13", "");
-                    parametos.Add("IfD1Dato14", "");
-
-                    parametos.Add("IfD1Dato15", "");
-
-                    parametos.Add("IfD1Dato16", ""); //2021 - 2030
-                    parametos.Add("IfD1Dato17", "");
-                    parametos.Add("IfD1Dato18", "");
-                    parametos.Add("IfD1Dato19", "");
-                    parametos.Add("IfD1Dato20", "");
-                    parametos.Add("IfD1Dato21", "");
-                    parametos.Add("IfD1Dato22", "");
-                    parametos.Add("IfD1Dato23", "");
-                    parametos.Add("IfD1Dato24", "");
-                    parametos.Add("IfD1Dato25", "");
-
-                    parametos.Add("IfD1Dato26", ""); //2031 - 2040
-                    parametos.Add("IfD1Dato27", "");
-                    parametos.Add("IfD1Dato28", "");
-                    parametos.Add("IfD1Dato29", "");
-                    parametos.Add("IfD1Dato30", "");
-                    parametos.Add("IfD1Dato31", "");
-                    parametos.Add("IfD1Dato32", "");
-                    parametos.Add("IfD1Dato33", "");
-                    parametos.Add("IfD1Dato34", "");
-                    parametos.Add("IfD1Dato35", "");
-
-                    parametos.Add("IfD1Dato36", ""); //2041 - 2050
-                    parametos.Add("IfD1Dato37", "");
-                    parametos.Add("IfD1Dato38", "");
-                    parametos.Add("IfD1Dato39", "");
-                    parametos.Add("IfD1Dato40", "");
-                    parametos.Add("IfD1Dato41", "");
-                    parametos.Add("IfD1Dato42", "");
-                    parametos.Add("IfD1Dato43", "");
-                    parametos.Add("IfD1Dato44", "");
-                    parametos.Add("IfD1Dato45", "");
-
-                    parametos.Add("IfD1Dato46", ""); //2051 - 2060
-                    parametos.Add("IfD1Dato47", "");
-                    parametos.Add("IfD1Dato48", "");
-                    parametos.Add("IfD1Dato49", "");
-                    parametos.Add("IfD1Dato50", "");
-                    parametos.Add("IfD1Dato51", "");
-                    parametos.Add("IfD1Dato52", "");
-                    parametos.Add("IfD1Dato53", "");
-                    parametos.Add("IfD1Dato54", "");
-                    parametos.Add("IfD1Dato55", "");
-
-                    parametos.Add("IfD1Dato56", ""); //2061 - 2070
-                    parametos.Add("IfD1Dato57", "");
-                    parametos.Add("IfD1Dato58", "");
-                    parametos.Add("IfD1Dato59", "");
-                    parametos.Add("IfD1Dato60", "");
-                    parametos.Add("IfD1Dato61", "");
-                    parametos.Add("IfD1Dato62", "");
-                    parametos.Add("IfD1Dato63", "");
-                    parametos.Add("IfD1Dato64", "");
-                    parametos.Add("IfD1Dato65", "");
-
-                    parametos.Add("IfD1Dato66", ""); //2071 - 2080
-                    parametos.Add("IfD1Dato67", "");
-                    parametos.Add("IfD1Dato68", "");
-                    parametos.Add("IfD1Dato69", "");
-                    parametos.Add("IfD1Dato70", "");
-                    parametos.Add("IfD1Dato71", "");
-                    parametos.Add("IfD1Dato72", "");
-                    parametos.Add("IfD1Dato73", "");
-                    parametos.Add("IfD1Dato74", "");
-                    parametos.Add("IfD1Dato75", "");
-
-                    parametos.Add("IfD1Dato76", ""); //2081 - 2090
-                    parametos.Add("IfD1Dato77", "");
-                    parametos.Add("IfD1Dato78", "");
-                    parametos.Add("IfD1Dato79", "");
-                    parametos.Add("IfD1Dato80", "");
-                    parametos.Add("IfD1Dato81", "");
-                    parametos.Add("IfD1Dato82", "");
-                    parametos.Add("IfD1Dato83", "");
-                    parametos.Add("IfD1Dato84", "");
-                    parametos.Add("IfD1Dato85", "");
-
-                    parametos.Add("IfD1Dato86", ""); //2091 - 2100
-                    parametos.Add("IfD1Dato87", "");
-                    parametos.Add("IfD1Dato88", "");
-                    parametos.Add("IfD1Dato89", "");
-                    parametos.Add("IfD1Dato90", "");
-                    parametos.Add("IfD1Dato91", "");
-                    parametos.Add("IfD1Dato92", "");
-                    parametos.Add("IfD1Dato93", "");
-                    parametos.Add("IfD1Dato94", "");
-                    parametos.Add("IfD1Dato95", "");
-                    parametos.Add("IfD1Dato96", "");//TOTAL
-                    //fila 3
-                    parametos.Add("IfD2Dato0", "");
-                    parametos.Add("IfD2Dato1", "");
-                    parametos.Add("IfD2Dato2", "");
-
-                    parametos.Add("IfD2Dato3", "");
-                    parametos.Add("IfD2Dato4", "");
-                    parametos.Add("IfD2Dato5", "");
-                    parametos.Add("IfD2Dato6", "");
-                    parametos.Add("IfD2Dato7", "");
-                    parametos.Add("IfD2Dato8", "");
-                    parametos.Add("IfD2Dato9", "");
-                    parametos.Add("IfD2Dato10", "");
-                    parametos.Add("IfD2Dato11", "");
-                    parametos.Add("IfD2Dato12", "");
-                    parametos.Add("IfD2Dato13", "");
-                    parametos.Add("IfD2Dato14", "");
-
-                    parametos.Add("IfD2Dato15", "");
-
-                    parametos.Add("IfD2Dato16", ""); //2021 - 2030
-                    parametos.Add("IfD2Dato17", "");
-                    parametos.Add("IfD2Dato18", "");
-                    parametos.Add("IfD2Dato19", "");
-                    parametos.Add("IfD2Dato20", "");
-                    parametos.Add("IfD2Dato21", "");
-                    parametos.Add("IfD2Dato22", "");
-                    parametos.Add("IfD2Dato23", "");
-                    parametos.Add("IfD2Dato24", "");
-                    parametos.Add("IfD2Dato25", "");
-
-                    parametos.Add("IfD2Dato26", ""); //2031 - 2040
-                    parametos.Add("IfD2Dato27", "");
-                    parametos.Add("IfD2Dato28", "");
-                    parametos.Add("IfD2Dato29", "");
-                    parametos.Add("IfD2Dato30", "");
-                    parametos.Add("IfD2Dato31", "");
-                    parametos.Add("IfD2Dato32", "");
-                    parametos.Add("IfD2Dato33", "");
-                    parametos.Add("IfD2Dato34", "");
-                    parametos.Add("IfD2Dato35", "");
-
-                    parametos.Add("IfD2Dato36", ""); //2041 - 2050
-                    parametos.Add("IfD2Dato37", "");
-                    parametos.Add("IfD2Dato38", "");
-                    parametos.Add("IfD2Dato39", "");
-                    parametos.Add("IfD2Dato40", "");
-                    parametos.Add("IfD2Dato41", "");
-                    parametos.Add("IfD2Dato42", "");
-                    parametos.Add("IfD2Dato43", "");
-                    parametos.Add("IfD2Dato44", "");
-                    parametos.Add("IfD2Dato45", "");
-
-                    parametos.Add("IfD2Dato46", ""); //2051 - 2060
-                    parametos.Add("IfD2Dato47", "");
-                    parametos.Add("IfD2Dato48", "");
-                    parametos.Add("IfD2Dato49", "");
-                    parametos.Add("IfD2Dato50", "");
-                    parametos.Add("IfD2Dato51", "");
-                    parametos.Add("IfD2Dato52", "");
-                    parametos.Add("IfD2Dato53", "");
-                    parametos.Add("IfD2Dato54", "");
-                    parametos.Add("IfD2Dato55", "");
-
-                    parametos.Add("IfD2Dato56", ""); //2061 - 2070
-                    parametos.Add("IfD2Dato57", "");
-                    parametos.Add("IfD2Dato58", "");
-                    parametos.Add("IfD2Dato59", "");
-                    parametos.Add("IfD2Dato60", "");
-                    parametos.Add("IfD2Dato61", "");
-                    parametos.Add("IfD2Dato62", "");
-                    parametos.Add("IfD2Dato63", "");
-                    parametos.Add("IfD2Dato64", "");
-                    parametos.Add("IfD2Dato65", "");
-
-                    parametos.Add("IfD2Dato66", ""); //2071 - 2080
-                    parametos.Add("IfD2Dato67", "");
-                    parametos.Add("IfD2Dato68", "");
-                    parametos.Add("IfD2Dato69", "");
-                    parametos.Add("IfD2Dato70", "");
-                    parametos.Add("IfD2Dato71", "");
-                    parametos.Add("IfD2Dato72", "");
-                    parametos.Add("IfD2Dato73", "");
-                    parametos.Add("IfD2Dato74", "");
-                    parametos.Add("IfD2Dato75", "");
-
-                    parametos.Add("IfD2Dato76", ""); //2081 - 2090
-                    parametos.Add("IfD2Dato77", "");
-                    parametos.Add("IfD2Dato78", "");
-                    parametos.Add("IfD2Dato79", "");
-                    parametos.Add("IfD2Dato80", "");
-                    parametos.Add("IfD2Dato81", "");
-                    parametos.Add("IfD2Dato82", "");
-                    parametos.Add("IfD2Dato83", "");
-                    parametos.Add("IfD2Dato84", "");
-                    parametos.Add("IfD2Dato85", "");
-
-                    parametos.Add("IfD2Dato86", ""); //2091 - 2100
-                    parametos.Add("IfD2Dato87", "");
-                    parametos.Add("IfD2Dato88", "");
-                    parametos.Add("IfD2Dato89", "");
-                    parametos.Add("IfD2Dato90", "");
-                    parametos.Add("IfD2Dato91", "");
-                    parametos.Add("IfD2Dato92", "");
-                    parametos.Add("IfD2Dato93", "");
-                    parametos.Add("IfD2Dato94", "");
-                    parametos.Add("IfD2Dato95", "");
-
-                    parametos.Add("IfD2Dato96", "");//TOTAL
-                    parametos.Add("PorInvNacExt", PorInvNacExt);
-                    parametos.Add("Opcion", 0);
-                    parametos.Add("NumIngreso", numIngreso);
+                    ExceptionResult = AppModule + "InsertarInformacionFinancieraCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
                 }
-                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA_CASOBASE_2", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFinancieraCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -5458,126 +5466,133 @@ namespace Capex.Web.Controllers
         /// <param name="Datos"></param>
         public void InsertarInformacionFisicoCasoBase(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IfDato0", Datos[2].ToString());
-                parametos.Add("IfDato1", Datos[3].ToString());
-                parametos.Add("IfDato2", Datos[4].ToString());
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IfDato0", Datos[2].ToString());
+                    parametos.Add("IfDato1", Datos[3].ToString());
+                    parametos.Add("IfDato2", Datos[4].ToString());
 
-                parametos.Add("IfDato3", Datos[5].ToString());
-                parametos.Add("IfDato4", Datos[6].ToString());
-                parametos.Add("IfDato5", Datos[7].ToString());
-                parametos.Add("IfDato6", Datos[8].ToString());
-                parametos.Add("IfDato7", Datos[9].ToString());
-                parametos.Add("IfDato8", Datos[10].ToString());
-                parametos.Add("IfDato9", Datos[11].ToString());
-                parametos.Add("IfDato10", Datos[12].ToString());
-                parametos.Add("IfDato11", Datos[13].ToString());
-                parametos.Add("IfDato12", Datos[14].ToString());
-                parametos.Add("IfDato13", Datos[15].ToString());
-                parametos.Add("IfDato14", Datos[16].ToString());
+                    parametos.Add("IfDato3", Datos[5].ToString());
+                    parametos.Add("IfDato4", Datos[6].ToString());
+                    parametos.Add("IfDato5", Datos[7].ToString());
+                    parametos.Add("IfDato6", Datos[8].ToString());
+                    parametos.Add("IfDato7", Datos[9].ToString());
+                    parametos.Add("IfDato8", Datos[10].ToString());
+                    parametos.Add("IfDato9", Datos[11].ToString());
+                    parametos.Add("IfDato10", Datos[12].ToString());
+                    parametos.Add("IfDato11", Datos[13].ToString());
+                    parametos.Add("IfDato12", Datos[14].ToString());
+                    parametos.Add("IfDato13", Datos[15].ToString());
+                    parametos.Add("IfDato14", Datos[16].ToString());
 
-                parametos.Add("IfDato15", Datos[17].ToString());
+                    parametos.Add("IfDato15", Datos[17].ToString());
 
-                parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
-                parametos.Add("IfDato17", Datos[19].ToString());
-                parametos.Add("IfDato18", Datos[20].ToString());
-                parametos.Add("IfDato19", Datos[21].ToString());
-                parametos.Add("IfDato20", Datos[22].ToString());
-                parametos.Add("IfDato21", Datos[23].ToString());
-                parametos.Add("IfDato22", Datos[24].ToString());
-                parametos.Add("IfDato23", Datos[25].ToString());
-                parametos.Add("IfDato24", Datos[26].ToString());
-                parametos.Add("IfDato25", Datos[27].ToString());
+                    parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
+                    parametos.Add("IfDato17", Datos[19].ToString());
+                    parametos.Add("IfDato18", Datos[20].ToString());
+                    parametos.Add("IfDato19", Datos[21].ToString());
+                    parametos.Add("IfDato20", Datos[22].ToString());
+                    parametos.Add("IfDato21", Datos[23].ToString());
+                    parametos.Add("IfDato22", Datos[24].ToString());
+                    parametos.Add("IfDato23", Datos[25].ToString());
+                    parametos.Add("IfDato24", Datos[26].ToString());
+                    parametos.Add("IfDato25", Datos[27].ToString());
 
-                parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
-                parametos.Add("IfDato27", Datos[29].ToString());
-                parametos.Add("IfDato28", Datos[30].ToString());
-                parametos.Add("IfDato29", Datos[31].ToString());
-                parametos.Add("IfDato30", Datos[32].ToString());
-                parametos.Add("IfDato31", Datos[33].ToString());
-                parametos.Add("IfDato32", Datos[34].ToString());
-                parametos.Add("IfDato33", Datos[35].ToString());
-                parametos.Add("IfDato34", Datos[36].ToString());
-                parametos.Add("IfDato35", Datos[37].ToString());
+                    parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
+                    parametos.Add("IfDato27", Datos[29].ToString());
+                    parametos.Add("IfDato28", Datos[30].ToString());
+                    parametos.Add("IfDato29", Datos[31].ToString());
+                    parametos.Add("IfDato30", Datos[32].ToString());
+                    parametos.Add("IfDato31", Datos[33].ToString());
+                    parametos.Add("IfDato32", Datos[34].ToString());
+                    parametos.Add("IfDato33", Datos[35].ToString());
+                    parametos.Add("IfDato34", Datos[36].ToString());
+                    parametos.Add("IfDato35", Datos[37].ToString());
 
-                parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
-                parametos.Add("IfDato37", Datos[39].ToString());
-                parametos.Add("IfDato38", Datos[40].ToString());
-                parametos.Add("IfDato39", Datos[41].ToString());
-                parametos.Add("IfDato40", Datos[42].ToString());
-                parametos.Add("IfDato41", Datos[43].ToString());
-                parametos.Add("IfDato42", Datos[44].ToString());
-                parametos.Add("IfDato43", Datos[45].ToString());
-                parametos.Add("IfDato44", Datos[46].ToString());
-                parametos.Add("IfDato45", Datos[47].ToString());
+                    parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
+                    parametos.Add("IfDato37", Datos[39].ToString());
+                    parametos.Add("IfDato38", Datos[40].ToString());
+                    parametos.Add("IfDato39", Datos[41].ToString());
+                    parametos.Add("IfDato40", Datos[42].ToString());
+                    parametos.Add("IfDato41", Datos[43].ToString());
+                    parametos.Add("IfDato42", Datos[44].ToString());
+                    parametos.Add("IfDato43", Datos[45].ToString());
+                    parametos.Add("IfDato44", Datos[46].ToString());
+                    parametos.Add("IfDato45", Datos[47].ToString());
 
-                parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
-                parametos.Add("IfDato47", Datos[49].ToString());
-                parametos.Add("IfDato48", Datos[50].ToString());
-                parametos.Add("IfDato49", Datos[51].ToString());
-                parametos.Add("IfDato50", Datos[52].ToString());
-                parametos.Add("IfDato51", Datos[53].ToString());
-                parametos.Add("IfDato52", Datos[54].ToString());
-                parametos.Add("IfDato53", Datos[55].ToString());
-                parametos.Add("IfDato54", Datos[56].ToString());
-                parametos.Add("IfDato55", Datos[57].ToString());
+                    parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
+                    parametos.Add("IfDato47", Datos[49].ToString());
+                    parametos.Add("IfDato48", Datos[50].ToString());
+                    parametos.Add("IfDato49", Datos[51].ToString());
+                    parametos.Add("IfDato50", Datos[52].ToString());
+                    parametos.Add("IfDato51", Datos[53].ToString());
+                    parametos.Add("IfDato52", Datos[54].ToString());
+                    parametos.Add("IfDato53", Datos[55].ToString());
+                    parametos.Add("IfDato54", Datos[56].ToString());
+                    parametos.Add("IfDato55", Datos[57].ToString());
 
-                parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
-                parametos.Add("IfDato57", Datos[59].ToString());
-                parametos.Add("IfDato58", Datos[60].ToString());
-                parametos.Add("IfDato59", Datos[61].ToString());
-                parametos.Add("IfDato60", Datos[62].ToString());
-                parametos.Add("IfDato61", Datos[63].ToString());
-                parametos.Add("IfDato62", Datos[64].ToString());
-                parametos.Add("IfDato63", Datos[65].ToString());
-                parametos.Add("IfDato64", Datos[66].ToString());
-                parametos.Add("IfDato65", Datos[67].ToString());
+                    parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
+                    parametos.Add("IfDato57", Datos[59].ToString());
+                    parametos.Add("IfDato58", Datos[60].ToString());
+                    parametos.Add("IfDato59", Datos[61].ToString());
+                    parametos.Add("IfDato60", Datos[62].ToString());
+                    parametos.Add("IfDato61", Datos[63].ToString());
+                    parametos.Add("IfDato62", Datos[64].ToString());
+                    parametos.Add("IfDato63", Datos[65].ToString());
+                    parametos.Add("IfDato64", Datos[66].ToString());
+                    parametos.Add("IfDato65", Datos[67].ToString());
 
-                parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
-                parametos.Add("IfDato67", Datos[69].ToString());
-                parametos.Add("IfDato68", Datos[70].ToString());
-                parametos.Add("IfDato69", Datos[71].ToString());
-                parametos.Add("IfDato70", Datos[72].ToString());
-                parametos.Add("IfDato71", Datos[73].ToString());
-                parametos.Add("IfDato72", Datos[74].ToString());
-                parametos.Add("IfDato73", Datos[75].ToString());
-                parametos.Add("IfDato74", Datos[76].ToString());
-                parametos.Add("IfDato75", Datos[77].ToString());
+                    parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
+                    parametos.Add("IfDato67", Datos[69].ToString());
+                    parametos.Add("IfDato68", Datos[70].ToString());
+                    parametos.Add("IfDato69", Datos[71].ToString());
+                    parametos.Add("IfDato70", Datos[72].ToString());
+                    parametos.Add("IfDato71", Datos[73].ToString());
+                    parametos.Add("IfDato72", Datos[74].ToString());
+                    parametos.Add("IfDato73", Datos[75].ToString());
+                    parametos.Add("IfDato74", Datos[76].ToString());
+                    parametos.Add("IfDato75", Datos[77].ToString());
 
-                parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
-                parametos.Add("IfDato77", Datos[79].ToString());
-                parametos.Add("IfDato78", Datos[80].ToString());
-                parametos.Add("IfDato79", Datos[81].ToString());
-                parametos.Add("IfDato80", Datos[82].ToString());
-                parametos.Add("IfDato81", Datos[83].ToString());
-                parametos.Add("IfDato82", Datos[84].ToString());
-                parametos.Add("IfDato83", Datos[85].ToString());
-                parametos.Add("IfDato84", Datos[86].ToString());
-                parametos.Add("IfDato85", Datos[87].ToString());
+                    parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
+                    parametos.Add("IfDato77", Datos[79].ToString());
+                    parametos.Add("IfDato78", Datos[80].ToString());
+                    parametos.Add("IfDato79", Datos[81].ToString());
+                    parametos.Add("IfDato80", Datos[82].ToString());
+                    parametos.Add("IfDato81", Datos[83].ToString());
+                    parametos.Add("IfDato82", Datos[84].ToString());
+                    parametos.Add("IfDato83", Datos[85].ToString());
+                    parametos.Add("IfDato84", Datos[86].ToString());
+                    parametos.Add("IfDato85", Datos[87].ToString());
 
-                parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
+                    parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
 
-                parametos.Add("IfDato87", Datos[89].ToString());
-                parametos.Add("IfDato88", Datos[90].ToString());
-                parametos.Add("IfDato89", Datos[91].ToString());
-                parametos.Add("IfDato90", Datos[92].ToString());
-                parametos.Add("IfDato91", Datos[93].ToString());
-                parametos.Add("IfDato92", Datos[94].ToString());
-                parametos.Add("IfDato93", Datos[95].ToString());
-                parametos.Add("IfDato94", Datos[96].ToString());
-                parametos.Add("IfDato95", Datos[97].ToString());
-                parametos.Add("IfDato96", Datos[98].ToString());
-
-                ORM.Execute("CAPEX_INS_INFORMACION_FISICO_CASOBASE", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFisicoCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                    parametos.Add("IfDato87", Datos[89].ToString());
+                    parametos.Add("IfDato88", Datos[90].ToString());
+                    parametos.Add("IfDato89", Datos[91].ToString());
+                    parametos.Add("IfDato90", Datos[92].ToString());
+                    parametos.Add("IfDato91", Datos[93].ToString());
+                    parametos.Add("IfDato92", Datos[94].ToString());
+                    parametos.Add("IfDato93", Datos[95].ToString());
+                    parametos.Add("IfDato94", Datos[96].ToString());
+                    parametos.Add("IfDato95", Datos[97].ToString());
+                    parametos.Add("IfDato96", Datos[98].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FISICO_CASOBASE", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionFisicoCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -5586,21 +5601,28 @@ namespace Capex.Web.Controllers
         /// <param name="Datos"></param>
         private void InsertarInformacionFinancieraResumidaCasoBase(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IrDato0", Datos[2].ToString());
-                parametos.Add("IrDato1", Datos[3].ToString());
-                parametos.Add("IrDato2", Datos[4].ToString());
-
-                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA_RESUMIDA", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFinancieraResumida, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IrDato0", Datos[2].ToString());
+                    parametos.Add("IrDato1", Datos[3].ToString());
+                    parametos.Add("IrDato2", Datos[4].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FINANCIERA_RESUMIDA", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionFinancieraResumida, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -5609,22 +5631,29 @@ namespace Capex.Web.Controllers
         /// <param name="Datos"></param>
         private void InsertarInformacionGeneralCasoBase(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IgPresupuesto", Datos[2].ToString());
-                parametos.Add("IgFechaInicio", Datos[3].ToString());
-                parametos.Add("IgTermino", Datos[4].ToString());
-                parametos.Add("IgCierre", Datos[5].ToString());
-
-                ORM.Execute("CAPEX_INS_INFORMACION_GENERAL", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionGeneralCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IgPresupuesto", Datos[2].ToString());
+                    parametos.Add("IgFechaInicio", Datos[3].ToString());
+                    parametos.Add("IgTermino", Datos[4].ToString());
+                    parametos.Add("IgCierre", Datos[5].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_GENERAL", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionGeneralCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -6392,155 +6421,163 @@ namespace Capex.Web.Controllers
         /// <param name="Datos"></param>
         private void InsertarInformacionFinanciera(List<String> Datos, String PorInvNacExt, int numIngreso)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                if (Datos.Count == 62)
+                try
                 {
-                    parametos.Add("IniToken", Datos[0].ToString());
-                    parametos.Add("IniUsuario", Datos[1].ToString());
-                    parametos.Add("IfDato0", Datos[2].ToString());
-                    parametos.Add("IfDato1", Datos[3].ToString());
-                    parametos.Add("IfDato2", Datos[4].ToString());
-                    parametos.Add("IfDato3", Datos[5].ToString());
-                    parametos.Add("IfDato4", Datos[6].ToString());
-                    parametos.Add("IfDato5", Datos[7].ToString());
-                    parametos.Add("IfDato6", Datos[8].ToString());
-                    parametos.Add("IfDato7", Datos[9].ToString());
-                    parametos.Add("IfDato8", Datos[10].ToString());
-                    parametos.Add("IfDato9", Datos[11].ToString());
-                    parametos.Add("IfDato10", Datos[12].ToString());
-                    parametos.Add("IfDato11", Datos[13].ToString());
-                    parametos.Add("IfDato12", Datos[14].ToString());
-                    parametos.Add("IfDato13", Datos[15].ToString());
-                    parametos.Add("IfDato14", Datos[16].ToString());
-                    parametos.Add("IfDato15", Datos[17].ToString());
-                    parametos.Add("IfDato16", Datos[18].ToString());
-                    parametos.Add("IfDato17", Datos[19].ToString());
-                    parametos.Add("IfDato18", Datos[20].ToString());
-                    parametos.Add("IfDato19", Datos[21].ToString());
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    if (Datos.Count == 62)
+                    {
+                        parametos.Add("IniToken", Datos[0].ToString());
+                        parametos.Add("IniUsuario", Datos[1].ToString());
+                        parametos.Add("IfDato0", Datos[2].ToString());
+                        parametos.Add("IfDato1", Datos[3].ToString());
+                        parametos.Add("IfDato2", Datos[4].ToString());
+                        parametos.Add("IfDato3", Datos[5].ToString());
+                        parametos.Add("IfDato4", Datos[6].ToString());
+                        parametos.Add("IfDato5", Datos[7].ToString());
+                        parametos.Add("IfDato6", Datos[8].ToString());
+                        parametos.Add("IfDato7", Datos[9].ToString());
+                        parametos.Add("IfDato8", Datos[10].ToString());
+                        parametos.Add("IfDato9", Datos[11].ToString());
+                        parametos.Add("IfDato10", Datos[12].ToString());
+                        parametos.Add("IfDato11", Datos[13].ToString());
+                        parametos.Add("IfDato12", Datos[14].ToString());
+                        parametos.Add("IfDato13", Datos[15].ToString());
+                        parametos.Add("IfDato14", Datos[16].ToString());
+                        parametos.Add("IfDato15", Datos[17].ToString());
+                        parametos.Add("IfDato16", Datos[18].ToString());
+                        parametos.Add("IfDato17", Datos[19].ToString());
+                        parametos.Add("IfDato18", Datos[20].ToString());
+                        parametos.Add("IfDato19", Datos[21].ToString());
 
-                    parametos.Add("IfD1Dato0", Datos[22].ToString());
-                    parametos.Add("IfD1Dato1", Datos[23].ToString());
-                    parametos.Add("IfD1Dato2", Datos[24].ToString());
-                    parametos.Add("IfD1Dato3", Datos[25].ToString());
-                    parametos.Add("IfD1Dato4", Datos[26].ToString());
-                    parametos.Add("IfD1Dato5", Datos[27].ToString());
-                    parametos.Add("IfD1Dato6", Datos[28].ToString());
-                    parametos.Add("IfD1Dato7", Datos[29].ToString());
-                    parametos.Add("IfD1Dato8", Datos[30].ToString());
-                    parametos.Add("IfD1Dato9", Datos[31].ToString());
-                    parametos.Add("IfD1Dato10", Datos[32].ToString());
-                    parametos.Add("IfD1Dato11", Datos[33].ToString());
-                    parametos.Add("IfD1Dato12", Datos[34].ToString());
-                    parametos.Add("IfD1Dato13", Datos[35].ToString());
-                    parametos.Add("IfD1Dato14", Datos[36].ToString());
-                    parametos.Add("IfD1Dato15", Datos[37].ToString());
-                    parametos.Add("IfD1Dato16", Datos[38].ToString());
-                    parametos.Add("IfD1Dato17", Datos[39].ToString());
-                    parametos.Add("IfD1Dato18", Datos[40].ToString());
-                    parametos.Add("IfD1Dato19", Datos[41].ToString());
+                        parametos.Add("IfD1Dato0", Datos[22].ToString());
+                        parametos.Add("IfD1Dato1", Datos[23].ToString());
+                        parametos.Add("IfD1Dato2", Datos[24].ToString());
+                        parametos.Add("IfD1Dato3", Datos[25].ToString());
+                        parametos.Add("IfD1Dato4", Datos[26].ToString());
+                        parametos.Add("IfD1Dato5", Datos[27].ToString());
+                        parametos.Add("IfD1Dato6", Datos[28].ToString());
+                        parametos.Add("IfD1Dato7", Datos[29].ToString());
+                        parametos.Add("IfD1Dato8", Datos[30].ToString());
+                        parametos.Add("IfD1Dato9", Datos[31].ToString());
+                        parametos.Add("IfD1Dato10", Datos[32].ToString());
+                        parametos.Add("IfD1Dato11", Datos[33].ToString());
+                        parametos.Add("IfD1Dato12", Datos[34].ToString());
+                        parametos.Add("IfD1Dato13", Datos[35].ToString());
+                        parametos.Add("IfD1Dato14", Datos[36].ToString());
+                        parametos.Add("IfD1Dato15", Datos[37].ToString());
+                        parametos.Add("IfD1Dato16", Datos[38].ToString());
+                        parametos.Add("IfD1Dato17", Datos[39].ToString());
+                        parametos.Add("IfD1Dato18", Datos[40].ToString());
+                        parametos.Add("IfD1Dato19", Datos[41].ToString());
 
-                    parametos.Add("IfD2Dato0", Datos[42].ToString());
-                    parametos.Add("IfD2Dato1", Datos[43].ToString());
-                    parametos.Add("IfD2Dato2", Datos[44].ToString());
-                    parametos.Add("IfD2Dato3", Datos[45].ToString());
-                    parametos.Add("IfD2Dato4", Datos[46].ToString());
-                    parametos.Add("IfD2Dato5", Datos[47].ToString());
-                    parametos.Add("IfD2Dato6", Datos[48].ToString());
-                    parametos.Add("IfD2Dato7", Datos[49].ToString());
-                    parametos.Add("IfD2Dato8", Datos[50].ToString());
-                    parametos.Add("IfD2Dato9", Datos[51].ToString());
-                    parametos.Add("IfD2Dato10", Datos[52].ToString());
-                    parametos.Add("IfD2Dato11", Datos[53].ToString());
-                    parametos.Add("IfD2Dato12", Datos[54].ToString());
-                    parametos.Add("IfD2Dato13", Datos[55].ToString());
-                    parametos.Add("IfD2Dato14", Datos[56].ToString());
-                    parametos.Add("IfD2Dato15", Datos[57].ToString());
-                    parametos.Add("IfD2Dato16", Datos[58].ToString());
-                    parametos.Add("IfD2Dato17", Datos[59].ToString());
-                    parametos.Add("IfD2Dato18", Datos[60].ToString());
-                    parametos.Add("IfD2Dato19", Datos[61].ToString());
-                    parametos.Add("PorInvNacExt", PorInvNacExt);
-                    parametos.Add("Opcion", 1);
-                    parametos.Add("NumIngreso", numIngreso);
+                        parametos.Add("IfD2Dato0", Datos[42].ToString());
+                        parametos.Add("IfD2Dato1", Datos[43].ToString());
+                        parametos.Add("IfD2Dato2", Datos[44].ToString());
+                        parametos.Add("IfD2Dato3", Datos[45].ToString());
+                        parametos.Add("IfD2Dato4", Datos[46].ToString());
+                        parametos.Add("IfD2Dato5", Datos[47].ToString());
+                        parametos.Add("IfD2Dato6", Datos[48].ToString());
+                        parametos.Add("IfD2Dato7", Datos[49].ToString());
+                        parametos.Add("IfD2Dato8", Datos[50].ToString());
+                        parametos.Add("IfD2Dato9", Datos[51].ToString());
+                        parametos.Add("IfD2Dato10", Datos[52].ToString());
+                        parametos.Add("IfD2Dato11", Datos[53].ToString());
+                        parametos.Add("IfD2Dato12", Datos[54].ToString());
+                        parametos.Add("IfD2Dato13", Datos[55].ToString());
+                        parametos.Add("IfD2Dato14", Datos[56].ToString());
+                        parametos.Add("IfD2Dato15", Datos[57].ToString());
+                        parametos.Add("IfD2Dato16", Datos[58].ToString());
+                        parametos.Add("IfD2Dato17", Datos[59].ToString());
+                        parametos.Add("IfD2Dato18", Datos[60].ToString());
+                        parametos.Add("IfD2Dato19", Datos[61].ToString());
+                        parametos.Add("PorInvNacExt", PorInvNacExt);
+                        parametos.Add("Opcion", 1);
+                        parametos.Add("NumIngreso", numIngreso);
+                    }
+                    else
+                    {
+                        parametos.Add("IniToken", Datos[0].ToString());
+                        parametos.Add("IniUsuario", Datos[1].ToString());
+                        parametos.Add("IfDato0", Datos[2].ToString());
+                        parametos.Add("IfDato1", Datos[3].ToString());
+                        parametos.Add("IfDato2", Datos[4].ToString());
+                        parametos.Add("IfDato3", Datos[5].ToString());
+                        parametos.Add("IfDato4", Datos[6].ToString());
+                        parametos.Add("IfDato5", Datos[7].ToString());
+                        parametos.Add("IfDato6", Datos[8].ToString());
+                        parametos.Add("IfDato7", Datos[9].ToString());
+                        parametos.Add("IfDato8", Datos[10].ToString());
+                        parametos.Add("IfDato9", Datos[11].ToString());
+                        parametos.Add("IfDato10", Datos[12].ToString());
+                        parametos.Add("IfDato11", Datos[13].ToString());
+                        parametos.Add("IfDato12", Datos[14].ToString());
+                        parametos.Add("IfDato13", Datos[15].ToString());
+                        parametos.Add("IfDato14", Datos[16].ToString());
+                        parametos.Add("IfDato15", Datos[17].ToString());
+                        parametos.Add("IfDato16", Datos[18].ToString());
+                        parametos.Add("IfDato17", Datos[19].ToString());
+                        parametos.Add("IfDato18", Datos[20].ToString());
+                        parametos.Add("IfDato19", Datos[21].ToString());
+
+                        parametos.Add("IfD1Dato0", "");
+                        parametos.Add("IfD1Dato1", "");
+                        parametos.Add("IfD1Dato2", "");
+                        parametos.Add("IfD1Dato3", "");
+                        parametos.Add("IfD1Dato4", "");
+                        parametos.Add("IfD1Dato5", "");
+                        parametos.Add("IfD1Dato6", "");
+                        parametos.Add("IfD1Dato7", "");
+                        parametos.Add("IfD1Dato8", "");
+                        parametos.Add("IfD1Dato9", "");
+                        parametos.Add("IfD1Dato10", "");
+                        parametos.Add("IfD1Dato11", "");
+                        parametos.Add("IfD1Dato12", "");
+                        parametos.Add("IfD1Dato13", "");
+                        parametos.Add("IfD1Dato14", "");
+                        parametos.Add("IfD1Dato15", "");
+                        parametos.Add("IfD1Dato16", "");
+                        parametos.Add("IfD1Dato17", "");
+                        parametos.Add("IfD1Dato18", "");
+                        parametos.Add("IfD1Dato19", "");
+
+                        parametos.Add("IfD2Dato0", "");
+                        parametos.Add("IfD2Dato1", "");
+                        parametos.Add("IfD2Dato2", "");
+                        parametos.Add("IfD2Dato3", "");
+                        parametos.Add("IfD2Dato4", "");
+                        parametos.Add("IfD2Dato5", "");
+                        parametos.Add("IfD2Dato6", "");
+                        parametos.Add("IfD2Dato7", "");
+                        parametos.Add("IfD2Dato8", "");
+                        parametos.Add("IfD2Dato9", "");
+                        parametos.Add("IfD2Dato10", "");
+                        parametos.Add("IfD2Dato11", "");
+                        parametos.Add("IfD2Dato12", "");
+                        parametos.Add("IfD2Dato13", "");
+                        parametos.Add("IfD2Dato14", "");
+                        parametos.Add("IfD2Dato15", "");
+                        parametos.Add("IfD2Dato16", "");
+                        parametos.Add("IfD2Dato17", "");
+                        parametos.Add("IfD2Dato18", "");
+                        parametos.Add("IfD2Dato19", "");
+                        parametos.Add("PorInvNacExt", PorInvNacExt);
+                        parametos.Add("Opcion", 0);
+                        parametos.Add("NumIngreso", numIngreso);
+                    }
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FINANCIERA_2", parametos, commandType: CommandType.StoredProcedure);
                 }
-                else
+                catch (Exception err)
                 {
-                    parametos.Add("IniToken", Datos[0].ToString());
-                    parametos.Add("IniUsuario", Datos[1].ToString());
-                    parametos.Add("IfDato0", Datos[2].ToString());
-                    parametos.Add("IfDato1", Datos[3].ToString());
-                    parametos.Add("IfDato2", Datos[4].ToString());
-                    parametos.Add("IfDato3", Datos[5].ToString());
-                    parametos.Add("IfDato4", Datos[6].ToString());
-                    parametos.Add("IfDato5", Datos[7].ToString());
-                    parametos.Add("IfDato6", Datos[8].ToString());
-                    parametos.Add("IfDato7", Datos[9].ToString());
-                    parametos.Add("IfDato8", Datos[10].ToString());
-                    parametos.Add("IfDato9", Datos[11].ToString());
-                    parametos.Add("IfDato10", Datos[12].ToString());
-                    parametos.Add("IfDato11", Datos[13].ToString());
-                    parametos.Add("IfDato12", Datos[14].ToString());
-                    parametos.Add("IfDato13", Datos[15].ToString());
-                    parametos.Add("IfDato14", Datos[16].ToString());
-                    parametos.Add("IfDato15", Datos[17].ToString());
-                    parametos.Add("IfDato16", Datos[18].ToString());
-                    parametos.Add("IfDato17", Datos[19].ToString());
-                    parametos.Add("IfDato18", Datos[20].ToString());
-                    parametos.Add("IfDato19", Datos[21].ToString());
-
-                    parametos.Add("IfD1Dato0", "");
-                    parametos.Add("IfD1Dato1", "");
-                    parametos.Add("IfD1Dato2", "");
-                    parametos.Add("IfD1Dato3", "");
-                    parametos.Add("IfD1Dato4", "");
-                    parametos.Add("IfD1Dato5", "");
-                    parametos.Add("IfD1Dato6", "");
-                    parametos.Add("IfD1Dato7", "");
-                    parametos.Add("IfD1Dato8", "");
-                    parametos.Add("IfD1Dato9", "");
-                    parametos.Add("IfD1Dato10", "");
-                    parametos.Add("IfD1Dato11", "");
-                    parametos.Add("IfD1Dato12", "");
-                    parametos.Add("IfD1Dato13", "");
-                    parametos.Add("IfD1Dato14", "");
-                    parametos.Add("IfD1Dato15", "");
-                    parametos.Add("IfD1Dato16", "");
-                    parametos.Add("IfD1Dato17", "");
-                    parametos.Add("IfD1Dato18", "");
-                    parametos.Add("IfD1Dato19", "");
-
-                    parametos.Add("IfD2Dato0", "");
-                    parametos.Add("IfD2Dato1", "");
-                    parametos.Add("IfD2Dato2", "");
-                    parametos.Add("IfD2Dato3", "");
-                    parametos.Add("IfD2Dato4", "");
-                    parametos.Add("IfD2Dato5", "");
-                    parametos.Add("IfD2Dato6", "");
-                    parametos.Add("IfD2Dato7", "");
-                    parametos.Add("IfD2Dato8", "");
-                    parametos.Add("IfD2Dato9", "");
-                    parametos.Add("IfD2Dato10", "");
-                    parametos.Add("IfD2Dato11", "");
-                    parametos.Add("IfD2Dato12", "");
-                    parametos.Add("IfD2Dato13", "");
-                    parametos.Add("IfD2Dato14", "");
-                    parametos.Add("IfD2Dato15", "");
-                    parametos.Add("IfD2Dato16", "");
-                    parametos.Add("IfD2Dato17", "");
-                    parametos.Add("IfD2Dato18", "");
-                    parametos.Add("IfD2Dato19", "");
-                    parametos.Add("PorInvNacExt", PorInvNacExt);
-                    parametos.Add("Opcion", 0);
-                    parametos.Add("NumIngreso", numIngreso);
+                    ExceptionResult = AppModule + "InsertarInformacionFinanciera, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
                 }
-                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA_2", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFinanciera, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -6549,21 +6586,28 @@ namespace Capex.Web.Controllers
         /// <param name="Datos"></param>
         private void InsertarInformacionFinancieraResumida(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IrDato0", Datos[2].ToString());
-                parametos.Add("IrDato1", Datos[3].ToString());
-                parametos.Add("IrDato2", Datos[4].ToString());
-
-                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA_RESUMIDA", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFinancieraResumida, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IrDato0", Datos[2].ToString());
+                    parametos.Add("IrDato1", Datos[3].ToString());
+                    parametos.Add("IrDato2", Datos[4].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FINANCIERA_RESUMIDA", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionFinancieraResumida, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -6572,37 +6616,45 @@ namespace Capex.Web.Controllers
         /// <param name="Datos"></param>
         private void InsertarInformacionFisico(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("FiDato0", Datos[2].ToString());
-                parametos.Add("FiDato1", Datos[3].ToString());
-                parametos.Add("FiDato2", Datos[4].ToString());
-                parametos.Add("FiDato3", Datos[5].ToString());
-                parametos.Add("FiDato4", Datos[6].ToString());
-                parametos.Add("FiDato5", Datos[7].ToString());
-                parametos.Add("FiDato6", Datos[8].ToString());
-                parametos.Add("FiDato7", Datos[9].ToString());
-                parametos.Add("FiDato8", Datos[10].ToString());
-                parametos.Add("FiDato9", Datos[11].ToString());
-                parametos.Add("FiDato10", Datos[12].ToString());
-                parametos.Add("FiDato11", Datos[13].ToString());
-                parametos.Add("FiDato12", Datos[14].ToString());
-                parametos.Add("FiDato13", Datos[15].ToString());
-                parametos.Add("FiDato14", Datos[16].ToString());
-                parametos.Add("FiDato15", Datos[17].ToString());
-                parametos.Add("FiDato16", Datos[18].ToString());
-                parametos.Add("FiDato17", Datos[19].ToString());
-                parametos.Add("FiDato18", Datos[20].ToString());
-                parametos.Add("FiDato19", Datos[21].ToString());
-                ORM.Execute("CAPEX_INS_INFORMACION_FISICO", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFisico, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("FiDato0", Datos[2].ToString());
+                    parametos.Add("FiDato1", Datos[3].ToString());
+                    parametos.Add("FiDato2", Datos[4].ToString());
+                    parametos.Add("FiDato3", Datos[5].ToString());
+                    parametos.Add("FiDato4", Datos[6].ToString());
+                    parametos.Add("FiDato5", Datos[7].ToString());
+                    parametos.Add("FiDato6", Datos[8].ToString());
+                    parametos.Add("FiDato7", Datos[9].ToString());
+                    parametos.Add("FiDato8", Datos[10].ToString());
+                    parametos.Add("FiDato9", Datos[11].ToString());
+                    parametos.Add("FiDato10", Datos[12].ToString());
+                    parametos.Add("FiDato11", Datos[13].ToString());
+                    parametos.Add("FiDato12", Datos[14].ToString());
+                    parametos.Add("FiDato13", Datos[15].ToString());
+                    parametos.Add("FiDato14", Datos[16].ToString());
+                    parametos.Add("FiDato15", Datos[17].ToString());
+                    parametos.Add("FiDato16", Datos[18].ToString());
+                    parametos.Add("FiDato17", Datos[19].ToString());
+                    parametos.Add("FiDato18", Datos[20].ToString());
+                    parametos.Add("FiDato19", Datos[21].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FISICO", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionFisico, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -6614,36 +6666,43 @@ namespace Capex.Web.Controllers
             var FechaInicio = string.Empty;
             var FechaTermino = string.Empty;
             var FechaCierre = string.Empty;
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
                 try
                 {
-                    /*FechaInicio = String.Format("{0:dd/MM/yyyy}", Datos[3]);
-                    FechaTermino = String.Format("{0:dd/MM/yyyy}", Datos[4]);
-                    FechaCierre = String.Format("{0:dd/MM/yyyy}", Datos[5]);*/
-                    FechaInicio = String.Format("{0}", Datos[3]);
-                    FechaTermino = String.Format("{0}", Datos[4]);
-                    FechaCierre = String.Format("{0}", Datos[5]);
+                    objConnection.Open();
+                    try
+                    {
+                        /*FechaInicio = String.Format("{0:dd/MM/yyyy}", Datos[3]);
+                        FechaTermino = String.Format("{0:dd/MM/yyyy}", Datos[4]);
+                        FechaCierre = String.Format("{0:dd/MM/yyyy}", Datos[5]);*/
+                        FechaInicio = String.Format("{0}", Datos[3]);
+                        FechaTermino = String.Format("{0}", Datos[4]);
+                        FechaCierre = String.Format("{0}", Datos[5]);
+                    }
+                    catch (Exception y)
+                    {
+                        ExceptionResult = AppModule + "InsertarInformacionGeneral, Mensaje: FORMATO FECHA TEMPLATE " + y.Message.ToString() + "-" + ", Detalle: " + y.StackTrace.ToString();
+                        CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                    }
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IgPresupuesto", Datos[2].ToString());
+                    parametos.Add("IgFechaInicio", FechaInicio);
+                    parametos.Add("IgTermino", FechaTermino);
+                    parametos.Add("IgCierre", FechaCierre);
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_GENERAL", parametos, commandType: CommandType.StoredProcedure);
                 }
-                catch (Exception y)
+                catch (Exception err)
                 {
-                    ExceptionResult = AppModule + "InsertarInformacionGeneral, Mensaje: FORMATO FECHA TEMPLATE " + y.Message.ToString() + "-" + ", Detalle: " + y.StackTrace.ToString();
+                    ExceptionResult = AppModule + "InsertarInformacionGeneral, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
                     CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
                 }
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IgPresupuesto", Datos[2].ToString());
-                parametos.Add("IgFechaInicio", FechaInicio);
-                parametos.Add("IgTermino", FechaTermino);
-                parametos.Add("IgCierre", FechaCierre);
-
-                ORM.Execute("CAPEX_INS_INFORMACION_GENERAL", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionGeneral, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -6993,97 +7052,105 @@ namespace Capex.Web.Controllers
         {
 
             string Desplegable = String.Empty;
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                var resultado = ORM.Query("CAPEX_SEL_CONTRATO_DOTACION_RESUMIDO", new { IniToken }, commandType: CommandType.StoredProcedure).ToList();
-                var contenedor = new StringBuilder();
-                var contador = 1;
-                if (resultado.Count > 0)
+                try
                 {
-                    foreach (var result in resultado)
+                    objConnection.Open();
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_CONTRATO_DOTACION_RESUMIDO", new { IniToken }, commandType: CommandType.StoredProcedure).ToList();
+                    var contenedor = new StringBuilder();
+                    var contador = 1;
+                    if (resultado.Count > 0)
                     {
-                        // UI
-                        //INICIO CONTENEDOR DE DATOS PRINCIPAL
-                        contenedor.Append("<div>");
-                        contenedor.Append("<table>");
-                        contenedor.Append("<tr>");
-                        //INICIO PRIMER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO  Y ETIQUETA COD. CONTRATO
-                        contenedor.Append("<th valign='top'><label for='TablaDotacionDatos" + contador + "'> Contrato de Dotación - " + result.DotNumContrato + "</label>");
-                        //TABLA DATOS DE CONTRATO
-                        contenedor.Append("<table id='TablaDotacionDatos" + contador + "' style='width:600px; text-align:center;font-size:11px;' class='table table-bordered'>");
-                        contenedor.Append("<tr>");
-                        contenedor.Append("<th>Año</th>");
-                        contenedor.Append("<th>Contrato</th>");
-                        contenedor.Append("<th>Nombre EECC</th>");
-                        contenedor.Append("<th>Turno</th>");
-                        contenedor.Append("<th>Ubicación</th>");
-                        contenedor.Append("<th>Promedio Año</th>");
-                        contenedor.Append("</tr>");
-                        contenedor.Append("<tr>");
-                        contenedor.Append("<td>" + result.DotAnn + "</td>");
-                        contenedor.Append("<td>" + result.DotNumContrato + "</td>");
-                        contenedor.Append("<td>" + result.DotNombEECC + "</td>");
-                        contenedor.Append("<td>" + result.TurNombre + "</td>");
-                        contenedor.Append("<td>" + result.UbiNombre + "</td>");
-                        contenedor.Append("<td>" + result.DotacionPromedio + "</td>");
-                        contenedor.Append("</tr>");
-                        contenedor.Append("</table>");
-                        contenedor.Append("</th>");
-                        //FIN PRIMER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
-                        //INICIO SEGUNDO ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
-                        contenedor.Append("<th rowspan='2'>");
-                        contenedor.Append("<label for='TablaDotacion" + contador + "' style='margin-left:50px;'> Dotación Mensual</label>");
-                        //INICIO TABLA CALENDARIO DOTACIONES
-                        contenedor.Append("<table id='TablaDotacion" + contador + "' style='margin-left:50px;width:100px; text-align:center;font-size:11px;' class='table table-bordered'>");
-                        contenedor.Append("<tr>");
-                        contenedor.Append("<td>ENE<br/><span>" + result.DotEne + "</span></td>");
-                        contenedor.Append("<td>FEB<br/><span>" + result.DotFeb + "</span></td>");
-                        contenedor.Append("<td>MAR<br/><span>" + result.DotMar + "</span></td>");
-                        contenedor.Append("<td>ABR<br/><span>" + result.DotAbr + "</span></td>");
-                        contenedor.Append("</tr>");
-                        contenedor.Append("<tr>");
-                        contenedor.Append("<td>MAY<br/><span>" + result.DotMay + "</span></td>");
-                        contenedor.Append("<td>JUN<br/><span>" + result.DotJun + "</span></td>");
-                        contenedor.Append("<td>JUL<br/><span>" + result.DotJul + "</span></td>");
-                        contenedor.Append("<td>AGO<br/><span>" + result.DotAgo + "</span></td>");
-                        contenedor.Append("</tr>");
-                        contenedor.Append("<tr>");
-                        contenedor.Append("<td>SEP<br/><span>" + result.DotSep + "</span></td>");
-                        contenedor.Append("<td>OCT<br/><span>" + result.DotOct + "</span></td>");
-                        contenedor.Append("<td>NOV<br/><span>" + result.DotNov + "</span></td>");
-                        contenedor.Append("<td>DIC<br/><span>" + result.DotDic + "</span></td>");
-                        contenedor.Append("</tr>");
-                        contenedor.Append("</table>");
-                        //FIN TABLA CALENDARIO DOTACIONES
-                        contenedor.Append("</th>");
-                        contenedor.Append("</tr>");
-                        //FIN SEGUNDO ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
-                        //INICIO TERCER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
-                        contenedor.Append("<tr>");
-                        contenedor.Append("<td>");
-                        //contenedor.Append("<input type='button' class='btn btn-primary btn-sm' onclick='FNModificarContratoDotacion("+ Convert.ToChar(34) + result.DotToken + Convert.ToChar(34) + ")' value='Modificar' />");
-                        contenedor.Append("<input type='button' class='btn btn-warning btn-sm' onclick='FNEliminarContratoDotacion(" + Convert.ToChar(34) + result.DotToken + Convert.ToChar(34) + ")' value='Eliminar' />");
-                        contenedor.Append("</td>");
-                        contenedor.Append("</tr>");
-                        //FIN TERCER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
-                        contenedor.Append("</table>");
-                        contenedor.Append(" </div>");
-                        //FIN CONTENEDOR DE DATOS PRINCIPAL
-                        contador++;
+                        foreach (var result in resultado)
+                        {
+                            // UI
+                            //INICIO CONTENEDOR DE DATOS PRINCIPAL
+                            contenedor.Append("<div>");
+                            contenedor.Append("<table>");
+                            contenedor.Append("<tr>");
+                            //INICIO PRIMER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO  Y ETIQUETA COD. CONTRATO
+                            contenedor.Append("<th valign='top'><label for='TablaDotacionDatos" + contador + "'> Contrato de Dotación - " + result.DotNumContrato + "</label>");
+                            //TABLA DATOS DE CONTRATO
+                            contenedor.Append("<table id='TablaDotacionDatos" + contador + "' style='width:600px; text-align:center;font-size:11px;' class='table table-bordered'>");
+                            contenedor.Append("<tr>");
+                            contenedor.Append("<th>Año</th>");
+                            contenedor.Append("<th>Contrato</th>");
+                            contenedor.Append("<th>Nombre EECC</th>");
+                            contenedor.Append("<th>Turno</th>");
+                            contenedor.Append("<th>Ubicación</th>");
+                            contenedor.Append("<th>Promedio Año</th>");
+                            contenedor.Append("</tr>");
+                            contenedor.Append("<tr>");
+                            contenedor.Append("<td>" + result.DotAnn + "</td>");
+                            contenedor.Append("<td>" + result.DotNumContrato + "</td>");
+                            contenedor.Append("<td>" + result.DotNombEECC + "</td>");
+                            contenedor.Append("<td>" + result.TurNombre + "</td>");
+                            contenedor.Append("<td>" + result.UbiNombre + "</td>");
+                            contenedor.Append("<td>" + result.DotacionPromedio + "</td>");
+                            contenedor.Append("</tr>");
+                            contenedor.Append("</table>");
+                            contenedor.Append("</th>");
+                            //FIN PRIMER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
+                            //INICIO SEGUNDO ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
+                            contenedor.Append("<th rowspan='2'>");
+                            contenedor.Append("<label for='TablaDotacion" + contador + "' style='margin-left:50px;'> Dotación Mensual</label>");
+                            //INICIO TABLA CALENDARIO DOTACIONES
+                            contenedor.Append("<table id='TablaDotacion" + contador + "' style='margin-left:50px;width:100px; text-align:center;font-size:11px;' class='table table-bordered'>");
+                            contenedor.Append("<tr>");
+                            contenedor.Append("<td>ENE<br/><span>" + result.DotEne + "</span></td>");
+                            contenedor.Append("<td>FEB<br/><span>" + result.DotFeb + "</span></td>");
+                            contenedor.Append("<td>MAR<br/><span>" + result.DotMar + "</span></td>");
+                            contenedor.Append("<td>ABR<br/><span>" + result.DotAbr + "</span></td>");
+                            contenedor.Append("</tr>");
+                            contenedor.Append("<tr>");
+                            contenedor.Append("<td>MAY<br/><span>" + result.DotMay + "</span></td>");
+                            contenedor.Append("<td>JUN<br/><span>" + result.DotJun + "</span></td>");
+                            contenedor.Append("<td>JUL<br/><span>" + result.DotJul + "</span></td>");
+                            contenedor.Append("<td>AGO<br/><span>" + result.DotAgo + "</span></td>");
+                            contenedor.Append("</tr>");
+                            contenedor.Append("<tr>");
+                            contenedor.Append("<td>SEP<br/><span>" + result.DotSep + "</span></td>");
+                            contenedor.Append("<td>OCT<br/><span>" + result.DotOct + "</span></td>");
+                            contenedor.Append("<td>NOV<br/><span>" + result.DotNov + "</span></td>");
+                            contenedor.Append("<td>DIC<br/><span>" + result.DotDic + "</span></td>");
+                            contenedor.Append("</tr>");
+                            contenedor.Append("</table>");
+                            //FIN TABLA CALENDARIO DOTACIONES
+                            contenedor.Append("</th>");
+                            contenedor.Append("</tr>");
+                            //FIN SEGUNDO ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
+                            //INICIO TERCER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
+                            contenedor.Append("<tr>");
+                            contenedor.Append("<td>");
+                            //contenedor.Append("<input type='button' class='btn btn-primary btn-sm' onclick='FNModificarContratoDotacion("+ Convert.ToChar(34) + result.DotToken + Convert.ToChar(34) + ")' value='Modificar' />");
+                            contenedor.Append("<input type='button' class='btn btn-warning btn-sm' onclick='FNEliminarContratoDotacion(" + Convert.ToChar(34) + result.DotToken + Convert.ToChar(34) + ")' value='Eliminar' />");
+                            contenedor.Append("</td>");
+                            contenedor.Append("</tr>");
+                            //FIN TERCER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
+                            contenedor.Append("</table>");
+                            contenedor.Append(" </div>");
+                            //FIN CONTENEDOR DE DATOS PRINCIPAL
+                            contador++;
+                        }
+                        Desplegable = contenedor.ToString();
+                        contenedor = null;
                     }
-                    Desplegable = contenedor.ToString();
-                    contenedor = null;
-                }
-                else
-                {
-                    contenedor = null;
-                    Desplegable = "";
-                }
+                    else
+                    {
+                        contenedor = null;
+                        Desplegable = "";
+                    }
 
-            }
-            catch (Exception exc)
-            {
-                Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                }
+                catch (Exception exc)
+                {
+                    Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
             return Desplegable.ToString();
         }

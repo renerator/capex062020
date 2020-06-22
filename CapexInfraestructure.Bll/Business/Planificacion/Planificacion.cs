@@ -44,14 +44,14 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         #endregion
 
         #region "GLOBALS"
-        public SqlConnection ORM;
+        //public SqlConnection ORM;
         #endregion
 
         #region "CONSTRUCTOR"
         public Planificacion()
         {
             AppModule = "Planificación";
-            ORM = Utils.Conectar();
+            //ORM = Utils.Conectar();
         }
         #endregion
 
@@ -76,15 +76,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Identificacion.Proceso> ListarProcesos()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.Proceso>("CAPEX_SEL_PROCESOS", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarProcesos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.Proceso>(objConnection, "CAPEX_SEL_PROCESOS", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarProcesos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -93,15 +101,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Identificacion.Area> ListarAreas()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.Area>("CAPEX_SEL_AREAS", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarAreas, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.Area>(objConnection, "CAPEX_SEL_AREAS", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarAreas, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -110,15 +126,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Identificacion.Compania> ListarCompanias()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.Compania>("CAPEX_SEL_COMPANIAS", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarCompania, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.Compania>(objConnection, "CAPEX_SEL_COMPANIAS", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarCompania, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -127,15 +151,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Identificacion.Etapa> ListarEtapas()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.Etapa>("CAPEX_SEL_ETAPAS", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarEtapas, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.Etapa>(objConnection, "CAPEX_SEL_ETAPAS", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarEtapas, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -144,15 +176,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Identificacion.Gerencia> ListarGerencias()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.Gerencia>("CAPEX_SEL_GERENCIAS", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarGerencias, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.Gerencia>(objConnection, "CAPEX_SEL_GERENCIAS", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarGerencias, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -161,15 +201,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Identificacion.Superintendencia> ListarSuperintendencias()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.Superintendencia>("CAPEX_SEL_SUPERINTENDENCIAS", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarSuperintendencias, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.Superintendencia>(objConnection, "CAPEX_SEL_SUPERINTENDENCIAS", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarSuperintendencias, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -178,15 +226,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Identificacion.Superintendencia> ListarSuperintendenciasPorGerencia(string GerToken)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.Superintendencia>("CAPEX_SEL_SUPERINTENDENCIAS_POR_GERENCIA", new { GerToken }, commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarSuperintendenciasPorGerencia, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.Superintendencia>(objConnection, "CAPEX_SEL_SUPERINTENDENCIAS_POR_GERENCIA", new { GerToken }, commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarSuperintendenciasPorGerencia, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -196,15 +252,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public Identificacion.InfoGerencia ObtenerGerente(string Token)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.InfoGerencia>("CAPEX_SEL_INFOGERENCIA", new { Token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ObtenerGerente, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.InfoGerencia>(objConnection, "CAPEX_SEL_INFOGERENCIA", new { Token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ObtenerGerente, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -216,9 +280,9 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         {
             using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                objConnection.Open();
                 try
                 {
+                    objConnection.Open();
                     return SqlMapper.Query<Identificacion.InfoEncargado>(objConnection, "CAPEX_SEL_INFOENCARGADO", new { IdGerencia, CodigoSuper }, commandType: CommandType.StoredProcedure).FirstOrDefault();
                 }
                 catch (Exception err)
@@ -242,243 +306,315 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public Identificacion.InfoSuperIntendencia ObtenerIntendente(string Token)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.InfoSuperIntendencia>("CAPEX_SEL_INFOSUPERINTEN", new { Token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ObtenerIntendente, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.InfoSuperIntendencia>(objConnection, "CAPEX_SEL_INFOSUPERINTEN", new { Token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ObtenerIntendente, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string AprobarVisacion(Identificacion.AprobacionRechazo DatosIniciativa)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", DatosIniciativa.PidToken);
-                parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
-                parametos.Add("PidRol", DatosIniciativa.PidRol);
-                parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
-                ORM.Query("CAPEX_APROBAR_VISACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
-                if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                try
                 {
-                    return "Aprobado|" + ErrorCodeSP.Trim();
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", DatosIniciativa.PidToken);
+                    parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
+                    parametos.Add("PidRol", DatosIniciativa.PidRol);
+                    parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
+                    SqlMapper.Query(objConnection, "CAPEX_APROBAR_VISACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
+                    if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                    {
+                        return "Aprobado|" + ErrorCodeSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL APROBAR VISACION"));
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL APROBAR VISACION"));
+                    ExceptionResult = AppModule + "AprobarVisacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "AprobarVisacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string RechazarVisacion(Identificacion.AprobacionRechazo DatosIniciativa)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", DatosIniciativa.PidToken);
-                parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
-                parametos.Add("PidRol", DatosIniciativa.PidRol);
-                parametos.Add("Comentario", (!string.IsNullOrEmpty(DatosIniciativa.Comentario) ? ((DatosIniciativa.Comentario.Trim().Length > 400) ? DatosIniciativa.Comentario.Substring(0, 400) : DatosIniciativa.Comentario.Trim()) : ""));
-                parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
-                ORM.Query("CAPEX_RECHAZAR_VISACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
-                if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                try
                 {
-                    return "Rechazado|" + ErrorCodeSP.Trim();
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", DatosIniciativa.PidToken);
+                    parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
+                    parametos.Add("PidRol", DatosIniciativa.PidRol);
+                    parametos.Add("Comentario", (!string.IsNullOrEmpty(DatosIniciativa.Comentario) ? ((DatosIniciativa.Comentario.Trim().Length > 400) ? DatosIniciativa.Comentario.Substring(0, 400) : DatosIniciativa.Comentario.Trim()) : ""));
+                    parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
+                    SqlMapper.Query(objConnection, "CAPEX_RECHAZAR_VISACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
+                    if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                    {
+                        return "Rechazado|" + ErrorCodeSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL RECHAZAR VISACION"));
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL RECHAZAR VISACION"));
+                    ExceptionResult = AppModule + "RechazarVisacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "RechazarVisacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string AprobarCE(Identificacion.AprobacionRechazo DatosIniciativa)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", DatosIniciativa.PidToken);
-                parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
-                parametos.Add("PidRol", DatosIniciativa.PidRol);
-                parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
-                ORM.Query("CAPEX_APROBAR_CE", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
-                if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                try
                 {
-                    return "Aprobado|" + ErrorCodeSP.Trim();
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", DatosIniciativa.PidToken);
+                    parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
+                    parametos.Add("PidRol", DatosIniciativa.PidRol);
+                    parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
+                    SqlMapper.Query(objConnection, "CAPEX_APROBAR_CE", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
+                    if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                    {
+                        return "Aprobado|" + ErrorCodeSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL APROBAR COMITE EJECUTIVO"));
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL APROBAR COMITE EJECUTIVO"));
+                    ExceptionResult = AppModule + "AprobarCE, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "AprobarCE, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string RechazarCE(Identificacion.AprobacionRechazo DatosIniciativa)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", DatosIniciativa.PidToken);
-                parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
-                parametos.Add("PidRol", DatosIniciativa.PidRol);
-                parametos.Add("Comentario", (!string.IsNullOrEmpty(DatosIniciativa.Comentario) ? ((DatosIniciativa.Comentario.Trim().Length > 400) ? DatosIniciativa.Comentario.Substring(0, 400) : DatosIniciativa.Comentario.Trim()) : ""));
-                parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
-                ORM.Query("CAPEX_RECHAZAR_CE", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
-                if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                try
                 {
-                    return "Rechazado|" + ErrorCodeSP.Trim();
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", DatosIniciativa.PidToken);
+                    parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
+                    parametos.Add("PidRol", DatosIniciativa.PidRol);
+                    parametos.Add("Comentario", (!string.IsNullOrEmpty(DatosIniciativa.Comentario) ? ((DatosIniciativa.Comentario.Trim().Length > 400) ? DatosIniciativa.Comentario.Substring(0, 400) : DatosIniciativa.Comentario.Trim()) : ""));
+                    parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
+                    SqlMapper.Query(objConnection, "CAPEX_RECHAZAR_CE", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
+                    if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                    {
+                        return "Rechazado|" + ErrorCodeSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL RECHAZAR COMITE EJECUTIVO"));
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL RECHAZAR COMITE EJECUTIVO"));
+                    ExceptionResult = AppModule + "RechazarCE, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "RechazarCE, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string AprobarAMSA(Identificacion.AprobacionRechazo DatosIniciativa)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", DatosIniciativa.PidToken);
-                parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
-                parametos.Add("PidRol", DatosIniciativa.PidRol);
-                parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
-                ORM.Query("CAPEX_APROBAR_AMSA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
-                if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                try
                 {
-                    return "Aprobado|" + ErrorCodeSP.Trim();
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", DatosIniciativa.PidToken);
+                    parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
+                    parametos.Add("PidRol", DatosIniciativa.PidRol);
+                    parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
+                    SqlMapper.Query(objConnection, "CAPEX_APROBAR_AMSA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
+                    if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                    {
+                        return "Aprobado|" + ErrorCodeSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL APROBAR COMITE EJECUTIVO"));
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL APROBAR COMITE EJECUTIVO"));
+                    ExceptionResult = AppModule + "AprobarCE, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "AprobarCE, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string RechazarAMSA(Identificacion.AprobacionRechazo DatosIniciativa)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", DatosIniciativa.PidToken);
-                parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
-                parametos.Add("PidRol", DatosIniciativa.PidRol);
-                parametos.Add("Comentario", (!string.IsNullOrEmpty(DatosIniciativa.Comentario) ? ((DatosIniciativa.Comentario.Trim().Length > 400) ? DatosIniciativa.Comentario.Substring(0, 400) : DatosIniciativa.Comentario.Trim()) : ""));
-                parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
-                ORM.Query("CAPEX_RECHAZAR_AMSA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
-                if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                try
                 {
-                    return "Rechazado|" + ErrorCodeSP.Trim();
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", DatosIniciativa.PidToken);
+                    parametos.Add("PidUsuario", DatosIniciativa.PidUsuario);
+                    parametos.Add("PidRol", DatosIniciativa.PidRol);
+                    parametos.Add("Comentario", (!string.IsNullOrEmpty(DatosIniciativa.Comentario) ? ((DatosIniciativa.Comentario.Trim().Length > 400) ? DatosIniciativa.Comentario.Substring(0, 400) : DatosIniciativa.Comentario.Trim()) : ""));
+                    parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
+                    SqlMapper.Query(objConnection, "CAPEX_RECHAZAR_AMSA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var ErrorCodeSP = parametos.Get<string>("ErrorCodeOutput");
+                    if (!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) && ErrorCodeSP.StartsWith("0"))
+                    {
+                        return "Rechazado|" + ErrorCodeSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL RECHAZAR COMITE EJECUTIVO"));
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error|" + ((!string.IsNullOrEmpty(ErrorCodeSP) && !string.IsNullOrEmpty(ErrorCodeSP.Trim()) ? ErrorCodeSP.Trim() : "1|ERROR AL RECHAZAR COMITE EJECUTIVO"));
+                    ExceptionResult = AppModule + "RechazarCE, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "RechazarCE, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string ObtenerUltimaObservacion(string PidToken, string accion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", PidToken);
-                parametos.Add("IdAcc", (string.IsNullOrEmpty(accion) ? "0" : accion));
-                parametos.Add("Comentario", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 450);
-                ORM.Query("CAPEX_SEL_ULTIMO_COMENTARIO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var ComentarioSP = parametos.Get<string>("Comentario");
-                if (!string.IsNullOrEmpty(ComentarioSP) && !string.IsNullOrEmpty(ComentarioSP.Trim()) && ComentarioSP.StartsWith("0"))
+                try
                 {
-                    return "Obtenido|" + ComentarioSP.Trim();
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", PidToken);
+                    parametos.Add("IdAcc", (string.IsNullOrEmpty(accion) ? "0" : accion));
+                    parametos.Add("Comentario", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 450);
+                    SqlMapper.Query(objConnection, "CAPEX_SEL_ULTIMO_COMENTARIO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var ComentarioSP = parametos.Get<string>("Comentario");
+                    if (!string.IsNullOrEmpty(ComentarioSP) && !string.IsNullOrEmpty(ComentarioSP.Trim()) && ComentarioSP.StartsWith("0"))
+                    {
+                        return "Obtenido|" + ComentarioSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|" + ((!string.IsNullOrEmpty(ComentarioSP) && !string.IsNullOrEmpty(ComentarioSP.Trim()) ? ComentarioSP.Trim() : "1|ERROR AL OBTENER COMENTARIO PARA LA INICIATIVA"));
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error|" + ((!string.IsNullOrEmpty(ComentarioSP) && !string.IsNullOrEmpty(ComentarioSP.Trim()) ? ComentarioSP.Trim() : "1|ERROR AL OBTENER COMENTARIO PARA LA INICIATIVA"));
+                    ExceptionResult = AppModule + "RechazarVisacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "RechazarVisacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string AsignarmeIniciativa(Identificacion.AsignarmeIniciativa Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos.PidToken);
-                parametos.Add("Usuario", Datos.PidUsuario);
-                parametos.Add("Rol", Datos.PidRol);
-                parametos.Add("Forzar", (!string.IsNullOrEmpty(Datos.Forzar) ? Datos.Forzar : "0"));
-                parametos.Add("IdEstadoFinal", Datos.IdEstadoFinal);
-                parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
-                ORM.Query("CAPEX_UPD_ASIGNAR_INICIATIVA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var RepuestaSP = parametos.Get<string>("ErrorCodeOutput");
-                if (!string.IsNullOrEmpty(RepuestaSP) && !string.IsNullOrEmpty(RepuestaSP.Trim()) && RepuestaSP.StartsWith("0"))
+                try
                 {
-                    return "Asignado|" + RepuestaSP.Trim();
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos.PidToken);
+                    parametos.Add("Usuario", Datos.PidUsuario);
+                    parametos.Add("Rol", Datos.PidRol);
+                    parametos.Add("Forzar", (!string.IsNullOrEmpty(Datos.Forzar) ? Datos.Forzar : "0"));
+                    parametos.Add("IdEstadoFinal", Datos.IdEstadoFinal);
+                    parametos.Add("ErrorCodeOutput", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 200);
+                    SqlMapper.Query(objConnection, "CAPEX_UPD_ASIGNAR_INICIATIVA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var RepuestaSP = parametos.Get<string>("ErrorCodeOutput");
+                    if (!string.IsNullOrEmpty(RepuestaSP) && !string.IsNullOrEmpty(RepuestaSP.Trim()) && RepuestaSP.StartsWith("0"))
+                    {
+                        return "Asignado|" + RepuestaSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|" + ((!string.IsNullOrEmpty(RepuestaSP) && !string.IsNullOrEmpty(RepuestaSP.Trim()) ? RepuestaSP.Trim() : "1|ERROR AL ASIGNAR LA INICIATIVA"));
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error|" + ((!string.IsNullOrEmpty(RepuestaSP) && !string.IsNullOrEmpty(RepuestaSP.Trim()) ? RepuestaSP.Trim() : "1|ERROR AL ASIGNAR LA INICIATIVA"));
+                    ExceptionResult = AppModule + "AsignarmeIniciativa, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "AsignarmeIniciativa, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -489,52 +625,59 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string GuardarIdentificacion(Identificacion.IdentificacionIniciativa DatosIdentificacion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("PidTipoIniciativa", DatosIdentificacion.PidTipoIniciativa);
-                parametos.Add("PidTipoEjercicio", DatosIdentificacion.PidTipoEjercicio);
-                parametos.Add("PidPeriodo", DatosIdentificacion.PidPeriodo);
-                parametos.Add("PidUsuario", DatosIdentificacion.PidUsuario);
-                parametos.Add("PidRol", DatosIdentificacion.PidRol);
-                parametos.Add("PidProceso", DatosIdentificacion.PidProceso);
-                parametos.Add("PidObjeto", DatosIdentificacion.PidObjeto);
-                parametos.Add("PidArea", DatosIdentificacion.PidArea);
-                parametos.Add("PidCompania", DatosIdentificacion.PidCompania);
-                parametos.Add("PidEtapa", DatosIdentificacion.PidEtapa);
-                parametos.Add("PidNombreProyecto", DatosIdentificacion.PidNombreProyecto);
-                parametos.Add("PidNombreProyectoAlias", DatosIdentificacion.PidNombreProyectoAlias);
-                parametos.Add("PidCodigoIniciativa", DatosIdentificacion.PidCodigoIniciativa);
-                parametos.Add("PidCodigoProyecto", DatosIdentificacion.PidCodigoProyecto);
-                parametos.Add("PidGerenciaInversion", DatosIdentificacion.PidGerenciaInversion);
-                parametos.Add("PidGerenteInversion", DatosIdentificacion.PidGerenteInversion);
-                parametos.Add("PidRequiere", DatosIdentificacion.PidRequiere);
-                parametos.Add("PidGerenciaEjecucion", DatosIdentificacion.PidGerenciaEjecucion);
-                parametos.Add("PidGerenteEjecucion", DatosIdentificacion.PidGerenteEjecucion);
-                parametos.Add("PidSuperintendencia", DatosIdentificacion.PidSuperintendencia);
-                parametos.Add("PidSuperintendente", DatosIdentificacion.PidSuperintendente);
-                parametos.Add("PidGerenciaControl", DatosIdentificacion.PidGerenciaControl);
-                parametos.Add("PidGerenteControl", DatosIdentificacion.PidGerenteControl);
-                parametos.Add("PidEncargadoControl", DatosIdentificacion.PidEncargadoControl);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 4000);
-
-                ORM.Query("CAPEX_INS_IDENTIFICACION_INICIATIVA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var respuestaSP = parametos.Get<string>("Respuesta");
-                if (!string.IsNullOrEmpty(respuestaSP) && !string.IsNullOrEmpty(respuestaSP.Trim()))
+                try
                 {
-                    return respuestaSP.Trim();
-                }
-                else
-                {
-                    return "Error|0|0|0";
-                }
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("PidTipoIniciativa", DatosIdentificacion.PidTipoIniciativa);
+                    parametos.Add("PidTipoEjercicio", DatosIdentificacion.PidTipoEjercicio);
+                    parametos.Add("PidPeriodo", DatosIdentificacion.PidPeriodo);
+                    parametos.Add("PidUsuario", DatosIdentificacion.PidUsuario);
+                    parametos.Add("PidRol", DatosIdentificacion.PidRol);
+                    parametos.Add("PidProceso", DatosIdentificacion.PidProceso);
+                    parametos.Add("PidObjeto", DatosIdentificacion.PidObjeto);
+                    parametos.Add("PidArea", DatosIdentificacion.PidArea);
+                    parametos.Add("PidCompania", DatosIdentificacion.PidCompania);
+                    parametos.Add("PidEtapa", DatosIdentificacion.PidEtapa);
+                    parametos.Add("PidNombreProyecto", DatosIdentificacion.PidNombreProyecto);
+                    parametos.Add("PidNombreProyectoAlias", DatosIdentificacion.PidNombreProyectoAlias);
+                    parametos.Add("PidCodigoIniciativa", DatosIdentificacion.PidCodigoIniciativa);
+                    parametos.Add("PidCodigoProyecto", DatosIdentificacion.PidCodigoProyecto);
+                    parametos.Add("PidGerenciaInversion", DatosIdentificacion.PidGerenciaInversion);
+                    parametos.Add("PidGerenteInversion", DatosIdentificacion.PidGerenteInversion);
+                    parametos.Add("PidRequiere", DatosIdentificacion.PidRequiere);
+                    parametos.Add("PidGerenciaEjecucion", DatosIdentificacion.PidGerenciaEjecucion);
+                    parametos.Add("PidGerenteEjecucion", DatosIdentificacion.PidGerenteEjecucion);
+                    parametos.Add("PidSuperintendencia", DatosIdentificacion.PidSuperintendencia);
+                    parametos.Add("PidSuperintendente", DatosIdentificacion.PidSuperintendente);
+                    parametos.Add("PidGerenciaControl", DatosIdentificacion.PidGerenciaControl);
+                    parametos.Add("PidGerenteControl", DatosIdentificacion.PidGerenteControl);
+                    parametos.Add("PidEncargadoControl", DatosIdentificacion.PidEncargadoControl);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 4000);
+                    SqlMapper.Query(objConnection, "CAPEX_INS_IDENTIFICACION_INICIATIVA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var respuestaSP = parametos.Get<string>("Respuesta");
+                    if (!string.IsNullOrEmpty(respuestaSP) && !string.IsNullOrEmpty(respuestaSP.Trim()))
+                    {
+                        return respuestaSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|0|0|0";
+                    }
 
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "GuardarIdentificacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "GuardarIdentificacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -545,169 +688,207 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string ActualizarIdentificacion(Identificacion.IdentificacionIniciativa DatosIdentificacion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("PidToken", DatosIdentificacion.PidToken);
-                parametos.Add("PidTipoIniciativa", DatosIdentificacion.PidTipoIniciativa);
-                parametos.Add("PidTipoEjercicio", DatosIdentificacion.PidTipoEjercicio);
-                parametos.Add("PidPeriodo", DatosIdentificacion.PidPeriodo);
-                parametos.Add("PidUsuario", DatosIdentificacion.PidUsuario);
-                parametos.Add("PidProceso", DatosIdentificacion.PidProceso);
-                parametos.Add("PidObjeto", DatosIdentificacion.PidObjeto);
-                parametos.Add("PidArea", DatosIdentificacion.PidArea);
-                parametos.Add("PidCompania", DatosIdentificacion.PidCompania);
-                parametos.Add("PidEtapa", DatosIdentificacion.PidEtapa);
-                parametos.Add("PidNombreProyecto", DatosIdentificacion.PidNombreProyecto);
-                parametos.Add("PidNombreProyectoAlias", DatosIdentificacion.PidNombreProyectoAlias);
-                parametos.Add("PidCodigoIniciativa", DatosIdentificacion.PidCodigoIniciativa);
-                parametos.Add("PidCodigoProyecto", DatosIdentificacion.PidCodigoProyecto);
-                parametos.Add("PidGerenciaInversion", DatosIdentificacion.PidGerenciaInversion);
-                parametos.Add("PidGerenteInversion", DatosIdentificacion.PidGerenteInversion);
-                parametos.Add("PidRequiere", DatosIdentificacion.PidRequiere);
-                parametos.Add("PidGerenciaEjecucion", DatosIdentificacion.PidGerenciaEjecucion);
-                parametos.Add("PidGerenteEjecucion", DatosIdentificacion.PidGerenteEjecucion);
-                parametos.Add("PidSuperintendencia", DatosIdentificacion.PidSuperintendencia);
-                parametos.Add("PidSuperintendente", DatosIdentificacion.PidSuperintendente);
-                parametos.Add("PidGerenciaControl", DatosIdentificacion.PidGerenciaControl);
-                parametos.Add("PidGerenteControl", DatosIdentificacion.PidGerenteControl);
-                parametos.Add("PidEncargadoControl", DatosIdentificacion.PidEncargadoControl);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 4000);
-
-                ORM.Query("CAPEX_UPD_IDENTIFICACION_INICIATIVA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var respuestaSP = parametos.Get<string>("Respuesta");
-                if (!string.IsNullOrEmpty(respuestaSP) && !string.IsNullOrEmpty(respuestaSP.Trim()))
+                try
                 {
-                    return respuestaSP.Trim();
-                }
-                else
-                {
-                    return "Error|0|0";
-                }
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("PidToken", DatosIdentificacion.PidToken);
+                    parametos.Add("PidTipoIniciativa", DatosIdentificacion.PidTipoIniciativa);
+                    parametos.Add("PidTipoEjercicio", DatosIdentificacion.PidTipoEjercicio);
+                    parametos.Add("PidPeriodo", DatosIdentificacion.PidPeriodo);
+                    parametos.Add("PidUsuario", DatosIdentificacion.PidUsuario);
+                    parametos.Add("PidProceso", DatosIdentificacion.PidProceso);
+                    parametos.Add("PidObjeto", DatosIdentificacion.PidObjeto);
+                    parametos.Add("PidArea", DatosIdentificacion.PidArea);
+                    parametos.Add("PidCompania", DatosIdentificacion.PidCompania);
+                    parametos.Add("PidEtapa", DatosIdentificacion.PidEtapa);
+                    parametos.Add("PidNombreProyecto", DatosIdentificacion.PidNombreProyecto);
+                    parametos.Add("PidNombreProyectoAlias", DatosIdentificacion.PidNombreProyectoAlias);
+                    parametos.Add("PidCodigoIniciativa", DatosIdentificacion.PidCodigoIniciativa);
+                    parametos.Add("PidCodigoProyecto", DatosIdentificacion.PidCodigoProyecto);
+                    parametos.Add("PidGerenciaInversion", DatosIdentificacion.PidGerenciaInversion);
+                    parametos.Add("PidGerenteInversion", DatosIdentificacion.PidGerenteInversion);
+                    parametos.Add("PidRequiere", DatosIdentificacion.PidRequiere);
+                    parametos.Add("PidGerenciaEjecucion", DatosIdentificacion.PidGerenciaEjecucion);
+                    parametos.Add("PidGerenteEjecucion", DatosIdentificacion.PidGerenteEjecucion);
+                    parametos.Add("PidSuperintendencia", DatosIdentificacion.PidSuperintendencia);
+                    parametos.Add("PidSuperintendente", DatosIdentificacion.PidSuperintendente);
+                    parametos.Add("PidGerenciaControl", DatosIdentificacion.PidGerenciaControl);
+                    parametos.Add("PidGerenteControl", DatosIdentificacion.PidGerenteControl);
+                    parametos.Add("PidEncargadoControl", DatosIdentificacion.PidEncargadoControl);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 4000);
+                    SqlMapper.Query(objConnection, "CAPEX_UPD_IDENTIFICACION_INICIATIVA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var respuestaSP = parametos.Get<string>("Respuesta");
+                    if (!string.IsNullOrEmpty(respuestaSP) && !string.IsNullOrEmpty(respuestaSP.Trim()))
+                    {
+                        return respuestaSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|0|0";
+                    }
 
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ActualizarIdentificacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ActualizarIdentificacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string ActualizarIdentificacionCategorizacion(Identificacion.IdentificacionIniciativa DatosIdentificacion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("PidToken", DatosIdentificacion.PidToken);
-                parametos.Add("PidTipoIniciativa", DatosIdentificacion.PidTipoIniciativa);
-                parametos.Add("PidTipoEjercicio", DatosIdentificacion.PidTipoEjercicio);
-                parametos.Add("PidPeriodo", DatosIdentificacion.PidPeriodo);
-                parametos.Add("PidUsuario", DatosIdentificacion.PidUsuario);
-                parametos.Add("PidProceso", DatosIdentificacion.PidProceso);
-                parametos.Add("PidObjeto", DatosIdentificacion.PidObjeto);
-                parametos.Add("PidArea", DatosIdentificacion.PidArea);
-                parametos.Add("PidCompania", DatosIdentificacion.PidCompania);
-                parametos.Add("PidEtapa", DatosIdentificacion.PidEtapa);
-                parametos.Add("PidNombreProyecto", DatosIdentificacion.PidNombreProyecto);
-                parametos.Add("PidNombreProyectoAlias", DatosIdentificacion.PidNombreProyectoAlias);
-                parametos.Add("PidCodigoIniciativa", DatosIdentificacion.PidCodigoIniciativa);
-                parametos.Add("PidCodigoProyecto", DatosIdentificacion.PidCodigoProyecto);
-                parametos.Add("PidGerenciaInversion", DatosIdentificacion.PidGerenciaInversion);
-                parametos.Add("PidGerenteInversion", DatosIdentificacion.PidGerenteInversion);
-                parametos.Add("PidRequiere", DatosIdentificacion.PidRequiere);
-                parametos.Add("PidGerenciaEjecucion", DatosIdentificacion.PidGerenciaEjecucion);
-                parametos.Add("PidGerenteEjecucion", DatosIdentificacion.PidGerenteEjecucion);
-                parametos.Add("PidSuperintendencia", DatosIdentificacion.PidSuperintendencia);
-                parametos.Add("PidSuperintendente", DatosIdentificacion.PidSuperintendente);
-                parametos.Add("PidGerenciaControl", DatosIdentificacion.PidGerenciaControl);
-                parametos.Add("PidGerenteControl", DatosIdentificacion.PidGerenteControl);
-                parametos.Add("PidEncargadoControl", DatosIdentificacion.PidEncargadoControl);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 4000);
-
-                ORM.Query("CAPEX_UPD_IDENTIFICACION_INICIATIVA_CATEGORIZACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                var respuestaSP = parametos.Get<string>("Respuesta");
-                if (!string.IsNullOrEmpty(respuestaSP) && !string.IsNullOrEmpty(respuestaSP.Trim()))
+                try
                 {
-                    return respuestaSP.Trim();
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("PidToken", DatosIdentificacion.PidToken);
+                    parametos.Add("PidTipoIniciativa", DatosIdentificacion.PidTipoIniciativa);
+                    parametos.Add("PidTipoEjercicio", DatosIdentificacion.PidTipoEjercicio);
+                    parametos.Add("PidPeriodo", DatosIdentificacion.PidPeriodo);
+                    parametos.Add("PidUsuario", DatosIdentificacion.PidUsuario);
+                    parametos.Add("PidProceso", DatosIdentificacion.PidProceso);
+                    parametos.Add("PidObjeto", DatosIdentificacion.PidObjeto);
+                    parametos.Add("PidArea", DatosIdentificacion.PidArea);
+                    parametos.Add("PidCompania", DatosIdentificacion.PidCompania);
+                    parametos.Add("PidEtapa", DatosIdentificacion.PidEtapa);
+                    parametos.Add("PidNombreProyecto", DatosIdentificacion.PidNombreProyecto);
+                    parametos.Add("PidNombreProyectoAlias", DatosIdentificacion.PidNombreProyectoAlias);
+                    parametos.Add("PidCodigoIniciativa", DatosIdentificacion.PidCodigoIniciativa);
+                    parametos.Add("PidCodigoProyecto", DatosIdentificacion.PidCodigoProyecto);
+                    parametos.Add("PidGerenciaInversion", DatosIdentificacion.PidGerenciaInversion);
+                    parametos.Add("PidGerenteInversion", DatosIdentificacion.PidGerenteInversion);
+                    parametos.Add("PidRequiere", DatosIdentificacion.PidRequiere);
+                    parametos.Add("PidGerenciaEjecucion", DatosIdentificacion.PidGerenciaEjecucion);
+                    parametos.Add("PidGerenteEjecucion", DatosIdentificacion.PidGerenteEjecucion);
+                    parametos.Add("PidSuperintendencia", DatosIdentificacion.PidSuperintendencia);
+                    parametos.Add("PidSuperintendente", DatosIdentificacion.PidSuperintendente);
+                    parametos.Add("PidGerenciaControl", DatosIdentificacion.PidGerenciaControl);
+                    parametos.Add("PidGerenteControl", DatosIdentificacion.PidGerenteControl);
+                    parametos.Add("PidEncargadoControl", DatosIdentificacion.PidEncargadoControl);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 4000);
+                    SqlMapper.Query(objConnection, "CAPEX_UPD_IDENTIFICACION_INICIATIVA_CATEGORIZACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var respuestaSP = parametos.Get<string>("Respuesta");
+                    if (!string.IsNullOrEmpty(respuestaSP) && !string.IsNullOrEmpty(respuestaSP.Trim()))
+                    {
+                        return respuestaSP.Trim();
+                    }
+                    else
+                    {
+                        return "Error|0|0";
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error|0|0";
+                    ExceptionResult = AppModule + "ActualizarIdentificacionCategorizacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ActualizarIdentificacionCategorizacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string ValidarIdentificacion(Identificacion.IdentificacionIniciativa DatosIdentificacion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var resultProcedure = ORM.Query<Identificacion.IdentificacionIniciativaValidacion>("CAPEX_SEL_VALIDACION_IDENTIFICACION_INI", new { token = DatosIdentificacion.PidToken }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (resultProcedure != null)
+                try
                 {
-                    if (EvaluarCamposValidarIdentificacion(resultProcedure.PidEtapa, DatosIdentificacion.PidEtapa) && EvaluarCamposValidarIdentificacion(resultProcedure.PidRequiere, DatosIdentificacion.PidRequiere)
-                        && EvaluarCamposValidarIdentificacion(resultProcedure.PidGerenciaEjecucion, DatosIdentificacion.PidGerenciaEjecucion) && EvaluarCamposValidarIdentificacion(resultProcedure.PidGerenteEjecucion, DatosIdentificacion.PidGerenteEjecucion)
-                        && EvaluarCamposValidarIdentificacion(resultProcedure.PidSuperintendencia, DatosIdentificacion.PidSuperintendencia) && EvaluarCamposValidarIdentificacion(resultProcedure.PidSuperintendente, DatosIdentificacion.PidSuperintendente)
-                        && EvaluarCamposValidarIdentificacion(resultProcedure.PidEncargadoControl, DatosIdentificacion.PidEncargadoControl))
+                    objConnection.Open();
+                    var resultProcedure = SqlMapper.Query<Identificacion.IdentificacionIniciativaValidacion>(objConnection, "CAPEX_SEL_VALIDACION_IDENTIFICACION_INI", new { token = DatosIdentificacion.PidToken }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (resultProcedure != null)
                     {
-                        return "0";
+                        if (EvaluarCamposValidarIdentificacion(resultProcedure.PidEtapa, DatosIdentificacion.PidEtapa) && EvaluarCamposValidarIdentificacion(resultProcedure.PidRequiere, DatosIdentificacion.PidRequiere)
+                            && EvaluarCamposValidarIdentificacion(resultProcedure.PidGerenciaEjecucion, DatosIdentificacion.PidGerenciaEjecucion) && EvaluarCamposValidarIdentificacion(resultProcedure.PidGerenteEjecucion, DatosIdentificacion.PidGerenteEjecucion)
+                            && EvaluarCamposValidarIdentificacion(resultProcedure.PidSuperintendencia, DatosIdentificacion.PidSuperintendencia) && EvaluarCamposValidarIdentificacion(resultProcedure.PidSuperintendente, DatosIdentificacion.PidSuperintendente)
+                            && EvaluarCamposValidarIdentificacion(resultProcedure.PidEncargadoControl, DatosIdentificacion.PidEncargadoControl))
+                        {
+                            return "0";
+                        }
+                        else
+                        {
+                            return "1";
+                        }
                     }
-                    else
-                    {
-                        return "1";
-                    }
+                    return null;
                 }
-                return null;
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ValidarIdentificacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ValidarIdentificacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string SeleccionarEstadoProyecto(string PidToken)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var resultProcedure = ORM.Query<string>("CAPEX_SEL_CATEGORIZACION_ESTADO_PROYECTO", new { token = PidToken }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(resultProcedure))
+                try
                 {
-                    return resultProcedure;
+                    objConnection.Open();
+                    var resultProcedure = SqlMapper.Query<string>(objConnection, "CAPEX_SEL_CATEGORIZACION_ESTADO_PROYECTO", new { token = PidToken }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(resultProcedure))
+                    {
+                        return resultProcedure;
+                    }
+                    return "";
                 }
-                return "";
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "SeleccionarEstadoProyecto, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return "";
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "SeleccionarEstadoProyecto, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return "";
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string SeleccionarCodigoProyecto(string PidToken)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var resultProcedure = ORM.Query<string>("CAPEX_SEL_IDENTIFICACION_CODIGO_PROYECTO", new { token = PidToken }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(resultProcedure))
+                try
                 {
-                    return resultProcedure;
+                    objConnection.Open();
+                    var resultProcedure = SqlMapper.Query<string>(objConnection, "CAPEX_SEL_IDENTIFICACION_CODIGO_PROYECTO", new { token = PidToken }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(resultProcedure))
+                    {
+                        return resultProcedure;
+                    }
+                    return "";
                 }
-                return "";
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "SeleccionarCodigoProyecto, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return "";
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "SeleccionarCodigoProyecto, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return "";
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -772,15 +953,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
 
         public List<Categorizacion.Categoria> ListarCategorias()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Categorizacion.Categoria>("CAPEX_SEL_CATEGORIAS", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarCategorias, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Categorizacion.Categoria>(objConnection, "CAPEX_SEL_CATEGORIAS", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarCategorias, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -790,15 +979,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Categorizacion.NivelIngenieria> ListarNivelIngenieria()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Categorizacion.NivelIngenieria>("CAPEX_SEL_NIVEL_INGENIERIA", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarNivelIngenieria, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Categorizacion.NivelIngenieria>(objConnection, "CAPEX_SEL_NIVEL_INGENIERIA", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarNivelIngenieria, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -808,15 +1005,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Categorizacion.NivelIngenieria> ListarNivelIngenieriaNoRequiere(int IdNI)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Categorizacion.NivelIngenieria>("CAPEX_SEL_NIVEL_INGENIERIA_BY_ID", new { IdNI }, commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarNivelIngenieriaNoRequiere, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Categorizacion.NivelIngenieria>(objConnection, "CAPEX_SEL_NIVEL_INGENIERIA_BY_ID", new { IdNI }, commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarNivelIngenieriaNoRequiere, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -826,16 +1031,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Categorizacion.ClasificacionSSO> ListarClasificacionSSO()
         {
-
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Categorizacion.ClasificacionSSO>("CAPEX_SEL_CLASIFICACION_SSO", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarClasificacionSSO, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Categorizacion.ClasificacionSSO>(objConnection, "CAPEX_SEL_CLASIFICACION_SSO", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarClasificacionSSO, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -846,28 +1058,35 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string ObtenerTokenCompania(string Tipo, string Valor)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametros = new DynamicParameters();
-                parametros.Add("Tipo", "Compania");
-                parametros.Add("Valor", Valor);
-                parametros.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_SEL_OBTENER_TOKEN", parametros, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametros.Get<string>("Respuesta")))
+                try
                 {
-                    return parametros.Get<string>("Respuesta");
+                    objConnection.Open();
+                    var parametros = new DynamicParameters();
+                    parametros.Add("Tipo", "Compania");
+                    parametros.Add("Valor", Valor);
+                    parametros.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_SEL_OBTENER_TOKEN", parametros, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametros.Get<string>("Respuesta")))
+                    {
+                        return parametros.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error";
+                    ExceptionResult = AppModule + "ObtenerTokenCompania, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ObtenerTokenCompania, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -876,18 +1095,27 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Categorizacion.EstandarSeguridad> ListarEstandarSeguridad(string EssComToken, string EssCSToken)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var result = ORM.Query<Categorizacion.EstandarSeguridad>("CAPEX_SEL_ESTANDAR_SEGURIDAD", new { EssComToken, EssCSToken }, commandType: CommandType.StoredProcedure).ToList();
-                return result;
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarEstandarSeguridad, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    var result = SqlMapper.Query<Categorizacion.EstandarSeguridad>(objConnection, "CAPEX_SEL_ESTANDAR_SEGURIDAD", new { EssComToken, EssCSToken }, commandType: CommandType.StoredProcedure).ToList();
+                    return result;
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarEstandarSeguridad, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
+
         /// <summary>
         /// METODO ACTUALIZAR ETAPA POST-ALMACENAMIENTO
         /// </summary>
@@ -896,28 +1124,35 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string ActualizarEtapa(string token, string etapa)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("PidToken", token);
-                parametos.Add("PidEtapa", etapa);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_UPD_IDENTIFICACION_ETAPA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                try
                 {
-                    return parametos.Get<string>("Respuesta");
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("PidToken", token);
+                    parametos.Add("PidEtapa", etapa);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_UPD_IDENTIFICACION_ETAPA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error";
+                    ExceptionResult = AppModule + "ActualizarEtapa, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ActualizarEtapa, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -927,52 +1162,59 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string GuardarCategorizacion(Categorizacion.DatosCategorizacion Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos.IniToken);
-                parametos.Add("IniUsuario", Datos.IniUsuario);
-                parametos.Add("CatEstadoProyecto", Datos.CatEstadoProyecto);
-                parametos.Add("CatCategoria", Datos.CatCategoria);
-                parametos.Add("CatNivelIngenieria", Datos.CatNivelIngenieria);
-                parametos.Add("CatAgrega", Datos.CatAgrega);
-                parametos.Add("CatTipoCotizacion", Datos.CatTipoCotizacion);
-                parametos.Add("CatClasificacionSSO", Datos.CatClasificacionSSO);
-                parametos.Add("CatEstandarSeguridad", Datos.CatEstandarSeguridad);
-                parametos.Add("CatClase", Datos.CatClase);
-                parametos.Add("CatMacroCategoria", Datos.CatMacroCategoria);
-                parametos.Add("CatAnalisis", Datos.CatAnalisis);
-                parametos.Add("CatACNota1", Datos.CatACNota1);
-                parametos.Add("CatACNota2", Datos.CatACNota2);
-                parametos.Add("CatACNota3", Datos.CatACNota3);
-                parametos.Add("CatACNota4", Datos.CatACNota4);
-                parametos.Add("CatACNota5", Datos.CatACNota5);
-                parametos.Add("CatACNota6", Datos.CatACNota6);
-                parametos.Add("CatACTotal", Datos.CatACTotal);
-                parametos.Add("CatACObs1", Datos.CatACObs1);
-                parametos.Add("CatACObs2", Datos.CatACObs2);
-                parametos.Add("CatACObs3", Datos.CatACObs3);
-                parametos.Add("CatACObs4", Datos.CatACObs4);
-                parametos.Add("CatACObs5", Datos.CatACObs5);
-                parametos.Add("CatACObs6", Datos.CatACObs6);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_INS_IDENTIFICACION_CATEGORIZACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                try
                 {
-                    return parametos.Get<string>("Respuesta");
-                }
-                else
-                {
-                    return "Error";
-                }
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos.IniToken);
+                    parametos.Add("IniUsuario", Datos.IniUsuario);
+                    parametos.Add("CatEstadoProyecto", Datos.CatEstadoProyecto);
+                    parametos.Add("CatCategoria", Datos.CatCategoria);
+                    parametos.Add("CatNivelIngenieria", Datos.CatNivelIngenieria);
+                    parametos.Add("CatAgrega", Datos.CatAgrega);
+                    parametos.Add("CatTipoCotizacion", Datos.CatTipoCotizacion);
+                    parametos.Add("CatClasificacionSSO", Datos.CatClasificacionSSO);
+                    parametos.Add("CatEstandarSeguridad", Datos.CatEstandarSeguridad);
+                    parametos.Add("CatClase", Datos.CatClase);
+                    parametos.Add("CatMacroCategoria", Datos.CatMacroCategoria);
+                    parametos.Add("CatAnalisis", Datos.CatAnalisis);
+                    parametos.Add("CatACNota1", Datos.CatACNota1);
+                    parametos.Add("CatACNota2", Datos.CatACNota2);
+                    parametos.Add("CatACNota3", Datos.CatACNota3);
+                    parametos.Add("CatACNota4", Datos.CatACNota4);
+                    parametos.Add("CatACNota5", Datos.CatACNota5);
+                    parametos.Add("CatACNota6", Datos.CatACNota6);
+                    parametos.Add("CatACTotal", Datos.CatACTotal);
+                    parametos.Add("CatACObs1", Datos.CatACObs1);
+                    parametos.Add("CatACObs2", Datos.CatACObs2);
+                    parametos.Add("CatACObs3", Datos.CatACObs3);
+                    parametos.Add("CatACObs4", Datos.CatACObs4);
+                    parametos.Add("CatACObs5", Datos.CatACObs5);
+                    parametos.Add("CatACObs6", Datos.CatACObs6);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_INS_IDENTIFICACION_CATEGORIZACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
 
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "GuardarCategorizacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "GuardarCategorizacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -982,52 +1224,58 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string ActualizarCategorizacion(Categorizacion.DatosCategorizacion Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos.IniToken);
-                parametos.Add("IniUsuario", Datos.IniUsuario);
-                parametos.Add("CatEstadoProyecto", Datos.CatEstadoProyecto);
-                parametos.Add("CatCategoria", Datos.CatCategoria);
-                parametos.Add("CatNivelIngenieria", Datos.CatNivelIngenieria);
-                parametos.Add("CatAgrega", Datos.CatAgrega);
-                parametos.Add("CatTipoCotizacion", Datos.CatTipoCotizacion);
-                parametos.Add("CatClasificacionSSO", Datos.CatClasificacionSSO);
-                parametos.Add("CatEstandarSeguridad", Datos.CatEstandarSeguridad);
-                parametos.Add("CatClase", Datos.CatClase);
-                parametos.Add("CatMacroCategoria", Datos.CatMacroCategoria);
-                parametos.Add("CatAnalisis", Datos.CatAnalisis);
-                parametos.Add("CatACNota1", Datos.CatACNota1);
-                parametos.Add("CatACNota2", Datos.CatACNota2);
-                parametos.Add("CatACNota3", Datos.CatACNota3);
-                parametos.Add("CatACNota4", Datos.CatACNota4);
-                parametos.Add("CatACNota5", Datos.CatACNota5);
-                parametos.Add("CatACNota6", Datos.CatACNota6);
-                parametos.Add("CatACTotal", Datos.CatACTotal);
-                parametos.Add("CatACObs1", Datos.CatACObs1);
-                parametos.Add("CatACObs2", Datos.CatACObs2);
-                parametos.Add("CatACObs3", Datos.CatACObs3);
-                parametos.Add("CatACObs4", Datos.CatACObs4);
-                parametos.Add("CatACObs5", Datos.CatACObs5);
-                parametos.Add("CatACObs6", Datos.CatACObs6);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_UPD_IDENTIFICACION_CATEGORIZACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                try
                 {
-                    return parametos.Get<string>("Respuesta");
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos.IniToken);
+                    parametos.Add("IniUsuario", Datos.IniUsuario);
+                    parametos.Add("CatEstadoProyecto", Datos.CatEstadoProyecto);
+                    parametos.Add("CatCategoria", Datos.CatCategoria);
+                    parametos.Add("CatNivelIngenieria", Datos.CatNivelIngenieria);
+                    parametos.Add("CatAgrega", Datos.CatAgrega);
+                    parametos.Add("CatTipoCotizacion", Datos.CatTipoCotizacion);
+                    parametos.Add("CatClasificacionSSO", Datos.CatClasificacionSSO);
+                    parametos.Add("CatEstandarSeguridad", Datos.CatEstandarSeguridad);
+                    parametos.Add("CatClase", Datos.CatClase);
+                    parametos.Add("CatMacroCategoria", Datos.CatMacroCategoria);
+                    parametos.Add("CatAnalisis", Datos.CatAnalisis);
+                    parametos.Add("CatACNota1", Datos.CatACNota1);
+                    parametos.Add("CatACNota2", Datos.CatACNota2);
+                    parametos.Add("CatACNota3", Datos.CatACNota3);
+                    parametos.Add("CatACNota4", Datos.CatACNota4);
+                    parametos.Add("CatACNota5", Datos.CatACNota5);
+                    parametos.Add("CatACNota6", Datos.CatACNota6);
+                    parametos.Add("CatACTotal", Datos.CatACTotal);
+                    parametos.Add("CatACObs1", Datos.CatACObs1);
+                    parametos.Add("CatACObs2", Datos.CatACObs2);
+                    parametos.Add("CatACObs3", Datos.CatACObs3);
+                    parametos.Add("CatACObs4", Datos.CatACObs4);
+                    parametos.Add("CatACObs5", Datos.CatACObs5);
+                    parametos.Add("CatACObs6", Datos.CatACObs6);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_UPD_IDENTIFICACION_CATEGORIZACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error";
+                    ExceptionResult = AppModule + "ActualizarCategorizacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ActualizarCategorizacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         #endregion
@@ -2347,128 +2595,134 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <param name="Datos"></param>
         public void InsertarInformacionFinancieraCasoBase(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IfDato0", Datos[2].ToString());
-                parametos.Add("IfDato1", Datos[3].ToString());
-                parametos.Add("IfDato2", Datos[4].ToString());
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IfDato0", Datos[2].ToString());
+                    parametos.Add("IfDato1", Datos[3].ToString());
+                    parametos.Add("IfDato2", Datos[4].ToString());
 
-                parametos.Add("IfDato3", Datos[5].ToString());
-                parametos.Add("IfDato4", Datos[6].ToString());
-                parametos.Add("IfDato5", Datos[7].ToString());
-                parametos.Add("IfDato6", Datos[8].ToString());
-                parametos.Add("IfDato7", Datos[9].ToString());
-                parametos.Add("IfDato8", Datos[10].ToString());
-                parametos.Add("IfDato9", Datos[11].ToString());
-                parametos.Add("IfDato10", Datos[12].ToString());
-                parametos.Add("IfDato11", Datos[13].ToString());
-                parametos.Add("IfDato12", Datos[14].ToString());
-                parametos.Add("IfDato13", Datos[15].ToString());
-                parametos.Add("IfDato14", Datos[16].ToString());
+                    parametos.Add("IfDato3", Datos[5].ToString());
+                    parametos.Add("IfDato4", Datos[6].ToString());
+                    parametos.Add("IfDato5", Datos[7].ToString());
+                    parametos.Add("IfDato6", Datos[8].ToString());
+                    parametos.Add("IfDato7", Datos[9].ToString());
+                    parametos.Add("IfDato8", Datos[10].ToString());
+                    parametos.Add("IfDato9", Datos[11].ToString());
+                    parametos.Add("IfDato10", Datos[12].ToString());
+                    parametos.Add("IfDato11", Datos[13].ToString());
+                    parametos.Add("IfDato12", Datos[14].ToString());
+                    parametos.Add("IfDato13", Datos[15].ToString());
+                    parametos.Add("IfDato14", Datos[16].ToString());
 
-                parametos.Add("IfDato15", Datos[17].ToString());
+                    parametos.Add("IfDato15", Datos[17].ToString());
 
-                parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
-                parametos.Add("IfDato17", Datos[19].ToString());
-                parametos.Add("IfDato18", Datos[20].ToString());
-                parametos.Add("IfDato19", Datos[21].ToString());
-                parametos.Add("IfDato20", Datos[22].ToString());
-                parametos.Add("IfDato21", Datos[23].ToString());
-                parametos.Add("IfDato22", Datos[24].ToString());
-                parametos.Add("IfDato23", Datos[25].ToString());
-                parametos.Add("IfDato24", Datos[26].ToString());
-                parametos.Add("IfDato25", Datos[27].ToString());
+                    parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
+                    parametos.Add("IfDato17", Datos[19].ToString());
+                    parametos.Add("IfDato18", Datos[20].ToString());
+                    parametos.Add("IfDato19", Datos[21].ToString());
+                    parametos.Add("IfDato20", Datos[22].ToString());
+                    parametos.Add("IfDato21", Datos[23].ToString());
+                    parametos.Add("IfDato22", Datos[24].ToString());
+                    parametos.Add("IfDato23", Datos[25].ToString());
+                    parametos.Add("IfDato24", Datos[26].ToString());
+                    parametos.Add("IfDato25", Datos[27].ToString());
 
-                parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
-                parametos.Add("IfDato27", Datos[29].ToString());
-                parametos.Add("IfDato28", Datos[30].ToString());
-                parametos.Add("IfDato29", Datos[31].ToString());
-                parametos.Add("IfDato30", Datos[32].ToString());
-                parametos.Add("IfDato31", Datos[33].ToString());
-                parametos.Add("IfDato32", Datos[34].ToString());
-                parametos.Add("IfDato33", Datos[35].ToString());
-                parametos.Add("IfDato34", Datos[36].ToString());
-                parametos.Add("IfDato35", Datos[37].ToString());
+                    parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
+                    parametos.Add("IfDato27", Datos[29].ToString());
+                    parametos.Add("IfDato28", Datos[30].ToString());
+                    parametos.Add("IfDato29", Datos[31].ToString());
+                    parametos.Add("IfDato30", Datos[32].ToString());
+                    parametos.Add("IfDato31", Datos[33].ToString());
+                    parametos.Add("IfDato32", Datos[34].ToString());
+                    parametos.Add("IfDato33", Datos[35].ToString());
+                    parametos.Add("IfDato34", Datos[36].ToString());
+                    parametos.Add("IfDato35", Datos[37].ToString());
 
-                parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
-                parametos.Add("IfDato37", Datos[39].ToString());
-                parametos.Add("IfDato38", Datos[40].ToString());
-                parametos.Add("IfDato39", Datos[41].ToString());
-                parametos.Add("IfDato40", Datos[42].ToString());
-                parametos.Add("IfDato41", Datos[43].ToString());
-                parametos.Add("IfDato42", Datos[44].ToString());
-                parametos.Add("IfDato43", Datos[45].ToString());
-                parametos.Add("IfDato44", Datos[46].ToString());
-                parametos.Add("IfDato45", Datos[47].ToString());
+                    parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
+                    parametos.Add("IfDato37", Datos[39].ToString());
+                    parametos.Add("IfDato38", Datos[40].ToString());
+                    parametos.Add("IfDato39", Datos[41].ToString());
+                    parametos.Add("IfDato40", Datos[42].ToString());
+                    parametos.Add("IfDato41", Datos[43].ToString());
+                    parametos.Add("IfDato42", Datos[44].ToString());
+                    parametos.Add("IfDato43", Datos[45].ToString());
+                    parametos.Add("IfDato44", Datos[46].ToString());
+                    parametos.Add("IfDato45", Datos[47].ToString());
 
-                parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
-                parametos.Add("IfDato47", Datos[49].ToString());
-                parametos.Add("IfDato48", Datos[50].ToString());
-                parametos.Add("IfDato49", Datos[51].ToString());
-                parametos.Add("IfDato50", Datos[52].ToString());
-                parametos.Add("IfDato51", Datos[53].ToString());
-                parametos.Add("IfDato52", Datos[54].ToString());
-                parametos.Add("IfDato53", Datos[55].ToString());
-                parametos.Add("IfDato54", Datos[56].ToString());
-                parametos.Add("IfDato55", Datos[57].ToString());
+                    parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
+                    parametos.Add("IfDato47", Datos[49].ToString());
+                    parametos.Add("IfDato48", Datos[50].ToString());
+                    parametos.Add("IfDato49", Datos[51].ToString());
+                    parametos.Add("IfDato50", Datos[52].ToString());
+                    parametos.Add("IfDato51", Datos[53].ToString());
+                    parametos.Add("IfDato52", Datos[54].ToString());
+                    parametos.Add("IfDato53", Datos[55].ToString());
+                    parametos.Add("IfDato54", Datos[56].ToString());
+                    parametos.Add("IfDato55", Datos[57].ToString());
 
-                parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
-                parametos.Add("IfDato57", Datos[59].ToString());
-                parametos.Add("IfDato58", Datos[60].ToString());
-                parametos.Add("IfDato59", Datos[61].ToString());
-                parametos.Add("IfDato60", Datos[62].ToString());
-                parametos.Add("IfDato61", Datos[63].ToString());
-                parametos.Add("IfDato62", Datos[64].ToString());
-                parametos.Add("IfDato63", Datos[65].ToString());
-                parametos.Add("IfDato64", Datos[66].ToString());
-                parametos.Add("IfDato65", Datos[67].ToString());
+                    parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
+                    parametos.Add("IfDato57", Datos[59].ToString());
+                    parametos.Add("IfDato58", Datos[60].ToString());
+                    parametos.Add("IfDato59", Datos[61].ToString());
+                    parametos.Add("IfDato60", Datos[62].ToString());
+                    parametos.Add("IfDato61", Datos[63].ToString());
+                    parametos.Add("IfDato62", Datos[64].ToString());
+                    parametos.Add("IfDato63", Datos[65].ToString());
+                    parametos.Add("IfDato64", Datos[66].ToString());
+                    parametos.Add("IfDato65", Datos[67].ToString());
 
-                parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
-                parametos.Add("IfDato67", Datos[69].ToString());
-                parametos.Add("IfDato68", Datos[70].ToString());
-                parametos.Add("IfDato69", Datos[71].ToString());
-                parametos.Add("IfDato70", Datos[72].ToString());
-                parametos.Add("IfDato71", Datos[73].ToString());
-                parametos.Add("IfDato72", Datos[74].ToString());
-                parametos.Add("IfDato73", Datos[75].ToString());
-                parametos.Add("IfDato74", Datos[76].ToString());
-                parametos.Add("IfDato75", Datos[77].ToString());
+                    parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
+                    parametos.Add("IfDato67", Datos[69].ToString());
+                    parametos.Add("IfDato68", Datos[70].ToString());
+                    parametos.Add("IfDato69", Datos[71].ToString());
+                    parametos.Add("IfDato70", Datos[72].ToString());
+                    parametos.Add("IfDato71", Datos[73].ToString());
+                    parametos.Add("IfDato72", Datos[74].ToString());
+                    parametos.Add("IfDato73", Datos[75].ToString());
+                    parametos.Add("IfDato74", Datos[76].ToString());
+                    parametos.Add("IfDato75", Datos[77].ToString());
 
-                parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
-                parametos.Add("IfDato77", Datos[79].ToString());
-                parametos.Add("IfDato78", Datos[80].ToString());
-                parametos.Add("IfDato79", Datos[81].ToString());
-                parametos.Add("IfDato80", Datos[82].ToString());
-                parametos.Add("IfDato81", Datos[83].ToString());
-                parametos.Add("IfDato82", Datos[84].ToString());
-                parametos.Add("IfDato83", Datos[85].ToString());
-                parametos.Add("IfDato84", Datos[86].ToString());
-                parametos.Add("IfDato85", Datos[87].ToString());
+                    parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
+                    parametos.Add("IfDato77", Datos[79].ToString());
+                    parametos.Add("IfDato78", Datos[80].ToString());
+                    parametos.Add("IfDato79", Datos[81].ToString());
+                    parametos.Add("IfDato80", Datos[82].ToString());
+                    parametos.Add("IfDato81", Datos[83].ToString());
+                    parametos.Add("IfDato82", Datos[84].ToString());
+                    parametos.Add("IfDato83", Datos[85].ToString());
+                    parametos.Add("IfDato84", Datos[86].ToString());
+                    parametos.Add("IfDato85", Datos[87].ToString());
 
-                parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
-                parametos.Add("IfDato87", Datos[89].ToString());
-                parametos.Add("IfDato88", Datos[90].ToString());
-                parametos.Add("IfDato89", Datos[91].ToString());
-                parametos.Add("IfDato90", Datos[92].ToString());
-                parametos.Add("IfDato91", Datos[93].ToString());
-                parametos.Add("IfDato92", Datos[94].ToString());
-                parametos.Add("IfDato93", Datos[95].ToString());
-                parametos.Add("IfDato94", Datos[96].ToString());
-                parametos.Add("IfDato95", Datos[97].ToString());
+                    parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
+                    parametos.Add("IfDato87", Datos[89].ToString());
+                    parametos.Add("IfDato88", Datos[90].ToString());
+                    parametos.Add("IfDato89", Datos[91].ToString());
+                    parametos.Add("IfDato90", Datos[92].ToString());
+                    parametos.Add("IfDato91", Datos[93].ToString());
+                    parametos.Add("IfDato92", Datos[94].ToString());
+                    parametos.Add("IfDato93", Datos[95].ToString());
+                    parametos.Add("IfDato94", Datos[96].ToString());
+                    parametos.Add("IfDato95", Datos[97].ToString());
 
-                parametos.Add("IfDato96", Datos[98].ToString());//TOTAL
+                    parametos.Add("IfDato96", Datos[98].ToString());//TOTAL
 
-
-
-                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA_CASOBASE", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFinancieraCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FINANCIERA_CASOBASE", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionFinancieraCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -2478,126 +2732,133 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <param name="Datos"></param>
         public void InsertarInformacionFisicoCasoBase(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IfDato0", Datos[2].ToString());
-                parametos.Add("IfDato1", Datos[3].ToString());
-                parametos.Add("IfDato2", Datos[4].ToString());
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IfDato0", Datos[2].ToString());
+                    parametos.Add("IfDato1", Datos[3].ToString());
+                    parametos.Add("IfDato2", Datos[4].ToString());
 
-                parametos.Add("IfDato3", Datos[5].ToString());
-                parametos.Add("IfDato4", Datos[6].ToString());
-                parametos.Add("IfDato5", Datos[7].ToString());
-                parametos.Add("IfDato6", Datos[8].ToString());
-                parametos.Add("IfDato7", Datos[9].ToString());
-                parametos.Add("IfDato8", Datos[10].ToString());
-                parametos.Add("IfDato9", Datos[11].ToString());
-                parametos.Add("IfDato10", Datos[12].ToString());
-                parametos.Add("IfDato11", Datos[13].ToString());
-                parametos.Add("IfDato12", Datos[14].ToString());
-                parametos.Add("IfDato13", Datos[15].ToString());
-                parametos.Add("IfDato14", Datos[16].ToString());
+                    parametos.Add("IfDato3", Datos[5].ToString());
+                    parametos.Add("IfDato4", Datos[6].ToString());
+                    parametos.Add("IfDato5", Datos[7].ToString());
+                    parametos.Add("IfDato6", Datos[8].ToString());
+                    parametos.Add("IfDato7", Datos[9].ToString());
+                    parametos.Add("IfDato8", Datos[10].ToString());
+                    parametos.Add("IfDato9", Datos[11].ToString());
+                    parametos.Add("IfDato10", Datos[12].ToString());
+                    parametos.Add("IfDato11", Datos[13].ToString());
+                    parametos.Add("IfDato12", Datos[14].ToString());
+                    parametos.Add("IfDato13", Datos[15].ToString());
+                    parametos.Add("IfDato14", Datos[16].ToString());
 
-                parametos.Add("IfDato15", Datos[17].ToString());
+                    parametos.Add("IfDato15", Datos[17].ToString());
 
-                parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
-                parametos.Add("IfDato17", Datos[19].ToString());
-                parametos.Add("IfDato18", Datos[20].ToString());
-                parametos.Add("IfDato19", Datos[21].ToString());
-                parametos.Add("IfDato20", Datos[22].ToString());
-                parametos.Add("IfDato21", Datos[23].ToString());
-                parametos.Add("IfDato22", Datos[24].ToString());
-                parametos.Add("IfDato23", Datos[25].ToString());
-                parametos.Add("IfDato24", Datos[26].ToString());
-                parametos.Add("IfDato25", Datos[27].ToString());
+                    parametos.Add("IfDato16", Datos[18].ToString()); //2021 - 2030
+                    parametos.Add("IfDato17", Datos[19].ToString());
+                    parametos.Add("IfDato18", Datos[20].ToString());
+                    parametos.Add("IfDato19", Datos[21].ToString());
+                    parametos.Add("IfDato20", Datos[22].ToString());
+                    parametos.Add("IfDato21", Datos[23].ToString());
+                    parametos.Add("IfDato22", Datos[24].ToString());
+                    parametos.Add("IfDato23", Datos[25].ToString());
+                    parametos.Add("IfDato24", Datos[26].ToString());
+                    parametos.Add("IfDato25", Datos[27].ToString());
 
-                parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
-                parametos.Add("IfDato27", Datos[29].ToString());
-                parametos.Add("IfDato28", Datos[30].ToString());
-                parametos.Add("IfDato29", Datos[31].ToString());
-                parametos.Add("IfDato30", Datos[32].ToString());
-                parametos.Add("IfDato31", Datos[33].ToString());
-                parametos.Add("IfDato32", Datos[34].ToString());
-                parametos.Add("IfDato33", Datos[35].ToString());
-                parametos.Add("IfDato34", Datos[36].ToString());
-                parametos.Add("IfDato35", Datos[37].ToString());
+                    parametos.Add("IfDato26", Datos[28].ToString()); //2031 - 2040
+                    parametos.Add("IfDato27", Datos[29].ToString());
+                    parametos.Add("IfDato28", Datos[30].ToString());
+                    parametos.Add("IfDato29", Datos[31].ToString());
+                    parametos.Add("IfDato30", Datos[32].ToString());
+                    parametos.Add("IfDato31", Datos[33].ToString());
+                    parametos.Add("IfDato32", Datos[34].ToString());
+                    parametos.Add("IfDato33", Datos[35].ToString());
+                    parametos.Add("IfDato34", Datos[36].ToString());
+                    parametos.Add("IfDato35", Datos[37].ToString());
 
-                parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
-                parametos.Add("IfDato37", Datos[39].ToString());
-                parametos.Add("IfDato38", Datos[40].ToString());
-                parametos.Add("IfDato39", Datos[41].ToString());
-                parametos.Add("IfDato40", Datos[42].ToString());
-                parametos.Add("IfDato41", Datos[43].ToString());
-                parametos.Add("IfDato42", Datos[44].ToString());
-                parametos.Add("IfDato43", Datos[45].ToString());
-                parametos.Add("IfDato44", Datos[46].ToString());
-                parametos.Add("IfDato45", Datos[47].ToString());
+                    parametos.Add("IfDato36", Datos[38].ToString()); //2041 - 2050
+                    parametos.Add("IfDato37", Datos[39].ToString());
+                    parametos.Add("IfDato38", Datos[40].ToString());
+                    parametos.Add("IfDato39", Datos[41].ToString());
+                    parametos.Add("IfDato40", Datos[42].ToString());
+                    parametos.Add("IfDato41", Datos[43].ToString());
+                    parametos.Add("IfDato42", Datos[44].ToString());
+                    parametos.Add("IfDato43", Datos[45].ToString());
+                    parametos.Add("IfDato44", Datos[46].ToString());
+                    parametos.Add("IfDato45", Datos[47].ToString());
 
-                parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
-                parametos.Add("IfDato47", Datos[49].ToString());
-                parametos.Add("IfDato48", Datos[50].ToString());
-                parametos.Add("IfDato49", Datos[51].ToString());
-                parametos.Add("IfDato50", Datos[52].ToString());
-                parametos.Add("IfDato51", Datos[53].ToString());
-                parametos.Add("IfDato52", Datos[54].ToString());
-                parametos.Add("IfDato53", Datos[55].ToString());
-                parametos.Add("IfDato54", Datos[56].ToString());
-                parametos.Add("IfDato55", Datos[57].ToString());
+                    parametos.Add("IfDato46", Datos[48].ToString()); //2051 - 2060
+                    parametos.Add("IfDato47", Datos[49].ToString());
+                    parametos.Add("IfDato48", Datos[50].ToString());
+                    parametos.Add("IfDato49", Datos[51].ToString());
+                    parametos.Add("IfDato50", Datos[52].ToString());
+                    parametos.Add("IfDato51", Datos[53].ToString());
+                    parametos.Add("IfDato52", Datos[54].ToString());
+                    parametos.Add("IfDato53", Datos[55].ToString());
+                    parametos.Add("IfDato54", Datos[56].ToString());
+                    parametos.Add("IfDato55", Datos[57].ToString());
 
-                parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
-                parametos.Add("IfDato57", Datos[59].ToString());
-                parametos.Add("IfDato58", Datos[60].ToString());
-                parametos.Add("IfDato59", Datos[61].ToString());
-                parametos.Add("IfDato60", Datos[62].ToString());
-                parametos.Add("IfDato61", Datos[63].ToString());
-                parametos.Add("IfDato62", Datos[64].ToString());
-                parametos.Add("IfDato63", Datos[65].ToString());
-                parametos.Add("IfDato64", Datos[66].ToString());
-                parametos.Add("IfDato65", Datos[67].ToString());
+                    parametos.Add("IfDato56", Datos[58].ToString()); //2061 - 2070
+                    parametos.Add("IfDato57", Datos[59].ToString());
+                    parametos.Add("IfDato58", Datos[60].ToString());
+                    parametos.Add("IfDato59", Datos[61].ToString());
+                    parametos.Add("IfDato60", Datos[62].ToString());
+                    parametos.Add("IfDato61", Datos[63].ToString());
+                    parametos.Add("IfDato62", Datos[64].ToString());
+                    parametos.Add("IfDato63", Datos[65].ToString());
+                    parametos.Add("IfDato64", Datos[66].ToString());
+                    parametos.Add("IfDato65", Datos[67].ToString());
 
-                parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
-                parametos.Add("IfDato67", Datos[69].ToString());
-                parametos.Add("IfDato68", Datos[70].ToString());
-                parametos.Add("IfDato69", Datos[71].ToString());
-                parametos.Add("IfDato70", Datos[72].ToString());
-                parametos.Add("IfDato71", Datos[73].ToString());
-                parametos.Add("IfDato72", Datos[74].ToString());
-                parametos.Add("IfDato73", Datos[75].ToString());
-                parametos.Add("IfDato74", Datos[76].ToString());
-                parametos.Add("IfDato75", Datos[77].ToString());
+                    parametos.Add("IfDato66", Datos[68].ToString()); //2071 - 2080
+                    parametos.Add("IfDato67", Datos[69].ToString());
+                    parametos.Add("IfDato68", Datos[70].ToString());
+                    parametos.Add("IfDato69", Datos[71].ToString());
+                    parametos.Add("IfDato70", Datos[72].ToString());
+                    parametos.Add("IfDato71", Datos[73].ToString());
+                    parametos.Add("IfDato72", Datos[74].ToString());
+                    parametos.Add("IfDato73", Datos[75].ToString());
+                    parametos.Add("IfDato74", Datos[76].ToString());
+                    parametos.Add("IfDato75", Datos[77].ToString());
 
-                parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
-                parametos.Add("IfDato77", Datos[79].ToString());
-                parametos.Add("IfDato78", Datos[80].ToString());
-                parametos.Add("IfDato79", Datos[81].ToString());
-                parametos.Add("IfDato80", Datos[82].ToString());
-                parametos.Add("IfDato81", Datos[83].ToString());
-                parametos.Add("IfDato82", Datos[84].ToString());
-                parametos.Add("IfDato83", Datos[85].ToString());
-                parametos.Add("IfDato84", Datos[86].ToString());
-                parametos.Add("IfDato85", Datos[87].ToString());
+                    parametos.Add("IfDato76", Datos[78].ToString()); //2081 - 2090
+                    parametos.Add("IfDato77", Datos[79].ToString());
+                    parametos.Add("IfDato78", Datos[80].ToString());
+                    parametos.Add("IfDato79", Datos[81].ToString());
+                    parametos.Add("IfDato80", Datos[82].ToString());
+                    parametos.Add("IfDato81", Datos[83].ToString());
+                    parametos.Add("IfDato82", Datos[84].ToString());
+                    parametos.Add("IfDato83", Datos[85].ToString());
+                    parametos.Add("IfDato84", Datos[86].ToString());
+                    parametos.Add("IfDato85", Datos[87].ToString());
 
-                parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
+                    parametos.Add("IfDato86", Datos[88].ToString()); //2091 - 2100
 
-                parametos.Add("IfDato87", Datos[89].ToString());
-                parametos.Add("IfDato88", Datos[90].ToString());
-                parametos.Add("IfDato89", Datos[91].ToString());
-                parametos.Add("IfDato90", Datos[92].ToString());
-                parametos.Add("IfDato91", Datos[93].ToString());
-                parametos.Add("IfDato92", Datos[94].ToString());
-                parametos.Add("IfDato93", Datos[95].ToString());
-                parametos.Add("IfDato94", Datos[96].ToString());
-                parametos.Add("IfDato95", Datos[97].ToString());
-                parametos.Add("IfDato96", Datos[98].ToString());
-
-                ORM.Execute("CAPEX_INS_INFORMACION_FISICO_CASOBASE", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFisicoCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
+                    parametos.Add("IfDato87", Datos[89].ToString());
+                    parametos.Add("IfDato88", Datos[90].ToString());
+                    parametos.Add("IfDato89", Datos[91].ToString());
+                    parametos.Add("IfDato90", Datos[92].ToString());
+                    parametos.Add("IfDato91", Datos[93].ToString());
+                    parametos.Add("IfDato92", Datos[94].ToString());
+                    parametos.Add("IfDato93", Datos[95].ToString());
+                    parametos.Add("IfDato94", Datos[96].ToString());
+                    parametos.Add("IfDato95", Datos[97].ToString());
+                    parametos.Add("IfDato96", Datos[98].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FISICO_CASOBASE", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionFisicoCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -2606,21 +2867,27 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <param name="Datos"></param>
         private void InsertarInformacionFinancieraResumidaCasoBase(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IrDato0", Datos[2].ToString());
-                parametos.Add("IrDato1", Datos[3].ToString());
-                parametos.Add("IrDato2", Datos[4].ToString());
-
-                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA_RESUMIDA", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFinancieraResumida, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
+                try
+                {
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IrDato0", Datos[2].ToString());
+                    parametos.Add("IrDato1", Datos[3].ToString());
+                    parametos.Add("IrDato2", Datos[4].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FINANCIERA_RESUMIDA", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionFinancieraResumida, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -2629,22 +2896,29 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <param name="Datos"></param>
         private void InsertarInformacionGeneralCasoBase(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IgPresupuesto", Datos[2].ToString());
-                parametos.Add("IgFechaInicio", Datos[3].ToString());
-                parametos.Add("IgTermino", Datos[4].ToString());
-                parametos.Add("IgCierre", Datos[5].ToString());
-
-                ORM.Execute("CAPEX_INS_INFORMACION_GENERAL", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionGeneralCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IgPresupuesto", Datos[2].ToString());
+                    parametos.Add("IgFechaInicio", Datos[3].ToString());
+                    parametos.Add("IgTermino", Datos[4].ToString());
+                    parametos.Add("IgCierre", Datos[5].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_GENERAL", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionGeneralCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -2656,240 +2930,248 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         public string PoblarVistaPresupuestoFinancieroCasoBase(string token)
         {
             string Desplegable = String.Empty;
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var resultado = ORM.Query("CAPEX_SEL_INFORMACION_FINANCIERA_CASOBASE", new { token }, commandType: CommandType.StoredProcedure).ToList();
-                var table = new StringBuilder();
-                if (resultado.Count > 0)
+                try
                 {
-                    CultureInfo ciCL = new CultureInfo("es-CL", false);
-                    foreach (var result in resultado)
+                    objConnection.Open();
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_INFORMACION_FINANCIERA_CASOBASE", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                    var table = new StringBuilder();
+                    if (resultado.Count > 0)
                     {
-                        table.Append("<tr>");
-                        table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
-                        /*table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato2)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato3)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato4)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato5)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato6)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato7)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato8)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato9)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato10)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato11)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato12)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato13)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato14)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato15)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato16)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato17)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato18)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato19)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                        CultureInfo ciCL = new CultureInfo("es-CL", false);
+                        foreach (var result in resultado)
+                        {
+                            table.Append("<tr>");
+                            table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
+                            /*table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato2)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato3)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato4)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato5)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato6)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato7)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato8)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato9)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato10)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato11)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato12)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato13)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato14)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato15)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato16)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato17)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato18)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato19)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato20)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato21)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato22)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato23)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato24)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato25)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato26)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato27)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato28)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato29)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato20)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato21)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato22)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato23)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato24)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato25)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato26)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato27)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato28)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato29)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato30)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato31)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato32)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato33)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato34)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato35)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato36)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato37)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato38)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato39)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato30)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato31)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato32)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato33)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato34)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato35)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato36)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato37)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato38)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato39)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato40)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato41)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato42)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato43)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato44)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato45)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato46)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato47)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato48)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato49)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato40)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato41)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato42)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato43)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato44)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato45)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato46)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato47)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato48)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato49)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato50)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato51)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato52)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato53)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato54)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato55)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato56)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato57)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato58)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato59)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato50)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato51)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato52)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato53)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato54)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato55)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato56)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato57)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato58)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato59)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato60)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato61)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato62)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato63)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato64)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato65)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato66)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato67)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato68)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato69)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-
-
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato70)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato71)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato72)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato73)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato74)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato75)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato76)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato77)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato78)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato79)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato80)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato81)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato82)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato83)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato84)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato85)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato86)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato87)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato88)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato89)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato90)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato91)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato92)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato93)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato94)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato95)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato96)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");*/
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato2, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato3, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato4, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato5, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato6, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato7, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato8, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato9, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato10, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato11, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato12, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato13, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato14, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato15, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato16, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato17, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato18, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato19, ciCL)) + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato20, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato21, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato22, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato23, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato24, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato25, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato26, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato27, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato28, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato29, ciCL)) + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato30, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato31, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato32, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato33, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato34, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato35, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato36, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato37, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato38, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato39, ciCL)) + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato40, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato41, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato42, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato43, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato44, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato45, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato46, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato47, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato48, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato49, ciCL)) + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato50, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato51, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato52, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato53, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato54, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato55, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato56, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato57, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato58, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato59, ciCL)) + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato60, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato61, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato62, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato63, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato64, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato65, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato66, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato67, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato68, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato69, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato60)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato61)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato62)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato63)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato64)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato65)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato66)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato67)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato68)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato69)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
 
 
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato70, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato71, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato72, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato73, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato74, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato75, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato76, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato77, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato78, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato79, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato70)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato71)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato72)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato73)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato74)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato75)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato76)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato77)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato78)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato79)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato80, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato81, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato82, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato83, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato84, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato85, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato86, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato87, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato88, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato89, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato80)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato81)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato82)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato83)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato84)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato85)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato86)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato87)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato88)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato89)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato90, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato91, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato92, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato93, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato94, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato95, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato96, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato90)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato91)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato92)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato93)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato94)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato95)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato96)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");*/
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato2, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato3, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato4, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato5, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato6, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato7, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato8, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato9, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato10, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato11, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato12, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato13, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato14, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato15, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato16, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato17, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato18, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato19, ciCL)) + "</td>");
 
-                        table.Append("</tr>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato20, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato21, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato22, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato23, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato24, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato25, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato26, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato27, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato28, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato29, ciCL)) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato30, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato31, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato32, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato33, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato34, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato35, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato36, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato37, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato38, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato39, ciCL)) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato40, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato41, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato42, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato43, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato44, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato45, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato46, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato47, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato48, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato49, ciCL)) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato50, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato51, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato52, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato53, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato54, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato55, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato56, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato57, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato58, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato59, ciCL)) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato60, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato61, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato62, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato63, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato64, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato65, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato66, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato67, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato68, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato69, ciCL)) + "</td>");
+
+
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato70, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato71, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato72, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato73, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato74, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato75, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato76, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato77, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato78, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato79, ciCL)) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato80, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato81, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato82, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato83, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato84, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato85, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato86, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato87, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato88, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato89, ciCL)) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato90, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato91, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato92, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato93, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato94, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato95, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}",double.Parse(result.IfDato96, ciCL)) + "</td>");
+
+                            table.Append("</tr>");
+                        }
+                        Desplegable = table.ToString();
                     }
-                    Desplegable = table.ToString();
-                }
-                else
-                {
-                    Desplegable = "";
-                }
+                    else
+                    {
+                        Desplegable = "";
+                    }
 
-            }
-            catch (Exception exc)
-            {
-                //Desplegable = null;
-                Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                }
+                catch (Exception exc)
+                {
+                    //Desplegable = null;
+                    Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
             return Desplegable.ToString();
         }
@@ -2901,244 +3183,252 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         public string PoblarVistaPresupuestoFisicoCasoBase(string token)
         {
             string Desplegable = String.Empty;
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var resultado = ORM.Query("CAPEX_SEL_INFORMACION_FISICO_CASOBASE", new { token }, commandType: CommandType.StoredProcedure).ToList();
-                var table = new StringBuilder();
-                if (resultado.Count > 0)
+                try
                 {
-                    foreach (var result in resultado)
+                    objConnection.Open();
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_INFORMACION_FISICO_CASOBASE", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                    var table = new StringBuilder();
+                    if (resultado.Count > 0)
                     {
-                        CultureInfo ciCL = new CultureInfo("es-CL", false);
-                        table.Append("<tr>");
-                        table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato2.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato3.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato4.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato5.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato6.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato7.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato8.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato9.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato10.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato11.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato12.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato13.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato14.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato15.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato16.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato17.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato18.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato19.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                        foreach (var result in resultado)
+                        {
+                            CultureInfo ciCL = new CultureInfo("es-CL", false);
+                            table.Append("<tr>");
+                            table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato2.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato3.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato4.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato5.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato6.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato7.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato8.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato9.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato10.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato11.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato12.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato13.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato14.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato15.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato16.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato17.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato18.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato19.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato20.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato21.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato22.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato23.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato24.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato25.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato26.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato27.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato28.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato29.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato20.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato21.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato22.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato23.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato24.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato25.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato26.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato27.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato28.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato29.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato30.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato31.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato32.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato33.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato34.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato35.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato36.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato37.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato38.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato39.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato30.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato31.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato32.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato33.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato34.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato35.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato36.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato37.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato38.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato39.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato40.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato41.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato42.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato43.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato44.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato45.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato46.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato47.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato48.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato49.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato40.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato41.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato42.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato43.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato44.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato45.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato46.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato47.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato48.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato49.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato50.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato51.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato52.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato53.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato54.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato55.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato56.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato57.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato58.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato59.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato50.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato51.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato52.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato53.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato54.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato55.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato56.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato57.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato58.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato59.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato60.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato61.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato62.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato63.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato64.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato65.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato66.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato67.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato68.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato69.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-
-
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato70.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato71.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato72.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato73.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato74.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato75.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato76.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato77.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato78.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato79.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato80.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato81.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato82.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato83.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato84.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato85.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato86.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato87.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato88.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato89.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato90.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato91.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato92.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato93.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato94.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato95.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato96.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-
-                        /*CultureInfo ciCL = new CultureInfo("es-CL", false);
-                        NumberFormatInfo nfiCL = new CultureInfo("es-CL", true).NumberFormat; 
-                        table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato2, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato3, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato4, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato5, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato6, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato7, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato8, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato9, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato10, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato11, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato12, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato13, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato14, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato15, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato16, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato17, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato18, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato19, ciCL).ToString("n", nfiCL) + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato20, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato21, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato22, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato23, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato24, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato25, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato26, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato27, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato28, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato29, ciCL).ToString("n", nfiCL) + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato30, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato31, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato32, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato33, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato34, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato35, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato36, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato37, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato38, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato39, ciCL).ToString("n", nfiCL) + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato40, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato41, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato42, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato43, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato44, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato45, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato46, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato47, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato48, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato49, ciCL).ToString("n", nfiCL) + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato50, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato51, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato52, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato53, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato54, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato55, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato56, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato57, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato58, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato59, ciCL).ToString("n", nfiCL) + "</td>");
-
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato60, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato61, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato62, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato63, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato64, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato65, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato66, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato67, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato68, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato69, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato60.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato61.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato62.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato63.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato64.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato65.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato66.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato67.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato68.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato69.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
 
 
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato70, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato71, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato72, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato73, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato74, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato75, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato76, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato77, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato78, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato79, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato70.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato71.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato72.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato73.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato74.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato75.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato76.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato77.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato78.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato79.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato80, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato81, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato82, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato83, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato84, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato85, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato86, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato87, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato88, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato89, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato80.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato81.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato82.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato83.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato84.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato85.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato86.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato87.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato88.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato89.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
 
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato90, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato91, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato92, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato93, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato94, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato95, ciCL).ToString("n", nfiCL) + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato96, ciCL).ToString("n", nfiCL) + "</td>");*/
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato90.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato91.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato92.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato93.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato94.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato95.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato96.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
 
-                        table.Append("</tr>");
+                            /*CultureInfo ciCL = new CultureInfo("es-CL", false);
+                            NumberFormatInfo nfiCL = new CultureInfo("es-CL", true).NumberFormat; 
+                            table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato2, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato3, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato4, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato5, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato6, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato7, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato8, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato9, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato10, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato11, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato12, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato13, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato14, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato15, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato16, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato17, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato18, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato19, ciCL).ToString("n", nfiCL) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato20, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato21, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato22, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato23, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato24, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato25, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato26, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato27, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato28, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato29, ciCL).ToString("n", nfiCL) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato30, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato31, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato32, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato33, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato34, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato35, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato36, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato37, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato38, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato39, ciCL).ToString("n", nfiCL) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato40, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato41, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato42, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato43, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato44, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato45, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato46, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato47, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato48, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato49, ciCL).ToString("n", nfiCL) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato50, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato51, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato52, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato53, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato54, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato55, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato56, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato57, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato58, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato59, ciCL).ToString("n", nfiCL) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato60, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato61, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato62, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato63, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato64, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato65, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato66, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato67, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato68, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato69, ciCL).ToString("n", nfiCL) + "</td>");
+
+
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato70, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato71, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato72, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato73, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato74, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato75, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato76, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato77, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato78, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato79, ciCL).ToString("n", nfiCL) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato80, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato81, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato82, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato83, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato84, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato85, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato86, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato87, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato88, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato89, ciCL).ToString("n", nfiCL) + "</td>");
+
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato90, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato91, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato92, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato93, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato94, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato95, ciCL).ToString("n", nfiCL) + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.IfDato96, ciCL).ToString("n", nfiCL) + "</td>");*/
+
+                            table.Append("</tr>");
+                        }
+                        Desplegable = table.ToString();
                     }
-                    Desplegable = table.ToString();
-                }
-                else
-                {
-                    Desplegable = "";
-                }
+                    else
+                    {
+                        Desplegable = "";
+                    }
 
-            }
-            catch (Exception exc)
-            {
-                Desplegable = null;
-                //Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                }
+                catch (Exception exc)
+                {
+                    Desplegable = null;
+                    //Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
             return Desplegable.ToString();
         }
@@ -3478,37 +3768,45 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <param name="Datos"></param>
         private void InsertarInformacionFinanciera(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IfDato0", Datos[2].ToString());
-                parametos.Add("IfDato1", Datos[3].ToString());
-                parametos.Add("IfDato2", Datos[4].ToString());
-                parametos.Add("IfDato3", Datos[5].ToString());
-                parametos.Add("IfDato4", Datos[6].ToString());
-                parametos.Add("IfDato5", Datos[7].ToString());
-                parametos.Add("IfDato6", Datos[8].ToString());
-                parametos.Add("IfDato7", Datos[9].ToString());
-                parametos.Add("IfDato8", Datos[10].ToString());
-                parametos.Add("IfDato9", Datos[11].ToString());
-                parametos.Add("IfDato10", Datos[12].ToString());
-                parametos.Add("IfDato11", Datos[13].ToString());
-                parametos.Add("IfDato12", Datos[14].ToString());
-                parametos.Add("IfDato13", Datos[15].ToString());
-                parametos.Add("IfDato14", Datos[16].ToString());
-                parametos.Add("IfDato15", Datos[17].ToString());
-                parametos.Add("IfDato16", Datos[18].ToString());
-                parametos.Add("IfDato17", Datos[19].ToString());
-                parametos.Add("IfDato18", Datos[20].ToString());
-                parametos.Add("IfDato19", Datos[21].ToString());
-                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFinanciera, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IfDato0", Datos[2].ToString());
+                    parametos.Add("IfDato1", Datos[3].ToString());
+                    parametos.Add("IfDato2", Datos[4].ToString());
+                    parametos.Add("IfDato3", Datos[5].ToString());
+                    parametos.Add("IfDato4", Datos[6].ToString());
+                    parametos.Add("IfDato5", Datos[7].ToString());
+                    parametos.Add("IfDato6", Datos[8].ToString());
+                    parametos.Add("IfDato7", Datos[9].ToString());
+                    parametos.Add("IfDato8", Datos[10].ToString());
+                    parametos.Add("IfDato9", Datos[11].ToString());
+                    parametos.Add("IfDato10", Datos[12].ToString());
+                    parametos.Add("IfDato11", Datos[13].ToString());
+                    parametos.Add("IfDato12", Datos[14].ToString());
+                    parametos.Add("IfDato13", Datos[15].ToString());
+                    parametos.Add("IfDato14", Datos[16].ToString());
+                    parametos.Add("IfDato15", Datos[17].ToString());
+                    parametos.Add("IfDato16", Datos[18].ToString());
+                    parametos.Add("IfDato17", Datos[19].ToString());
+                    parametos.Add("IfDato18", Datos[20].ToString());
+                    parametos.Add("IfDato19", Datos[21].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FINANCIERA", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionFinanciera, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -3517,60 +3815,76 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <param name="Datos"></param>
         private void InsertarInformacionFinancieraResumida(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IrDato0", Datos[2].ToString());
-                parametos.Add("IrDato1", Datos[3].ToString());
-                parametos.Add("IrDato2", Datos[4].ToString());
-
-                ORM.Execute("CAPEX_INS_INFORMACION_FINANCIERA_RESUMIDA", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFinancieraResumida, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IrDato0", Datos[2].ToString());
+                    parametos.Add("IrDato1", Datos[3].ToString());
+                    parametos.Add("IrDato2", Datos[4].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FINANCIERA_RESUMIDA", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionFinancieraResumida, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
+
         /// <summary>
         /// INSERTAR DATOS DE FISICO
         /// </summary>
         /// <param name="Datos"></param>
         private void InsertarInformacionFisico(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("FiDato0", Datos[2].ToString());
-                parametos.Add("FiDato1", Datos[3].ToString());
-                parametos.Add("FiDato2", Datos[4].ToString());
-                parametos.Add("FiDato3", Datos[5].ToString());
-                parametos.Add("FiDato4", Datos[6].ToString());
-                parametos.Add("FiDato5", Datos[7].ToString());
-                parametos.Add("FiDato6", Datos[8].ToString());
-                parametos.Add("FiDato7", Datos[9].ToString());
-                parametos.Add("FiDato8", Datos[10].ToString());
-                parametos.Add("FiDato9", Datos[11].ToString());
-                parametos.Add("FiDato10", Datos[12].ToString());
-                parametos.Add("FiDato11", Datos[13].ToString());
-                parametos.Add("FiDato12", Datos[14].ToString());
-                parametos.Add("FiDato13", Datos[15].ToString());
-                parametos.Add("FiDato14", Datos[16].ToString());
-                parametos.Add("FiDato15", Datos[17].ToString());
-                parametos.Add("FiDato16", Datos[18].ToString());
-                parametos.Add("FiDato17", Datos[19].ToString());
-                parametos.Add("FiDato18", Datos[20].ToString());
-                parametos.Add("FiDato19", Datos[21].ToString());
-                ORM.Execute("CAPEX_INS_INFORMACION_FISICO", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionFisico, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("FiDato0", Datos[2].ToString());
+                    parametos.Add("FiDato1", Datos[3].ToString());
+                    parametos.Add("FiDato2", Datos[4].ToString());
+                    parametos.Add("FiDato3", Datos[5].ToString());
+                    parametos.Add("FiDato4", Datos[6].ToString());
+                    parametos.Add("FiDato5", Datos[7].ToString());
+                    parametos.Add("FiDato6", Datos[8].ToString());
+                    parametos.Add("FiDato7", Datos[9].ToString());
+                    parametos.Add("FiDato8", Datos[10].ToString());
+                    parametos.Add("FiDato9", Datos[11].ToString());
+                    parametos.Add("FiDato10", Datos[12].ToString());
+                    parametos.Add("FiDato11", Datos[13].ToString());
+                    parametos.Add("FiDato12", Datos[14].ToString());
+                    parametos.Add("FiDato13", Datos[15].ToString());
+                    parametos.Add("FiDato14", Datos[16].ToString());
+                    parametos.Add("FiDato15", Datos[17].ToString());
+                    parametos.Add("FiDato16", Datos[18].ToString());
+                    parametos.Add("FiDato17", Datos[19].ToString());
+                    parametos.Add("FiDato18", Datos[20].ToString());
+                    parametos.Add("FiDato19", Datos[21].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_FISICO", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionFisico, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -3579,22 +3893,29 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <param name="Datos"></param>
         private void InsertarInformacionGeneral(List<String> Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos[0].ToString());
-                parametos.Add("IniUsuario", Datos[1].ToString());
-                parametos.Add("IgPresupuesto", Datos[2].ToString());
-                parametos.Add("IgFechaInicio", Datos[3].ToString());
-                parametos.Add("IgTermino", Datos[4].ToString());
-                parametos.Add("IgCierre", Datos[5].ToString());
-
-                ORM.Execute("CAPEX_INS_INFORMACION_GENERAL", parametos, commandType: CommandType.StoredProcedure);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "InsertarInformacionGeneral, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos[0].ToString());
+                    parametos.Add("IniUsuario", Datos[1].ToString());
+                    parametos.Add("IgPresupuesto", Datos[2].ToString());
+                    parametos.Add("IgFechaInicio", Datos[3].ToString());
+                    parametos.Add("IgTermino", Datos[4].ToString());
+                    parametos.Add("IgCierre", Datos[5].ToString());
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_INFORMACION_GENERAL", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "InsertarInformacionGeneral, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -3606,68 +3927,76 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         public string PoblarVistaPresupuestoFinanciero(string token)
         {
             string Desplegable = String.Empty;
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var resultado = ORM.Query("CAPEX_SEL_INFORMACION_FINANCIERA", new { token }, commandType: CommandType.StoredProcedure).ToList();
-                var table = new StringBuilder();
-                if (resultado.Count > 0)
+                try
                 {
-                    CultureInfo ciCL = new CultureInfo("es-CL", false);
-                    foreach (var result in resultado)
+                    objConnection.Open();
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_INFORMACION_FINANCIERA", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                    var table = new StringBuilder();
+                    if (resultado.Count > 0)
                     {
-                        table.Append("<tr>");
-                        /*table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato2)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato3)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato4)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato5)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato6)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato7)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato8)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato9)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato10)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato11)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato12)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato13)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato14)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato15)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato16)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato17)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato18)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato19)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");*/
-                        table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
-                        table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato2, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato3, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato4, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato5, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato6, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato7, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato8, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato9, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato10, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato11, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato12, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato13, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato14, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato15, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato16, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato17, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato18, ciCL)) + "</td>");
-                        table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato19, ciCL)) + "</td>");
-                        table.Append("</tr>");
+                        CultureInfo ciCL = new CultureInfo("es-CL", false);
+                        foreach (var result in resultado)
+                        {
+                            table.Append("<tr>");
+                            /*table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato2)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato3)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato4)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato5)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato6)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato7)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato8)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato9)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato10)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato11)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato12)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato13)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato14)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato15)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato16)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato17)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato18)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", Convert.ToDouble(result.IfDato19)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");*/
+                            table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.IfDato0 + "</td>");
+                            table.Append("<td style='text-align:center;'>" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato2, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato3, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato4, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato5, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato6, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato7, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato8, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato9, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato10, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato11, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato12, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato13, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato14, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato15, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato16, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato17, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato18, ciCL)) + "</td>");
+                            table.Append("<td style='text-align:center;' >" + String.Format("{0:#,##0.##}", double.Parse(result.IfDato19, ciCL)) + "</td>");
+                            table.Append("</tr>");
+                        }
+                        Desplegable = table.ToString();
                     }
-                    Desplegable = table.ToString();
-                }
-                else
-                {
-                    Desplegable = "";
-                }
+                    else
+                    {
+                        Desplegable = "";
+                    }
 
-            }
-            catch (Exception exc)
-            {
-                Desplegable = null;
-                //Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                }
+                catch (Exception exc)
+                {
+                    Desplegable = null;
+                    //Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
             return Desplegable.ToString();
         }
@@ -3679,51 +4008,59 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         public string PoblarVistaPresupuestoFisico(string token)
         {
             string Desplegable = String.Empty;
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var resultado = ORM.Query("CAPEX_SEL_INFORMACION_FISICO", new { token }, commandType: CommandType.StoredProcedure).ToList();
-                var table = new StringBuilder();
-                if (resultado.Count > 0)
+                try
                 {
-                    foreach (var result in resultado)
+                    objConnection.Open();
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_INFORMACION_FISICO", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                    var table = new StringBuilder();
+                    if (resultado.Count > 0)
                     {
+                        foreach (var result in resultado)
+                        {
 
-                        CultureInfo ciCL = new CultureInfo("es-CL", false);
+                            CultureInfo ciCL = new CultureInfo("es-CL", false);
 
-                        table.Append("<tr>");
-                        table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.FiDato0 + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato2.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato3.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato4.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato5.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato6.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato7.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato8.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato9.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato10.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato11.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato12.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato13.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato14.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato15.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato16.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato17.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato18.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato19.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
-                        table.Append("</tr>");
+                            table.Append("<tr>");
+                            table.Append("<td style='text-align:left;background-color:#5c808d;'>" + result.FiDato0 + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato2.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato3.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato4.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato5.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato6.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato7.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato8.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato9.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato10.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato11.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato12.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato13.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato14.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato15.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato16.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato17.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato18.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("<td style='text-align:center;'>" + double.Parse(result.FiDato19.Replace('.', ','), ciCL).ToString().Replace('.', ',') + "</td>");
+                            table.Append("</tr>");
+                        }
+                        Desplegable = table.ToString();
                     }
-                    Desplegable = table.ToString();
-                }
-                else
-                {
-                    Desplegable = "";
-                }
+                    else
+                    {
+                        Desplegable = "";
+                    }
 
-            }
-            catch (Exception exc)
-            {
-                Desplegable = null;
-                //Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                }
+                catch (Exception exc)
+                {
+                    Desplegable = null;
+                    //Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
             return Desplegable.ToString();
         }
@@ -3737,17 +4074,24 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Dotacion.DetalleContratosDotacion> ListarContratosDotacion(string Token)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Dotacion.DetalleContratosDotacion>("CAPEX_SEL_DOTACION_CONTRATOS_LISTAR", commandType: CommandType.StoredProcedure).ToList();
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Dotacion.DetalleContratosDotacion>(objConnection, "CAPEX_SEL_DOTACION_CONTRATOS_LISTAR", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarContratosDotacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarContratosDotacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
-            }
-
         }
         /// <summary>
         /// 
@@ -3755,15 +4099,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Dotacion.DepartamentoDotacion> ListarDepartamentos()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Dotacion.DepartamentoDotacion>("CAPEX_SEL_DEP_GLOSA", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarDepartamentos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Dotacion.DepartamentoDotacion>(objConnection, "CAPEX_SEL_DEP_GLOSA", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarDepartamentos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -3772,15 +4124,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Dotacion.Turnos> ListarTurnos()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Dotacion.Turnos>("CAPEX_SEL_TURNOS", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarTurnos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Dotacion.Turnos>(objConnection, "CAPEX_SEL_TURNOS", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarTurnos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -3789,15 +4149,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Dotacion.Ubicacion> ListarUbicaciones()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Dotacion.Ubicacion>("CAPEX_SEL_DOTACION_UBICACION", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarUbicaciones, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Dotacion.Ubicacion>(objConnection, "CAPEX_SEL_DOTACION_UBICACION", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarUbicaciones, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -3806,15 +4174,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Dotacion.DotacionEECC> ListarTipoEECC()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Dotacion.DotacionEECC>("CAPEX_SEL_DOTACION_EECC", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarTipoEECC, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Dotacion.DotacionEECC>(objConnection, "CAPEX_SEL_DOTACION_EECC", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarTipoEECC, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -3823,15 +4199,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Dotacion.DotacionClasificacion> ListarClasificacion()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Dotacion.DotacionClasificacion>("CAPEX_SEL_DOTACION_CLASIFICACION", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarClasificacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Dotacion.DotacionClasificacion>(objConnection, "CAPEX_SEL_DOTACION_CLASIFICACION", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarClasificacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -3841,58 +4225,65 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string GuardarContratoDotacion(Dotacion.ContratoDotacion DatosContratoDotacion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", DatosContratoDotacion.IniToken);
-                parametos.Add("PidArea", DatosContratoDotacion.PidArea);
-                parametos.Add("PidCodigoIniciativa", DatosContratoDotacion.PidCodigoIniciativa);
-                parametos.Add("PidNombreProyecto", DatosContratoDotacion.PidNombreProyecto);
-                parametos.Add("DotAnn", DatosContratoDotacion.DotAnn);
-                parametos.Add("DotSitProyecto", DatosContratoDotacion.DotSitProyecto);
-                parametos.Add("DotSitFaena", DatosContratoDotacion.DotSitFaena);
-                parametos.Add("DotDepto", DatosContratoDotacion.DotDepto);
-                parametos.Add("DotNumContrato", DatosContratoDotacion.DotNumContrato);
-                parametos.Add("DotNombEECC", DatosContratoDotacion.DotNombEECC);
-                parametos.Add("DotServicio", DatosContratoDotacion.DotServicio);
-                parametos.Add("DotSubContrato", DatosContratoDotacion.DotSubContrato);
-                parametos.Add("DotCodCentro", DatosContratoDotacion.DotCodCentro);
-                parametos.Add("DotTurno", DatosContratoDotacion.DotTurno);
-                parametos.Add("DotHoteleria", DatosContratoDotacion.DotHoteleria);
-                parametos.Add("DotAlimentacion", DatosContratoDotacion.DotAlimentacion);
-                parametos.Add("DotUbicacion", DatosContratoDotacion.DotUbicacion);
-                parametos.Add("DotClasificacion", DatosContratoDotacion.DotClasificacion);
-                parametos.Add("DotTipoEECC", DatosContratoDotacion.DotTipoEECC);
-                parametos.Add("DotTotalDotacion", DatosContratoDotacion.DotTotalDotacion);
-                parametos.Add("DotEne", DatosContratoDotacion.DotEne);
-                parametos.Add("DotFeb", DatosContratoDotacion.DotFeb);
-                parametos.Add("DotMar", DatosContratoDotacion.DotMar);
-                parametos.Add("DotAbr", DatosContratoDotacion.DotAbr);
-                parametos.Add("DotMay", DatosContratoDotacion.DotMay);
-                parametos.Add("DotJun", DatosContratoDotacion.DotJun);
-                parametos.Add("DotJul", DatosContratoDotacion.DotJul);
-                parametos.Add("DotAgo", DatosContratoDotacion.DotAgo);
-                parametos.Add("DotSep", DatosContratoDotacion.DotSep);
-                parametos.Add("DotOct", DatosContratoDotacion.DotOct);
-                parametos.Add("DotNov", DatosContratoDotacion.DotNov);
-                parametos.Add("DotDic", DatosContratoDotacion.DotDic);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_INS_IDENTIFICACION_DOTACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                try
                 {
-                    return parametos.Get<string>("Respuesta");
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", DatosContratoDotacion.IniToken);
+                    parametos.Add("PidArea", DatosContratoDotacion.PidArea);
+                    parametos.Add("PidCodigoIniciativa", DatosContratoDotacion.PidCodigoIniciativa);
+                    parametos.Add("PidNombreProyecto", DatosContratoDotacion.PidNombreProyecto);
+                    parametos.Add("DotAnn", DatosContratoDotacion.DotAnn);
+                    parametos.Add("DotSitProyecto", DatosContratoDotacion.DotSitProyecto);
+                    parametos.Add("DotSitFaena", DatosContratoDotacion.DotSitFaena);
+                    parametos.Add("DotDepto", DatosContratoDotacion.DotDepto);
+                    parametos.Add("DotNumContrato", DatosContratoDotacion.DotNumContrato);
+                    parametos.Add("DotNombEECC", DatosContratoDotacion.DotNombEECC);
+                    parametos.Add("DotServicio", DatosContratoDotacion.DotServicio);
+                    parametos.Add("DotSubContrato", DatosContratoDotacion.DotSubContrato);
+                    parametos.Add("DotCodCentro", DatosContratoDotacion.DotCodCentro);
+                    parametos.Add("DotTurno", DatosContratoDotacion.DotTurno);
+                    parametos.Add("DotHoteleria", DatosContratoDotacion.DotHoteleria);
+                    parametos.Add("DotAlimentacion", DatosContratoDotacion.DotAlimentacion);
+                    parametos.Add("DotUbicacion", DatosContratoDotacion.DotUbicacion);
+                    parametos.Add("DotClasificacion", DatosContratoDotacion.DotClasificacion);
+                    parametos.Add("DotTipoEECC", DatosContratoDotacion.DotTipoEECC);
+                    parametos.Add("DotTotalDotacion", DatosContratoDotacion.DotTotalDotacion);
+                    parametos.Add("DotEne", DatosContratoDotacion.DotEne);
+                    parametos.Add("DotFeb", DatosContratoDotacion.DotFeb);
+                    parametos.Add("DotMar", DatosContratoDotacion.DotMar);
+                    parametos.Add("DotAbr", DatosContratoDotacion.DotAbr);
+                    parametos.Add("DotMay", DatosContratoDotacion.DotMay);
+                    parametos.Add("DotJun", DatosContratoDotacion.DotJun);
+                    parametos.Add("DotJul", DatosContratoDotacion.DotJul);
+                    parametos.Add("DotAgo", DatosContratoDotacion.DotAgo);
+                    parametos.Add("DotSep", DatosContratoDotacion.DotSep);
+                    parametos.Add("DotOct", DatosContratoDotacion.DotOct);
+                    parametos.Add("DotNov", DatosContratoDotacion.DotNov);
+                    parametos.Add("DotDic", DatosContratoDotacion.DotDic);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_INS_IDENTIFICACION_DOTACION", commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "ERROR";
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "ERROR";
+                    ExceptionResult = AppModule + "GuardarContratoDotacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "GuardarContratoDotacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -3921,16 +4312,24 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string EliminarContratoDotacion(string Token)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                ORM.Query("CAPEX_DEL_CONTRATO_DOTACION", new { Token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                return "Eliminado";
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "EliminarContratoDotacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    SqlMapper.Query(objConnection, "CAPEX_DEL_CONTRATO_DOTACION", new { Token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    return "Eliminado";
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "EliminarContratoDotacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         #endregion
@@ -3992,45 +4391,52 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string GuardarDescripcionDetallada(Descripcion.DescripcionDetallada DatosDescripcion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniUsuario", DatosDescripcion.IniUsuario);
-                parametos.Add("IniToken", DatosDescripcion.IniToken);
-                parametos.Add("PddObjetivo", escapeString(DatosDescripcion.PddObjetivo));
-                parametos.Add("PddAlcance", escapeString(DatosDescripcion.PddAlcance));
-                parametos.Add("PddJustificacion", escapeString(DatosDescripcion.PddJustificacion));
-                parametos.Add("PddDescripcion1", DatosDescripcion.PddDescripcion1);
-                parametos.Add("PddUnidad1", DatosDescripcion.PddUnidad1);
-                parametos.Add("PddActual1", DatosDescripcion.PddActual1);
-                parametos.Add("PddTarget1", DatosDescripcion.PddTarget1);
-                parametos.Add("PddDescripcion2", DatosDescripcion.PddDescripcion2);
-                parametos.Add("PddUnidad2", DatosDescripcion.PddUnidad2);
-                parametos.Add("PddActual2", DatosDescripcion.PddActual2);
-                parametos.Add("PddTarget2", DatosDescripcion.PddTarget2);
-                parametos.Add("PddDescripcion3", DatosDescripcion.PddDescripcion3);
-                parametos.Add("PddUnidad3", DatosDescripcion.PddUnidad3);
-                parametos.Add("PddActual3", DatosDescripcion.PddActual3);
-                parametos.Add("PddTarget3", DatosDescripcion.PddTarget3);
-                parametos.Add("PddFechaPostEval", DatosDescripcion.PddFechaPostEval);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_INS_IDENTIFICACION_DESCRIPCION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                try
                 {
-                    return parametos.Get<string>("Respuesta");
-                }
-                else
-                {
-                    return "Error";
-                }
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniUsuario", DatosDescripcion.IniUsuario);
+                    parametos.Add("IniToken", DatosDescripcion.IniToken);
+                    parametos.Add("PddObjetivo", escapeString(DatosDescripcion.PddObjetivo));
+                    parametos.Add("PddAlcance", escapeString(DatosDescripcion.PddAlcance));
+                    parametos.Add("PddJustificacion", escapeString(DatosDescripcion.PddJustificacion));
+                    parametos.Add("PddDescripcion1", DatosDescripcion.PddDescripcion1);
+                    parametos.Add("PddUnidad1", DatosDescripcion.PddUnidad1);
+                    parametos.Add("PddActual1", DatosDescripcion.PddActual1);
+                    parametos.Add("PddTarget1", DatosDescripcion.PddTarget1);
+                    parametos.Add("PddDescripcion2", DatosDescripcion.PddDescripcion2);
+                    parametos.Add("PddUnidad2", DatosDescripcion.PddUnidad2);
+                    parametos.Add("PddActual2", DatosDescripcion.PddActual2);
+                    parametos.Add("PddTarget2", DatosDescripcion.PddTarget2);
+                    parametos.Add("PddDescripcion3", DatosDescripcion.PddDescripcion3);
+                    parametos.Add("PddUnidad3", DatosDescripcion.PddUnidad3);
+                    parametos.Add("PddActual3", DatosDescripcion.PddActual3);
+                    parametos.Add("PddTarget3", DatosDescripcion.PddTarget3);
+                    parametos.Add("PddFechaPostEval", DatosDescripcion.PddFechaPostEval);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_INS_IDENTIFICACION_DESCRIPCION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
 
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "GuardarDescripcionDetallada, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "GuardarDescripcionDetallada, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -4040,47 +4446,52 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string ActualizarDescripcionDetallada(Descripcion.DescripcionDetallada DatosDescripcion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniUsuario", DatosDescripcion.IniUsuario);
-                parametos.Add("IniToken", DatosDescripcion.IniToken);
-                parametos.Add("PddObjetivo", escapeString(DatosDescripcion.PddObjetivo));
-                parametos.Add("PddAlcance", escapeString(DatosDescripcion.PddAlcance));
-                parametos.Add("PddJustificacion", escapeString(DatosDescripcion.PddJustificacion));
-                parametos.Add("PddDescripcion1", DatosDescripcion.PddDescripcion1);
-                parametos.Add("PddUnidad1", DatosDescripcion.PddUnidad1);
-                parametos.Add("PddActual1", DatosDescripcion.PddActual1);
-                parametos.Add("PddTarget1", DatosDescripcion.PddTarget1);
-                parametos.Add("PddDescripcion2", DatosDescripcion.PddDescripcion2);
-                parametos.Add("PddUnidad2", DatosDescripcion.PddUnidad2);
-                parametos.Add("PddActual2", DatosDescripcion.PddActual2);
-                parametos.Add("PddTarget2", DatosDescripcion.PddTarget2);
-                parametos.Add("PddDescripcion3", DatosDescripcion.PddDescripcion3);
-                parametos.Add("PddUnidad3", DatosDescripcion.PddUnidad3);
-                parametos.Add("PddActual3", DatosDescripcion.PddActual3);
-                parametos.Add("PddTarget3", DatosDescripcion.PddTarget3);
-                parametos.Add("PddFechaPostEval", DatosDescripcion.PddFechaPostEval);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_UPD_IDENTIFICACION_DESCRIPCION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                try
                 {
-                    return parametos.Get<string>("Respuesta");
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniUsuario", DatosDescripcion.IniUsuario);
+                    parametos.Add("IniToken", DatosDescripcion.IniToken);
+                    parametos.Add("PddObjetivo", escapeString(DatosDescripcion.PddObjetivo));
+                    parametos.Add("PddAlcance", escapeString(DatosDescripcion.PddAlcance));
+                    parametos.Add("PddJustificacion", escapeString(DatosDescripcion.PddJustificacion));
+                    parametos.Add("PddDescripcion1", DatosDescripcion.PddDescripcion1);
+                    parametos.Add("PddUnidad1", DatosDescripcion.PddUnidad1);
+                    parametos.Add("PddActual1", DatosDescripcion.PddActual1);
+                    parametos.Add("PddTarget1", DatosDescripcion.PddTarget1);
+                    parametos.Add("PddDescripcion2", DatosDescripcion.PddDescripcion2);
+                    parametos.Add("PddUnidad2", DatosDescripcion.PddUnidad2);
+                    parametos.Add("PddActual2", DatosDescripcion.PddActual2);
+                    parametos.Add("PddTarget2", DatosDescripcion.PddTarget2);
+                    parametos.Add("PddDescripcion3", DatosDescripcion.PddDescripcion3);
+                    parametos.Add("PddUnidad3", DatosDescripcion.PddUnidad3);
+                    parametos.Add("PddActual3", DatosDescripcion.PddActual3);
+                    parametos.Add("PddTarget3", DatosDescripcion.PddTarget3);
+                    parametos.Add("PddFechaPostEval", DatosDescripcion.PddFechaPostEval);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_UPD_IDENTIFICACION_DESCRIPCION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error";
+                    ExceptionResult = AppModule + "ActualizarDescripcionDetallada, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-
+                finally
+                {
+                    objConnection.Close();
+                }
             }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ActualizarDescripcionDetallada, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
-            }
-
         }
         #endregion
 
@@ -4107,47 +4518,53 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string GuardarEvaluacionEconomica(EvaluacionEconomica.GuardarEvaluacion DatosEvaluacion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniUsuario", DatosEvaluacion.IniUsuario);
-                parametos.Add("IniToken", DatosEvaluacion.IniToken);
-                parametos.Add("EveVan", DatosEvaluacion.EveVan);
-                parametos.Add("EveIvan", DatosEvaluacion.EveIvan);
-                parametos.Add("EvePayBack", DatosEvaluacion.EvePayBack);
-                parametos.Add("EveVidaUtil", DatosEvaluacion.EveVidaUtil);
-                parametos.Add("EveTipoCambio", DatosEvaluacion.EveTipoCambio);
-                string EveTir = "0";
-                if (DatosEvaluacion.EveTir != null && !string.IsNullOrEmpty(DatosEvaluacion.EveTir))
+                try
                 {
-                    EveTir = DatosEvaluacion.EveTir.Trim();
-                    EveTir = EveTir.Replace("%", "");
-                    if (EveTir.IndexOf(",") > 0)
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniUsuario", DatosEvaluacion.IniUsuario);
+                    parametos.Add("IniToken", DatosEvaluacion.IniToken);
+                    parametos.Add("EveVan", DatosEvaluacion.EveVan);
+                    parametos.Add("EveIvan", DatosEvaluacion.EveIvan);
+                    parametos.Add("EvePayBack", DatosEvaluacion.EvePayBack);
+                    parametos.Add("EveVidaUtil", DatosEvaluacion.EveVidaUtil);
+                    parametos.Add("EveTipoCambio", DatosEvaluacion.EveTipoCambio);
+                    string EveTir = "0";
+                    if (DatosEvaluacion.EveTir != null && !string.IsNullOrEmpty(DatosEvaluacion.EveTir))
                     {
-                        EveTir = EveTir.Replace(",", ".");
+                        EveTir = DatosEvaluacion.EveTir.Trim();
+                        EveTir = EveTir.Replace("%", "");
+                        if (EveTir.IndexOf(",") > 0)
+                        {
+                            EveTir = EveTir.Replace(",", ".");
+                        }
                     }
-                }
-                parametos.Add("EveTir", EveTir);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    parametos.Add("EveTir", EveTir);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_INS_IDENTIFICACION_EVAL_ECONOMICA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
 
-                ORM.Query("CAPEX_INS_IDENTIFICACION_EVAL_ECONOMICA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                }
+                catch (Exception err)
                 {
-                    return parametos.Get<string>("Respuesta");
+                    ExceptionResult = AppModule + "GuardarEvaluacionEconomica, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-                else
+                finally
                 {
-                    return "Error";
+                    objConnection.Close();
                 }
-
             }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "GuardarEvaluacionEconomica, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
-            }
-
         }
         /// <summary>
         /// 
@@ -4156,47 +4573,53 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string ActualizarEvaluacionEconomica(EvaluacionEconomica.GuardarEvaluacion DatosEvaluacion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniUsuario", DatosEvaluacion.IniUsuario);
-                parametos.Add("IniToken", DatosEvaluacion.IniToken);
-                parametos.Add("EveVan", DatosEvaluacion.EveVan);
-                parametos.Add("EveIvan", DatosEvaluacion.EveIvan);
-                parametos.Add("EvePayBack", DatosEvaluacion.EvePayBack);
-                parametos.Add("EveVidaUtil", DatosEvaluacion.EveVidaUtil);
-                parametos.Add("EveTipoCambio", DatosEvaluacion.EveTipoCambio);
-                string EveTir = "0";
-                if (DatosEvaluacion.EveTir != null && !string.IsNullOrEmpty(DatosEvaluacion.EveTir))
+                try
                 {
-                    EveTir = DatosEvaluacion.EveTir.Trim();
-                    EveTir = EveTir.Replace("%", "");
-                    if (EveTir.IndexOf(",") > 0)
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniUsuario", DatosEvaluacion.IniUsuario);
+                    parametos.Add("IniToken", DatosEvaluacion.IniToken);
+                    parametos.Add("EveVan", DatosEvaluacion.EveVan);
+                    parametos.Add("EveIvan", DatosEvaluacion.EveIvan);
+                    parametos.Add("EvePayBack", DatosEvaluacion.EvePayBack);
+                    parametos.Add("EveVidaUtil", DatosEvaluacion.EveVidaUtil);
+                    parametos.Add("EveTipoCambio", DatosEvaluacion.EveTipoCambio);
+                    string EveTir = "0";
+                    if (DatosEvaluacion.EveTir != null && !string.IsNullOrEmpty(DatosEvaluacion.EveTir))
                     {
-                        EveTir = EveTir.Replace(",", ".");
+                        EveTir = DatosEvaluacion.EveTir.Trim();
+                        EveTir = EveTir.Replace("%", "");
+                        if (EveTir.IndexOf(",") > 0)
+                        {
+                            EveTir = EveTir.Replace(",", ".");
+                        }
                     }
-                }
-                parametos.Add("EveTir", EveTir);
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    parametos.Add("EveTir", EveTir);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_UPD_IDENTIFICACION_EVAL_ECONOMICA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
 
-                ORM.Query("CAPEX_UPD_IDENTIFICACION_EVAL_ECONOMICA", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                }
+                catch (Exception err)
                 {
-                    return parametos.Get<string>("Respuesta");
+                    ExceptionResult = AppModule + "ActualizarEvaluacionEconomica, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-                else
+                finally
                 {
-                    return "Error";
+                    objConnection.Close();
                 }
-
             }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ActualizarEvaluacionEconomica, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
-            }
-
         }
         #endregion
 
@@ -4223,44 +4646,50 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string GuardarEvaluacionRiesgo(EvaluacionRiesgo.GuardarEvaluacion DatosEvaluacion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniUsuario", DatosEvaluacion.IniUsuario);
-                parametos.Add("IniToken", DatosEvaluacion.IniToken);
-                parametos.Add("EriProb1", DatosEvaluacion.EriProb1);
-                parametos.Add("EriImp1", DatosEvaluacion.EriImp1);
-                parametos.Add("EriRies1", DatosEvaluacion.EriRies1);
-                parametos.Add("EriClas1", DatosEvaluacion.EriClas1);
-                parametos.Add("EriMFL1", DatosEvaluacion.EriMFL1);
-
-                parametos.Add("EriProb2", DatosEvaluacion.EriProb2);
-                parametos.Add("EriImp2", DatosEvaluacion.EriImp2);
-                parametos.Add("EriRies2", DatosEvaluacion.EriRies2);
-                parametos.Add("EriClas2", DatosEvaluacion.EriClas2);
-                parametos.Add("EriMFL2", DatosEvaluacion.EriMFL2);
-                parametos.Add("EriItemMR", DatosEvaluacion.EriItemMR);
-
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_INS_IDENTIFICACION_EVAL_RIESGO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                try
                 {
-                    return parametos.Get<string>("Respuesta");
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniUsuario", DatosEvaluacion.IniUsuario);
+                    parametos.Add("IniToken", DatosEvaluacion.IniToken);
+                    parametos.Add("EriProb1", DatosEvaluacion.EriProb1);
+                    parametos.Add("EriImp1", DatosEvaluacion.EriImp1);
+                    parametos.Add("EriRies1", DatosEvaluacion.EriRies1);
+                    parametos.Add("EriClas1", DatosEvaluacion.EriClas1);
+                    parametos.Add("EriMFL1", DatosEvaluacion.EriMFL1);
+
+                    parametos.Add("EriProb2", DatosEvaluacion.EriProb2);
+                    parametos.Add("EriImp2", DatosEvaluacion.EriImp2);
+                    parametos.Add("EriRies2", DatosEvaluacion.EriRies2);
+                    parametos.Add("EriClas2", DatosEvaluacion.EriClas2);
+                    parametos.Add("EriMFL2", DatosEvaluacion.EriMFL2);
+                    parametos.Add("EriItemMR", DatosEvaluacion.EriItemMR);
+
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_INS_IDENTIFICACION_EVAL_RIESGO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
+
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error";
+                    ExceptionResult = AppModule + "GuardarEvaluacionRiesgo, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-
+                finally
+                {
+                    objConnection.Close();
+                }
             }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "GuardarEvaluacionRiesgo, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
-            }
-
         }
         /// <summary>
         /// 
@@ -4269,44 +4698,49 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string ActualizarEvaluacionRiesgo(EvaluacionRiesgo.GuardarEvaluacion DatosEvaluacion)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniUsuario", DatosEvaluacion.IniUsuario);
-                parametos.Add("IniToken", DatosEvaluacion.IniToken);
-                parametos.Add("EriProb1", DatosEvaluacion.EriProb1);
-                parametos.Add("EriImp1", DatosEvaluacion.EriImp1);
-                parametos.Add("EriRies1", DatosEvaluacion.EriRies1);
-                parametos.Add("EriClas1", DatosEvaluacion.EriClas1);
-                parametos.Add("EriMFL1", DatosEvaluacion.EriMFL1);
-
-                parametos.Add("EriProb2", DatosEvaluacion.EriProb2);
-                parametos.Add("EriImp2", DatosEvaluacion.EriImp2);
-                parametos.Add("EriRies2", DatosEvaluacion.EriRies2);
-                parametos.Add("EriClas2", DatosEvaluacion.EriClas2);
-                parametos.Add("EriMFL2", DatosEvaluacion.EriMFL2);
-                parametos.Add("EriItemMR", DatosEvaluacion.EriItemMR);
-
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_UPD_IDENTIFICACION_EVAL_RIESGO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                try
                 {
-                    return parametos.Get<string>("Respuesta");
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniUsuario", DatosEvaluacion.IniUsuario);
+                    parametos.Add("IniToken", DatosEvaluacion.IniToken);
+                    parametos.Add("EriProb1", DatosEvaluacion.EriProb1);
+                    parametos.Add("EriImp1", DatosEvaluacion.EriImp1);
+                    parametos.Add("EriRies1", DatosEvaluacion.EriRies1);
+                    parametos.Add("EriClas1", DatosEvaluacion.EriClas1);
+                    parametos.Add("EriMFL1", DatosEvaluacion.EriMFL1);
+
+                    parametos.Add("EriProb2", DatosEvaluacion.EriProb2);
+                    parametos.Add("EriImp2", DatosEvaluacion.EriImp2);
+                    parametos.Add("EriRies2", DatosEvaluacion.EriRies2);
+                    parametos.Add("EriClas2", DatosEvaluacion.EriClas2);
+                    parametos.Add("EriMFL2", DatosEvaluacion.EriMFL2);
+                    parametos.Add("EriItemMR", DatosEvaluacion.EriItemMR);
+
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_UPD_IDENTIFICACION_EVAL_RIESGO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error";
+                    ExceptionResult = AppModule + "ActualizarEvaluacionRiesgo, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-
+                finally
+                {
+                    objConnection.Close();
+                }
             }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ActualizarEvaluacionRiesgo, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
-            }
-
         }
         #endregion
 
@@ -4319,78 +4753,86 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         public string PoblarVistaHitos(string token)
         {
             string Desplegable = String.Empty;
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var resultado = ORM.Query("CAPEX_SEL_RESUMEN_FINANCIERO", new { token }, commandType: CommandType.StoredProcedure).ToList();
-                var table = new StringBuilder();
-                var contador = 1;
-                var fondocelda = "transparent";
-
-                if (resultado.Count > 0)
+                try
                 {
-                    foreach (var result in resultado)
+                    objConnection.Open();
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_RESUMEN_FINANCIERO", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                    var table = new StringBuilder();
+                    var contador = 1;
+                    var fondocelda = "transparent";
+
+                    if (resultado.Count > 0)
                     {
-                        if (contador < 7)
+                        foreach (var result in resultado)
                         {
-                            table.Append("<tr>");
-                            if (contador == 4)
+                            if (contador < 7)
                             {
-                                table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> Administración o Costos Dueños  (<span id='HitosCostos'></span>%)</td>");
+                                table.Append("<tr>");
+                                if (contador == 4)
+                                {
+                                    table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> Administración o Costos Dueños  (<span id='HitosCostos'></span>%)</td>");
+                                }
+                                else if (contador == 5)
+                                {
+                                    table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> Contingencia (<span id='HitosContingencia'></span>%)</td>");
+                                }
+                                else if (contador == 6)
+                                {
+                                    table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> Total Presupuesto</td>");
+                                }
+                                else
+                                {
+                                    table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> " + result.Fase + "</td>");
+                                }
+                                CultureInfo ciCL = new CultureInfo("es-CL", false);
+                                if (contador < 6)
+                                {
+                                    /*table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");*/
+                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert) + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert) + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores) + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "'></td>");
+                                }
+                                else
+                                {
+                                    /*table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");*/
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert) + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert) + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores) + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "'></td>");
+                                }
+                                table.Append("</tr>");
                             }
-                            else if (contador == 5)
-                            {
-                                table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> Contingencia (<span id='HitosContingencia'></span>%)</td>");
-                            }
-                            else if (contador == 6)
-                            {
-                                table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> Total Presupuesto</td>");
-                            }
-                            else
-                            {
-                                table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> " + result.Fase + "</td>");
-                            }
-                            CultureInfo ciCL = new CultureInfo("es-CL", false);
-                            if (contador < 6)
-                            {
-                                /*table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");*/
-                                table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert) + "</td>");
-                                table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert) + "</td>");
-                                table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores) + "</td>");
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "'></td>");
-                            }
-                            else
-                            {
-                                /*table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");*/
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert) + "</td>");
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert) + "</td>");
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores) + "</td>");
-                                table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert) + "'></td>");
-                            }
-                            table.Append("</tr>");
+                            contador++;
                         }
-                        contador++;
+                        Desplegable = table.ToString();
+                        table = null;
                     }
-                    Desplegable = table.ToString();
-                    table = null;
-                }
-                else
-                {
-                    Desplegable = "";
-                    table = null;
-                }
+                    else
+                    {
+                        Desplegable = "";
+                        table = null;
+                    }
 
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "PoblarVistaHitos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                Desplegable = "ERROR";
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "PoblarVistaHitos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    Desplegable = "ERROR";
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
             return Desplegable.ToString();
         }
@@ -4402,15 +4844,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Hito.HitoResumen> PoblarVistaHitosResumen(string token)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Hito.HitoResumen>("CAPEX_SEL_IMPORTACION_RESUMEN", new { token }, commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "PoblarVistaHitosResumen, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Hito.HitoResumen>(objConnection, "CAPEX_SEL_IMPORTACION_RESUMEN", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "PoblarVistaHitosResumen, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -4420,15 +4870,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Hito.HitoDetalle> PoblarVistaHitosDetalle(string token)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Hito.HitoDetalle>("CAPEX_SEL_IMPORTACION_GENERAL", new { token }, commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "PoblarVistaHitosDetalle, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Hito.HitoDetalle>(objConnection, "CAPEX_SEL_IMPORTACION_GENERAL", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "PoblarVistaHitosDetalle, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -4438,38 +4896,45 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string GuardarHito(Hito.HitoGuardar Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos.IniToken);
-                parametos.Add("IniUsuario", Datos.IniUsuario);
-                parametos.Add("HitNacExt", Datos.HitNacExt);
-                parametos.Add("HitSAP", Datos.HitSAP);
-                parametos.Add("HitCI", Datos.HitCI);
-                parametos.Add("HitCA", Datos.HitCA);
-                parametos.Add("HitOPR", Datos.HitOPR);
-                parametos.Add("HitPE", Datos.HitPE);
-                parametos.Add("HitDIRCEN", Datos.HitDIRCEN);
-                parametos.Add("HitDirPLC", Datos.HitDirPLC);
-
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_INS_IDENTIFICACION_HITO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                try
                 {
-                    return parametos.Get<string>("Respuesta");
-                }
-                else
-                {
-                    return "Error";
-                }
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos.IniToken);
+                    parametos.Add("IniUsuario", Datos.IniUsuario);
+                    parametos.Add("HitNacExt", Datos.HitNacExt);
+                    parametos.Add("HitSAP", Datos.HitSAP);
+                    parametos.Add("HitCI", Datos.HitCI);
+                    parametos.Add("HitCA", Datos.HitCA);
+                    parametos.Add("HitOPR", Datos.HitOPR);
+                    parametos.Add("HitPE", Datos.HitPE);
+                    parametos.Add("HitDIRCEN", Datos.HitDIRCEN);
+                    parametos.Add("HitDirPLC", Datos.HitDirPLC);
 
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "GuardarHito, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_INS_IDENTIFICACION_HITO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
+
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "GuardarHito, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -4479,38 +4944,43 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string ActualizarHito(Hito.HitoGuardar Datos)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var parametos = new DynamicParameters();
-                parametos.Add("IniToken", Datos.IniToken);
-                parametos.Add("IniUsuario", Datos.IniUsuario);
-                parametos.Add("HitNacExt", Datos.HitNacExt);
-                parametos.Add("HitSAP", Datos.HitSAP);
-                parametos.Add("HitCI", Datos.HitCI);
-                parametos.Add("HitCA", Datos.HitCA);
-                parametos.Add("HitOPR", Datos.HitOPR);
-                parametos.Add("HitPE", Datos.HitPE);
-                parametos.Add("HitDIRCEN", Datos.HitDIRCEN);
-                parametos.Add("HitDirPLC", Datos.HitDirPLC);
-
-                parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-
-                ORM.Query("CAPEX_UPD_IDENTIFICACION_HITO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                try
                 {
-                    return parametos.Get<string>("Respuesta");
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", Datos.IniToken);
+                    parametos.Add("IniUsuario", Datos.IniUsuario);
+                    parametos.Add("HitNacExt", Datos.HitNacExt);
+                    parametos.Add("HitSAP", Datos.HitSAP);
+                    parametos.Add("HitCI", Datos.HitCI);
+                    parametos.Add("HitCA", Datos.HitCA);
+                    parametos.Add("HitOPR", Datos.HitOPR);
+                    parametos.Add("HitPE", Datos.HitPE);
+                    parametos.Add("HitDIRCEN", Datos.HitDIRCEN);
+                    parametos.Add("HitDirPLC", Datos.HitDirPLC);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_UPD_IDENTIFICACION_HITO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return parametos.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "Error";
+                    }
                 }
-                else
+                catch (Exception err)
                 {
-                    return "Error";
+                    ExceptionResult = AppModule + "ActualizarHito, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
                 }
-
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ActualizarHito, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -4522,16 +4992,24 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string EnviarIniciativa(string IniToken, string WrfUsuario, string WrfObservacion, string Rol)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                ORM.Execute("CAPEX_INS_IDENTIFICACION_ENVIAR", new { IniToken, WrfUsuario, WrfObservacion, Rol }, commandType: CommandType.StoredProcedure);
-                return "Enviado";
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "EnviarIniciativa, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return "Error";
+                try
+                {
+                    objConnection.Open();
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_IDENTIFICACION_ENVIAR", new { IniToken, WrfUsuario, WrfObservacion, Rol }, commandType: CommandType.StoredProcedure);
+                    return "Enviado";
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "EnviarIniciativa, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return "Error";
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -4547,59 +5025,67 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         {
             string Desplegable = string.Empty;
             string Estado = string.Empty;
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                var categorias = ORM.Query("CAPEX_SEL_ADJUNTOS_VIGENTES", new { token }, commandType: CommandType.StoredProcedure).ToList();
-                var items = ORM.Query("CAPEX_SEL_ADJUNTOS_ITEMS_VIGENTES", new { token }, commandType: CommandType.StoredProcedure).ToList();
-                var arbol = new StringBuilder();
-                var contador = 1;
-
-                if (categorias.Count > 0)
+                try
                 {
-                    foreach (var categoria in categorias)
+                    objConnection.Open();
+                    var categorias = SqlMapper.Query(objConnection, "CAPEX_SEL_ADJUNTOS_VIGENTES", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                    var items = SqlMapper.Query(objConnection, "CAPEX_SEL_ADJUNTOS_ITEMS_VIGENTES", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                    var arbol = new StringBuilder();
+                    var contador = 1;
+
+                    if (categorias.Count > 0)
                     {
-                        arbol.Append("<li>");
-                        arbol.Append("<i class='fa fa-folder fa-2x'></i> <a href='#'>" + categoria.ParPaso + "</a>");
-                        foreach (var item in items)
+                        foreach (var categoria in categorias)
                         {
-                            if (categoria.ParPaso == item.ParPaso)
+                            arbol.Append("<li>");
+                            arbol.Append("<i class='fa fa-folder fa-2x'></i> <a href='#'>" + categoria.ParPaso + "</a>");
+                            foreach (var item in items)
                             {
-                                if ("Evaluacion-Economica".Equals(item.ParPaso, StringComparison.OrdinalIgnoreCase))
+                                if (categoria.ParPaso == item.ParPaso)
                                 {
-                                    arbol.Append("<ul><li><a style='cursor:default;' href='#link" + contador + "'><i class='fa fa-file fa-2x' style='color:#79a557; margin-left:10px;'></i> " + ((!string.IsNullOrEmpty(item.ParNombreFinal)) ? item.ParNombreFinal : item.ParNombre) + "</a> | <span onclick='FNDescargarAdjuntoFinal(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Descargar </span> | <span onclick='FNModalEliminarAdjuntoEE(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Eliminar </span></li></ul>");
-                                }
-                                else if ("Evaluacion-Riesgo".Equals(item.ParPaso, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    arbol.Append("<ul><li><a style='cursor:default;' href='#link" + contador + "'><i class='fa fa-file fa-2x' style='color:#79a557; margin-left:10px;'></i> " + ((!string.IsNullOrEmpty(item.ParNombreFinal)) ? item.ParNombreFinal : item.ParNombre) + "</a> | <span onclick='FNDescargarAdjuntoFinal(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Descargar </span> | <span onclick='FNModalEliminarAdjuntoER(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Eliminar </span></li></ul>");
-                                }
-                                else if ("Presupuesto".Equals(item.ParPaso, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    arbol.Append("<ul><li><a style='cursor:default;' href='#link" + contador + "'><i class='fa fa-file fa-2x' style='color:#79a557; margin-left:10px;'></i> " + ((!string.IsNullOrEmpty(item.ParNombreFinal)) ? item.ParNombreFinal : item.ParNombre) + "</a> | <span onclick='FNDescargarAdjuntoFinal(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Descargar </span></li></ul>");
-                                }
-                                else
-                                {
-                                    arbol.Append("<ul><li><a style='cursor:default;' href='#link" + contador + "'><i class='fa fa-file fa-2x' style='color:#79a557; margin-left:10px;'></i> " + ((!string.IsNullOrEmpty(item.ParNombreFinal)) ? item.ParNombreFinal : item.ParNombre) + "</a> | <span onclick='FNDescargarAdjuntoFinal(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Descargar </span> | <span onclick='FNModalEliminarAdjunto(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Eliminar </span></li></ul>");
+                                    if ("Evaluacion-Economica".Equals(item.ParPaso, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        arbol.Append("<ul><li><a style='cursor:default;' href='#link" + contador + "'><i class='fa fa-file fa-2x' style='color:#79a557; margin-left:10px;'></i> " + ((!string.IsNullOrEmpty(item.ParNombreFinal)) ? item.ParNombreFinal : item.ParNombre) + "</a> | <span onclick='FNDescargarAdjuntoFinal(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Descargar </span> | <span onclick='FNModalEliminarAdjuntoEE(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Eliminar </span></li></ul>");
+                                    }
+                                    else if ("Evaluacion-Riesgo".Equals(item.ParPaso, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        arbol.Append("<ul><li><a style='cursor:default;' href='#link" + contador + "'><i class='fa fa-file fa-2x' style='color:#79a557; margin-left:10px;'></i> " + ((!string.IsNullOrEmpty(item.ParNombreFinal)) ? item.ParNombreFinal : item.ParNombre) + "</a> | <span onclick='FNDescargarAdjuntoFinal(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Descargar </span> | <span onclick='FNModalEliminarAdjuntoER(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Eliminar </span></li></ul>");
+                                    }
+                                    else if ("Presupuesto".Equals(item.ParPaso, StringComparison.OrdinalIgnoreCase))
+                                    {
+                                        arbol.Append("<ul><li><a style='cursor:default;' href='#link" + contador + "'><i class='fa fa-file fa-2x' style='color:#79a557; margin-left:10px;'></i> " + ((!string.IsNullOrEmpty(item.ParNombreFinal)) ? item.ParNombreFinal : item.ParNombre) + "</a> | <span onclick='FNDescargarAdjuntoFinal(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Descargar </span></li></ul>");
+                                    }
+                                    else
+                                    {
+                                        arbol.Append("<ul><li><a style='cursor:default;' href='#link" + contador + "'><i class='fa fa-file fa-2x' style='color:#79a557; margin-left:10px;'></i> " + ((!string.IsNullOrEmpty(item.ParNombreFinal)) ? item.ParNombreFinal : item.ParNombre) + "</a> | <span onclick='FNDescargarAdjuntoFinal(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Descargar </span> | <span onclick='FNModalEliminarAdjunto(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='cursor: pointer'> Eliminar </span></li></ul>");
+                                    }
                                 }
                             }
+                            arbol.Append("</li>");
+                            contador++;
                         }
-                        arbol.Append("</li>");
-                        contador++;
+
+                        Desplegable = arbol.ToString();
+                        arbol = null;
+                    }
+                    else
+                    {
+                        Desplegable = "";
                     }
 
-                    Desplegable = arbol.ToString();
-                    arbol = null;
                 }
-                else
+                catch (Exception exc)
                 {
-                    Desplegable = "";
+                    ExceptionResult = AppModule + "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return "Error";
                 }
-
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = AppModule + "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return "Error";
+                finally
+                {
+                    objConnection.Close();
+                }
             }
             return Desplegable.ToString();
         }
@@ -4612,29 +5098,45 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public Identificacion.Adjunto SeleccionarAdjunto(string token)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.Adjunto>("CAPEX_SEL_ADJUNTO_ITEM", new { @Token = token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = AppModule + "SeleccionarAdjunto, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.Adjunto>(objConnection, "CAPEX_SEL_ADJUNTO_ITEM", new { @Token = token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = AppModule + "SeleccionarAdjunto, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public Identificacion.DocumentoCategoria SeleccionarDocumentoBiblioteca(string token)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.DocumentoCategoria>("CAPEX_SEL_DOCUMENTACION_BY_TOKEN", new { @DocToken = token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = AppModule + "SeleccionarDocumentoBiblioteca, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.DocumentoCategoria>(objConnection, "CAPEX_SEL_DOCUMENTACION_BY_TOKEN", new { @DocToken = token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = AppModule + "SeleccionarDocumentoBiblioteca, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -4645,47 +5147,71 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string EliminarAdjuntoVigente(string token, string usuario)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                ORM.Execute("CAPEX_DEL_ADJUNTO_VIGENTE", new { @Token = token, @Usuario = usuario }, commandType: CommandType.StoredProcedure);
-                return "Eliminado";
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = AppModule + "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return "Error";
+                try
+                {
+                    objConnection.Open();
+                    SqlMapper.Execute(objConnection, "CAPEX_DEL_ADJUNTO_VIGENTE", new { @Token = token, @Usuario = usuario }, commandType: CommandType.StoredProcedure);
+                    return "Eliminado";
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = AppModule + "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return "Error";
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
 
         public string EliminarAdjuntoVigenteConEvaluacionEconomica(string IniToken, string ParToken, string usuario)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                ORM.Execute("CAPEX_DEL_ADJUNTO_VIGENTE_EVALUACION_ECONOMICA", new { @IniToken = IniToken, @ParToken = ParToken, @Usuario = usuario }, commandType: CommandType.StoredProcedure);
-                return "Eliminado";
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = AppModule + "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return "Error";
+                try
+                {
+                    objConnection.Open();
+                    SqlMapper.Execute(objConnection, "CAPEX_DEL_ADJUNTO_VIGENTE_EVALUACION_ECONOMICA", new { @IniToken = IniToken, @ParToken = ParToken, @Usuario = usuario }, commandType: CommandType.StoredProcedure);
+                    return "Eliminado";
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = AppModule + "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return "Error";
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
         public string EliminarAdjuntoVigenteConEvaluacionRiesgo(string IniToken, string ParToken, string usuario)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                ORM.Execute("CAPEX_DEL_ADJUNTO_VIGENTE_EVALUACION_RIESGO", new { @IniToken = IniToken, @ParToken = ParToken, @Usuario = usuario }, commandType: CommandType.StoredProcedure);
-                return "Eliminado";
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = AppModule + "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return "Error";
+                try
+                {
+                    objConnection.Open();
+                    SqlMapper.Execute(objConnection, "CAPEX_DEL_ADJUNTO_VIGENTE_EVALUACION_RIESGO", new { @IniToken = IniToken, @ParToken = ParToken, @Usuario = usuario }, commandType: CommandType.StoredProcedure);
+                    return "Eliminado";
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = AppModule + "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return "Error";
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -4696,16 +5222,24 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string EliminarAdjunto(string token)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                ORM.Execute("[CAPEX_DEL_ADJUNTO]", new { @Token = token }, commandType: CommandType.StoredProcedure);
-                return "Eliminado";
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = AppModule + "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return "Error";
+                try
+                {
+                    objConnection.Open();
+                    SqlMapper.Execute(objConnection, "CAPEX_DEL_ADJUNTO", new { @Token = token }, commandType: CommandType.StoredProcedure);
+                    return "Eliminado";
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = AppModule + "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return "Error";
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -4716,15 +5250,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public Identificacion.Adjunto SeleccionarAdjuntoPorTokenYPaso(string IniToken, string ParPaso)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.Adjunto>("CAPEX_SEL_ADJUNTO_ITEM_POR_TOKEN_PARPASO", new { @IniToken = IniToken, @ParPaso = ParPaso }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = AppModule + "SeleccionarAdjuntoPorTokenYPaso, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.Adjunto>(objConnection, "CAPEX_SEL_ADJUNTO_ITEM_POR_TOKEN_PARPASO", new { @IniToken = IniToken, @ParPaso = ParPaso }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = AppModule + "SeleccionarAdjuntoPorTokenYPaso, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -4735,15 +5277,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public Identificacion.Adjunto SeleccionarOtroAdjuntoPorTokenYPaso(string IniToken, string ParToken, string ParPaso)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.Adjunto>("CAPEX_SEL_ADJUNTO_ITEM_POR_TOKEN_PARPASO", new { @IniToken = IniToken, ParToken = ParToken, @ParPaso = ParPaso }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = AppModule + "SeleccionarOtroAdjuntoPorTokenYPaso, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.Adjunto>(objConnection, "CAPEX_SEL_ADJUNTO_ITEM_POR_TOKEN_PARPASO", new { @IniToken = IniToken, ParToken = ParToken, @ParPaso = ParPaso }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = AppModule + "SeleccionarOtroAdjuntoPorTokenYPaso, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -4763,16 +5313,24 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string RegistrarArchivo(string IniToken, string ParUsuario, string ParNombre, string ParPaso, string ParCaso)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                ORM.Query("CAPEX_INS_REGISTRAR_ARCHIVO", new { IniToken, ParUsuario, ParNombre, ParPaso, ParCaso }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                return "Registrado";
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = AppModule + "RegistrarArchivo, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return "Error";
+                try
+                {
+                    objConnection.Open();
+                    SqlMapper.Query(objConnection, "CAPEX_INS_REGISTRAR_ARCHIVO", new { IniToken, ParUsuario, ParNombre, ParPaso, ParCaso }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    return "Registrado";
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = AppModule + "RegistrarArchivo, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return "Error";
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 
@@ -4782,15 +5340,23 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public List<Identificacion.MatrizRiesgo> ListarMatrizRiesgo()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Identificacion.MatrizRiesgo>("CAPEX_SEL_MATRIZ_RIESGO", commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ListarMatrizRiesgo, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Identificacion.MatrizRiesgo>(objConnection, "CAPEX_SEL_MATRIZ_RIESGO", commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ListarMatrizRiesgo, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 

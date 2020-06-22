@@ -584,3 +584,22 @@ FNNoAprobarIniciativaCE = function (token) {
         console.log('error', xhr);
     });
 }
+
+FNDescargarAdjuntoFinal = function (token) {
+    var link = document.createElement("a");
+    console.info("token=", token);
+    $.ajax({
+        url: "Documentacion/DescargarDocumentoAdjuntoFinal/" + token,
+        method: "GET",
+        data: { "token": token },
+        async: false
+    }).done(function (r) {
+        if (r && r.IsSuccess && r.ResponseData) {
+            console.log("r.ResponseData=", r.ResponseData);
+            document.location.href = r.ResponseData;
+        }
+    }).fail(function (xhr) {
+        console.log('fail error', xhr);
+    });
+    return;
+}

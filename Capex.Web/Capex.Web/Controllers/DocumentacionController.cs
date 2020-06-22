@@ -78,7 +78,7 @@ namespace Capex.Web.Controllers
         //DOCUMENTACION
         //public static DocumentacionFactory FactoryDocumentacion;
         //public static IDocumentacion IDocumentacion;
-        public SqlConnection ORM;
+        //public SqlConnection ORM;
         #endregion
 
         //IDENTIFICACION
@@ -93,7 +93,7 @@ namespace Capex.Web.Controllers
             //IDENTIFICACION
             FactoryPlanificacion = new PlanificacionFactory();
             JsonResponse = string.Empty;
-            ORM = CapexInfraestructure.Utilities.Utils.Conectar();
+            //ORM = CapexInfraestructure.Utilities.Utils.Conectar();
         }
         #endregion
 
@@ -114,9 +114,23 @@ namespace Capex.Web.Controllers
         {
             var ComToken = "F1DBFB20-6DCA-4537-A66E-53E3B3C3B830";
             var Categoria = string.Empty;
-            ViewBag.Categoria = ORM.Query("CAPEX_SEL_DOCUMENTACION_CATEGORIA", new { @ComToken = ComToken }, commandType: CommandType.StoredProcedure).ToList();
-            ViewBag.Documentos = ORM.Query("CAPEX_SEL_DOCUMENTACION_LISTAR", new { @Categoria = Categoria }, commandType: CommandType.StoredProcedure).ToList();
-
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    ViewBag.Categoria = SqlMapper.Query(objConnection, "CAPEX_SEL_DOCUMENTACION_CATEGORIA", new { @ComToken = ComToken }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.Documentos = SqlMapper.Query(objConnection, "CAPEX_SEL_DOCUMENTACION_LISTAR", new { @Categoria = Categoria }, commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
             return View("Index");
         }
         #endregion
@@ -141,8 +155,23 @@ namespace Capex.Web.Controllers
                 {
                     Categoria = string.Empty;
                 }
-                ViewBag.Categoria = ORM.Query("CAPEX_SEL_DOCUMENTACION_CATEGORIA", new { @ComToken = ComToken }, commandType: CommandType.StoredProcedure).ToList();
-                ViewBag.Documentos = ORM.Query("CAPEX_SEL_DOCUMENTACION_LISTAR", new { @Categoria = Categoria }, commandType: CommandType.StoredProcedure).ToList();
+                using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+                {
+                    try
+                    {
+                        objConnection.Open();
+                        ViewBag.Categoria = SqlMapper.Query(objConnection, "CAPEX_SEL_DOCUMENTACION_CATEGORIA", new { @ComToken = ComToken }, commandType: CommandType.StoredProcedure).ToList();
+                        ViewBag.Documentos = SqlMapper.Query(objConnection, "CAPEX_SEL_DOCUMENTACION_LISTAR", new { @Categoria = Categoria }, commandType: CommandType.StoredProcedure).ToList();
+                    }
+                    catch (Exception err)
+                    {
+                        err.ToString();
+                    }
+                    finally
+                    {
+                        objConnection.Close();
+                    }
+                }
                 return View("Index");
             }
         }
@@ -159,17 +188,24 @@ namespace Capex.Web.Controllers
         [Route("Accion/CrearCategoria")]
         public ActionResult CrearCategoria(string CatNombre, string ComToken)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                ORM.Query("CAPEX_INS_DOCUMENTACION_CATEGORIA", new { CatNombre, ComToken }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                return Json(new { Mensaje = "Creado" }, JsonRequestBehavior.AllowGet);
-
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = "CrearCategoria, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
-                return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                try
+                {
+                    objConnection.Open();
+                    SqlMapper.Query(objConnection, "CAPEX_INS_DOCUMENTACION_CATEGORIA", new { CatNombre, ComToken }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    return Json(new { Mensaje = "Creado" }, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = "CrearCategoria, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -180,17 +216,25 @@ namespace Capex.Web.Controllers
         [Route("Accion/ListarCategoria")]
         public ActionResult ListarCategoria()
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                var ComToken = "F1DBFB20-6DCA-4537-A66E-53E3B3C3B830";
-                var Categorias = ORM.Query<Principal.Categorias>("CAPEX_SEL_DOCUMENTACION_CATEGORIA", new { @ComToken = ComToken }, commandType: CommandType.StoredProcedure).ToList();
-                return Json(new { Resultado = Categorias }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = "ListarCategoria, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
-                return Json(new { Resultado = "ERROR" }, JsonRequestBehavior.AllowGet);
+                try
+                {
+                    objConnection.Open();
+                    var ComToken = "F1DBFB20-6DCA-4537-A66E-53E3B3C3B830";
+                    var Categorias = SqlMapper.Query<Principal.Categorias>(objConnection, "CAPEX_SEL_DOCUMENTACION_CATEGORIA", new { @ComToken = ComToken }, commandType: CommandType.StoredProcedure).ToList();
+                    return Json(new { Resultado = Categorias }, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = "ListarCategoria, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                    return Json(new { Resultado = "ERROR" }, JsonRequestBehavior.AllowGet);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -349,17 +393,24 @@ namespace Capex.Web.Controllers
         [Route("Accion/RegistrarDocumento")]
         public ActionResult RegistrarDocumento(string Documento, int Tamano, string Extension, string Tipo, string Categoria)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                ORM.Query("CAPEX_INS_DOCUMENTACION", new { Documento, Tamano, Extension, Tipo, Categoria }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                return Json(new { Mensaje = "Registrado" }, JsonRequestBehavior.AllowGet);
-
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = "RegistrarDocumento, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
-                return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                try
+                {
+                    objConnection.Open();
+                    SqlMapper.Query(objConnection, "CAPEX_INS_DOCUMENTACION", new { Documento, Tamano, Extension, Tipo, Categoria }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    return Json(new { Mensaje = "Registrado" }, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception exc)
+                {
+                    ExceptionResult = "RegistrarDocumento, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
         /// <summary>
@@ -371,37 +422,45 @@ namespace Capex.Web.Controllers
         [Route("Accion/EliminarDocumento")]
         public ActionResult EliminarDocumento(string Token)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
-                IPlanificacion = FactoryPlanificacion.delega(VA);
-                string mensaje = String.Empty;
-                var documentoBiblioteca = IPlanificacion.SeleccionarDocumentoBiblioteca(Token);
-                if (documentoBiblioteca != null)
+                try
                 {
-                    string shareFile = ConfigurationManager.AppSettings.Get("Shared");
-                    string pathDirectory = ConfigurationManager.AppSettings.Get("PathDirectory") + "\\Biblioteca\\" + documentoBiblioteca.DocCatNombre;
-                    string nameFileFinal = documentoBiblioteca.DocNombre;
-                    UploadDownload uploadDownload = new UploadDownload();
-                    if (UploadDownload.DeleteFile(shareFile, pathDirectory, nameFileFinal))
+                    objConnection.Open();
+                    IPlanificacion = FactoryPlanificacion.delega(VA);
+                    string mensaje = String.Empty;
+                    var documentoBiblioteca = IPlanificacion.SeleccionarDocumentoBiblioteca(Token);
+                    if (documentoBiblioteca != null)
                     {
-                        ORM.Query("CAPEX_DEL_ELIMINAR_DOCUMENTO", new { @Token = Token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
-                        return Json(new { Mensaje = "Eliminado" }, JsonRequestBehavior.AllowGet);
+                        string shareFile = ConfigurationManager.AppSettings.Get("Shared");
+                        string pathDirectory = ConfigurationManager.AppSettings.Get("PathDirectory") + "\\Biblioteca\\" + documentoBiblioteca.DocCatNombre;
+                        string nameFileFinal = documentoBiblioteca.DocNombre;
+                        UploadDownload uploadDownload = new UploadDownload();
+                        if (UploadDownload.DeleteFile(shareFile, pathDirectory, nameFileFinal))
+                        {
+                            SqlMapper.Query(objConnection, "CAPEX_DEL_ELIMINAR_DOCUMENTO", new { @Token = Token }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                            return Json(new { Mensaje = "Eliminado" }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                        }
                     }
                     else
                     {
                         return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                else
+                catch (Exception exc)
                 {
+                    ExceptionResult = "EliminarDocumento, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
                     return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
                 }
-            }
-            catch (Exception exc)
-            {
-                ExceptionResult = "EliminarDocumento, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
-                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
-                return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                finally
+                {
+                    objConnection.Close();
+                }
             }
             #endregion
 
