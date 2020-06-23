@@ -627,6 +627,7 @@ namespace Capex.Web.Controllers
             {
                 try
                 {
+                    objConnection.Open();
                     var parametos = new DynamicParameters();
                     parametos.Add("IniToken", IniToken);
                     parametos.Add("Usuario", Usuario);

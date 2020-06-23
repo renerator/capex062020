@@ -8857,9 +8857,9 @@ namespace Capex.Web.Controllers
 
             using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                objConnection.Open();
                 try
                 {
+                    objConnection.Open();
                     var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
                     var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
                     if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
@@ -8977,9 +8977,9 @@ namespace Capex.Web.Controllers
 
             using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                objConnection.Open();
                 try
                 {
+                    objConnection.Open();
                     var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
                     var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
                     /*if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
@@ -9593,7 +9593,7 @@ namespace Capex.Web.Controllers
             List<string> numerosSeparadorMilesDecimales = new List<string>();
             DataTable dt = new DataTable();
             DateTime todaysDate = DateTime.Now.Date;
-            int year = todaysDate.Year;
+            int year = (todaysDate.Year + 1);
             //Setiing Table Name  
             dt.TableName = "Resumen CB-CD";
             //Add Columns  
@@ -10908,7 +10908,7 @@ namespace Capex.Web.Controllers
                         }
                         ultimoIdPid = fila.IdPid;
                         dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidEstadoFlujo, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias,
-                             fila.IniTipo, fila.IniPeriodo, fila.IgFechaInicio, fila.IgFechaTermino, fila.IgFechaCierre,
+                             fila.IniTipo, (fila.IniPeriodo + 1), fila.IgFechaInicio, fila.IgFechaTermino, fila.IgFechaCierre,
                              fila.PidProceso, fila.PidObjeto, fila.PidArea, fila.PidCompania, fila.PidEtapa, fila.PidCodigoProyecto, fila.PidGerenciaInversion,
                              fila.PidGerenteInversion, fila.PidGerenciaEjecucion, fila.PidGerenteEjecucion, fila.PidSuperintendencia, fila.PidSuperintendente,
                              fila.PidEncargadoControl, fila.CatEstadoProyecto, fila.CatTipoCotizacion, fila.CatCategoria, fila.CatNivelIngenieria,
@@ -11699,7 +11699,7 @@ namespace Capex.Web.Controllers
             //Creating DataTable  
             DataTable dt = new DataTable();
             DateTime todaysDate = DateTime.Now.Date;
-            int year = todaysDate.Year;
+            int year = (todaysDate.Year + 1);
             //Setiing Table Name  
             dt.TableName = "Financiero CB-CD";
             //Add Columns  
@@ -13185,7 +13185,7 @@ namespace Capex.Web.Controllers
             //Creating DataTable  
             DataTable dt = new DataTable();
             DateTime todaysDate = DateTime.Now.Date;
-            int year = todaysDate.Year;
+            int year = (todaysDate.Year + 1);
             //Setiing Table Name  
             dt.TableName = "Fisico CB-CD";
             //Add Columns  
