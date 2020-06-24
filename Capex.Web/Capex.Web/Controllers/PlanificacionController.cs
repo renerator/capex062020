@@ -1921,7 +1921,7 @@ namespace Capex.Web.Controllers
 
                 if (!string.IsNullOrEmpty(ws.Cell(i, 2).Value.ToString()))
                 {
-                    decimal d01 = decimal.Parse(ws.Cell(i, 2).Value.ToString()) * 100;
+                    decimal d01 = decimal.Parse(ws.Cell(i, 2).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string sd01 = d01.ToString("0.0");
                     registro.Add(sd01);
                 }
