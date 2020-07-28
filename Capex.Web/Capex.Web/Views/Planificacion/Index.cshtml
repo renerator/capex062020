@@ -98,47 +98,55 @@
     <div class="wrapper dashboard" style="margin-top:30px;">
         <div class="container-fluid">
             <!-- Navegación -->
+
             <div class="row" style="margin-top:-30px;">
                 <div class="col-sm-12">
                     <div class="page-title-box">
                         <div class="btn-group float-right">
                             <ol class="breadcrumb hide-phone p-0 m-0">
 
-                                <!--
-                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+
+                                @*<li class="breadcrumb-item"><a href="#">Capex</a></li>
                                 <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Logout", "Login")'">Login</a></li>
                                 <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
-                                <li class="breadcrumb-item active">Ejercicio de Planificación</li>
-                                -->
+                                <li class="breadcrumb-item active">Ejercicio de Planificación</li>*@
+
                                 <li class="breadcrumb-item active">Capex</li>
                                 <li class="breadcrumb-item active">Login</li>
                                 <li class="breadcrumb-item active">Panel</li>
                                 <li class="breadcrumb-item active">Ejercicio de Planificación</li>
                             </ol>
+
                         </div>
-                        <input type="button" id="BotonVolverGeneral" onclick="document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&nbsp;
-                        <h6 class="page-title">Ejercicio de Planificación - <span id="TipoIniTit"></span></h6>
+
+                        @*<input type="button" id="BotonVolverGeneral" onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&&nbsp;*@
+                        <h6 class="page-title">
+                            <input type="button" id="BotonVolverGeneral" onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&nbsp;
+                            @*<input type="button" id="BotonVolverGeneral" onclick="Actualizar()" class="btn btn-success btn-sm" value="Actualizar Vista" />*@
+                        </h6>
 
                     </div>
+                        <h6 class="page-title">Ejercicio de Planificación - <span id="TipoIniTit"></span> - </h6>
                 </div>
-            </div>
+        </div>
+    @*</div>*@
             <!-- Fin Navegación-->
             <!-- Indicadores-->
             <!--div-- class="row" style="margin-top:-30px; margin-bottom:10px;">
-            <div class="col-sm-12">
-                <div class="page-title-box">
-                    <div class="btn-group float-right">
-                        <span style="color:#fff; font-size:11px;">Estado Iniciativas&nbsp; </span>
-                        <span class="indicador-verde" title="Pendientes" id="IndicadorPendientes">0</span>&nbsp;
-                        <span class="indicador-naranja" title="Por Vencer" id="IndicadorPorVencer">0</span>&nbsp;
-                        <span class="indicador-rojo" title="Vencidas" id="IndicadorVencidas">0</span>&nbsp;
-                        <span class="indicador-blanco" title="Cerradas" id="IndicadorCerradas">0</span>&nbsp;&nbsp;&nbsp;
+    <div class="col-sm-12">
+        <div class="page-title-box">
+            <div class="btn-group float-right">
+                <span style="color:#fff; font-size:11px;">Estado Iniciativas&nbsp; </span>
+                <span class="indicador-verde" title="Pendientes" id="IndicadorPendientes">0</span>&nbsp;
+                <span class="indicador-naranja" title="Por Vencer" id="IndicadorPorVencer">0</span>&nbsp;
+                <span class="indicador-rojo" title="Vencidas" id="IndicadorVencidas">0</span>&nbsp;
+                <span class="indicador-blanco" title="Cerradas" id="IndicadorCerradas">0</span>&nbsp;&nbsp;&nbsp;
 
-                    </div>
-
-                </div>
             </div>
-            </!--div-->
+
+        </div>
+    </div>
+    </!--div-->
             <!-- Fin Indicadores-->
             <div class="row" id="contenedorNuevaIniciativa" style="display: none;">
                 <div class="col-md-3"></div>
@@ -155,6 +163,12 @@
                 <div class="col-md-3">
                     <div class="card">
                         <div class="card-body" style="height:1100px;">
+
+                            @*<div class="card-title mb-3">
+                                <div class="d-inline-block ml-2">
+                                    <h6 class="page-title">Ejercicio de Planificación - <span id="TipoIniTit"></span>&nbsp</h6>
+                                </div>
+                            </div>*@
 
                             <div id="accordion" role="tablist" aria-multiselectable="true">
                                 <div class="card">
@@ -212,7 +226,7 @@
                                 <li id="NI4" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('DESCRIPCION');FNObtenerTextoAyuda('DESCRIPCION','');">        <a class="nav-link" data-toggle="tab" id="t4" href="#t-4" style=" color:#fff;"><span class="badge badge-info">4</span><small> Descripción Detallada</small></a></li>
                                 <li id="NI5" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('ECONOMICA');FNObtenerTextoAyuda('ECONOMICA','');">            <a class="nav-link" data-toggle="tab" id="t5" href="#t-5" style=" color:#fff;"><span class="badge badge-info">5</span><small> Evaluación Económica</small></a></li>
                                 <li id="NI6" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('RIESGO');FNObtenerTextoAyuda('RIESGO','');">                  <a class="nav-link" data-toggle="tab" id="t6" href="#t-6" style=" color:#fff;"><span class="badge badge-info">6</span><small> Evaluación Riesgo</small></a></li>
-                                <li id="NI7" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('HITO');FNObtenerTextoAyuda('HITO','');">                      <a class="nav-link" data-toggle="tab" id="t7" href="#t-7" style=" color:#fff;"><span class="badge badge-info">7</span><small> Capex /Hitos</small></a></li>
+                                <li id="NI7" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('HITO'); FNObtenerTextoAyuda('HITO', '');FNObtenerFechaBloqueo();">                      <a class="nav-link" data-toggle="tab" id="t7" href="#t-7" style=" color:#fff;"><span class="badge badge-info">7</span><small> Capex /Hitos</small></a></li>
                                 <li id="NI8" class="nav-item" onclick="FNLimpiarTextoAyuda(); FNVerificarEstadoGuardadoDatos('ARCHIVO');FNObtenerTextoAyuda('ARCHIVO','');">                <a class="nav-link" data-toggle="tab" id="t8" href="#t-8" style=" color:#fff;"><span class="badge badge-info">8</span><small> Adjuntos</small></a></li>
 
                             </ul>

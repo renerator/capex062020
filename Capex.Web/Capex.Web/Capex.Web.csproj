@@ -241,6 +241,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Content\exception\InvalidParameterExcelException.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ContactoController.cs" />
     <Compile Include="Controllers\DocumentacionController.cs" />
@@ -2028,16 +2029,18 @@
     <Content Include="Scripts\Modules\Gestion\GestionAprobadaAmsa.js" />
     <Content Include="Scripts\Modules\Gestion\GestionCallBack.js" />
     <Content Include="Scripts\Modules\Mantenedor\Area.js" />
+    <Content Include="Scripts\Modules\Mantenedor\Bloqueo.js" />
     <Content Include="Scripts\Modules\Mantenedor\Gerencia.js" />
     <Content Include="Scripts\Modules\Mantenedor\Gerente.js" />
     <Content Include="Scripts\Modules\Mantenedor\MatrizRiesgo.js" />
+    <Content Include="Scripts\Modules\Mantenedor\TemplateIniciativa.js" />
     <Content Include="WebForm1.aspx" />
     <Content Include="fonts_glyphicon\glyphicons-halflings-regular.eot" />
     <Content Include="fonts_glyphicon\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts_glyphicon\glyphicons-halflings-regular.woff" />
     <Content Include="fonts_glyphicon\glyphicons-halflings-regular.woff2" />
-    <Content Include="Files\Downloads\TemplateCBCD_Vacio.xlsx" />
     <Content Include="Files\Downloads\TemplateExportExcelIniciativa.xlsx" />
+    <Content Include="Files\Downloads\TemplateCBCD_Vacio.xlsx" />
     <None Include="Properties\PublishProfiles\appqa.cl - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CapexWeb2 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
@@ -2221,6 +2224,8 @@
     <Content Include="Views\Mensajes\Index.cshtml" />
     <Content Include="Views\Gestion\VerObservacion.cshtml" />
     <Content Include="Views\Mantenedor\MatrizRiesgo.cshtml" />
+    <Content Include="Views\Mantenedor\TemplateIniciativa.cshtml" />
+    <Content Include="Views\Mantenedor\Bloqueo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Export\" />
@@ -2243,6 +2248,9 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\CapexIdentity.Bll\CapexIdentity.Bll.csproj">
       <Project>{20a78704-60bd-4296-9787-8006e40fd780}</Project>
       <Name>CapexIdentity.Bll</Name>
@@ -2251,9 +2259,6 @@
       <Project>{ed8454b3-2cd8-4ae8-9dc7-ecb0afc21f0f}</Project>
       <Name>CapexInfraestructure.Bll</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

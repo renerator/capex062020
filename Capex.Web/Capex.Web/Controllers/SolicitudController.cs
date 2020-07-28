@@ -59,14 +59,14 @@ namespace Capex.Web.Controllers
         #endregion
 
         #region "CAMPOS"
-        public SqlConnection ORM;
+        //public SqlConnection ORM;
         #endregion
 
         #region "CONSTRUCTOR"
         public SolicitudController()
         {
             JsonResponse = string.Empty;
-            ORM = CapexInfraestructure.Utilities.Utils.Conectar();
+            //ORM = CapexInfraestructure.Utilities.Utils.Conectar();
         }
         #endregion
 
@@ -80,7 +80,23 @@ namespace Capex.Web.Controllers
             }
             else
             {
-                ViewBag.Solicitudes = ORM.Query("CAPEX_SEL_SOLICITUDES_ADMIN_LISTAR", commandType: CommandType.StoredProcedure).ToList();
+                using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+                {
+                    try
+                    {
+                        objConnection.Open();
+                        ViewBag.Solicitudes = SqlMapper.Query(objConnection, "CAPEX_SEL_SOLICITUDES_ADMIN_LISTAR", commandType: CommandType.StoredProcedure).ToList();
+                    }
+                    catch (Exception err)
+                    {
+                        var ExceptionResult = "SolicitudController Index, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                        CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                    }
+                    finally
+                    {
+                        objConnection.Close();
+                    }
+                }
             }
             return View();
         }

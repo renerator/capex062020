@@ -9,7 +9,8 @@
                     <ul class="submenu megamenu">
                         <li class="active">
                             <ul>
-                                <li><a href="#" onclick="FNRegistrarEventoIngresoIniciativa();">Ingresar iniciativa</a></li>
+                                <li><a href="#" class="breadcrumb-item" onclick="FNRegistrarEventoIngresoIniciativa();" style="color:#fff;" data-toggle="modal" data-target="#ModalTipEjercioPlanificacion">Crear Iniciativa</a></li>
+
                             </ul>
                         </li>
                     </ul>
@@ -22,13 +23,14 @@
                     else
                     {
                         if (@Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador1" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador2")
+                      //  if (@Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador" || @Session["CAPEX_SESS_ROLNOMBRE"].ToString() == "Administrador1")
                         {
                             <li class="has-submenu">
-                                <a href="#" style="font-size:11px;"><i class="fa fa-random"></i>Ajustes</a>
+                                <a href="#" style="font-size:11px;"><i class="fa fa-random"></i>Parametros Comerciales</a>
                                 <ul class="submenu megamenu">
                                     <li class="">
                                         <ul>
-                                            <li><a href="#">Configuraciones</a></li>
+                                            <li><a href="#">Orientacion Comercial Vn</a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -38,20 +40,27 @@
                                 <ul class="submenu megamenu">
                                     <li class="">
                                         <ul>
-                                            <li><a href="#">Usuarios</a></li>
-                                            <li><a href="#">Areas</a></li>
-                                            <li><a href="#">Rol</a></li>
-                                            <li><a href="#">Compañias</a></li>
-                                            <li><a href="#">Gerencias</a></li>
+
+                                            <li><a href="#" class="breadcrumb-item" onclick="document.location.href='@Url.Action("Usuario", "Mantenedor")'">Usuarios</a></li>
+
+                                            <li><a href="#" class="breadcrumb-item" onclick="document.location='@Url.Action("Gerente", "Mantenedor")'" data-toggle="modal" data-target="">Gerentes </a></li>
+
+                                            <li><a href="#" class="breadcrumb-item" onclick="document.location='@Url.Action("Area", "Mantenedor")'" data-toggle="modal" data-target="">Areas </a></li>
+
+                                            <li><a href="#" class="breadcrumb-item" onclick="document.location='@Url.Action("Gerencia", "Mantenedor")'" data-toggle="modal" data-target="">Gerencias </a></li>
+
+                                            <li><a href="#" class="breadcrumb-item" onclick="document.location='@Url.Action("Categoria", "Mantenedor")'" data-toggle="modal" data-target="">Categorias </a></li>
+
+
+                                            @*<li><a href="#">Rol</a></li>
+                                            <li><a href="#">Compañias</a></li>                                          
                                             <li><a href="#">Etapas</a></li>
-                                            <!--<li><a href="#">SLA</a></li>-->
-                                            <li><a href="#">Gerentes</a></li>
+                                            <li><a href="#">SLA</a></li>
                                             <li><a href="#">Superintendencias</a></li>
                                             <li><a href="#">Superintendentes</a></li>
-                                            <li><a href="#">Areas Revisoras</a></li>
-                                            <li><a href="#">Categorias</a></li>
                                             <li><a href="#">Clasificación SSO</a></li>
-                                            <li><a href="#">Procesos</a></li>
+                                            <li><a href="#">Procesos</a></li>*@
+
                                         </ul>
                                     </li>
                                 </ul>

@@ -347,6 +347,10 @@
     //FNResolverRiesgo();
     /*********************************** TIPO  DE INICIATIVA **********************************/
     var tipo_iniciativa = localStorage.getItem("CAPEX_TIPO_INICIATIVA");
+    var iniPeriodo = localStorage.getItem("CAPEX_PERIODO_EP");
+    if (iniPeriodo && iniPeriodo != undefined && iniPeriodo != "") {
+        $(".iniPeridioHito").text(iniPeriodo);
+    }
     switch (tipo_iniciativa) {
         case "CB": $("#TipoIniTit").html("Caso Base"); break;
         case "CD": $("#TipoIniTit").html("Caso Desarrollo"); break;
@@ -358,18 +362,47 @@
         $("#ContenedorDescargaTemplateCB").show();
         $("#ContenedorTablaCasoBase1").show();
         $("#ContenedorTablaCasoBase2").show();
+
+        var anioCasoBase = iniPeriodo;
+        var contador = 0;
+        $(".presupuestoCB2").each(function () {
+            $(this).text((parseInt(anioCasoBase) + contador));
+            contador++;
+        });
+
+        anioCasoBase = iniPeriodo;
+        contador = 0;
+        $(".presupuestoCB2").each(function () {
+            $(this).text((parseInt(anioCasoBase) + contador));
+            contador++;
+        });
+
         $("#ContenedorTabla1").hide();
         $("#ContenedorTabla2").hide();
-    }
-    else {
+    } else {
         $("#ContenedorBotoneraComprobacion").show();
         $("#ContenedorDescargaTemplate").show();
         $("#ContenedorTabla1").show();
         $("#ContenedorTabla2").show();
+
+        var anioPresupuesto = iniPeriodo;
+        var contador = 0;
+        $(".presupuestoPP1").each(function () {
+            $(this).text((parseInt(anioPresupuesto) + contador));
+            contador++;
+        });
+
+        anioPresupuesto = iniPeriodo;
+        contador = 0;
+        $(".presupuestoPP2").each(function () {
+            $(this).text((parseInt(anioPresupuesto) + contador));
+            contador++;
+        });
+
         $("#ContenedorTablaCasoBase1").hide();
         $("#ContenedorTablaCasoBase2").hide();
     }
-
+    FNObtenerExcelTemplateFinal();
 
     /******************************** IMPORTACION CONTROL DE EVENTOS *************************/
 
@@ -481,7 +514,6 @@
         var futuro = 6;
         var actual = moment(hoy);
         var fecha_futura = moment(actual).add(futuro, 'months');
-        //$("#PddFechaPostEval").val(moment(fecha_futura).format('DD-MM-YYYY'));
         var PddFechaPostEvalBD = moment(fecha_futura).format('DD-MM-YYYY');
         $('#datepickerFPE').datepicker({
             weekStart: 1,
@@ -493,6 +525,8 @@
         });
         $('#datepickerFPE').datepicker("setDate", new Date(PddFechaPostEvalBD.split("-")[2], (PddFechaPostEvalBD.split("-")[1] - 1), PddFechaPostEvalBD.split("-")[0]));
     }
+
+
     /**********************************  ARBOL DE ARCHIVOS *****************************/
 
     $(".file-tree").filetree();

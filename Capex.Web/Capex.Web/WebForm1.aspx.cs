@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,7 @@ using System.Web.UI.WebControls;
 using CapexIdentity.Utilities;
 using CapexInfraestructure.Bll.Business.Planificacion;
 using CapexInfraestructure.Bll.Factory;
+using ClosedXML.Excel;
 using Dapper;
 using Newtonsoft.Json;
 using SHARED.AzureStorage;
@@ -1036,6 +1038,101 @@ namespace Capex.Web
             }
         }
 
+        protected void Button30_Click(object sender, EventArgs e)
+        {
+            if (!@User.Identity.IsAuthenticated || HttpContext.Current.Session == null || HttpContext.Current.Session["CAPEX_SESS_USERNAME"] == null)
+            {
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "laterUploadLogout", "laterUploadLogout()", true);
+            }
+            else
+            {
+                excelTemplate(HiddenField30, HiddenField31, File30);
+            }
+        }
+
+        protected void Button31_Click(object sender, EventArgs e)
+        {
+            if (!@User.Identity.IsAuthenticated || HttpContext.Current.Session == null || HttpContext.Current.Session["CAPEX_SESS_USERNAME"] == null)
+            {
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "laterUploadLogout", "laterUploadLogout()", true);
+            }
+            else
+            {
+                excelTemplate(HiddenField32, HiddenField33, File31);
+            }
+        }
+
+
+        private void excelTemplate(System.Web.UI.WebControls.HiddenField hiddenFieldUno, System.Web.UI.WebControls.HiddenField HiddenFieldDos, System.Web.UI.HtmlControls.HtmlInputFile htmlInputFile)
+        {
+            // Save the file.
+            string type = Convert.ToString(HttpContext.Current.Request.QueryString.Get("type"));
+            string TipoIniciativaSeleccionada = hiddenFieldUno.Value;
+            string ITPEToken = HiddenFieldDos.Value;
+            DocumentUpload documentUpload = new DocumentUpload();
+            Data data = new Data();
+            documentUpload.Data = data;
+            data.type = type;
+            data.code = "0";
+            data.date = System.DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
+            if (!string.IsNullOrEmpty(type) && htmlInputFile.PostedFile.ContentLength > 0)
+            {
+                try
+                {
+                    string parUsuario = HttpContext.Current.Session["CAPEX_SESS_USERNAME"].ToString();
+                    string rol = HttpContext.Current.Session["CAPEX_SESS_ROLNOMBRE"].ToString();
+                    //Parámetros:
+                    //✓ string shareFile: recurso compartido de azure
+                    //✓ string pathdirectory: directorio del archivo
+                    //✓ string namefile: Nombre del archivo
+                    //✓ HtmlInputFile pathFile: contenido del objeto tipo HtmlInputFile
+                    string finalPath = String.Empty;
+                    if (!string.IsNullOrEmpty(TipoIniciativaSeleccionada) && !string.IsNullOrEmpty(TipoIniciativaSeleccionada.Trim()))
+                    {
+                        if ("2".Equals(TipoIniciativaSeleccionada.Trim()))
+                        {
+                            finalPath = "ImportPresupuesto";
+                        }
+                        else if ("1".Equals(TipoIniciativaSeleccionada.Trim()))
+                        {
+                            finalPath = "ImportCasoBase";
+                        }
+                    }
+                    DateTime todaysDate = DateTime.Now.Date;
+                    int Periodo = todaysDate.Year;
+                    string ShareFile = ConfigurationManager.AppSettings.Get("Shared");
+                    string PathDirectory = ConfigurationManager.AppSettings.Get("PathDirectory") + "\\" + finalPath + "\\" + Periodo.ToString();
+                    string NameFile = Path.GetFileName(htmlInputFile.PostedFile.FileName);
+                    string Extension = Path.GetExtension(htmlInputFile.PostedFile.FileName);
+                    int SizeFile = htmlInputFile.PostedFile.ContentLength;
+                    string NameFileFinal = NameFile;
+
+                    string totalVersionesArchivos = ValidarExcelTemplateExiste(Periodo, NameFile);
+                    if (!string.IsNullOrEmpty(totalVersionesArchivos) && (string.Compare("0", totalVersionesArchivos) != 0))
+                    {
+                        NameFileFinal = Path.GetFileNameWithoutExtension(htmlInputFile.PostedFile.FileName) + "(" + (Convert.ToInt32(totalVersionesArchivos) + 1) + ")" + Path.GetExtension(htmlInputFile.PostedFile.FileName);
+                    }
+                    UploadDownload uploadDownload = new UploadDownload();
+                    if (UploadDownload.UploadFile(ShareFile, PathDirectory, NameFileFinal, htmlInputFile))
+                    {
+                        data.response = RegistrarExcelTemplateFinal(TipoIniciativaSeleccionada, Periodo, SizeFile, Extension, NameFile, NameFileFinal, ShareFile, PathDirectory, ITPEToken);
+                    }
+                    else
+                    {
+                        data.code = "1";
+                        data.response = "Error al subir documento a azure";
+                    }
+                }
+                catch (Exception exc)
+                {
+                    data.code = "1";
+                    data.response = exc.Message;
+                }
+                var functionResponse = "laterUpload(" + JsonConvert.SerializeObject(documentUpload, Formatting.None) + ")";
+                ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "laterUpload", functionResponse, true);
+            }
+        }
+
         public string ProcesarTemplatePresupuesto(string token, string usuario, string archivo, string tipo)
         {
             /*try
@@ -1099,12 +1196,51 @@ namespace Capex.Web
                 objConnection.Open();
                 try
                 {
-                    return SqlMapper.Query(objConnection, "CAPEX_INS_REGISTRAR_ARCHIVO_FINAL", new { IniToken, ParUsuario, ParNombre, ParNombreFinal, ParPaso, ParCaso, ShareFile, PathDirectory, UrlAzure }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", IniToken);
+                    parametos.Add("ParUsuario", ParUsuario);
+                    parametos.Add("ParNombre", ParNombre);
+                    parametos.Add("ParNombreFinal", ParNombreFinal);
+                    parametos.Add("ParPaso", ParPaso);
+                    parametos.Add("ParCaso", ParCaso);
+                    parametos.Add("ShareFile", ShareFile);
+                    parametos.Add("PathDirectory", PathDirectory);
+                    parametos.Add("UrlAzure", UrlAzure);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_INS_REGISTRAR_ARCHIVO_FINAL", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    string respuesta = parametos.Get<string>("Respuesta");
+                    if (respuesta != null && !string.IsNullOrEmpty(respuesta.Trim()))
+                    {
+                        return respuesta.Trim();
+                    }
+                    return null;
                 }
                 catch (Exception err)
                 {
                     err.ToString();
                     return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+        }
+
+        private string RegistrarExcelTemplateFinal(string Tipo, int Periodo, int Tamano, string Extension, string Nombre, string NombreFinal, string ShareFile, string PathDirectory, string ITPEToken)
+        {
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    SqlMapper.Query(objConnection, "CAPEX_INS_EXCEL_TEMPLATE", new { ExcelTemplateTipo = Tipo, ExcelPeriodo = Periodo, ExcelTemplateTam = Tamano, ExcelTemplateExt = Extension, ExcelTemplateNombre = Nombre, ExcelTemplateNombreFinal = NombreFinal, ShareFile = ShareFile, PathDirectory = PathDirectory, ITPEToken = ITPEToken }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    return "Registrado";
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                    return "Error";
                 }
                 finally
                 {
@@ -1134,6 +1270,28 @@ namespace Capex.Web
                 }
             }
         }
+
+        private string ValidarExcelTemplateExiste(int Periodo, string NameFile)
+        {
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    return SqlMapper.Query<String>(objConnection, "CAPEX_VAL_EXIST_EXCEL_TEMPLATE", new { Periodo, NameFile }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+        }
+
 
         private string ValidarArchivoExiste(string IniToken, string ParUsuario, string ParNombre, string ParPaso, string ParCaso)
         {

@@ -20,16 +20,15 @@
     <link href="Content/rwd-table.min.css" rel="stylesheet" />
 
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/Content/glyphicons.css" rel="stylesheet" type="text/css">
     <link href="~/Content/icons.css" rel="stylesheet" type="text/css">
     <link href="~/Content/toastr.min.css" rel="stylesheet" />
     <link href="~/Content/site.css" rel="stylesheet" type="text/css">
     <link href="~/Content/sweetalert2.css" rel="stylesheet" />
-
-    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker-1-7-1.min.css" rel="stylesheet" />
     <link href="~/Content/select2.min.css" rel="stylesheet" />
-
     <link href="~/fonts/css/all.css" rel="stylesheet" />
+
     <style>
 
         div.pager {
@@ -110,10 +109,10 @@
                                 <li class="breadcrumb-item"><a href="#">Capex</a></li>
                                 <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
                                 <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
-                                <li class="breadcrumb-item active"><a href="#" onclick="document.location.href='@Url.Action("Index", "Mantenedor")'">Mantenedores</a> / Matriz Riesgo</li>
+                                <li class="breadcrumb-item active"><a href="#" onclick="document.location.href='@Url.Action("Index", "Mantenedor")'">Mantenedores</a> / Bloqueo</li>
                             </ol>
                         </div>
-                        <h6 class="page-title">Mantenedor de Matriz Riesgo</h6>
+                        <h6 class="page-title">Mantenedor de Bloqueo</h6>
                     </div>
                 </div>
             </div>
@@ -126,26 +125,29 @@
                         <div class="card-body">
                             <div class="card-title mb-3">
                                 <div class="d-inline-block ml-2">
-                                    <h6>Listado de Riesgos Disponibles</h6>
+                                    <h6>Listado de Bloqueos</h6>
                                 </div>
                             </div>
                             <!--CONTENEDOR PANEL LATERAL ESTADOS-->
                             <div class="row">
                                 <div class="col-md-2">
-                                    <button class="btn btn-primary btn-block " onclick="FNEvaluarAccion('1', '0')">Nuevo Riesgo</button>
+                                    <button class="btn btn-primary btn-block " onclick="FNEvaluarAccion('1', '0')">Nuevo Bloqueo</button>
                                 </div>
                                 <div id="ContenedorIniciativasResumen" class="col-md-10">
                                     <!--CONTENEDOR BARRA HERRAMIENTAS-->
                                     <div class="row">
-                                        <div class="col-lg-12">
+                                        <div class="col-lg-10">
                                             <div id="ContenedorBarraHerramientas" class="btn-toolbar mb-3" role="toolbar">
                                                 <div class="btn-group mr-2">
                                                     <div class="input-group">
                                                         <input type="text" class="form-control form-control-sm" name="buscador" id="buscador" onblur="FNEvaluarEstadoFiltro(this.value);" placeholder="Buscar y Filtrar.." style="text-transform:uppercase;font-size:11px; width:400px; margin-right:5px;">
                                                     </div>
-
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <label class="radio-inline"><input type="radio" value="2" name="optradio" checked='@(ViewBag.tipoIniciativaSeleccionadoMantenedor == "2")'>PRESUPUESTO</label>
+                                            <label class="radio-inline"><input type="radio" value="1" name="optradio" checked='@(ViewBag.tipoIniciativaSeleccionadoMantenedor == "1")'>CASO BASE</label>
                                         </div>
                                     </div>
                                     <!--CONTENEDOR GRILLA DE INICIATIVAS-->
@@ -154,43 +156,43 @@
                                             <table class="table table-hover mails paginated" id="usuarios">
                                                 <thead style="background-color:#4a848e;text-transform:uppercase;">
                                                     <tr>
-                                                        <th scope="col"><strong>N°</strong></th>
-                                                        <th scope="col"><strong>Nombre</strong></th>
-                                                        <th scope="col"><strong>Impacto</strong></th>
-                                                        <th scope="col"><strong>Probabilidad</strong></th>
-                                                        <th scope="col"><strong>Estado</strong></th>
+                                                        <th scope="col"><strong>Tipo</strong></th>
+                                                        <th scope="col"><strong>Fecha Desde</strong></th>
+                                                        <th scope="col"><strong>Fecha Hasta</strong></th>
+                                                        <th scope="col"><strong>Fecha Creación</strong></th>
+                                                        <th scope="col"><strong>Usuario Creador</strong></th>
                                                         <th scope="col"><strong>Acciones</strong></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach (var rie in ViewBag.Riesgos)
+                                                    @foreach (var tpts in ViewBag.Bloqueos)
                                                     {
                                                         <tr>
                                                             <td>
-                                                                @rie.IdMatrizRiesgo
-                                                            </td>
-                                                            <td>
-                                                                @rie.MatrizRiesgoNombre
-                                                            </td>
-                                                            <td>
-                                                                @rie.MatrizRiesgoImpacto
-                                                            </td>
-                                                            <td>
-                                                                @rie.MatrizRiesgoProbabilidad
-                                                            </td>
-                                                            <td>
                                                                 @{
-                                                                    if (rie.MatrizRiesgoEstado == 1)
+                                                                    if (tpts.Tipo == 1)
                                                                     {
-                                                                        <span>Activo</span>
+                                                                        <strong>CASO BASE</strong>
                                                                     }
-                                                                    else
+                                                                    else if (tpts.Tipo == 2)
                                                                     {
-                                                                        <span>Inactivo</span>
+                                                                        <strong>PRESUPUESTO</strong>
                                                                     }
                                                                 }
                                                             </td>
-                                                            <td class="text-center" width="100px">
+                                                            <td>
+                                                                @tpts.FechaBloqueoDesde
+                                                            </td>
+                                                            <td>
+                                                                @tpts.FechaBloqueoHasta
+                                                            </td>
+                                                            <td>
+                                                                @tpts.FechaBloqueo
+                                                            </td>
+                                                            <td>
+                                                                @tpts.BloqueoUsuario
+                                                            </td>
+                                                            <td class="text-center" width="70px">
                                                                 <div style="text-align:center">
                                                                     @{
                                                                         if (@Session["CAPEX_SESS_ROLNOMBRE"] == null)
@@ -199,32 +201,27 @@
                                                                         }
                                                                         else
                                                                         {
-                                                                            <select id="Funcionalidades" class="form-control orderselect" onchange="FNEvaluarAccion(this.value, `@Html.Raw(@rie.MatrizRiesgoToken)`)" style="font-size:11px;height:28px; margin:0px; padding:0px;">
+                                                                            <select id="Funcionalidades" class="form-control orderselect" onchange="FNEvaluarAccion(this.value, `@Html.Raw(@tpts.FechaBloqueoToken)`)" style="font-size:11px;height:28px; margin:0px; padding:0px;">
                                                                                 <option value="-1" selected>...</option>
                                                                                 <option value="2">Editar</option>
                                                                                 @{
-                                                                                    if (rie.MatrizRiesgoEstado == 1)
+                                                                                    if (tpts.BloqueoEstado == 1)
                                                                                     {
-                                                                                        <option value="3">Desactivar</option>
+                                                                                        <option value="3">Eliminar</option>
                                                                                     }
                                                                                 }
                                                                             </select>
                                                                         }
                                                                     }
-
                                                                 </div>
                                                             </td>
                                                         </tr>
                                                     }
-
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </div>
                     </div>
@@ -241,17 +238,17 @@
             <div class="modal-content" style="margin-left:0px;width:450px;height:200px; font-size:12px;">
                 <div id="ContenedorConfirmarDesactivar" class="modal-body" style="margin-left:5px;width:450px; font-size:12px;">
                     <div>
-                        <input type="hidden" id="RiesgoToken_Desactivar" />
+                        <input type="hidden" id="BloqueoToken_Desactivar" />
                         <div style="border-bottom:1px solid #808080; padding:5px 5px 10px 5px;">
                             <h7 style="color:#333;"><strong>Confirmar Acción</strong> </h7>
                         </div>
                         <br />
-                        Tenga en cuenta que la desactivación de un elemento del sistema puede afectar datos guardados y /o comportamiento del mismo.<br /> <br />
-                        Proceder con la desactivación del riesgo?
+                        Tenga en cuenta que la eliminación de un elemento del sistema puede afectar datos guardados y /o comportamiento del mismo.<br /> <br />
+                        Proceder con la eliminación del bloqueo?
 
                         <div class="input-group" style="border-top:0px solid #808080; text-align:right; margin-top:5px;">
                             <div class="clearfix" style="margin-top:10px;">
-                                <button class="btn btn-primary btn-sm" type="button" onclick="FNDesactivarRiesgo()" style="font-size:11px;">Aceptar</button>
+                                <button class="btn btn-primary btn-sm" type="button" onclick="FNDesactivarBloqueo()" style="font-size:11px;">Aceptar</button>
                                 <button class="btn btn-white btn-sm" type="button" onclick="FNCerrarModalDesactivar()" style="font-size:11px; margin-left:5px;">Cerrar</button>
                             </div>
                         </div>
@@ -262,57 +259,62 @@
     </div>
 
 
-
     <!-- Modal Crear -->
-    <div class="modal" data-backdrop="false" id="ModalCrearRiesgo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal" data-backdrop="false" id="ModalCrearBloqueo" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content" style="margin-left:0px;width:600px;height:460px; font-size:12px;">
-                <div id="ContenedorCrearRiesgo" class="modal-body" style="margin-left:5px;width:570px; font-size:12px;">
+            <div class="modal-content" style="margin-left:0px;width:460px;height:240px; font-size:12px;">
+                <div id="ContenedorCrearBloqueo" class="modal-body" style="margin-left:5px;width:570px; font-size:12px;">
                     <div>
                         <div style="border-bottom:1px solid #808080; padding:5px 5px 10px 5px;">
-                            <h7 style="color:#333;"><strong>Crear Riesgo</strong> </h7>
+                            @if (ViewBag.tipoIniciativaSeleccionadoMantenedor == "2")
+                            {
+                                <h7 style="color:#333;"><strong>Crear Bloqueo Presupuesto</strong> </h7>
+                            }
+                            @if (ViewBag.tipoIniciativaSeleccionadoMantenedor == "1")
+                            {
+                                <h7 style="color:#333;"><strong>Crear Bloqueo Caso Base</strong> </h7>
+                            }
                         </div>
                         <br />
                         <div class="row">
                             <div class="col-xl-12 offset-md-0">
                                 <div class="form-row mt-0" style="width:100%; font-size:11px;">
-                                    <div class="col-sm-4 pb-1">
-                                        <label for="RiesgoNombre">Nombre</label>
-                                        <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:28px; width:530px" id="RiesgoNombre" maxlength="150" placeholder="...">
-                                        <label><code>Max. 150 Caracteres</code></label>
+                                    <div class="col-sm-2 pt-2">
+                                        <label for="TemplateAnio"><strong>Fecha Desde</strong></label>
                                     </div>
-                                </div>
-                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
                                     <div class="col-sm-4 pb-1">
-                                        <label for="EvrImpacto">Impacto</label>
-                                        <input class="form-control" type="number" min="1" max="5" value="1" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 1, 5);" maxlength="1" style="text-align:center;font-size:11px;width:60px;" id="EvrImpacto" name="EvrImpacto" aria-invalid="false">
-                                        <label><code>Max. 1 Caracter</code></label>
-                                    </div>
-                                </div>
-                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
-                                    <div class="col-sm-4 pb-1">
-                                        <label for="EvrProbabilidad">Probabilidad</label>
-                                        <input class="form-control" type="number" min="1" max="5" value="1" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 1, 5);" maxlength="1" style="text-align:center;font-size:11px;width:60px;" id="EvrProbabilidad" name="EvrProbabilidad" aria-invalid="false">
-                                        <label><code>Max. 1 Caracter</code></label>
-                                    </div>
-                                </div>
-                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
-                                    <div class="col-sm-4 pb-1">
-                                        <label for="RiesgoEstado">Estado</label>
-                                        <select class="form-control" style="height:36px; font-size:11px;" id="RiesgoEstado">
-                                            <option value="-1" selected>Seleccionar..</option>
-                                            <option value="1">Activo</option>
-                                            <option value="0">No Activo</option>
-                                        </select>
+                                        <div class="input-group date">
+                                            <input type="text" class="form-control" id="datepickerFDesde" readonly>
+                                            <div class="input-group-addon" style="background-color: rgba(14, 14, 15, 0.1);">
+                                                <span class="fa fa-calendar"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        <br />
+                        <div class="row">
+                            <div class="col-xl-12 offset-md-0">
+                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                    <div class="col-sm-2 pt-2">
+                                        <label for="TemplateAnio"><strong>Fecha Hasta</strong></label>
+                                    </div>
+                                    <div class="col-sm-4 pb-1">
+                                        <div class="input-group date">
+                                            <input type="text" class="form-control" id="datepickerFHasta" readonly>
+                                            <div class="input-group-addon" style="background-color: rgba(14, 14, 15, 0.1);">
+                                                <span class="fa fa-calendar"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="input-group" style="border-top:0px solid #808080; text-align:right; margin-top:5px;">
                             <div class="clearfix" style="margin-top:10px;">
-                                <button class="btn btn-primary btn-sm" type="button" onclick="FNGuardarRiesgo()" style="font-size:11px;">Aceptar</button>
-                                <button class="btn btn-white btn-sm" type="button" onclick="FNCerrarCrearRiesgo()" style="font-size:11px; margin-left:5px;">Cerrar</button>
+                                <button class="btn btn-primary btn-sm" type="button" id="guadarBloqueo" onclick="FNGuardarBloqueo()" style="font-size:11px;" disabled>Aceptar</button>
+                                <button class="btn btn-white btn-sm" type="button" onclick="FNCerrarCrearBloqueo()" style="font-size:11px; margin-left:5px;">Cerrar</button>
                             </div>
                         </div>
                     </div>
@@ -322,56 +324,62 @@
     </div>
 
     <!-- Modal Editar -->
-    <div class="modal" data-backdrop="false" id="ModalActualizarRiesgo" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal" data-backdrop="false" id="ModalActualizarBloqueo" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content" style="margin-left:0px;width:600px;height:460px; font-size:12px;">
-                <div id="ContenedorActualizarRiesgo" class="modal-body" style="margin-left:5px;width:570px; font-size:12px;">
+            <div class="modal-content" style="margin-left:0px;width:460px;height:240px; font-size:12px;">
+                <div id="ContenedorActualizarBloqueo" class="modal-body" style="margin-left:5px;width:570px; font-size:12px;">
                     <div>
                         <div style="border-bottom:1px solid #808080; padding:5px 5px 10px 5px;">
-                            <h7 style="color:#333;"><strong>Editar Riesgo</strong> </h7>
+                            @if (ViewBag.tipoIniciativaSeleccionadoMantenedor == "2")
+                            {
+                                <h7 style="color:#333;"><strong>Editar Bloqueo Presupuesto</strong> </h7>
+                            }
+                            @if (ViewBag.tipoIniciativaSeleccionadoMantenedor == "1")
+                            {
+                                <h7 style="color:#333;"><strong>Editar Bloqueo Caso Base</strong> </h7>
+                            }
+                        </div>
+                        <br />
+                        <div class="row">
+                            <input id="FechaBloqueoToken" name="FechaBloqueoToken" type="hidden" value="">
+                            <div class="col-xl-12 offset-md-0">
+                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
+                                    <div class="col-sm-2 pt-2">
+                                        <label for="TemplateAnio"><strong>Fecha Desde</strong></label>
+                                    </div>
+                                    <div class="col-sm-4 pb-1">
+                                        <div class="input-group date">
+                                            <input type="text" class="form-control" id="datepickerMFDesde" readonly>
+                                            <div class="input-group-addon" style="background-color: rgba(14, 14, 15, 0.1);">
+                                                <span class="fa fa-calendar"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <br />
                         <div class="row">
                             <div class="col-xl-12 offset-md-0">
                                 <div class="form-row mt-0" style="width:100%; font-size:11px;">
-                                    <div class="col-sm-4 pb-1">
-                                        <label for="RiesgoNombre_Editar">Nombre</label>
-                                        <input type="hidden" id="RiesgoToken_Editar" />
-                                        <input type="text" class="form-control" style="text-transform:uppercase; font-size:11px;height:28px; width:530px" id="RiesgoNombre_Editar" maxlength="150" placeholder="...">
-                                        <label><code>Max. 150 Caracteres</code></label>
+                                    <div class="col-sm-2 pt-2">
+                                        <label for="TemplateAnio"><strong>Fecha Hasta</strong></label>
                                     </div>
-                                </div>
-                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
                                     <div class="col-sm-4 pb-1">
-                                        <label for="RiesgoEvrImpacto_Editar">Impacto</label>
-                                        <input class="form-control" type="number" min="1" max="5" value="1" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 1, 5);" maxlength="1" style="text-align:center;font-size:11px;width:60px;" id="RiesgoEvrImpacto_Editar" name="RiesgoEvrImpacto_Editar" aria-invalid="false">
-                                        <label><code>Max. 1 Caracter</code></label>
-                                    </div>
-                                </div>
-                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
-                                    <div class="col-sm-4 pb-1">
-                                        <label for="RiesgoEvrProbabilidad_Editar">Probabilidad</label>
-                                        <input class="form-control" type="number" min="1" max="5" value="1" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 1, 5);" maxlength="1" style="text-align:center;font-size:11px;width:60px;" id="RiesgoEvrProbabilidad_Editar" name="RiesgoEvrProbabilidad_Editar" aria-invalid="false">
-                                        <label><code>Max. 1 Caracter</code></label>
-                                    </div>
-                                </div>
-                                <div class="form-row mt-0" style="width:100%; font-size:11px;">
-                                    <div class="col-sm-4 pb-1">
-                                        <label for="RiesgoEstado_Editar">Estado</label>
-                                        <select class="form-control" style="height:36px; font-size:11px;" id="RiesgoEstado_Editar">
-                                            <option value="-1" selected>Seleccionar..</option>
-                                            <option value="1">Activo</option>
-                                            <option value="0">No Activo</option>
-                                        </select>
+                                        <div class="input-group date">
+                                            <input type="text" class="form-control" id="datepickerMFHasta" readonly>
+                                            <div class="input-group-addon" style="background-color: rgba(14, 14, 15, 0.1);">
+                                                <span class="fa fa-calendar"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <div class="input-group" style="border-top:0px solid #808080; text-align:right; margin-top:5px;">
                             <div class="clearfix" style="margin-top:10px;">
-                                <button class="btn btn-primary btn-sm" type="button" onclick="FNActualizarRiesgo()" style="font-size:11px;">Actualizar</button>
-                                <button class="btn btn-white btn-sm" type="button" onclick="FNCerrarActualizarRiesgo()" style="font-size:11px; margin-left:5px;">Cerrar</button>
+                                <button class="btn btn-primary btn-sm" type="button" id="actualizarBloqueo" onclick="FNActualizarBloqueo()" style="font-size:11px;">Aceptar</button>
+                                <button class="btn btn-white btn-sm" type="button" onclick="FNCerrarActualizarBloqueo()" style="font-size:11px; margin-left:5px;">Cerrar</button>
                             </div>
                         </div>
                     </div>
@@ -379,6 +387,37 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal" data-backdrop="false" id="ModalActualizarExcelTemplate" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-left:0px;width:450px;height:200px; font-size:12px;">
+                <div id="ContenedorActualizarExcelTemplate" class="modal-body" style="margin-left:5px;width:450px; font-size:12px;">
+                    <div>
+                        <div style="border-bottom:1px solid #808080; padding:5px 5px 10px 5px;">
+                            @if (ViewBag.tipoIniciativaSeleccionadoMantenedor == "2")
+                            {
+                                <h7 style="color:#333;"><strong>Subir Template Presupuesto</strong> </h7>
+                            }
+                            @if (ViewBag.tipoIniciativaSeleccionadoMantenedor == "1")
+                            {
+                                <h7 style="color:#333;"><strong>Subir Template Caso Base</strong> </h7>
+                            }
+                        </div>
+                        <br />
+                        <iframe src="~/WebForm1.aspx?type=31" scrolling="no" id="frame31" frameborder="0" height="70" width="390"></iframe>
+
+                        <div class="input-group" style="border-top:0px solid #808080; text-align:right; margin-top:5px;">
+                            <div class="clearfix" style="margin-top:10px;">
+                                <button class="btn btn-white btn-sm" type="button" onclick="FNCerrarActualizarExcelTemplate()" style="font-size:11px; margin-left:5px;">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!--Hidden Control-->
     @{
@@ -402,6 +441,8 @@
     <!-- End Footer -->
     <!-- jQuery  -->
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker-1-7-1.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.es.min.js"></script>
     <script src="~/Scripts/popper.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/toastr.min.js"></script>
@@ -416,13 +457,18 @@
 
     <script src="~/Scripts/moment.js"></script>
     <script src="~/Scripts/select2.min.js"></script>
+    <!--
     <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+        -->
     <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
     <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
 
+    <script src="~/Scripts/jquery.number.min.js"></script>
+    <script src="~/Scripts/jquery.mask.min.js"></script>
+
     <!--Script de Gestión -->
     <script src="~/Scripts/Modules/Mantenedor/Mantenedor.js"></script>
-    <script src="~/Scripts/Modules/Mantenedor/MatrizRiesgo.js"></script>
+    <script src="~/Scripts/Modules/Mantenedor/Bloqueo.js"></script>
 
     <script>
         $(function () {
@@ -440,6 +486,93 @@
             if (paginaSeleccionada > 1) {
                 FNGotoPage(paginaSeleccionada, 10);
             }
+        });
+
+        $(document).ready(function () {
+            console.log("document ready bloqueo");
+
+            $("input[name=optradio]").change(function () {
+                console.log("input[name=optradio]=", $(this).val());
+                window.location.href = location.protocol + '//' + location.host + location.pathname + "?tipoIniciativaSeleccionado=" + $(this).val();
+            });
+
+            $('#datepickerFDesde').datepicker({
+                weekStart: 1,
+                daysOfWeekHighlighted: "6,0",
+                autoclose: true,
+                todayHighlight: true,
+                format: 'dd-mm-yyyy',
+                language: 'es'
+            });
+
+            $('#datepickerMFDesde').datepicker({
+                weekStart: 1,
+                daysOfWeekHighlighted: "6,0",
+                autoclose: true,
+                todayHighlight: true,
+                format: 'dd-mm-yyyy',
+                language: 'es'
+            });
+
+            $('#datepickerFHasta').datepicker({
+                weekStart: 1,
+                daysOfWeekHighlighted: "6,0",
+                autoclose: true,
+                todayHighlight: true,
+                format: 'dd-mm-yyyy',
+                language: 'es'
+            });
+
+            $('#datepickerMFHasta').datepicker({
+                weekStart: 1,
+                daysOfWeekHighlighted: "6,0",
+                autoclose: true,
+                todayHighlight: true,
+                format: 'dd-mm-yyyy',
+                language: 'es'
+            });
+
+            $('#datepickerFDesde').on('change', function () {
+                console.log('Change event.');
+                var valFDesde = $('#datepickerFDesde').val();
+                console.log('Change event. valFDesde=', valFDesde);
+                FNChechFechaBloqueo();
+            });
+            $('#datepickerFDesde').change(function () {
+                console.log('Second change event...');
+            });
+
+            $('#datepickerMFDesde').on('change', function () {
+                console.log('Change event.');
+                var valFDesde = $('#datepickerMFDesde').val();
+                console.log('Change event. valFDesde=', valFDesde);
+                FNChechFechaBloqueo();
+            });
+            $('#datepickerMFDesde').change(function () {
+                console.log('Second change event...');
+            });
+
+
+            $('#datepickerFHasta').on('change', function () {
+                console.log('Change event.');
+                var valFHasta = $('#datepickerFHasta').val();
+                console.log('Change event. valFHasta=', valFHasta);
+                FNChechFechaBloqueo();
+            });
+            $('#datepickerFHasta').change(function () {
+                console.log('Second change event...');
+            });
+
+            $('#datepickerMFHasta').on('change', function () {
+                console.log('Change event.');
+                var valFHasta = $('#datepickerMFHasta').val();
+                console.log('Change event. valFHasta=', valFHasta);
+                FNChechFechaBloqueo();
+            });
+            $('#datepickerMFHasta').change(function () {
+                console.log('Second change event...');
+            });
+
         });
     </script>
 </body>

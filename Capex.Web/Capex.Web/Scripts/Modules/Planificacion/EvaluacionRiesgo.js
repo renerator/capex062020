@@ -350,12 +350,12 @@ FNObtenerMatrizRiesgo = function () {
             var content = '';
             var contador = 1;
             $.each(JSON && JSON.parse(r) || $.parseJSON(r), function (key, value) {
-                /* content += '<tr>';
-                content += '<td style="width:10%"><button class="btn btn-warning btn-sm" style="font-size:10px" onclick="FNSeleccionarItemMatrizRiesgo(' + contador + ',' + value.IdMatrizRiesgo + ',\'' + value.MatrizRiesgoNombre + '\',\'' + value.MatrizRiesgoImpacto + '\',\'' + value.MatrizRiesgoProbabilidad + '\')">Seleccionar</button></td>';
-                content += '<td style="width:6%"><div align="center">' + value.IdMatrizRiesgo + '</div></td>';
-                content += '<td style="width:58%" align="left">' + value.MatrizRiesgoNombre + '</td>';
-                content += '<td style="width:13%" align="right">' + value.MatrizRiesgoImpacto + '</td>';
-                content += '<td style="width:13%" align="right">' + value.MatrizRiesgoProbabilidad + '</td>';
+                /*content += '<tr>';
+                content += '<td style="padding-left: 0px;margin-left:0px;" width="14%"><button class="btn btn-warning btn-sm" style="font-size:10px" onclick="FNSeleccionarItemMatrizRiesgo(' + contador + ',' + value.IdMatrizRiesgo + ',\'' + value.MatrizRiesgoNombre + '\',\'' + value.MatrizRiesgoImpacto + '\',\'' + value.MatrizRiesgoProbabilidad + '\')">Seleccionar</button></td>';
+                content += '<td width="10%">' + value.IdMatrizRiesgo + '</td>';
+                content += '<td width="45%" style="text-align:center;vertical-align:middle;">' + value.MatrizRiesgoNombre.substr(0, 10);  + '</td>';
+                content += '<td width="15%" align="right">' + value.MatrizRiesgoImpacto + '</td>';
+                content += '<td width="15%" align="right">' + value.MatrizRiesgoProbabilidad + '</td>';
                 content += '</tr>';
                 contador++;*/
                 content += '<tr>';
@@ -370,6 +370,7 @@ FNObtenerMatrizRiesgo = function () {
                 content += '</tr>';
                 contador++;
             });
+            console.log("content", content);
             $('#tablaMatrizRiesgo tbody').html(content);
         }
     });

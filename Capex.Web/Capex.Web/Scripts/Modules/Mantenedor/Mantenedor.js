@@ -138,6 +138,16 @@ FNIsNumberKey = function (evt) {
     return true;
 }
 
+FNIsNumberKeyRut = function (evt) {
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        if (charCode != 75 && charCode != 107) {
+            return false;
+        }
+    }
+    return true;
+}
+
 //
 // CREAR USUARIO
 //

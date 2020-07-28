@@ -183,14 +183,14 @@ FNEvaluarAccion = function (accion) {
     localStorage.setItem("CAPEX_GESTION_INICIATIVA_USUARIO", usuario);
     switch (accion) {
         case "0":
-
+            $('#AppLoaderContainer').show();
             event.preventDefault();
             localStorage.setItem("CAPEX_GESTION_INICIATIVA_TOKEN", iniciativa)
             var url = 'Gestion/VerIniciativa/' + iniciativa;
             window.location.href = url;
-
             break;
         case "1":
+            $('#AppLoaderContainer').show();
             event.preventDefault();
             localStorage.setItem("CAPEX_GESTION_INICIATIVA_TOKEN", iniciativa)
             var url = 'Gestion/ModificarIniciativa/' + iniciativa;
@@ -198,19 +198,29 @@ FNEvaluarAccion = function (accion) {
             break;
         case "2":
             $.ajaxSetup({ cache: false });
+            $('#AppLoaderContainer').show();
             $.ajax({
                 url: "Gestion/VerAdjuntos",
                 method: "GET",
                 data: { "token": iniciativa }
             }).done(function (request) {
+                $('#AppLoaderContainer').hide();
                 $("#ContenedorElementosAdjuntos").html(request);
                 $("#ModalAdjuntos").show();
-
-            }).fail(function (xhr) { console.log('error', xhr); });
+            }).fail(function (xhr) {
+                $('#AppLoaderContainer').hide();
+                console.log('error', xhr);
+            });
             break;
         case "3":
-            //document.location.href = '../../Planificacion/PdfPresupuesto?token=' + iniciativa;
+            $('#AppLoaderContainer').show();
             document.location.href = '../../Planificacion/descargaPdfPresupuesto?token=' + iniciativa;
+            setTimeout(function () {
+                $('#AppLoaderContainer').hide();
+                setTimeout(function () {
+                    FNLimpiarSelect();
+                }, 2000);
+            }, 6000);
             break;
         case "4":
             $("#Comentario").val("");
@@ -312,6 +322,7 @@ VerPdf = function (token) {
 // ACTUALIZAR VISTA 
 //
 Actualizar = function () {
+    $("#AppLoaderContainer").show();
     document.location.reload(true);
 }
 //
@@ -392,5 +403,5 @@ $(document).ready(function () {
         $("#paginador").hide();
     });
     /********************************** OCULTAR INDICADOR DE CARGA *****************************/
-    jQuery("#AppLoaderContainer").remove();
+    jQuery("#AppLoaderContainer").hide();
 });

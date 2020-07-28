@@ -192,7 +192,57 @@ function previosUploadDocument() {
         parent.FNInicioSubidaDocumento();
         return true;
     } else {
-        console.log("Archivo File3 no seleccionado");
+        console.log("Archivo File100 no seleccionado");
+        return false;
+    }
+}
+
+function previosUploadDocumentTemplate() {
+    $("#HiddenField30").val(parent.FNTipoIniciativaSeleccionada());
+    if ($("#HiddenField30").val() === undefined || $("#HiddenField30").val() == null || $("#HiddenField30").val().length <= 0) {
+        parent.FNErrorTipoIniciativa();
+        return false;
+    }
+    $("#HiddenField31").val(parent.FNTemplateToken());
+    if ($("#File30").val()) {
+        console.log("Archivo File30 seleccionado");
+        var fileInput = document.getElementById('File30');
+        var tamano = fileInput.files[0].size;
+        tamano = Math.round(parseInt(tamano));
+        tamano = (tamano ^ 0);
+        if (tamano > 10485760) {
+            parent.FNErrorTamanioArchivo();
+            return false;
+        }
+        parent.FNInicioSubidaDocumentTemplate();
+        return true;
+    } else {
+        console.log("Archivo File30 no seleccionado");
+        return false;
+    }
+}
+
+function previosUploadDocumentExcelTemplate() {
+    $("#HiddenField32").val(parent.FNTipoIniciativaSeleccionada());
+    if ($("#HiddenField32").val() === undefined || $("#HiddenField32").val() == null || $("#HiddenField32").val().length <= 0) {
+        parent.FNErrorTipoIniciativa();
+        return false;
+    }
+    $("#HiddenField33").val(parent.FNTemplateToken());
+    if ($("#File31").val()) {
+        console.log("Archivo File31 seleccionado");
+        var fileInput = document.getElementById('File31');
+        var tamano = fileInput.files[0].size;
+        tamano = Math.round(parseInt(tamano));
+        tamano = (tamano ^ 0);
+        if (tamano > 10485760) {
+            parent.FNErrorTamanioArchivo();
+            return false;
+        }
+        parent.FNInicioSubidaDocumentTemplate();
+        return true;
+    } else {
+        console.log("Archivo File31 no seleccionado");
         return false;
     }
 }
@@ -241,6 +291,12 @@ function laterUpload(paramJson) {
                 break;
             case "27":
                 parent.FNCallBackIngresoImport(paramJson);;
+                break;
+            case "30":
+                parent.FNCallBackUploadDocumentTemplate(paramJson);;
+                break;
+            case "31":
+                parent.FNCallBackUploadDocumentExcelTemplate(paramJson);;
                 break;
             case "100":
                 parent.FNCallBackSubidaDocumento(paramJson);

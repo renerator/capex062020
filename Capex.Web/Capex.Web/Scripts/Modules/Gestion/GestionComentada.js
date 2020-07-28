@@ -21,6 +21,7 @@ var iniciativasSeleccionadas = [];
 
 FNDescargaMasiva = function () {
     console.log("Descargar el pdf");
+    $('#AppLoaderContainer').show();
     $("#idDescargaMasiva").prop("disabled", true);
     var numFiles = 0;
     if (iniciativasSeleccionadas && iniciativasSeleccionadas.length > 0) {
@@ -32,6 +33,9 @@ FNDescargaMasiva = function () {
         });
         downloadAll(files);
     }
+    setTimeout(function () {
+        $('#AppLoaderContainer').hide();
+    }, 7000);
     setTimeout(function () {
         $("#idDescargaMasiva").prop("disabled", false);
     }, (numFiles * 3000));
@@ -57,6 +61,7 @@ function downloadAll(files) {
 
 FNDescargaMasivaXls = function () {
     console.log("Descargar el xls");
+    $('#AppLoaderContainer').show();
     $("#idDescargaMasivaXLS").prop("disabled", true);
     var numFiles = 0;
     if (iniciativasSeleccionadas && iniciativasSeleccionadas.length > 0) {
@@ -68,6 +73,9 @@ FNDescargaMasivaXls = function () {
         });
         downloadAllXls(files);
     }
+    setTimeout(function () {
+        $('#AppLoaderContainer').hide();
+    }, 1000);
     setTimeout(function () {
         $("#idDescargaMasivaXLS").prop("disabled", false);
     }, (numFiles * 3000));
@@ -313,7 +321,7 @@ FNRemoverFiltro = function (index) {
             }
             FNDrawSelectedFilters();
             if (filtroUtilizado) {
-                FNFilterActionGetData();
+                FNFilterActionGetData(false);
             }
         }
     }
@@ -362,7 +370,7 @@ FNGetDataRadio = function (id, sigla, key, value, itemName) {
     FNDrawSelectedFilters();
     if (!filtrosSeleccionados || filtrosSeleccionados == undefined || filtrosSeleccionados.length == 0) {
         if (filtroUtilizado) {
-            FNFilterActionGetData();
+            FNFilterActionGetData(false);
         }
     } else {
         if (filtrosSeleccionados.length == 5) {
@@ -399,7 +407,7 @@ FNGetData = function (id, sigla, key, value, itemName) {
     FNDrawSelectedFilters();
     if (!filtrosSeleccionados || filtrosSeleccionados == undefined || filtrosSeleccionados.length == 0) {
         if (filtroUtilizado) {
-            FNFilterActionGetData();
+            FNFilterActionGetData(false);
         }
     } else {
         if (filtrosSeleccionados.length == 5) {
@@ -409,16 +417,22 @@ FNGetData = function (id, sigla, key, value, itemName) {
     FNResizeScroll();
 }
 
-FNFilterActionGetData = function () {
+FNFilterActionGetData = function (load) {
     console.log('FNFilterActionGetData');
     deseleccionarTodoAlSalir();
     filtroUtilizado = true;
+    if (load) {
+        $('#AppLoaderContainer').show();
+    }
     $.ajaxSetup({ cache: false });
     $.ajax({
         url: "GestionComentada/getData",
         method: "POST",
         data: { "filtroGetData": JSON.stringify(filtroGetData) }
     }).done(function (r) {
+        if (load) {
+            $('#AppLoaderContainer').hide();
+        }
         var obj = JSON.parse(JSON.stringify(r));
         console.log('done', obj);
         if (r && r.success && r.tableTrs) {
@@ -437,6 +451,9 @@ FNFilterActionGetData = function () {
         FNResizeScroll();
         console.log('FNFilterActionGetData done');
     }).fail(function (xhr) {
+        if (load) {
+            $('#AppLoaderContainer').hide();
+        }
         console.log('FNFilterActionGetData fail');
         console.log('error', xhr);
         $("#TBodyIdSummary").html('');
@@ -630,3 +647,4 @@ FNDescargarAdjuntoFinal = function (token) {
     });
     return;
 }
+

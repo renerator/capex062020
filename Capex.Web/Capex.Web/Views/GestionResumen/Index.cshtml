@@ -389,7 +389,7 @@
                                 <li class="breadcrumb-item active">Gestión de Iniciativas</li>
                             </ol>
                         </div>
-                        <input type="button" id="BotonVolverGeneral" onclick="document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&nbsp;
+                        <input type="button" id="BotonVolverGeneral" onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&nbsp;
                         <input type="button" id="BotonVolverGeneral" onclick="Actualizar()" class="btn btn-success btn-sm" value="Actualizar Vista" />
                     </div>
                 </div>
@@ -407,7 +407,7 @@
                                         <h4 class="ml-3 toggle">Has seleccionado</h4>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" id="buttonFilterAction" onClick="FNFilterActionGetData();" disabled class="mb-3 btn btn-warning btn-sm">
+                                        <button type="button" id="buttonFilterAction" onClick="FNFilterActionGetData(true);" disabled class="mb-3 btn btn-warning btn-sm">
                                             <span class="glyphicon glyphicon-filter"></span> Filtrar
                                         </button>
                                     </div>
@@ -454,16 +454,16 @@
                                                         }
                                                         else
                                                         {
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionResumen")'" class="active"> Resumen Iniciativas           <span id="ContenedorContResumenIni" class="label label-warning float-right">0</span></li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionDesarrollo")'"> En Desarrollo              <span id="ContenedorContDesaIni" class="label label-warning float-right">0</span></li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionVisacion")'"> Visación                     <span id="ContenedorContVisIni" class="label label-warning float-right">0</span></li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionObservada")'"> Observadas                  <span id="ContenedorContComent" class="label label-warning float-right">0</span></li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionIngresada")'"> REVISIÓN C.E.               <span id="ContenedorContIngresadaIni" class="label label-warning float-right">0</span> </li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionEnRevision")'"> REVISIÓN AMSA                <span id="ContenedorContRevisionIni" class="label label-warning float-right">0</span> </li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionAprobadaAmsa")'"> Aprobada AMSA            <span id="ContenedorContAprobadaAMSAIni" class="label label-warning float-right">0</span> </li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="1"})'"> No Aprobada GAF         <span id="ContenedorContNoAprobadaGAFIni" class="label label-warning float-right">0</span></li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="2"})'"> No Aprobada C.E.             <span id="ContenedorContNoAprobadaCEIni" class="label label-warning float-right">0</span> </li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="3"})'"> No Aprobada AMSA           <span id="ContenedorContNoAprobadaAMSAIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionResumen")'" class="active"> Resumen Iniciativas           <span id="ContenedorContResumenIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionDesarrollo")'"> En Desarrollo              <span id="ContenedorContDesaIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionVisacion")'"> Visación                     <span id="ContenedorContVisIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionObservada")'"> Observadas                  <span id="ContenedorContComent" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionIngresada")'"> REVISIÓN C.E.               <span id="ContenedorContIngresadaIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionEnRevision")'"> REVISIÓN AMSA                <span id="ContenedorContRevisionIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionAprobadaAmsa")'"> Aprobada AMSA            <span id="ContenedorContAprobadaAMSAIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="1"})'"> No Aprobada GAF         <span id="ContenedorContNoAprobadaGAFIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="2"})'"> No Aprobada C.E.             <span id="ContenedorContNoAprobadaCEIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="3"})'"> No Aprobada AMSA           <span id="ContenedorContNoAprobadaAMSAIni" class="label label-warning float-right">0</span></li>
                                                         }
                                                     }
                                                 </ul>
@@ -480,7 +480,7 @@
                                                     <div class="input-group">
                                                         <input type="text" class="form-control form-control-sm" name="buscador" id="buscador" onblur="FNEvaluarEstadoFiltro(this.value);" placeholder="Buscar y Filtrar.." style="text-transform:uppercase;font-size:11px; width:400px; margin-right:5px;">
                                                     </div>
-                                                    <button type="button" class="btn btn-warning btn-sm" alt="Descargar Excel" onclick="document.location.href='../../Planificacion/ExcelResumenIniciativa?token=@ViewBag.IniToken'">Descargar Excel</button>
+                                                    <button type="button" class="btn btn-warning btn-sm" alt="Descargar Excel" onclick="getUrl()">Descargar Excel</button>
                                                 </div>
                                                 <div class="btn-group">
                                                     <button type="button" id="idMostrarOcultarFiltros" disabled='disabled' class="btn btn-primary" onclick="FNMostrarOcultarFiltros()">Mostrar Filtros</button>
@@ -713,8 +713,26 @@
         });
 
 
-        function clickColapse(value) {
+        function clickColapse(value){
             console.log("clickColapse value=", value);
+        }
+
+        function getUrl() {
+            $('#AppLoaderContainer').show();
+            var rowCount = $('#iniciativas >tbody >tr').length;
+            console.log("getUrl() Inicio rowCount=", rowCount);
+            var delay = 30;
+            if (rowCount && rowCount != undefined && rowCount != "") {
+                if (parseInt(rowCount) >= 300) {
+                    delay = 55;
+                }
+            }
+            document.location.href = '../../Planificacion/ExcelResumenIniciativa?token=@ViewBag.IniToken'
+            console.log("getUrl() delay=", delay);
+            setTimeout(function delay() {
+                $('#AppLoaderContainer').hide();
+                console.log("getUrl() fin");
+            }, (delay * 1000));
         }
 
         //
@@ -1139,18 +1157,7 @@
 
         window.onpageshow = function (event) {
             //console.log("onpageshow gestion resumen!");
-            setTimeout(function () {
-                //console.log("setTimeout 1000");
-                $('#iniciativas > tbody  > tr').each(function (index, tr) {
-                    //console.log('$(tr).attr(style)=', $(tr).attr('style'));
-                    if (!$(tr).attr('style')) {
-                        //console.log('if not tr=', $(tr));
-                        var selectElm = $("td:last-child", tr).children("select");
-                        //console.log('selectElm.val()=', selectElm.val());
-                        selectElm.val(-1);
-                    }
-                });
-            }, 500);
+            FNLimpiarSelect();
         };
 
     </script>

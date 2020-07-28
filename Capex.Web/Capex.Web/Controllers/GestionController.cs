@@ -625,6 +625,7 @@ namespace Capex.Web.Controllers
                                 ViewBag.IniEstado = s.IniEstado;
                                 ViewBag.EstadoActualFlujo = s.EstadoActualFlujo;
                                 ViewBag.IniFecha = s.IniFecha;
+                                ViewBag.IniBloqueo = s.IniBloqueo;
                             }
 
                             var Base = SqlMapper.Query(objConnection, "CAPEX_SEL_PLANIFICACION_INICIATIVA", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();

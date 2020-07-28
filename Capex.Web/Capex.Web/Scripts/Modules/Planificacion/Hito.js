@@ -479,6 +479,7 @@ FNGuarEnviarConValidacionQuarter = function () {
                     }
                 }
                 setTimeout(function () {
+                    $('#AppLoaderContainer').show();
                     var ParUsuario = $("#CAPEX_H_USERNAME").val();
                     var DTO = {
                         "IniToken": iniciativa_token,
@@ -491,6 +492,7 @@ FNGuarEnviarConValidacionQuarter = function () {
                         dataType: "json",
                         data: (DTO),
                         success: function (r) {
+                            $('#AppLoaderContainer').hide();
                             if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
                                 document.getElementById('linkToLogout').click();
                                 return;
@@ -514,6 +516,10 @@ FNGuarEnviarConValidacionQuarter = function () {
                                     window.location.href = location.protocol + '//' + location.host + "/GestionVisacion";
                                 }, 4000);
                             }
+                        },
+                        error: function (result) {
+                            console.log("JSON.stringify(result)", JSON.stringify(result));
+                            $('#AppLoaderContainer').hide();
                         }
                     });
                 }, 3000);
@@ -551,6 +557,7 @@ FNGuarEnviarSinValidacionQuarter = function () {
                 }
             }
             setTimeout(function () {
+                $('#AppLoaderContainer').show();
                 var ParUsuario = $("#CAPEX_H_USERNAME").val();
                 var DTO = {
                     "IniToken": iniciativa_token,
@@ -563,6 +570,7 @@ FNGuarEnviarSinValidacionQuarter = function () {
                     dataType: "json",
                     data: (DTO),
                     success: function (r) {
+                        $('#AppLoaderContainer').hide();
                         if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
                             document.getElementById('linkToLogout').click();
                             return;
@@ -581,6 +589,10 @@ FNGuarEnviarSinValidacionQuarter = function () {
                                 window.location.href = location.protocol + '//' + location.host + "/GestionVisacion";
                             }, 4000);
                         }
+                    },
+                    error: function (result) {
+                        console.log("JSON.stringify(result)", JSON.stringify(result));
+                        $('#AppLoaderContainer').hide();
                     }
                 });
             }, 3000);

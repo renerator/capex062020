@@ -19,9 +19,20 @@ using static System.Net.WebRequestMethods;
 using SHARED.AzureStorage;
 using CapexInfraestructure.Bll.Business.Planificacion;
 using System.Configuration;
+using System.Net;
+using System.Net.Mime;
+using ClosedXML.Excel;
+using System.Globalization;
 
 namespace Capex.Web.Controllers
 {
+
+    static class CurrentMillis
+    {
+        private static readonly DateTime Jan1St1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        /// <summary>Get extra long current timestamp</summary>
+        public static long Millis { get { return (long)((DateTime.UtcNow - Jan1St1970).TotalMilliseconds); } }
+    }
 
     [AuthorizeAdminOrMember]
     [RoutePrefix("Documentacion")]
@@ -349,6 +360,331 @@ namespace Capex.Web.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("SeleccionarExcelTemplatePeriodo/{tipoIniciativaSeleccionado}/{periodo}")]
+        public JsonResult SeleccionarExcelTemplatePeriodo(string tipoIniciativaSeleccionado, string periodo)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(VA);
+                string mensaje = String.Empty;
+                var adjunto = IPlanificacion.SeleccionarExcelTemplatePeriodo(tipoIniciativaSeleccionado, periodo);
+                if (adjunto != null && !string.IsNullOrEmpty(adjunto.ShareFile) && !string.IsNullOrEmpty(adjunto.ParNombreFinal))
+                {
+                    return Json(new { IsSuccess = true, Message = "Ok", ResponseData = adjunto }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { IsSuccess = false, Message = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = "SeleccionarExcelTemplatePeriodo, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Json(new { IsSuccess = false, Message = "Error" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("DescargarExcelTemplate/{token}")]
+        public JsonResult DescargarExcelTemplate(string token)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(VA);
+                string mensaje = String.Empty;
+                var adjunto = IPlanificacion.SeleccionarExcelTemplate(token);
+                if (adjunto != null && !string.IsNullOrEmpty(adjunto.ShareFile) && !string.IsNullOrEmpty(adjunto.ParNombreFinal))
+                {
+                    string shareFile = adjunto.ShareFile;
+                    string pathDirectory = adjunto.PathDirectory;
+                    string nameFileFinal = adjunto.ParNombreFinal;
+                    UploadDownload uploadDownload = new UploadDownload();
+                    string urlAzure = UploadDownload.DownloadFile(shareFile, pathDirectory, nameFileFinal);
+                    return Json(new { IsSuccess = true, Message = "Ok", ResponseData = urlAzure }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { IsSuccess = false, Message = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = "DescargarDocumentoAdjunto, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Json(new { IsSuccess = false, Message = "Error" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private string DownloadFile(string url, string token, string filename, string tipo)
+        {
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
+            request.ContentType = "application/x-www-form-urlencoded";
+            string destinationpath = Server.MapPath("~/Scripts/Import/" + token);
+            string filenameFinal = (("2".Equals(tipo) ? "PRESUPUESTO_" : "CASO_BASE_") + CurrentMillis.Millis + Path.GetExtension(filename));
+            string rutaFinal = Path.Combine(destinationpath, filenameFinal);
+            if (!Directory.Exists(destinationpath))
+            {
+                Directory.CreateDirectory(destinationpath);
+            }
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponseAsync().Result)
+            {
+                var responseStream = response.GetResponseStream();
+                using (var fileStream = new FileStream(rutaFinal, FileMode.Append))
+                {
+                    try
+                    {
+                        responseStream.CopyTo(fileStream);
+                    }
+                    catch (Exception err)
+                    {
+                        err.ToString();
+                    }
+                    finally
+                    {
+                        if (responseStream != null)
+                        {
+                            responseStream.Close();
+                        }
+                        if (fileStream != null)
+                        {
+                            fileStream.Close();
+                        }
+                    }
+                }
+            }
+            return filenameFinal;
+        }
+
+        [Route("DescargarExcelTemplateFinal2Pasos/{token}/{iniciativaToken}/{filename}/{tipo}")]
+        public ActionResult DescargarExcelTemplateFinal2Pasos(string token, string iniciativaToken, string filename, string tipo)
+        {
+            string ruta = Path.Combine(Server.MapPath("~/Scripts/Import/" + token), filename);
+            FileStream fstream = new FileStream(ruta, FileMode.Open);
+            XLWorkbook wb = new XLWorkbook(fstream);
+            var sheetOne = wb.Worksheet(2);
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    CultureInfo ciCL = new CultureInfo("es-CL", false);
+                    objConnection.Open();
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_TEMPLATE_BY_TOKEN_INICIATIVA", new { Token = iniciativaToken, TipoIniciativaSeleccionado = tipo }, commandType: CommandType.StoredProcedure).ToList();
+                    if (resultado != null && resultado.Count > 0)
+                    {
+                        foreach (var result in resultado)
+                        {
+                            sheetOne.Cell("D27").Value = result.VALUEMESTCUNO;
+                            sheetOne.Cell("D27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("E27").Value = result.VALUEMESTCDOS;
+                            sheetOne.Cell("E27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("F27").Value = result.VALUEMESTCTRES;
+                            sheetOne.Cell("F27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("G27").Value = result.VALUEMESTCCUATRO;
+                            sheetOne.Cell("G27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("H27").Value = result.VALUEMESTCCINCO;
+                            sheetOne.Cell("H27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("I27").Value = result.VALUEMESTCSEIS;
+                            sheetOne.Cell("I27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("J27").Value = result.VALUEMESTCSIETE;
+                            sheetOne.Cell("J27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("K27").Value = result.VALUEMESTCOCHO;
+                            sheetOne.Cell("K27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("L27").Value = result.VALUEMESTCNUEVE;
+                            sheetOne.Cell("L27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("M27").Value = result.VALUEMESTCDIEZ;
+                            sheetOne.Cell("M27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("N27").Value = result.VALUEMESTCONCE;
+                            sheetOne.Cell("N27").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("O27").Value = result.VALUEMESTCDOCE;
+                            sheetOne.Cell("O27").Style.NumberFormat.Format = "#,##0.00";
+
+                            sheetOne.Cell("D28").Value = result.VALUEMESIPCUNO;
+                            sheetOne.Cell("D28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("E28").Value = result.VALUEMESIPCDOS;
+                            sheetOne.Cell("E28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("F28").Value = result.VALUEMESIPCTRES;
+                            sheetOne.Cell("F28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("G28").Value = result.VALUEMESIPCCUATRO;
+                            sheetOne.Cell("G28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("H28").Value = result.VALUEMESIPCCINCO;
+                            sheetOne.Cell("H28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("I28").Value = result.VALUEMESIPCSEIS;
+                            sheetOne.Cell("I28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("J28").Value = result.VALUEMESIPCSIETE;
+                            sheetOne.Cell("J28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("K28").Value = result.VALUEMESIPCOCHO;
+                            sheetOne.Cell("K28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("L28").Value = result.VALUEMESIPCNUEVE;
+                            sheetOne.Cell("L28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("M28").Value = result.VALUEMESIPCDIEZ;
+                            sheetOne.Cell("M28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("N28").Value = result.VALUEMESIPCONCE;
+                            sheetOne.Cell("N28").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("O28").Value = result.VALUEMESIPCDOCE;
+                            sheetOne.Cell("O28").Style.NumberFormat.Format = "#,##0.00";
+
+                            sheetOne.Cell("D29").Value = result.VALUEMESCPIUNO;
+                            sheetOne.Cell("D29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("E29").Value = result.VALUEMESCPIDOS;
+                            sheetOne.Cell("E29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("F29").Value = result.VALUEMESCPITRES;
+                            sheetOne.Cell("F29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("G29").Value = result.VALUEMESCPICUATRO;
+                            sheetOne.Cell("G29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("H29").Value = result.VALUEMESCPICINCO;
+                            sheetOne.Cell("H29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("I29").Value = result.VALUEMESCPISEIS;
+                            sheetOne.Cell("I29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("J29").Value = result.VALUEMESCPISIETE;
+                            sheetOne.Cell("J29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("K29").Value = result.VALUEMESCPIOCHO;
+                            sheetOne.Cell("K29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("L29").Value = result.VALUEMESCPINUEVE;
+                            sheetOne.Cell("L29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("M29").Value = result.VALUEMESCPIDIEZ;
+                            sheetOne.Cell("M29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("N29").Value = result.VALUEMESCPIONCE;
+                            sheetOne.Cell("N29").Style.NumberFormat.Format = "#,##0.00";
+                            sheetOne.Cell("O29").Value = result.VALUEMESCPIDOCE;
+                            sheetOne.Cell("O29").Style.NumberFormat.Format = "#,##0.00";
+
+                            int pasoFinal = (("2".Equals(tipo)) ? 3 : 80);
+                            if (!string.IsNullOrEmpty(result.PETokenTC))
+                            {
+                                var resultsTcAnio = SqlMapper.Query(objConnection, "CAPEX_SEL_PARAM_ECONOMICO_DETALLE_TOKEN", new { PEToken = result.PETokenTC, PasoFinal = pasoFinal }, commandType: CommandType.StoredProcedure).ToList();
+                                if (resultsTcAnio != null && resultsTcAnio.Count > 0)
+                                {
+                                    var columna = 17;
+                                    foreach (var result2 in resultsTcAnio)
+                                    {
+                                        if (result2.IdParamEconomicoDetalle != null)
+                                        {
+                                            sheetOne.Cell(27, columna).Value = result2.Value;
+                                            sheetOne.Cell(27, columna).Style.NumberFormat.Format = "#,##0.00";
+                                        }
+                                        columna++;
+                                    }
+                                }
+                            }
+                            if (!string.IsNullOrEmpty(result.PETokenIPC))
+                            {
+                                var resultsIpcAnio = SqlMapper.Query(objConnection, "CAPEX_SEL_PARAM_ECONOMICO_DETALLE_TOKEN", new { PEToken = result.PETokenIPC, PasoFinal = pasoFinal }, commandType: CommandType.StoredProcedure).ToList();
+                                if (resultsIpcAnio != null && resultsIpcAnio.Count > 0)
+                                {
+                                    var columna = 17;
+                                    foreach (var result2 in resultsIpcAnio)
+                                    {
+                                        if (result2.IdParamEconomicoDetalle != null)
+                                        {
+                                            sheetOne.Cell(28, columna).Value = result2.Value;
+                                            sheetOne.Cell(28, columna).Style.NumberFormat.Format = "#,##0.00";
+                                        }
+                                        columna++;
+                                    }
+                                }
+                            }
+                            if (!string.IsNullOrEmpty(result.PETokenCPI))
+                            {
+                                var resultsCpiAnio = SqlMapper.Query(objConnection, "CAPEX_SEL_PARAM_ECONOMICO_DETALLE_TOKEN", new { PEToken = result.PETokenCPI, PasoFinal = pasoFinal }, commandType: CommandType.StoredProcedure).ToList();
+                                if (resultsCpiAnio != null && resultsCpiAnio.Count > 0)
+                                {
+                                    var columna = 17;
+                                    foreach (var result2 in resultsCpiAnio)
+                                    {
+                                        if (result2.IdParamEconomicoDetalle != null)
+                                        {
+                                            sheetOne.Cell(29, columna).Value = result2.Value;
+                                            sheetOne.Cell(29, columna).Style.NumberFormat.Format = "#,##0.00";
+                                        }
+                                        columna++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        wb.SaveAs(stream);
+                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", filename);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                    fstream.Close();
+                    if (!string.IsNullOrEmpty(ruta))
+                    {
+                        try
+                        {
+                            if (System.IO.File.Exists(ruta))
+                            {
+                                System.IO.File.Delete(ruta);
+                            }
+                        }
+                        catch (Exception Exp)
+                        {
+                            Exp.ToString();
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+
+        [HttpGet]
+        [Route("DescargarExcelTemplate2Pasos/{token}/")]
+        public JsonResult DescargarExcelTemplate2Pasos(string token, string tipo)
+        {
+            try
+            {
+                IPlanificacion = FactoryPlanificacion.delega(VA);
+                string mensaje = String.Empty;
+                var adjunto = IPlanificacion.SeleccionarExcelTemplate(token);
+                if (adjunto != null && !string.IsNullOrEmpty(adjunto.ShareFile) && !string.IsNullOrEmpty(adjunto.ParNombreFinal))
+                {
+                    string shareFile = adjunto.ShareFile;
+                    string pathDirectory = adjunto.PathDirectory;
+                    string nameFileFinal = adjunto.ParNombreFinal;
+                    UploadDownload uploadDownload = new UploadDownload();
+                    string urlAzure = UploadDownload.DownloadFile(shareFile, pathDirectory, nameFileFinal);
+                    if (!string.IsNullOrEmpty(urlAzure))
+                    {
+                        string filename = DownloadFile(urlAzure, token, nameFileFinal, tipo);
+                        if (!string.IsNullOrEmpty(filename))
+                        {
+                            return Json(new { IsSuccess = true, Message = "Ok", ResponseData = filename, ParToken = token }, JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            return Json(new { IsSuccess = false, Message = "Error" }, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { IsSuccess = false, Message = "Error" }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(new { IsSuccess = false, Message = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception err)
+            {
+                ExceptionResult = "DescargarExcelTemplate2Pasos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                return Json(new { IsSuccess = false, Message = "Error" }, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [Route("DescargarDocumentoAdjunto/{token}/{archivo}/{paso}")]
         public ActionResult DescargarDocumentoAdjunto(string token, string archivo, string paso)

@@ -71,6 +71,16 @@
                         <input id="File100" type="file" class="inputfile inputfile-1" runat="server" />&nbsp;&nbsp;
                         <asp:HiddenField ID="hdnfldCategoria" runat="server" />
                         <asp:button id="Button100" runat="server" text="Subir" class="btn btn-success btn-sm" style="height:28px; width:73px" onclick="Button100_Click" onclientclick="return previosUploadDocument();" validationgroup="A" xmlns:asp="#unknown" />
+                    <%}  else if (Request.QueryString["type"] == "30") {%>
+                        <input id="File30" type="file" class="inputfile inputfile-1" runat="server" />&nbsp;&nbsp;
+                        <asp:HiddenField ID="HiddenField30" runat="server" />
+                        <asp:HiddenField ID="HiddenField31" runat="server" />
+                        <asp:button id="Button30" runat="server" text="Subir" class="btn btn-success btn-sm" style="height:28px; width:73px" onclick="Button30_Click" onclientclick="return previosUploadDocumentTemplate();" validationgroup="A" xmlns:asp="#unknown" />
+                    <%}  else if (Request.QueryString["type"] == "31") {%>
+                        <input id="File31" type="file" class="inputfile inputfile-1" runat="server" />&nbsp;&nbsp;
+                        <asp:HiddenField ID="HiddenField32" runat="server" />
+                        <asp:HiddenField ID="HiddenField33" runat="server" />
+                        <asp:button id="Button31" runat="server" text="Subir" class="btn btn-success btn-sm" style="height:28px; width:73px" onclick="Button31_Click" onclientclick="return previosUploadDocumentExcelTemplate();" validationgroup="A" xmlns:asp="#unknown" />
                     <%}  %>
                 </form>
             </div>

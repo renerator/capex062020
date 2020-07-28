@@ -99,7 +99,7 @@
                     <div class="card m-b-30">
                         <div class="card-body ">
                             <h6 class="card-title">Biblioteca</h6>
-                            <p class="card-text">Biblioteca  de documentación, instructivos y lineamientos necesarios  y de consulta para Gestión de Iniciativas CAPEX.</p>
+                            <p class="card-text">Biblioteca  de documentación, instructivos, lineamientos y de consulta para Gestión de Iniciativas CAPEX.</p>
                             <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Index", "Documentacion")';">Ingresar</a>
                         </div>
                     </div>
@@ -111,8 +111,8 @@
                             <div class="card m-b-30">
                                 <div class="card-body ">
                                     <h6 class="card-title">Mantenedores</h6>
-                                    <p class="card-text">Herramientas para el mantenimiento de información y parámetros del sistema.</p>
-                                    <br />&nbsp;
+                                    <p class="card-text">Herramientas para el mantenimiento de información, usuarios y parámetros del sistema CAPEX.</p>
+
                                     <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Index", "Mantenedor")'">Ingresar</a>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
                     <div class="card m-b-30">
                         <div class="card-body">
                             <h6 class="card-title">Estadísticas</h6>
-                            <p class="card-text">Módulo de representación gráfica de ejercicios oficiales e iniciativas en gestión.<br />&nbsp;</p>
+                            <p class="card-text">Módulo de representación gráfica de Presupuestos como ejercicios oficiales e iniciativas en gestión.</p>
                             <a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("Index", "Estadistica")'" data-toggle="modal" data-target="">Ingresar</a>
 
                         </div>
@@ -262,6 +262,9 @@
         }
     }
 
+    <!--Preloader-->
+        @Html.Partial("_PreLoader")
+    <!--End Preloader-->
     <!-- Footer -->
     <footer class="footer">
         @Html.Partial("_Footer")
@@ -343,15 +346,18 @@
     // PROCESAR SELECCION - EJERCICIO
     //
     FnProcesarSeleccionEP = function () {
+        $("#AppLoaderContainer").show();
         var periodo = localStorage.getItem("CAPEX_PERIODO_EP");
         var tipo_ini = localStorage.getItem("CAPEX_TIPO_INICIATIVA");
         var tipo_eje = localStorage.getItem("CAPEX_TIPO_EJERCICIO");
 
         if (tipo_ini == "" || tipo_ini == null) {
+            $("#AppLoaderContainer").hide();
             toastr.error('Debe seleccionar un tipo de iniciativa.');
             return false;
         }
         else if (tipo_eje == "" || tipo_eje == null) {
+            $("#AppLoaderContainer").hide();
             toastr.error('Debe seleccionar un tipo de ejercicio.');
             return false;
         }
@@ -362,6 +368,8 @@
     }
 
     FnProcesarSeleccionTipoIniciativa = function () {
+        $('#ModalTipoIniciativa').hide();
+        $("#AppLoaderContainer").show();
         var url = '@Url.Action("Index", "Gestion", new { tipoIniciativaSeleccionado = "__id__" })';
         var param = localStorage.getItem("CAPEX_FILTRO_TIPO_INICIATIVA");
         window.location.href = url.replace('__id__', param);
@@ -408,6 +416,7 @@
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
         }
+        $("#AppLoaderContainer").hide();
     });
 
     </script>

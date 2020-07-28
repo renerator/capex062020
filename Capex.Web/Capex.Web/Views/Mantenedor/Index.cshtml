@@ -57,14 +57,23 @@
                     <div class="page-title-box">
                         <div class="btn-group float-right">
                             <ol class="breadcrumb hide-phone p-0 m-0">
-                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                @*<li class="breadcrumb-item"><a href="#">Capex</a></li>
                                 <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
-                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
-                                <li class="breadcrumb-item active"><a href="#">Mantenedores</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>*@
+                                <li class="breadcrumb-item active">Capex</li>
+                                <li class="breadcrumb-item active">Login</li>
+                                <li class="breadcrumb-item active">Panel</li>
+                                <li class="breadcrumb-item active">Mantenedores</li>
                             </ol>
                         </div>
-                        <h6 class="page-title">Mantenedores</h6>
+                        <h6 class="page-title">
+                            <input type="button" id="BotonVolverGeneral" onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&nbsp;
+                            @*<input type="button" id="BotonVolverGeneral" onclick="Actualizar()" class="btn btn-success btn-sm" value="Actualizar Vista" />*@
+                        </h6>
+
+
                     </div>
+                        <h6 class="page-title">Mantenedores Sistema CAPEX</h6>
                 </div>
             </div>
 
@@ -92,28 +101,28 @@
                 </div>
 
                 @*<div class="col-md-12 col-xl-3">
-            <div class="card m-b-30">
-                <div class="card-body">
-                    <h6 class="card-title">Superintendentes</h6>
-                    <p class="card-text">Ingreso y mantención de Superintendente Centinela.</p>
-                    <a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("Superintendente", "Mantenedor")'">Ingresar</a>
+                        <div class="card m-b-30">
+                            <div class="card-body">
+                                <h6 class="card-title">Superintendentes</h6>
+                                <p class="card-text">Ingreso y mantención de Superintendente Centinela.</p>
+                                <a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("Superintendente", "Mantenedor")'">Ingresar</a>
 
-                </div>
-            </div>
-        </div>*@
+                            </div>
+                        </div>
+                    </div>*@
 
                 @*<div class="col-md-12 col-xl-3">
-            <div class="card m-b-30">
-                <div class="card-body">
-                    <h6 class="card-title">Gerencias</h6>
-                    <p class="card-text">Ingreso y mantención de Gerencias Centinela.</p>
-                    <a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("Gerencia", "Mantenedor")'">Ingresar</a>
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Gerencias</h6>
+                            <p class="card-text">Ingreso y mantención de Gerencias Centinela.</p>
+                            <a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("Gerencia", "Mantenedor")'">Ingresar</a>
 
-                </div>
-            </div>
-            </div>*@
+                        </div>
+                    </div>
+                    </div>*@
 
-            <div class="col-md-12 col-xl-3">
+                <div class="col-md-12 col-xl-3">
                     <div class="card m-b-30">
                         <div class="card-body">
                             <h6 class="card-title">Matriz de Riesgo</h6>
@@ -121,22 +130,7 @@
                             <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("MatrizRiesgo", "Mantenedor")'">Ingresar</a>
                         </div>
                     </div>
-            </div>
-
-
-            </div>
-
-            <div class="row">
-
-                @*<div class="col-md-12 col-xl-3">
-            <div class="card m-b-30">
-                <div class="card-body ">
-                    <h6 class="card-title">Superintendencias</h6>
-                    <p class="card-text">Ingreso y mantención de Superintendencia Centinela.</p>
-                    <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Superintendencia", "Mantenedor")'">Ingresar</a>
                 </div>
-            </div>
-        </div>*@
 
                 <div class="col-md-12 col-xl-3">
                     <div class="card m-b-30">
@@ -148,15 +142,31 @@
                     </div>
                 </div>
 
-                @* <div class="col-md-12 col-xl-3">
-            <div class="card m-b-30">
-                <div class="card-body ">
-                    <h6 class="card-title">Clasificación SSO</h6>
-                    <p class="card-text">Ingreso y mantención de Clasificación de Seguridad, Salud, Trabajo y Reglamentos Centinela.</p>
-                    <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("ClasificacionSSO", "Mantenedor")';">Ingresar</a>
-                </div>
             </div>
-        </div>*@
+
+            <div class="row">
+
+                @*<div class="col-md-12 col-xl-3">
+                        <div class="card m-b-30">
+                            <div class="card-body ">
+                                <h6 class="card-title">Superintendencias</h6>
+                                <p class="card-text">Ingreso y mantención de Superintendencia Centinela.</p>
+                                <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Superintendencia", "Mantenedor")'">Ingresar</a>
+                            </div>
+                        </div>
+                    </div>*@
+
+
+
+                @* <div class="col-md-12 col-xl-3">
+                        <div class="card m-b-30">
+                            <div class="card-body ">
+                                <h6 class="card-title">Clasificación SSO</h6>
+                                <p class="card-text">Ingreso y mantención de Clasificación de Seguridad, Salud, Trabajo y Reglamentos Centinela.</p>
+                                <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("ClasificacionSSO", "Mantenedor")';">Ingresar</a>
+                            </div>
+                        </div>
+                    </div>*@
 
                 <div class="col-md-12 col-xl-3">
                     <div class="card m-b-30">
@@ -179,53 +189,189 @@
                     </div>
                 </div>
 
-               
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Orientación  Comercial</h6>
+                            <p class="card-text">Ingreso y mantención de template y parametros comerciales iniciales(V0).</p>
+                            <!--< a href="#" class="btn btn-primary" onclick="document.location='@Url.Action("TemplateIniciativa", "Mantenedor")'">Ingresar</a> -->
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ModalTipoIniciativa">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 col-xl-3">
+                    <div class="card m-b-30">
+                        <div class="card-body">
+                            <h6 class="card-title">Restricción Envío Iniciativas</h6>
+                            <p class="card-text">Establecer fecha de caducidad de envío de iniciativas para ejercicios.</p>
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ModalTipoIniciativaBloqueo">Ingresar</a>
+                        </div>
+                    </div>
+                </div>
 
             </div>
 
+        </div>
+    </div>
+
+    <div class="modal inmodal" id="ModalTipoIniciativa" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Tipo Iniciativa</h6>
+                </div>
+                <div id="ContenedorTipoIniciativa" class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                    <div style="height:130px;">
+                        <div class="" style="margin-top:0px;">
+                            <div class="row" style="height:50px;">
+                                <div class="col-md-12">
+                                    <div style="float: left;width: 30px;margin-right: 20px;text-align: center;">
+                                    </div>
+                                    <h7 style="color:#333"><strong>Seleccione tipo de iniciativa</strong></h7>
+                                    <div class="form-group mb-1 row">
+                                        <div class="col-md-12">
+                                            <select id="idTipoIniciativa" class="form-control" onchange="FnSeleccionarTipoIniciativa(this.value)" style="font-size:12px;">
+                                                <option value="-1" selected>Seleccionar..</option>
+                                                <option value="2">Presupuesto</option>
+                                                <option value="1">Caso Base</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="idBotonTipoIniciativa" disabled='disabled' onclick="FnProcesarSeleccionTipoIniciativa();">Ingresar</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="document.location.reload();">Cerrar</button>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!--Hidden Control-->
-            @{
-                if (Session["CAPEX_SESS_USERNAME"] == null)
-                {
-                    Response.Redirect("/login");
-                }
-                else
-                {
-                    @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+    <div class="modal inmodal" id="ModalTipoIniciativaBloqueo" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Tipo Iniciativa</h6>
+                </div>
+                <div id="ContenedorTipoIniciativaBloqueo" class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                    <div style="height:130px;">
+                        <div class="" style="margin-top:0px;">
+                            <div class="row" style="height:50px;">
+                                <div class="col-md-12">
+                                    <div style="float: left;width: 30px;margin-right: 20px;text-align: center;">
+                                    </div>
+                                    <h7 style="color:#333"><strong>Seleccione tipo de iniciativa</strong></h7>
+                                    <div class="form-group mb-1 row">
+                                        <div class="col-md-12">
+                                            <select id="idTipoIniciativaBloqueo" class="form-control" onchange="FnSeleccionarTipoIniciativaBloqueo(this.value)" style="font-size:12px;">
+                                                <option value="-1" selected>Seleccionar..</option>
+                                                <option value="2">Presupuesto</option>
+                                                <option value="1">Caso Base</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="idBotonTipoIniciativaBloqueo" disabled='disabled' onclick="FnProcesarSeleccionTipoIniciativaBloqueo();">Ingresar</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="document.location.reload();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Hidden Control-->
+    @{
+        if (Session["CAPEX_SESS_USERNAME"] == null)
+        {
+            Response.Redirect("/login");
+        }
+        else
+        {
+            @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
+        }
+    }
+
+    <!-- Footer -->
+    <footer class="footer">
+        @Html.Partial("_Footer")
+    </footer>
+    <!-- End Footer -->
+    <!-- jQuery  -->
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/popper.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/toastr.min.js"></script>
+    <script src="~/Scripts/detect.js"></script>
+    <script src="~/Scripts/fastclick.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+    <script src="~/Scripts/jquery.nicescroll.js"></script>
+    <script src="~/Scripts/jquery.scrollTo.min.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/sweetalert2.all.min.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
+    <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
+    <script src="~/Scripts/Chart.bundle.js"></script>
+    <!-- Paginacion de Contenido -->
+    <script src="~/Scripts/paginga.jquery.min.js"></script>
+    <!-- Arbol de Contenido-->
+    <script src="~/Scripts/file-explore.js"></script>
+    <script src="~/Scripts/Modules/Contexto/Contexto.js"></script>
+
+    <script>
+            FnSeleccionarTipoIniciativa = function (tipo) {
+                console.log("FnSeleccionarTipoIniciativa tipo=", tipo);
+                if (tipo == '-1') {
+                    $('#idBotonTipoIniciativa').prop('disabled', true);
+                } else {
+                    $('#idBotonTipoIniciativa').prop('disabled', false);
                 }
             }
 
-            <!-- Footer -->
-            <footer class="footer">
-                @Html.Partial("_Footer")
-            </footer>
-            <!-- End Footer -->
-            <!-- jQuery  -->
-            <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-            <script src="~/Scripts/popper.js"></script>
-            <script src="~/Scripts/bootstrap.min.js"></script>
-            <script src="~/Scripts/toastr.min.js"></script>
-            <script src="~/Scripts/detect.js"></script>
-            <script src="~/Scripts/fastclick.js"></script>
-            <script src="~/Scripts/jquery.slimscroll.js"></script>
-            <script src="~/Scripts/jquery.blockUI.js"></script>
-            <script src="~/Scripts/jquery.nicescroll.js"></script>
-            <script src="~/Scripts/jquery.scrollTo.min.js"></script>
-            <script src="~/Scripts/waves.js"></script>
-            <script src="~/Scripts/sweetalert2.all.min.js"></script>
-            <script src="~/Scripts/moment.js"></script>
-            <script src="~/Scripts/select2.min.js"></script>
-            <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
-            <script src="~/Scripts/bootstrap-inputmask.min.js"></script>
-            <script src="~/Scripts/bootstrap-maxlength.min.js"></script>
-            <script src="~/Scripts/Chart.bundle.js"></script>
-            <!-- Paginacion de Contenido -->
-            <script src="~/Scripts/paginga.jquery.min.js"></script>
-            <!-- Arbol de Contenido-->
-            <script src="~/Scripts/file-explore.js"></script>
-            <script src="~/Scripts/Modules/Contexto/Contexto.js"></script>
-        </body>
+            FnSeleccionarTipoIniciativaBloqueo = function (tipo) {
+                console.log("FnSeleccionarTipoIniciativaBloqueo tipo=", tipo);
+                if (tipo == '-1') {
+                    $('#idBotonTipoIniciativaBloqueo').prop('disabled', true);
+                } else {
+                    $('#idBotonTipoIniciativaBloqueo').prop('disabled', false);
+                }
+            }
+
+            FnProcesarSeleccionTipoIniciativa = function () {
+                var url = '@Url.Action("TemplateIniciativa", "Mantenedor", new { tipoIniciativaSeleccionado = "__id__" })';
+                var param = $('#idTipoIniciativa').val();
+                window.location.href = "Mantenedor/TemplateIniciativa?tipoIniciativaSeleccionado=" + param; //url.replace('__id__', param);
+            }
+
+            FnProcesarSeleccionTipoIniciativaBloqueo = function () {
+                var url = '@Url.Action("Bloqueo", "Mantenedor", new { tipoIniciativaSeleccionado = "__id__" })';
+                var param = $('#idTipoIniciativaBloqueo').val();
+                window.location.href = "Mantenedor/Bloqueo?tipoIniciativaSeleccionado=" + param; //url.replace('__id__', param);
+            }
+
+            $(document).ready(function () {
+                $("#ModalTipoIniciativa").on('show.bs.modal', function () {
+                    $('#idTipoIniciativa').val('-1');
+                    $('#idBotonTipoIniciativa').prop('disabled', true);
+                });
+
+                $("#ModalTipoIniciativaBloqueo").on('show.bs.modal', function () {
+                    $('#idTipoIniciativaBloqueo').val('-1');
+                    $('#idBotonTipoIniciativaBloqueo').prop('disabled', true);
+                });
+            });
+    </script>
+
+</body>
         </html>

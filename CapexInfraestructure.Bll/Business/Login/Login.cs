@@ -43,14 +43,14 @@ namespace CapexInfraestructure.Bll.Business.Login
         #endregion
 
         #region "GLOBALS"
-        public SqlConnection ORM;
+        //public SqlConnection ORM;
         #endregion
 
         #region "CONSTRUCTOR"
         public Login()
         {
             AppModule = "Login";
-            ORM = Utils.Conectar();
+            //ORM = Utils.Conectar();
         }
         #endregion
 
@@ -62,15 +62,23 @@ namespace CapexInfraestructure.Bll.Business.Login
         /// <returns></returns>
         public List<Usuario.InformacionUsuario> ObtenerInformacionUsuario(string NombreUsuario)
         {
-            try
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                return ORM.Query<Usuario.InformacionUsuario>("CAPEX_SEL_INFORMACION_USUARIO", new { NombreUsuario }, commandType: CommandType.StoredProcedure).ToList();
-            }
-            catch (Exception err)
-            {
-                ExceptionResult = AppModule + "ObtenerInformacionUsuario, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
-                Utils.LogError(ExceptionResult);
-                return null;
+                try
+                {
+                    objConnection.Open();
+                    return SqlMapper.Query<Usuario.InformacionUsuario>(objConnection, "CAPEX_SEL_INFORMACION_USUARIO", new { NombreUsuario }, commandType: CommandType.StoredProcedure).ToList();
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ObtenerInformacionUsuario, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 

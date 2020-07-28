@@ -166,6 +166,7 @@
     <Compile Include="Entities\Login\Roles.cs" />
     <Compile Include="Entities\Login\Usuario.cs" />
     <Compile Include="Entities\Mantenedor\Area.cs" />
+    <Compile Include="Entities\Mantenedor\Bloqueo.cs" />
     <Compile Include="Entities\Mantenedor\Categoria.cs" />
     <Compile Include="Entities\Documentacion\Principal.cs" />
     <Compile Include="Entities\Mantenedor\ClasificacionSSO.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Entities\Mantenedor\Gerente.cs" />
     <Compile Include="Entities\Mantenedor\Riesgo.cs" />
     <Compile Include="Entities\Mantenedor\Superintendente.cs" />
+    <Compile Include="Entities\Mantenedor\Template.cs" />
     <Compile Include="Entities\Mantenedor\Usuario.cs" />
     <Compile Include="Entities\Planificacion\Categorizacion.cs" />
     <Compile Include="Entities\Planificacion\Descripcion.cs" />

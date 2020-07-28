@@ -68,6 +68,30 @@
             color: gold;
             font-weight: bolder;
         }
+
+        .myButtonXls {
+            background-color: #287233;
+            border-radius: 3px;
+            border: 1px solid #18ab29;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial;
+            font-size: 12px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #2f6627;
+        }
+
+            .myButtonXls:hover {
+                background-color: #5cbf2a;
+                color: #000000;
+            }
+
+            .myButtonXls:active {
+                position: relative;
+                top: 1px;
+                color: #000000;
+            }
     </style>
 </head>
 <body style="overflow: visible;" onload="FNResetear()">
@@ -163,16 +187,16 @@
                                                         }
                                                         else
                                                         {
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionResumen")'"> Resumen Iniciativas           <span id="ContenedorContResumenIni" class="label label-warning float-right">0</span></li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionDesarrollo")'"> En Desarrollo              <span id="ContenedorContDesaIni" class="label label-warning float-right">0</span></li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionVisacion")'"> Visación                     <span id="ContenedorContVisIni" class="label label-warning float-right">0</span></li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionObservada")'"> Observadas                  <span id="ContenedorContComent" class="label label-warning float-right">0</span></li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionIngresada")'"> REVISIÓN C.E.               <span id="ContenedorContIngresadaIni" class="label label-warning float-right">0</span> </li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionEnRevision")'"> REVISIÓN AMSA              <span id="ContenedorContRevisionIni" class="label label-warning float-right">0</span> </li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionAprobadaAmsa")'"> Aprobada AMSA            <span id="ContenedorContAprobadaAMSAIni" class="label label-warning float-right">0</span> </li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="1"})'"> No Aprobada GAF            <span id="ContenedorContNoAprobadaGAFIni" class="label label-warning float-right">0</span></li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="2"})'"> No Aprobada C.E.           <span id="ContenedorContNoAprobadaCEIni" class="label label-warning float-right">0</span> </li>
-                                                            <li onclick="document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="3"})'"> No Aprobada AMSA           <span id="ContenedorContNoAprobadaAMSAIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionResumen")'"> Resumen Iniciativas           <span id="ContenedorContResumenIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionDesarrollo")'"> En Desarrollo              <span id="ContenedorContDesaIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionVisacion")'"> Visación                     <span id="ContenedorContVisIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionObservada")'"> Observadas                  <span id="ContenedorContComent" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionIngresada")'"> REVISIÓN C.E.               <span id="ContenedorContIngresadaIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionEnRevision")'"> REVISIÓN AMSA              <span id="ContenedorContRevisionIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionAprobadaAmsa")'"> Aprobada AMSA            <span id="ContenedorContAprobadaAMSAIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="1"})'"> No Aprobada GAF            <span id="ContenedorContNoAprobadaGAFIni" class="label label-warning float-right">0</span></li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="2"})'"> No Aprobada C.E.           <span id="ContenedorContNoAprobadaCEIni" class="label label-warning float-right">0</span> </li>
+                                                            <li onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "GestionNoAprobada",new { opcion ="3"})'"> No Aprobada AMSA           <span id="ContenedorContNoAprobadaAMSAIni" class="label label-warning float-right">0</span></li>
                                                         }
                                                     }
                                                 </ul>

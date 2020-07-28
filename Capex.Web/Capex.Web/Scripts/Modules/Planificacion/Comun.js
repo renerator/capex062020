@@ -15,6 +15,30 @@
 //TEXTOS DE AYUDA
 //
 
+FNObtenerFechaBloqueo = function () {
+    //PREPARAR
+    $.ajaxSetup({ cache: false });
+    $.ajax({
+        url: "/Planificacion/obtenerFechaBloqueo",
+        type: "GET",
+        dataType: "json",
+        success: function (r) {
+            console.log("FNObtenerFechaBloqueo r=" + r);
+            if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                document.getElementById('linkToLogout').click();
+                return;
+            }
+            if (r == "0") {
+                $('#BotonGuardarEnviarIniciativa').show();
+            } else {
+                $('#BotonGuardarEnviarIniciativa').hide();
+            }
+        }
+    });
+}
+
+
+
 FNObtenerTextoAyuda = function (etapa, seccion) {
     var seccion = seccion.trim();
     //alert(seccion);
@@ -41,7 +65,7 @@ FNObtenerTextoAyuda = function (etapa, seccion) {
             else if (seccion == "3EA8EDBB-13CF-477B-B13E-CEE19966ABFA") {
 
                 $("#ContenedorInformacionLateralIzquierdo").html("<h7>ERFT</h7><br><div style='margin-top:5px;text-align:justify;'>ERFT: Estándar de Riesgos de Fatalidad Transversales <br> 1.	Pérdida control del vehículo <br>2.	Pérdida control del equipo <br>3. Interacción personas, equipos y vehículos <br> 4. Caída de roca / falla de terreno <br> 5. Pérdida de control en maniobras de izaje<br> 6. Pérdida de control en manejo de explosivos <br>7. Pérdida de equilibrio / caída desde altura <br>8. Falla estructural <br> 9. Caída de objeto <br>10. Contacto con energía eléctrica <br>11. Liberación descontrolada de energía <br>12. Espacio confinado <br>13. Atrapamiento con partes móviles <br>14. Contacto con sustancias peligrosas <br>15. Incendio <br></div>");
-               
+
             }
             else if (seccion == "CB2CEDC3-AE5A-46CD-A962-656DEAD2823C") {
                 $("#ContenedorInformacionLateralIzquierdo").html("<h7>ESO</h7><br><div style='margin-top:5px;text-align:justify;'>ESO: Estándares de Salud Ocupacional<br>1. Estándar de salud compatible <br>2. Estándar de higiene ocupacional <br>3. Estándar de ergonomía <br>4. Estándar psicosocial <br>5. Estándar de vigilancia médica ocupacional <br>6. Estándar de gestión de casos de salud <br>7. Estándar de fatiga y somnolencia <br>8. Estándar de maternidad <br>9. Estándar de alcohol, drogas y tabaco <br>10. Estándar de promoción de conductas saludables y calidad de vida <br></div>");
@@ -61,11 +85,11 @@ FNObtenerTextoAyuda = function (etapa, seccion) {
             break;
         case "BAJA_COMPLEJIDAD":
             $("#ContenedorInformacionLateralIzquierdo").html("<div style='margin-top:5px;text-align:justify;'><h7>Interferencias</h7><br>Se refiere a la existencia de interferencias con instalaciones existentes de operaciones u otras, con otros proyectos a ejecutarse en paralelo o con condiciones climáticas adversas.<br>" +
-            "<h7>Riesgo para las personas</h7><br> Se refiere a analizar si existen riesgos a las personas, ya sea durante la ejecución del proyecto o durante la operación en régimen.<br>" +
-            "<h7>Sustentabilidad</h7><br> Se refiere al análisis de la existencia de riesgos al medio ambiente, a la comunidad y a los Bienes Físicos producto de la ejecución del proyecto.<br>" +
-            "<h7>Complejidad Tecnológica</h7><br> En este aspecto se debe analizar el conocimiento que se tiene del lugar de emplazamiento del proyecto, en cuanto a mecánica de suelos, geotécnica, condiciones ambientales y otros aspectos relevantes.<br>" +
-            "<h7>Solución Técnica</h7><br> En este aspecto se debe analizar el grado de definición de la solución para cumplir con el objetivo del proyecto, en cuánto que ésta sea la mejor desde el punto de vista técnico - económico.<br></div><br><div><a href='#' onclick='FNMostrarModalGradoComplejidad()' style='text-decoration:underline;'>Ver tabla Grado de Complejidad</a></div>");
-        break;
+                "<h7>Riesgo para las personas</h7><br> Se refiere a analizar si existen riesgos a las personas, ya sea durante la ejecución del proyecto o durante la operación en régimen.<br>" +
+                "<h7>Sustentabilidad</h7><br> Se refiere al análisis de la existencia de riesgos al medio ambiente, a la comunidad y a los Bienes Físicos producto de la ejecución del proyecto.<br>" +
+                "<h7>Complejidad Tecnológica</h7><br> En este aspecto se debe analizar el conocimiento que se tiene del lugar de emplazamiento del proyecto, en cuanto a mecánica de suelos, geotécnica, condiciones ambientales y otros aspectos relevantes.<br>" +
+                "<h7>Solución Técnica</h7><br> En este aspecto se debe analizar el grado de definición de la solución para cumplir con el objetivo del proyecto, en cuánto que ésta sea la mejor desde el punto de vista técnico - económico.<br></div><br><div><a href='#' onclick='FNMostrarModalGradoComplejidad()' style='text-decoration:underline;'>Ver tabla Grado de Complejidad</a></div>");
+            break;
         case "PRESUPUESTO":
             $("#ContenedorInformacionLateralIzquierdo").html("<h7>Presupuesto</h7><br><div style='margin-top:5px;text-align:justify;'>Avance Financiero: En este avance se debe entregar el valor de cada ìtem en KUS$, respetando ciertos parámetros máximos establecidos como el '% de costo del dueño' o '% de contingencia'.<br><br>Avance Físico: En este avance se debe entregar el avance físico acumulado de cada fase, el cual por medio de la ponderación de cada una de ellas logra el vector acumulado del proyecto.<br><br>Dotación Promedio: Se debe establecer el vector de las dotaciones en base a los contratos que considera cada proyecto.La información a entregar debe ser asociada a la dotación 'CONTRATADA' <br></div > ");
             break;
@@ -96,24 +120,25 @@ FNLimpiarTextoAyuda = function () {
 // VERIFICAR ESTADO DE ALMACENAMIENTO DE ETAPA
 //
 FNVerificarEstadoGuardadoDatos = function (etapa) {
-                                  localStorage.setItem("CAPEX_IDENTIFICACION_ETAPA_ANTERIOR", etapa);
-    var cambio_identificacion   = localStorage.getItem("CAPEX_IDENTIFICACION_CAMBIO"); 
-    var cambio_categorizacion   = localStorage.getItem("CAPEX_CATEGORIZACION_CAMBIO");
-    var cambio_categorizacion1  = localStorage.getItem("CAPEX_CATEGORIZACION_DESARROLLO_CAMBIO");
-    var cambio_categorizacion2  = localStorage.getItem("CAPEX_CATEGORIZACION_ABC_CAMBIO");
-    var cambio_descripcion      = localStorage.getItem("CAPEX_DESCRIPCION_CAMBIO");
-    var cambio_evaleco          = localStorage.getItem("CAPEX_EVALECO_CAMBIO");
-    var cambio_evalriesgo       = localStorage.getItem("CAPEX_EVALRIESGO_CAMBIO");
-    var cambio_gantt            = localStorage.getItem("CAPEX_GANTT_CAMBIO");
-    var cambio_template         = localStorage.getItem("CAPEX_TEMPLATE_CAMBIO");
-    var cambio_hitos            = localStorage.getItem("CAPEX_HITOS_CAMBIO");
+
+    localStorage.setItem("CAPEX_IDENTIFICACION_ETAPA_ANTERIOR", etapa);
+    var cambio_identificacion = localStorage.getItem("CAPEX_IDENTIFICACION_CAMBIO");
+    var cambio_categorizacion = localStorage.getItem("CAPEX_CATEGORIZACION_CAMBIO");
+    var cambio_categorizacion1 = localStorage.getItem("CAPEX_CATEGORIZACION_DESARROLLO_CAMBIO");
+    var cambio_categorizacion2 = localStorage.getItem("CAPEX_CATEGORIZACION_ABC_CAMBIO");
+    var cambio_descripcion = localStorage.getItem("CAPEX_DESCRIPCION_CAMBIO");
+    var cambio_evaleco = localStorage.getItem("CAPEX_EVALECO_CAMBIO");
+    var cambio_evalriesgo = localStorage.getItem("CAPEX_EVALRIESGO_CAMBIO");
+    var cambio_gantt = localStorage.getItem("CAPEX_GANTT_CAMBIO");
+    var cambio_template = localStorage.getItem("CAPEX_TEMPLATE_CAMBIO");
+    var cambio_hitos = localStorage.getItem("CAPEX_HITOS_CAMBIO");
 
     var estado_identificacion = localStorage.getItem("CAPEX_INICIATIVA_ESTADO");
     var estado_categorizacion = localStorage.getItem("CAPEX_INICIATIVA_CATEGORIZACION_ESTADO");
-    var estado_descripcion    = localStorage.getItem("CAPEX_INICIATIVA_DESCRIPCION_ESTADO");
+    var estado_descripcion = localStorage.getItem("CAPEX_INICIATIVA_DESCRIPCION_ESTADO");
     var estado_evaluacion_eco = localStorage.getItem("CAPEX_INICIATIVA_EVALUACION_ECONOMICA_ESTADO");
     var estado_evaluacion_rie = localStorage.getItem("CAPEX_INICIATIVA_EVALUACION_RIESGO_ESTADO");
-    var estado_hitos          = localStorage.getItem("CAPEX_INICIATIVA_HITO_ESTADO");
+    var estado_hitos = localStorage.getItem("CAPEX_INICIATIVA_HITO_ESTADO");
 
     if (estado_identificacion == "" && cambio_identificacion == "SI") {
         $("#ModalAdvertenciaPerdidaCambios").show();
@@ -131,30 +156,30 @@ FNVerificarEstadoGuardadoDatos = function (etapa) {
         $("#ModalAdvertenciaPerdidaCambios").show();
     }
     else if (estado_hitos == "" && cambio_hitos == "SI") {
-           $("#ModalAdvertenciaPerdidaCambios").show();
+        $("#ModalAdvertenciaPerdidaCambios").show();
     }
 }
 FNRelocalizarEtapa = function () {
     $("#ModalAdvertenciaPerdidaCambios").hide();
-    var etapa                   = localStorage.getItem("CAPEX_IDENTIFICACION_ETAPA_ANTERIOR");
-    var cambio_identificacion   = localStorage.getItem("CAPEX_IDENTIFICACION_CAMBIO");
-    var cambio_categorizacion   = localStorage.getItem("CAPEX_CATEGORIZACION_CAMBIO");
-    var cambio_categorizacion1  = localStorage.getItem("CAPEX_CATEGORIZACION_DESARROLLO_CAMBIO");
-    var cambio_categorizacion2  = localStorage.getItem("CAPEX_CATEGORIZACION_ABC_CAMBIO");
-    var cambio_descripcion      = localStorage.getItem("CAPEX_DESCRIPCION_CAMBIO");
-    var cambio_evaleco          = localStorage.getItem("CAPEX_EVALECO_CAMBIO");
-    var cambio_evalriesgo       = localStorage.getItem("CAPEX_EVALRIESGO_CAMBIO");
-    var cambio_gantt            = localStorage.getItem("CAPEX_GANTT_CAMBIO");
-    var cambio_template         = localStorage.getItem("CAPEX_TEMPLATE_CAMBIO");
-    var cambio_hitos            = localStorage.getItem("CAPEX_HITOS_CAMBIO");
+    var etapa = localStorage.getItem("CAPEX_IDENTIFICACION_ETAPA_ANTERIOR");
+    var cambio_identificacion = localStorage.getItem("CAPEX_IDENTIFICACION_CAMBIO");
+    var cambio_categorizacion = localStorage.getItem("CAPEX_CATEGORIZACION_CAMBIO");
+    var cambio_categorizacion1 = localStorage.getItem("CAPEX_CATEGORIZACION_DESARROLLO_CAMBIO");
+    var cambio_categorizacion2 = localStorage.getItem("CAPEX_CATEGORIZACION_ABC_CAMBIO");
+    var cambio_descripcion = localStorage.getItem("CAPEX_DESCRIPCION_CAMBIO");
+    var cambio_evaleco = localStorage.getItem("CAPEX_EVALECO_CAMBIO");
+    var cambio_evalriesgo = localStorage.getItem("CAPEX_EVALRIESGO_CAMBIO");
+    var cambio_gantt = localStorage.getItem("CAPEX_GANTT_CAMBIO");
+    var cambio_template = localStorage.getItem("CAPEX_TEMPLATE_CAMBIO");
+    var cambio_hitos = localStorage.getItem("CAPEX_HITOS_CAMBIO");
 
 
-    var estado_identificacion   = localStorage.getItem("CAPEX_INICIATIVA_ESTADO");
-    var estado_categorizacion   = localStorage.getItem("CAPEX_INICIATIVA_CATEGORIZACION_ESTADO");
-    var estado_descripcion      = localStorage.getItem("CAPEX_INICIATIVA_DESCRIPCION_ESTADO");
-    var estado_evaluacion_eco   = localStorage.getItem("CAPEX_INICIATIVA_EVALUACION_ECONOMICA_ESTADO");
-    var estado_evaluacion_rie   = localStorage.getItem("CAPEX_INICIATIVA_EVALUACION_RIESGO_ESTADO");
-    var estado_hitos            = localStorage.getItem("CAPEX_INICIATIVA_HITO_ESTADO");
+    var estado_identificacion = localStorage.getItem("CAPEX_INICIATIVA_ESTADO");
+    var estado_categorizacion = localStorage.getItem("CAPEX_INICIATIVA_CATEGORIZACION_ESTADO");
+    var estado_descripcion = localStorage.getItem("CAPEX_INICIATIVA_DESCRIPCION_ESTADO");
+    var estado_evaluacion_eco = localStorage.getItem("CAPEX_INICIATIVA_EVALUACION_ECONOMICA_ESTADO");
+    var estado_evaluacion_rie = localStorage.getItem("CAPEX_INICIATIVA_EVALUACION_RIESGO_ESTADO");
+    var estado_hitos = localStorage.getItem("CAPEX_INICIATIVA_HITO_ESTADO");
 
     if (cambio_identificacion == "SI" && estado_identificacion == "") {
         $('#navegacion li:nth-child(1) a').tab('show');
@@ -168,7 +193,7 @@ FNRelocalizarEtapa = function () {
         $('#navegacion li:nth-child(4) a').tab('show');
         return false;
     }
-    else if (cambio_evaleco == "SI" && estado_evaluacion_eco == "" ) {
+    else if (cambio_evaleco == "SI" && estado_evaluacion_eco == "") {
         $('#navegacion li:nth-child(5) a').tab('show');
         return false;
     }
@@ -176,10 +201,10 @@ FNRelocalizarEtapa = function () {
         $('#navegacion li:nth-child(6) a').tab('show');
         return false;
     }
-    else if (cambio_hitos == "SI" && estado_hitos == "" ) {
+    else if (cambio_hitos == "SI" && estado_hitos == "") {
         $('#navegacion li:nth-child(7) a').tab('show');
         return false;
-    }  
+    }
 }
 //
 // CERRAR MODAL ADVERTENCIA

@@ -465,7 +465,7 @@ FNCallBackIngresoImport = function (paramJson) {
     var usuario = $("#CAPEX_H_USERNAME").val();
     var iniciativa_token = localStorage.getItem("CAPEX_INICIATIVA_TOKEN");
     if (paramJson.Data.code == "0") {
-        var DTO = { "token": iniciativa_token, "usuario": usuario, "archivo": paramJson.Data.nameFile, "tipo": tipo };
+        var DTO = { "token": iniciativa_token, "usuario": usuario, "archivo": paramJson.Data.nameFile, "tipo": tipo, "parFile": paramJson.Data.response };
 
         console.log("DTO=", JSON.stringify(DTO));
         $.ajax({
@@ -479,6 +479,14 @@ FNCallBackIngresoImport = function (paramJson) {
                     return;
                 }
                 jQuery("#AppLoaderContainer").hide();
+                if (r && r.errorFormatoTemplate && r.errorFormatoTemplate == "true") {
+                    if (r.mensajeError && r.mensajeError.length > 0) {
+                        swal("Error", r.mensajeError, "error");
+                    } else {
+                        swal("Error", "No es posible subir archivo o importar datos.", "error")
+                    }
+                    return;
+                }
                 FNPoblarDocumentos();
                 if (tipo == "CB" || tipo == "CD") {
                     setTimeout(function () {
@@ -493,8 +501,7 @@ FNCallBackIngresoImport = function (paramJson) {
                             PoblarVistaHitosResumen();
                         }, 3000);
                     }, 1000);
-                }
-                else {
+                } else {
                     setTimeout(function () {
                         PoblarVistaPresupuesto();
                         setTimeout(function () {
@@ -517,7 +524,7 @@ FNCallBackIngresoImport = function (paramJson) {
             },
             error: function (xhr, error, status) {
                 jQuery("#AppLoaderContainer").hide();
-                swal("Error", "No es posible subir archivo o importar datos1.", "error")
+                swal("Error", "No es posible subir archivo o importar datos.", "error")
             }
         });
     } else {
@@ -1094,4 +1101,104 @@ FNGraficoFaseConstruccion = function () {
             }
         }
     });
+}
+
+FNDescargarExcelTemplateFinal = function (token) {
+    var link = document.createElement("a");
+    console.info("token=", token);
+    $.ajax({
+        url: "/Documentacion/DescargarExcelTemplate/" + token,
+        method: "GET",
+        data: { "token": token },
+        async: true
+    }).done(function (r) {
+        console.log("r=", r);
+        if (r && r.IsSuccess && r.ResponseData) {
+            console.log("r.ResponseData=", r.ResponseData);
+            document.location.href = r.ResponseData;
+        }
+    }).fail(function (xhr) {
+        console.log('fail error', xhr);
+    });
+    return;
+}
+
+FNDescargarExcelTemplateFinal2Pasos = function (token) {
+    var iniciativa_token = localStorage.getItem("CAPEX_INICIATIVA_TOKEN");
+    if (!iniciativa_token || iniciativa_token == undefined || iniciativa_token == "") {
+        swal("", "Complete y guarde 'Identificación' de iniciativa antes de importar información.", "info");
+        return;
+    }
+    var link = document.createElement("a");
+    var tipo = localStorage.getItem("CAPEX_TIPO_INICIATIVA");
+    var tipoIniciativaSeleccionado = "";
+    if (tipo == "CB" || tipo == "CD") {
+        tipoIniciativaSeleccionado = "1";
+    } else {
+        tipoIniciativaSeleccionado = "2";
+    }
+    console.info("token=", token);
+    $.ajax({
+        url: "/Documentacion/DescargarExcelTemplate2Pasos/" + token,
+        method: "GET",
+        data: { "token": token, "iniciativaToken": iniciativa_token, "tipo": tipoIniciativaSeleccionado },
+        async: true
+    }).done(function (r) {
+        console.log("r=", r);
+        if (r && r.IsSuccess && r.ResponseData) {
+            console.log("r.ResponseData=", r.ResponseData);
+            var urlFinal = '/Documentacion/DescargarExcelTemplateFinal2Pasos/' + r.ParToken + '/' + iniciativa_token + '/' + r.ResponseData + '/' + tipoIniciativaSeleccionado;
+            document.location.href = encodeURI(urlFinal);
+        }
+    }).fail(function (xhr) {
+        console.log('fail error', xhr);
+    });
+    return;
+}
+
+FNObtenerExcelTemplateFinal = function () {
+    var tipo_iniciativa = localStorage.getItem("CAPEX_TIPO_INICIATIVA");
+    var periodo = localStorage.getItem("CAPEX_PERIODO_EP");
+    console.info("FNObtenerExcelTemplateFinal tipo_iniciativa=" + tipo_iniciativa + ", periodo=" + periodo);
+    var tipoIniciativaSeleccionado = 1;
+    if (tipo_iniciativa == "CB" || tipo_iniciativa == "CD") {
+        tipoIniciativaSeleccionado = 1;
+    } else {
+        tipoIniciativaSeleccionado = 2;
+    }
+    $.ajax({
+        url: "/Documentacion/SeleccionarExcelTemplatePeriodo/" + tipoIniciativaSeleccionado + "/" + periodo,
+        method: "GET",
+        async: true
+    }).done(function (r) {
+        if (r && r.IsSuccess && r.ResponseData) {
+            console.log("r.ResponseData=", r.ResponseData);
+            var contentSpan = "<img src='../../Content/icons/excel-48x48-1.png' height='24'/><a href='#' onclick=FNDescargarExcelTemplateFinal2Pasos(\'" + r.ResponseData.ParToken + "\'); style='color:white;'> Descargar Template</a>";
+            if (tipoIniciativaSeleccionado == 1) {
+                $("#ContenedorDescargaTemplateCB").html(contentSpan);
+            } else {
+                $("#ContenedorDescargaTemplate").html(contentSpan);
+            }
+        } else {
+            var contentSpan = "<strong>No hay un template disponible.</strong>";
+            if (tipoIniciativaSeleccionado == 1) {
+                $('#ContenedorDescargaTemplateCB').css('color', 'red');
+                $("#ContenedorDescargaTemplateCB").html(contentSpan);
+            } else {
+                $('#ContenedorDescargaTemplate').css('color', 'red');
+                $("#ContenedorDescargaTemplate").html(contentSpan);
+            }
+        }
+    }).fail(function (xhr) {
+        console.log('fail error', xhr);
+        var contentSpan = "<strong>No hay un template disponible.</strong>";
+        if (tipoIniciativaSeleccionado == 1) {
+            $('#ContenedorDescargaTemplateCB').css('color', 'red');
+            $("#ContenedorDescargaTemplateCB").html(contentSpan);
+        } else {
+            $('#ContenedorDescargaTemplate').css('color', 'red');
+            $("#ContenedorDescargaTemplate").html(contentSpan);
+        }
+    });
+    return;
 }

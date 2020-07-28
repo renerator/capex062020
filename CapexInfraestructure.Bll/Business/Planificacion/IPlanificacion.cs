@@ -110,6 +110,8 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         string EliminarAdjuntoVigente(string token, string usuario);
         string EliminarAdjuntoVigenteConEvaluacionEconomica(string IniToken, string ParToken, string usuario);
         string EliminarAdjuntoVigenteConEvaluacionRiesgo(string IniToken, string ParToken, string usuario);
+        Identificacion.Adjunto SeleccionarExcelTemplate(string token);
+        Identificacion.Adjunto SeleccionarExcelTemplatePeriodo(string tipoIniciativaSeleccionado, string periodo);
         Identificacion.Adjunto SeleccionarAdjunto(string token);
         Identificacion.Adjunto SeleccionarAdjuntoPorTokenYPaso(string IniToken, string ParPaso);
         Identificacion.Adjunto SeleccionarOtroAdjuntoPorTokenYPaso(string IniToken, string ParToken, string ParPaso);
@@ -118,5 +120,6 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         string RegistrarArchivo(string IniToken, string ParUsuario, string ParNombre, string ParPaso, string ParCaso);
 
         List<Identificacion.MatrizRiesgo> ListarMatrizRiesgo();
+        string obtenerFechaBloqueo(String TipoIniciativa);
     }
 }

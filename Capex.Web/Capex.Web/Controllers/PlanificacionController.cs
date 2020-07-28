@@ -29,6 +29,8 @@ using SHARED.AzureStorage;
 using System.Configuration;
 using System.Globalization;
 using System.Threading;
+using Capex.Web.Content.exception;
+using System.Net;
 
 namespace Capex.Web.Controllers
 {
@@ -1776,7 +1778,7 @@ namespace Capex.Web.Controllers
         /// <param name="archivo"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult ProcesarTemplatePresupuestoFinal(string token, string usuario, string archivo, string tipo)
+        public ActionResult ProcesarTemplatePresupuestoFinal(string token, string usuario, string archivo, string tipo, string parFile)
         {
             if (!@User.Identity.IsAuthenticated || Session["CAPEX_SESS_USERNAME"] == null)
             {
@@ -1786,27 +1788,27 @@ namespace Capex.Web.Controllers
             else
             {
                 Boolean isOk = false;
+                Boolean eliminarTemplate = false;
+                IPlanificacion = FactoryPlanificacion.delega(IT);
                 try
                 {
                     if (tipo == "CB" || tipo == "CD")
                     {
                         string json = JsonConvert.SerializeObject(ImportarTemplateCasoBaseFinal(token, usuario, archivo), Formatting.None);
                         isOk = true;
-                        return Json(
-                            json,
-                            JsonRequestBehavior.AllowGet
-                            );
+                        return Json(json, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
-                        IPlanificacion = FactoryPlanificacion.delega(IT);
                         string json = JsonConvert.SerializeObject(ImportarTemplateFinal(token, usuario, archivo), Formatting.None);
                         isOk = true;
-                        return Json(
-                            json,
-                            JsonRequestBehavior.AllowGet
-                            );
+                        return Json(json, JsonRequestBehavior.AllowGet);
                     }
+                }
+                catch (InvalidParameterExcelException iexc)
+                {
+                    eliminarTemplate = true;
+                    return Json(new { errorFormatoTemplate = "true", mensajeError = iexc.Message.ToString() }, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception exc)
                 {
@@ -1814,7 +1816,30 @@ namespace Capex.Web.Controllers
                 }
                 finally
                 {
-                    if (isOk)
+                    if (eliminarTemplate && !string.IsNullOrEmpty(parFile))
+                    {
+                        var adjunto = IPlanificacion.SeleccionarAdjunto(parFile);
+                        if (adjunto != null)
+                        {
+                            string shareFile = (!string.IsNullOrEmpty(adjunto.ShareFile) ? adjunto.ShareFile : String.Empty);
+                            string pathDirectory = (!string.IsNullOrEmpty(adjunto.PathDirectory) ? adjunto.PathDirectory : String.Empty);
+                            string nameFile = (!string.IsNullOrEmpty(adjunto.ParNombreFinal) ? adjunto.ParNombreFinal : ((!string.IsNullOrEmpty(adjunto.ParNombre) ? adjunto.ParNombre : String.Empty)));
+                            if (!string.IsNullOrEmpty(nameFile) && !string.IsNullOrEmpty(shareFile) && !string.IsNullOrEmpty(pathDirectory))
+                            {
+                                //AZURE
+                                UploadDownload uploadDownload = new UploadDownload();
+                                if (UploadDownload.DeleteFile(shareFile, pathDirectory, nameFile))
+                                {
+                                    IPlanificacion.EliminarAdjuntoVigente(parFile, usuario);
+                                }
+                            }
+                            else
+                            {
+                                IPlanificacion.EliminarAdjuntoVigente(token, usuario);
+                            }
+                        }
+                    }
+                    if (isOk || eliminarTemplate)
                     {
                         //delete file
                         string ruta = Path.Combine(Server.MapPath("~/Scripts/Import/" + token), archivo);
@@ -1888,7 +1913,189 @@ namespace Capex.Web.Controllers
             }
         }
 
+        private bool validarParametroComercialMes(string token, string tipoParam, int mes, string valueParam)
+        {
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("Token", token);
+                    parametos.Add("TipoIniciativaSeleccionado", 1);
+                    parametos.Add("TipoParam", tipoParam);
+                    parametos.Add("Mes", mes);
+                    parametos.Add("ValueParam", valueParam);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 1);
+                    SqlMapper.Query(objConnection, "CAPEX_VALIDAR_PARAMETRO_ORIENTACION_COMERCIAL_MES", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    string respuesta = parametos.Get<string>("Respuesta");
+                    if (respuesta != null && !string.IsNullOrEmpty(respuesta.Trim()))
+                    {
+                        return "0".Equals(respuesta.Trim());
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                    return false;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+        }
 
+        private bool validarParametroComercialAnio(string token, int tipoIniciativaSeleccionado, string tipoParam, int anio, string valueParam)
+        {
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("Token", token);
+                    parametos.Add("TipoIniciativaSeleccionado", tipoIniciativaSeleccionado);
+                    parametos.Add("TipoParam", tipoParam);
+                    parametos.Add("Anio", anio);
+                    parametos.Add("ValueParam", valueParam);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 1);
+                    SqlMapper.Query(objConnection, "CAPEX_VALIDAR_PARAMETRO_ORIENTACION_COMERCIAL_ANIO", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    string respuesta = parametos.Get<string>("Respuesta");
+                    if (respuesta != null && !string.IsNullOrEmpty(respuesta.Trim()))
+                    {
+                        return "0".Equals(respuesta.Trim());
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                    return false;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+        }
+
+        private string obtenerMes(int mes)
+        {
+            string stringMes = string.Empty;
+            switch (mes)
+            {
+                case 1:
+                    stringMes = "Enero";
+                    break;
+                case 2:
+                    stringMes = "Febrero";
+                    break;
+                case 3:
+                    stringMes = "Marzo";
+                    break;
+                case 4:
+                    stringMes = "Abril";
+                    break;
+                case 5:
+                    stringMes = "Mayo";
+                    break;
+                case 6:
+                    stringMes = "Junio";
+                    break;
+                case 7:
+                    stringMes = "Julio";
+                    break;
+                case 8:
+                    stringMes = "Agosto";
+                    break;
+                case 9:
+                    stringMes = "Septiembre";
+                    break;
+                case 10:
+                    stringMes = "Octubre";
+                    break;
+                case 11:
+                    stringMes = "Noviembre";
+                    break;
+                case 12:
+                    stringMes = "Diciembre";
+                    break;
+            }
+            return stringMes;
+        }
+
+        private string checkNumberFormat(string paramValue)
+        {
+            if (!string.IsNullOrEmpty(paramValue))
+            {
+                if (paramValue.IndexOf(".") != -1 && paramValue.IndexOf(",") != -1)
+                {
+                    paramValue = paramValue.Replace(".", "");
+                    return paramValue.Replace(",", ".");
+                }
+                else if (paramValue.IndexOf(".") != -1 && paramValue.IndexOf(",") == -1)
+                {
+                    return paramValue.Replace(".", "");
+                }
+                else if (paramValue.IndexOf(".") == -1 && paramValue.IndexOf(",") != -1)
+                {
+                    return paramValue.Replace(",", ".");
+                }
+                else
+                {
+                    return paramValue;
+                }
+            }
+            return "";
+        }
+
+        private bool isNumericValue(string paramValue)
+        {
+            try
+            {
+                decimal.Parse(paramValue, NumberStyles.Number | NumberStyles.AllowExponent);
+                return true;
+            }
+            catch (Exception err)
+            {
+                err.ToString();
+            }
+            return false;
+        }
+
+        private string iniPeriodoIniciativa(string token)
+        {
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var Base = SqlMapper.Query(objConnection, "CAPEX_SEL_PLANIFICACION_INICIATIVA", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                    foreach (var b in Base)
+                    {
+                        return ((b.IniPeriodo != null) ? b.IniPeriodo.ToString() : "");
+                    }
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+                return null;
+            }
+        }
         /// <summary>
         /// IMPORTACION - CASO BASE 
         /// NOTA: TRASPASO DE BUSINESS A CONTROLLER POR CAMBIO SOLICITADO CLIENTE PARA ADOPCION DE AZURE STORAGE
@@ -1897,7 +2104,7 @@ namespace Capex.Web.Controllers
         /// <param name="usuario"></param>
         /// <param name="archivo"></param>
         /// <returns></returns>
-      
+
         public string ImportarTemplateCasoBaseFinal(string token, string usuario, string archivo)
         {
 
@@ -1912,6 +2119,88 @@ namespace Capex.Web.Controllers
             /*-------------------------- FINANCIERO --------------------------------*/
             var ws = workbook.Worksheet(2);
             /*-------------------------- ESTRUCTURAR --------------------------------*/
+            string tipoTC = "1";
+            string tipoIPC = "2";
+            string tipoCPI = "3";
+            for (int T = 27; T < 30; T++)
+            {
+                //Proceso por MESES
+                for (int M = 4; M <= 15; M++)
+                {
+                    string cellValue = checkNumberFormat(((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : ""));
+                    int mes = (M - 3);
+                    if (T == 27) //TC
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoTC, mes, cellValue))
+                        {
+                            string mesString = obtenerMes(mes);
+                            throw new InvalidParameterExcelException("Error en el parámetro tc para el mes de " + mesString + ".");
+                        }
+                    }
+                    if (T == 28) //IPC
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoIPC, mes, cellValue))
+                        {
+                            string mesString = obtenerMes(mes);
+                            throw new InvalidParameterExcelException("Error en el parámetro ipc para el mes de " + mesString + ".");
+                        }
+                    }
+                    if (T == 29) //CPI
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoCPI, mes, cellValue))
+                        {
+                            string mesString = obtenerMes(mes);
+                            throw new InvalidParameterExcelException("Error en el parámetro cpi para el mes de " + mesString + ".");
+                        }
+                    }
+                }
+
+                string iniPeriodo = iniPeriodoIniciativa(token);
+                if (string.IsNullOrEmpty(iniPeriodo))
+                {
+                    throw new InvalidParameterExcelException("Error la iniciativa es incorrecta.");
+                }
+                int iniciativaIniPeriodo = 0;
+                try
+                {
+                    iniciativaIniPeriodo = Int32.Parse(iniPeriodo);
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
+                    throw new InvalidParameterExcelException("Error la iniciativa es incorrecta.");
+                }
+                //Proceso por AÑOS
+                int offsetAnio = 0;
+                for (int M = 17; M <= 96; M++)
+                {
+                    iniciativaIniPeriodo++;
+                    offsetAnio++;
+                    string cellValue = checkNumberFormat(((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : ""));
+                    if (T == 27) //TC
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 1, tipoTC, offsetAnio, cellValue))
+                        {
+                            throw new InvalidParameterExcelException("Error en el parámetro tc para el año " + iniciativaIniPeriodo + ".");
+                        }
+                    }
+                    if (T == 28) //IPC
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 1, tipoIPC, offsetAnio, cellValue))
+                        {
+                            throw new InvalidParameterExcelException("Error en el parámetro ipc para el año " + iniciativaIniPeriodo + ".");
+                        }
+                    }
+                    if (T == 29) //CPI
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 1, tipoCPI, offsetAnio, cellValue))
+                        {
+                            throw new InvalidParameterExcelException("Error en el parámetro cpi para el año " + iniciativaIniPeriodo + ".");
+                        }
+                    }
+                }
+            }
+
             int numIngreso = 0;
             for (int i = 8; i < 27; i += 3)
             {
@@ -1922,6 +2211,7 @@ namespace Capex.Web.Controllers
                 if (!string.IsNullOrEmpty(ws.Cell(i, 2).Value.ToString()))
                 {
                     decimal d01 = decimal.Parse(ws.Cell(i, 2).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
+                    // decimal.Parse(ws.Cell(i, 2).Value.ToString()) hhh
                     string sd01 = d01.ToString("0.0");
                     registro.Add(sd01);
                 }
@@ -2286,27 +2576,28 @@ namespace Capex.Web.Controllers
 
                 }
                 string PorInvNacExt = string.Empty;
-                if (!string.IsNullOrEmpty(ws.Cell(30, 5).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws.Cell(33, 5).Value.ToString()))
                 {
-                    PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(30, 5).Value.ToString()) * 100)).ToString();
+                    PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(33, 5).Value.ToString()) * 100)).ToString();
                 }
-                if (!string.IsNullOrEmpty(ws.Cell(30, 7).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws.Cell(33, 7).Value.ToString()))
                 {
                     if (!string.IsNullOrEmpty(PorInvNacExt))
                     {
-                        PorInvNacExt = PorInvNacExt + "/" + Math.Round((ConvertToDouble(ws.Cell(30, 7).Value.ToString()) * 100)).ToString();
+                        PorInvNacExt = PorInvNacExt + "/" + Math.Round((ConvertToDouble(ws.Cell(33, 7).Value.ToString()) * 100)).ToString();
                     }
                     else
                     {
-                        PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(30, 7).Value.ToString()) * 100)).ToString();
+                        PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(33, 7).Value.ToString()) * 100)).ToString();
                     }
                 }
                 InsertarInformacionFinancieraCasoBase(registro, PorInvNacExt, numIngreso);
                 registro.Clear();
                 numIngreso++;
             }
+
             /*-------------------------- FINANCIERO RESUMEN--------------------------------*/
-            for (int X = 30; X < 32; X++)
+            for (int X = 33; X < 35; X++)
             {
                 registro.Add(token);
                 registro.Add(usuario);
@@ -5714,6 +6005,89 @@ namespace Capex.Web.Controllers
 
             /*-------------------------- FINANCIERO --------------------------------*/
             var ws = workbook.Worksheet(2);
+
+            string tipoTC = "1";
+            string tipoIPC = "2";
+            string tipoCPI = "3";
+            for (int T = 27; T < 30; T++)
+            {
+                //Proceso por MESES
+                for (int M = 4; M <= 15; M++)
+                {
+                    string cellValue = checkNumberFormat(((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : ""));
+                    int mes = (M - 3);
+                    if (T == 27) //TC
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoTC, mes, cellValue))
+                        {
+                            string mesString = obtenerMes(mes);
+                            throw new InvalidParameterExcelException("Error en el parámetro tc para el mes de " + mesString + ".");
+                        }
+                    }
+                    if (T == 28) //IPC
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoIPC, mes, cellValue))
+                        {
+                            string mesString = obtenerMes(mes);
+                            throw new InvalidParameterExcelException("Error en el parámetro ipc para el mes de " + mesString + ".");
+                        }
+                    }
+                    if (T == 29) //CPI
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoCPI, mes, cellValue))
+                        {
+                            string mesString = obtenerMes(mes);
+                            throw new InvalidParameterExcelException("Error en el parámetro cpi para el mes de " + mesString + ".");
+                        }
+                    }
+                }
+
+                string iniPeriodo = iniPeriodoIniciativa(token);
+                if (string.IsNullOrEmpty(iniPeriodo))
+                {
+                    throw new InvalidParameterExcelException("Error la iniciativa es incorrecta.");
+                }
+                int iniciativaIniPeriodo = 0;
+                try
+                {
+                    iniciativaIniPeriodo = Int32.Parse(iniPeriodo);
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
+                    throw new InvalidParameterExcelException("Error la iniciativa es incorrecta.");
+                }
+                //Proceso por AÑOS
+                int offsetAnio = 0;
+                for (int M = 17; M <= 19; M++)
+                {
+                    iniciativaIniPeriodo++;
+                    offsetAnio++;
+                    string cellValue = checkNumberFormat(((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : ""));
+                    if (T == 27) //TC
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 2, tipoTC, offsetAnio, cellValue))
+                        {
+                            throw new InvalidParameterExcelException("Error en el parámetro tc para el año " + iniciativaIniPeriodo + ".");
+                        }
+                    }
+                    if (T == 28) //IPC
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 2, tipoIPC, offsetAnio, cellValue))
+                        {
+                            throw new InvalidParameterExcelException("Error en el parámetro ipc para el año " + iniciativaIniPeriodo + ".");
+                        }
+                    }
+                    if (T == 29) //CPI
+                    {
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 2, tipoCPI, offsetAnio, cellValue))
+                        {
+                            throw new InvalidParameterExcelException("Error en el parámetro cpi para el año " + iniciativaIniPeriodo + ".");
+                        }
+                    }
+                }
+            }
+
             /*-------------------------- ESTRUCTURAR --------------------------------*/
             int numIngreso = 0;
             for (int i = 8; i < 27; i += 3)
@@ -5794,19 +6168,19 @@ namespace Capex.Web.Controllers
                     registro.Add(ws.Cell((i + 2), 20).Value.ToString());
                 }
                 string PorInvNacExt = string.Empty;
-                if (!string.IsNullOrEmpty(ws.Cell(30, 5).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws.Cell(33, 5).Value.ToString()))
                 {
-                    PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(30, 5).Value.ToString()) * 100)).ToString();
+                    PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(33, 5).Value.ToString()) * 100)).ToString();
                 }
-                if (!string.IsNullOrEmpty(ws.Cell(30, 7).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws.Cell(33, 7).Value.ToString()))
                 {
                     if (!string.IsNullOrEmpty(PorInvNacExt))
                     {
-                        PorInvNacExt = PorInvNacExt + "/" + Math.Round((ConvertToDouble(ws.Cell(30, 7).Value.ToString()) * 100)).ToString();
+                        PorInvNacExt = PorInvNacExt + "/" + Math.Round((ConvertToDouble(ws.Cell(33, 7).Value.ToString()) * 100)).ToString();
                     }
                     else
                     {
-                        PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(30, 7).Value.ToString()) * 100)).ToString();
+                        PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(33, 7).Value.ToString()) * 100)).ToString();
                     }
                 }
                 InsertarInformacionFinanciera(registro, PorInvNacExt, numIngreso);
@@ -5814,12 +6188,12 @@ namespace Capex.Web.Controllers
                 numIngreso++;
             }
             /*-------------------------- FINANCIERO RESUMEN--------------------------------*/
-            for (int X = 30; X < 32; X++)
+            for (int X = 33; X < 35; X++)
             {
                 registro.Add(token);
                 registro.Add(usuario);
                 registro.Add(ws.Cell(X, 1).Value.ToString());
-                if (!string.IsNullOrEmpty(ws.Cell(X, 2).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws.Cell(X, 2).Value.ToString()) && !(ws.Cell(X, 2).Value.ToString().Equals("NaN")))
                 {
                     decimal p02 = decimal.Parse(ws.Cell(X, 2).Value.ToString()) * 100;
                     string sp02 = p02.ToString("0.0");
@@ -5829,7 +6203,7 @@ namespace Capex.Web.Controllers
                 {
                     registro.Add("0");
                 }
-                if (!string.IsNullOrEmpty(ws.Cell(X, 3).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws.Cell(X, 3).Value.ToString()) && !(ws.Cell(X, 3).Value.ToString().Equals("NaN")))
                 {
                     decimal p03 = decimal.Parse(ws.Cell(X, 3).Value.ToString()) * 100;
                     string sp03 = p03.ToString("0.0");
@@ -8628,7 +9002,7 @@ namespace Capex.Web.Controllers
                             sheetOne.Cell("H10").Value = ViewBag.IrFecha;
                             sheetOne.Cell("V10").Value = ViewBag.IrFecha;
 
-                            /*ViewBag.TCAnio = ((ini.TCAnio == null || string.IsNullOrEmpty(ini.TCAnio.ToString())) ? null : double.Parse(ini.TCAnio.ToString().Replace('.', ','), ciCL));
+                            ViewBag.TCAnio = ((ini.TCAnio == null || string.IsNullOrEmpty(ini.TCAnio.ToString())) ? null : double.Parse(ini.TCAnio.ToString().Replace('.', ','), ciCL));
                             if (ViewBag.TCAnio != null)
                             {
                                 sheetOne.Cell("L44").Value = ViewBag.TCAnio;
@@ -8710,7 +9084,7 @@ namespace Capex.Web.Controllers
                             {
                                 sheetOne.Cell("O46").Value = ViewBag.CPIAnioMasTres;
                             }
-                            sheetOne.Cell("O46").Style.NumberFormat.Format = "#,##0.00";*/
+                            sheetOne.Cell("O46").Style.NumberFormat.Format = "#,##0.00";
 
                             ViewBag.DESCRIPCION = ini.DESCRIPCION;
                             fileName = ini.DESCRIPCION + "-" + ini.IdPid + ".xlsx";
@@ -8977,9 +9351,9 @@ namespace Capex.Web.Controllers
 
             using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
+                objConnection.Open();
                 try
                 {
-                    objConnection.Open();
                     var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
                     var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
                     /*if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
@@ -9312,6 +9686,11 @@ namespace Capex.Web.Controllers
             dt.Columns.Add("Año " + (year + 3), typeof(double));
             dt.Columns.Add("Año " + (year + 4), typeof(double));
             dt.Columns.Add("Total Capex (Parcial)", typeof(double));
+
+            dt.Columns.Add("% Inversion Nacional", typeof(double));
+            dt.Columns.Add("% Inversion Extranjera", typeof(double));
+            dt.Columns.Add("Riesgo Clave", typeof(string));
+
             dt.Columns.Add("Objetivo de la Inversión", typeof(string));
             dt.Columns.Add("Alcance /Descripción de la Inversión", typeof(string));
 
@@ -9554,6 +9933,18 @@ namespace Capex.Web.Controllers
                             }
                         }
                         ultimoIdPid = fila.IdPid;
+                        double inversionNacional = 0.0;
+                        double inversionExtranjera = 0.0;
+                        if (fila.HitNacExt != null && !string.IsNullOrEmpty(fila.HitNacExt.ToString()))
+                        {
+                            string[] hitNacExt = fila.HitNacExt.ToString().Split('/');
+                            if (hitNacExt.Length == 2)
+                            {
+                                CultureInfo ciCL = new CultureInfo("es-CL", false);
+                                inversionNacional = double.Parse(hitNacExt[0], ciCL);
+                                inversionExtranjera = double.Parse(hitNacExt[1], ciCL);
+                            }
+                        }
                         dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidEstadoFlujo, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias,
                              fila.IniTipo, fila.IniPeriodo, fila.IgFechaInicio, fila.IgFechaTermino, fila.IgFechaCierre,
                              fila.PidProceso, fila.PidObjeto, fila.PidArea, fila.PidCompania, fila.PidEtapa, fila.PidCodigoProyecto, fila.PidGerenciaInversion,
@@ -9563,7 +9954,7 @@ namespace Capex.Web.Controllers
                              fila.EriClas1, fila.EriMFL1, fila.EriClas2, fila.EriMFL2, fila.EveVan, fila.EveTir, fila.EveIvan, fila.EvePayBack, fila.EveVidaUtil, fila.PorCostoDueno, fila.PorContingencia,
                              fila.TotalPeriodoAnterior, fila.EneroTotAcum, fila.FebreroTotAcum, fila.MarzoTotAcum, fila.AbrilTotAcum, fila.MayoTotAcum, fila.JunioTotAcum, fila.JulioTotAcum,
                              fila.AgostoTotAcum, fila.SeptiembreTotAcum, fila.OctubreTotAcum, fila.NoviembreTotAcum, fila.DiciembreTotAcum, fila.TotalTotAcum,
-                             fila.PresAnioMasUnoTotAcum, fila.PresAnioMasDosTotAcum, fila.PresAnioMasTresTotAcum, fila.TotalCapexTotAcum, fila.ObjetivoInversion, fila.AlcanceInversion);
+                             fila.PresAnioMasUnoTotAcum, fila.PresAnioMasDosTotAcum, fila.PresAnioMasTresTotAcum, fila.TotalCapexTotAcum, inversionNacional, inversionExtranjera, ((fila.MatrizRiesgoNombre != null) ? fila.MatrizRiesgoNombre.ToString().Trim() : ""), fila.ObjetivoInversion, fila.AlcanceInversion);
                         filaActual++;
                     }
                     dt.AcceptChanges();
@@ -9735,6 +10126,11 @@ namespace Capex.Web.Controllers
             dt.Columns.Add("Año " + (year + 79), typeof(double));
             dt.Columns.Add("Año " + (year + 80), typeof(double));
             dt.Columns.Add("Total Capex (Parcial)", typeof(double));
+
+            dt.Columns.Add("% Inversion Nacional", typeof(double));
+            dt.Columns.Add("% Inversion Extranjera", typeof(double));
+            dt.Columns.Add("Riesgo Clave", typeof(string));
+
             dt.Columns.Add("Objetivo de la Inversión", typeof(string));
             dt.Columns.Add("Alcance /Descripción de la Inversión", typeof(string));
 
@@ -10906,6 +11302,18 @@ namespace Capex.Web.Controllers
                                 numerosSeparadorMilesDecimales.Add(filaColumna);
                             }
                         }
+                        double inversionNacional = 0.0;
+                        double inversionExtranjera = 0.0;
+                        if (fila.HitNacExt != null && !string.IsNullOrEmpty(fila.HitNacExt.ToString()))
+                        {
+                            string[] hitNacExt = fila.HitNacExt.ToString().Split('/');
+                            if (hitNacExt.Length == 2)
+                            {
+                                CultureInfo ciCL = new CultureInfo("es-CL", false);
+                                inversionNacional = double.Parse(hitNacExt[0], ciCL);
+                                inversionExtranjera = double.Parse(hitNacExt[1], ciCL);
+                            }
+                        }
                         ultimoIdPid = fila.IdPid;
                         dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidEstadoFlujo, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias,
                              fila.IniTipo, (fila.IniPeriodo + 1), fila.IgFechaInicio, fila.IgFechaTermino, fila.IgFechaCierre,
@@ -10926,7 +11334,7 @@ namespace Capex.Web.Controllers
                              , fila.Ano71, fila.Ano72, fila.Ano73, fila.Ano74, fila.Ano75, fila.Ano76, fila.Ano77, fila.Ano78, fila.Ano79, fila.Ano80,
 
 
-                             fila.TotalCapexTotAcum, fila.ObjetivoInversion, fila.AlcanceInversion);
+                             fila.TotalCapexTotAcum, inversionNacional, inversionExtranjera, ((fila.MatrizRiesgoNombre != null) ? fila.MatrizRiesgoNombre.ToString().Trim() : ""), fila.ObjetivoInversion, fila.AlcanceInversion);
 
                         /*dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.Fase, fila.Ponderacion_Financiera, fila.Periodos_Anteriores, fila.Enero, fila.Febrero, fila.Marzo,
                         fila.Abril, fila.Mayo, fila.Junio, fila.Julio, fila.Agosto, fila.Septiembre, fila.Octubre, fila.Noviembre, fila.Diciembre, fila.Total, fila.Ano1, fila.Ano2, fila.Ano3, fila.Ano4, fila.Ano5
@@ -13752,6 +14160,57 @@ namespace Capex.Web.Controllers
                 DataTable dtResumen = null;
                 IList<string> dtNumerosSeparadorMilesResumen = null;
                 IList<string> dtNumerosSeparadorMilesDecimalesResumen = null;
+
+                string fileName = String.Empty;
+                if (tipoIniciativaSeleccionado.Equals("0"))//AMBAS
+                {
+                    fileName = "CB_PP_";
+                }
+                else if (tipoIniciativaSeleccionado.Equals("1"))//PP
+                {
+                    fileName = "PP_";
+                }
+                else
+                {
+                    fileName = "CB_";
+                }
+                string middle = string.Empty;
+                if (!string.IsNullOrEmpty(token))
+                {
+                    if ("GestionIngresada".Equals(token))
+                    {
+                        middle = "Revision C.E.";
+                    }
+                    else if ("GestionEnRevision".Equals(token))
+                    {
+                        middle = "Revision AMSA";
+                    }
+                    else if ("GestionAprobadaAmsa".Equals(token))
+                    {
+                        middle = "Revision Aprobada Amsa";
+                    }
+                    else if ("GestionNoAprobadaGAF".Equals(token))
+                    {
+                        middle = "No Aprobada GAF";
+                    }
+                    else if ("GestionNoAprobadaCE".Equals(token))
+                    {
+                        middle = "No Aprobada C.E.";
+                    }
+                    else if ("GestionNoAprobadaAMSA".Equals(token))
+                    {
+                        middle = "No Aprobada AMSA";
+                    }
+                    else
+                    {
+                        middle = token.Replace("Gestion", "");
+                    }
+                }
+                else
+                {
+                    middle = "Resumen";
+                }
+                fileName += middle + "_" + CurrentMillis.Millis + ".xlsx";
                 if (tipoIniciativaSeleccionado.Equals("0") || tipoIniciativaSeleccionado.Equals("1"))
                 {
                     hojaResumen = numeroHoja++;
@@ -13826,10 +14285,9 @@ namespace Capex.Web.Controllers
                     hojaDotacionCasoBase = numeroHoja++;
                     dtDotacionesCasoBase = getDataDotacionesCasoBaseExcel(token);
                 }
-                DateTime todaysDate = DateTime.Now.Date;
-                int year = todaysDate.Year;
-                //Name of File  
-                string fileName = "PresupuestoCapex_" + (year + 1) + "_" + DateTime.Now.Millisecond + ".xlsx";
+
+
+
                 using (XLWorkbook wb = new XLWorkbook())
                 {
                     if (dtResumen != null)
@@ -14599,10 +15057,7 @@ namespace Capex.Web.Controllers
                 {
                     IPlanificacion = FactoryPlanificacion.delega(LA);
                     JsonResponse = JsonConvert.SerializeObject(IPlanificacion.ListarMatrizRiesgo(), Formatting.None);
-                    return Json(
-                        JsonResponse,
-                        JsonRequestBehavior.AllowGet
-                    );
+                    return Json(JsonResponse, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception exc)
                 {
@@ -14615,6 +15070,35 @@ namespace Capex.Web.Controllers
                 }
             }
         }
+
+        [HttpGet]
+        public ActionResult obtenerFechaBloqueo(String TipoIniciativa)
+        {
+            if (!@User.Identity.IsAuthenticated || Session["CAPEX_SESS_USERNAME"] == null)
+            {
+                return Json(new { redirectUrlLogout = "true" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                try
+                {
+                    IPlanificacion = FactoryPlanificacion.delega(LA);
+                    JsonResponse = IPlanificacion.obtenerFechaBloqueo(TipoIniciativa);
+                    return Json(JsonResponse, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception exc)
+                {
+                    return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+                }
+                finally
+                {
+                    FactoryPlanificacion = null;
+                    IPlanificacion = null;
+                }
+            }
+        }
+
+
 
         #endregion
 

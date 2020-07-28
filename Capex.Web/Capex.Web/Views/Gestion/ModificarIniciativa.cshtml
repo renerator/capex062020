@@ -94,19 +94,19 @@
                 top: 1px;
             }
 
-            .table-fixed thead {
-                width: 97%;
-            }
+        .table-fixed thead {
+            width: 97%;
+        }
 
-            .table-fixed tbody {
-                height: 230px;
-                overflow-y: auto;
-                width: 100%;
-            }
+        .table-fixed tbody {
+            height: 230px;
+            overflow-y: auto;
+            width: 100%;
+        }
 
-            .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
-                display: block;
-            }
+        .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+            display: block;
+        }
 
             .table-fixed tbody td, .table-fixed thead > tr > th {
                 float: left;
@@ -664,7 +664,9 @@
                                                         <div class="col-xl-12 offset-md-0">
                                                             <div class="form-row mt-0" style="width:100%;">
                                                                 <div class="col-sm-6 pb-1">
-                                                                    <span id="ContenedorDescargaTemplate" style="font-size:12px; text-decoration:underline;display:none;"><img src="~/Content/icons/excel-48x48-1.png" height="24" /><a href="~/Files/Downloads/TemplatePPTO.xlsx" style="color:white;"> Descargar Template</a></span>
+                                                                    <span id="ContenedorDescargaTemplate" style="font-size:12px; text-decoration:underline;display:none;">
+                                                                        <img src="~/Content/icons/excel-48x48-1.png" height="24" /><a href="~/Files/Downloads/TemplatePPTO.xlsx" style="color:white;"> Descargar Template</a>
+                                                                    </span>
                                                                     <span id="ContenedorDescargaTemplateCB" style="font-size:12px; text-decoration:underline;display:none;">
                                                                         <img src="~/Content/icons/excel-48x48-1.png" height="24" /><a href="~/Files/Downloads/TemplateCBCD_Vacio.xlsx" style="color:white;"> Descargar Template</a>
                                                                     </span>
@@ -701,10 +703,10 @@
                                                                                 <tr style='text-align:center;background-color:#5c808d;'>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">Fase</th>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding:0px;" rowspan="2">Periodos Anteriores</th>
-                                                                                    <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">2021</div></th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2022</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2023</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2024</th>
+                                                                                    <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">@ViewBag.BaseIniPeriodo</div></th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 1)</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 2)</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 3)</th>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">TOTAL</th>
                                                                                 </tr>
                                                                                 <tr style='text-align:center;background-color:#5c808d;'>
@@ -733,94 +735,96 @@
                                                                                 <tr style='text-align:center;background-color:#5c808d;'>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">Fase</th>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding:0px;" rowspan="2">Periodos Anteriores</th>
-                                                                                    <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">2021</div></th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2022</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2023</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2024</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2025</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2026</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2027</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2028</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2029</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2030</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2031</th>
+                                                                                    <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">@ViewBag.BaseIniPeriodo</div></th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2032</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2033</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2034</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2035</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2036</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2037</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2038</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2039</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2040</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2041</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 1 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 2 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 3 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 4 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 5 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 6 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 7 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 8 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 9 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 10 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2042</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2043</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2044</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2045</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2046</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2047</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2048</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2049</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2050</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 11 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 12 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 13 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 14 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 15 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 16 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 17 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 18 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 19 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 20 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2051</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2052</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2053</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2054</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2055</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2056</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2057</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2058</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2059</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2060</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 21 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 22 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 23 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 24 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 25 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 26 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 27 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 28 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 29 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 30 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2061</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2062</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2063</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2064</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2065</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2066</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2067</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2068</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2069</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2070</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 31 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 32 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 33 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 34 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 35 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 36 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 37 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 38 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 39 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 40 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2071</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2072</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2073</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2074</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2075</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2076</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2077</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2078</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2079</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2080</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2081</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 41 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 42 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 43 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 44 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 45 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 46 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 47 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 48 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 49 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 50 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2082</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2083</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2084</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2085</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2086</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2087</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2088</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2089</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2090</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 51 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 52 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 53 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 54 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 55 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 56 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 57 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 58 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 59 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 60 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2091</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2092</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2093</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2094</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2095</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2096</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2097</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2098</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2099</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2100</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2101</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 61 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 62 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 63 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 64 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 65 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 66 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 67 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 68 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 69 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 70 )</th>
+
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 71 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 72 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 73 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 74 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 75 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 76 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 77 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 78 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 79 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 80 )</th>
+
                                                                                     <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">TOTAL CAPEX</th>
 
                                                                                 </tr>
@@ -862,10 +866,10 @@
                                                                                 <tr style='text-align:center;background-color:#5c808d;'>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">Fase</th>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding:0px;" rowspan="2">Periodos Anteriores</th>
-                                                                                    <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">2021</div></th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2022</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2023</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2024</th>
+                                                                                    <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">@ViewBag.BaseIniPeriodo</div></th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 1)</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 2)</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 3)</th>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">TOTAL</th>
                                                                                 </tr>
                                                                                 <tr style='text-align:center;background-color:#5c808d;'>
@@ -895,94 +899,94 @@
                                                                                 <tr style='text-align:center;background-color:#5c808d;'>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">Fase</th>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding:0px;" rowspan="2">Periodos Anteriores</th>
-                                                                                    <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">2021</div></th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2022</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2023</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2024</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2025</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2026</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2027</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2028</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2029</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2030</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2031</th>
+                                                                                    <th style="width:100px;height:26px; margin:0px; padding-bottom:5px;" colspan="13"><div align="center">@ViewBag.BaseIniPeriodo</div></th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 1 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 2 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 3 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 4 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 5 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 6 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 7 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 8 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 9 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 10 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2032</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2033</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2034</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2035</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2036</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2037</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2038</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2039</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2040</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2041</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 11 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 12 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 13 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 14 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 15 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 16 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 17 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 18 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 19 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 20 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2042</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2043</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2044</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2045</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2046</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2047</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2048</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2049</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2050</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 21 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 22 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 23 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 24 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 25 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 26 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 27 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 28 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 29 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 30 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2051</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2052</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2053</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2054</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2055</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2056</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2057</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2058</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2059</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2060</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 31 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 32 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 33 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 34 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 35 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 36 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 37 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 38 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 39 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 40 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2061</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2062</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2063</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2064</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2065</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2066</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2067</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2068</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2069</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2070</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 41 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 42 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 43 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 44 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 45 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 46 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 47 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 48 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 49 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 50 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2071</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2072</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2073</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2074</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2075</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2076</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2077</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2078</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2079</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2080</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2081</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 51 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 52 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 53 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 54 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 55 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 56 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 57 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 58 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 59 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 60 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2082</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2083</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2084</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2085</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2086</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2087</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2088</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2089</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2090</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 61 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 62 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 63 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 64 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 65 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 66 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 67 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 68 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 69 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 70 )</th>
 
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2091</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2092</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2093</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2094</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2095</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2096</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2097</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2098</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2099</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2100</th>
-                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">2101</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 71 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 72 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 73 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 74 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 75 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 76 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 77 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 78 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 79 )</th>
+                                                                                    <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">@(ViewBag.BaseIniPeriodo + 80 )</th>
                                                                                     <th style="width:100px;height:20px; margin:0px; padding-bottom:10px;" rowspan="2">TOTAL CAPEX</th>
 
                                                                                 </tr>
@@ -2065,7 +2069,7 @@
                                                                                         <tr style="background-color:#5c808d; height:100%;">
                                                                                             <th valign="middle" style="width:180px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:Left;"><strong>Presupuesto Capex (KUS$)</strong></div></th>
                                                                                             <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Años Anteriores</strong></div></th>
-                                                                                            <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Año 2021</strong></div></th>
+                                                                                            <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Año @ViewBag.BaseIniPeriodo</strong></div></th>
                                                                                             <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Años Posteriores</strong></div></th>
                                                                                             <th valign="middle" style="width:80px;"><div align="center" style="width:100%; height:20px; margin:0px 0px 0px 0px; padding:5px 0px 0px 0px; text-align:center;"><strong>Total Capex</strong></div></th>
                                                                                         </tr>
@@ -2152,8 +2156,12 @@
                                                                     {
                                                                         <button class="btn btn-primary" id="BotonGuardarHito" onclick="FNGuardarHitos('Guardar', true)" style="display:none;">Guardar</button>
                                                                         <button class="btn btn-warning" id="BotonActualizarHito" onclick="FNActualizarHitos()" style="display:none;">Actualizar</button>
-                                                                        <button class="btn btn-primary" id="BotonGuardarEnviarIniciativa" onclick="FNGuardarEnviarIniciativa()" style="display:none; margin-left:30px;">Guardar y Enviar</button>
-                                                                    }}
+                                                                        if (ViewBag.IniBloqueo == 0)
+                                                                        {
+                                                                            <button class="btn btn-primary" id="BotonGuardarEnviarIniciativa" onclick="FNGuardarEnviarIniciativa()" style="display:none; margin-left:30px;">Guardar y Enviar</button>
+                                                                        }
+                                                                    }
+                                                                }
                                                             </div>
                                                         </div>
                                                     </form>
@@ -2590,7 +2598,7 @@
         var usuario = $("#CAPEX_H_USERNAME").val();
         var iniciativa_token = localStorage.getItem("CAPEX_INICIATIVA_TOKEN");
         if (paramJson.Data.code == "0") {
-            var DTO = { "token": iniciativa_token, "usuario": usuario, "archivo": paramJson.Data.nameFile, "tipo": tipo };
+            var DTO = { "token": iniciativa_token, "usuario": usuario, "archivo": paramJson.Data.nameFile, "tipo": tipo, "parFile": paramJson.Data.response};
             console.log("DTO=", JSON.stringify(DTO));
             $.ajax({
                 url: "/Planificacion/ProcesarTemplatePresupuestoFinal",
@@ -2603,6 +2611,14 @@
                         return;
                     }
                     jQuery("#AppLoaderContainer").hide();
+                    if (r && r.errorFormatoTemplate && r.errorFormatoTemplate == "true") {
+                        if (r.mensajeError && r.mensajeError.length > 0) {
+                            swal("Error", r.mensajeError, "error");
+                        } else {
+                            swal("Error", "No es posible subir archivo o importar datos.", "error")
+                        }
+                        return;
+                    }
                     FNPoblarDocumentos();
                     if (tipo == "CB" || tipo == "CD") {
                         setTimeout(function () {
@@ -2617,8 +2633,7 @@
                                 PoblarVistaHitosResumen();
                             }, 3000);
                         }, 1000);
-                    }
-                    else {
+                    } else {
                         setTimeout(function () {
                             PoblarVistaPresupuesto();
                             setTimeout(function () {
@@ -3572,6 +3587,8 @@
             $("#ContenedorTablaCasoBase2").hide();
         }
 
+        FNObtenerExcelTemplateFinal();
+
         /*********************************** ESTADO DEL PROYECTO **********************************/
         FNResolverEstadoDelProyecto();
         /******************************** IMPORTACION CONTROL DE EVENTOS *************************/
@@ -3713,6 +3730,16 @@
 
 
         var PddFechaPostEvalBD = '@Html.Raw(@ViewBag.PddFechaPostEval)';
+
+        if (!PddFechaPostEvalBD == PddFechaPostEvalBD == undefined || PddFechaPostEvalBD == "") {
+            var hoy = new Date();
+            if (hoy) {
+                var futuro = 6;
+                var actual = moment(hoy);
+                var fecha_futura = moment(actual).add(futuro, 'months');
+                var PddFechaPostEvalBD = moment(fecha_futura).format('DD-MM-YYYY');
+            }
+        }
 
         $('#datepickerFPE').datepicker({
             weekStart: 1,

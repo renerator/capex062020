@@ -92,14 +92,25 @@
                     <div class="page-title-box">
                         <div class="btn-group float-right">
                             <ol class="breadcrumb hide-phone p-0 m-0">
-                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                @*<li class="breadcrumb-item"><a href="#">Capex</a></li>
                                 <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
-                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>*@
+                                <li class="breadcrumb-item active">Capex</li>
+                                <li class="breadcrumb-item active">Login</li>
+                                <li class="breadcrumb-item active">Panel</li>
                                 <li class="breadcrumb-item active">Estadística</li>
+
+
                             </ol>
                         </div>
-                        <h6 class="page-title">Fuente de estadística es de Ejercicios Oficiales</h6>
+                        @*<input type="button" id="BotonVolverGeneral" onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&&nbsp;*@
+                        <h6 class="page-title">
+                            <input type="button" id="BotonVolverGeneral" onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&nbsp;
+                            @*<input type="button" id="BotonVolverGeneral" onclick="Actualizar()" class="btn btn-success btn-sm" value="Actualizar Vista" />*@
+                        </h6>
+
                     </div>
+                        <h6 class="page-title">Fuente de estadística es de Ejercicios Oficiales</h6>
                 </div>
             </div>
 
