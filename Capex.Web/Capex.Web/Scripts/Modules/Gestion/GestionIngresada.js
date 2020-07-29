@@ -207,6 +207,7 @@ FNAprobarIniciativaAdmin1 = function (token) {
         method: "POST",
         data: { "IniToken": token, "Usuario": usuario }
     }).done(function (r) {
+        var obj = JSON.parse(JSON.stringify(r));
         if (obj.Mensaje == "Aprobada") {
             swal("", "Iniciativa Aprobada.", "success");
             setTimeout(function () {
