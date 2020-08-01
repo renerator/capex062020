@@ -1913,7 +1913,7 @@ namespace Capex.Web.Controllers
             }
         }
 
-        private bool validarParametroComercialMes(string token, string tipoParam, int mes, string valueParam)
+        private bool validarParametroComercialMes(string token, int tipoIniciativaSeleccionado, string tipoParam, int mes, string valueParam)
         {
             using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
             {
@@ -1922,7 +1922,7 @@ namespace Capex.Web.Controllers
                     objConnection.Open();
                     var parametos = new DynamicParameters();
                     parametos.Add("Token", token);
-                    parametos.Add("TipoIniciativaSeleccionado", 1);
+                    parametos.Add("TipoIniciativaSeleccionado", tipoIniciativaSeleccionado);
                     parametos.Add("TipoParam", tipoParam);
                     parametos.Add("Mes", mes);
                     parametos.Add("ValueParam", valueParam);
@@ -2131,7 +2131,7 @@ namespace Capex.Web.Controllers
                     int mes = (M - 3);
                     if (T == 27) //TC
                     {
-                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoTC, mes, cellValue))
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 1, tipoTC, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
                             throw new InvalidParameterExcelException("Error en el parámetro tc para el mes de " + mesString + ".");
@@ -2139,7 +2139,7 @@ namespace Capex.Web.Controllers
                     }
                     if (T == 28) //IPC
                     {
-                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoIPC, mes, cellValue))
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 1, tipoIPC, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
                             throw new InvalidParameterExcelException("Error en el parámetro ipc para el mes de " + mesString + ".");
@@ -2147,7 +2147,7 @@ namespace Capex.Web.Controllers
                     }
                     if (T == 29) //CPI
                     {
-                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoCPI, mes, cellValue))
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 1, tipoCPI, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
                             throw new InvalidParameterExcelException("Error en el parámetro cpi para el mes de " + mesString + ".");
@@ -6018,7 +6018,7 @@ namespace Capex.Web.Controllers
                     int mes = (M - 3);
                     if (T == 27) //TC
                     {
-                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoTC, mes, cellValue))
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 2, tipoTC, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
                             throw new InvalidParameterExcelException("Error en el parámetro tc para el mes de " + mesString + ".");
@@ -6026,7 +6026,7 @@ namespace Capex.Web.Controllers
                     }
                     if (T == 28) //IPC
                     {
-                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoIPC, mes, cellValue))
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 2, tipoIPC, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
                             throw new InvalidParameterExcelException("Error en el parámetro ipc para el mes de " + mesString + ".");
@@ -6034,7 +6034,7 @@ namespace Capex.Web.Controllers
                     }
                     if (T == 29) //CPI
                     {
-                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, tipoCPI, mes, cellValue))
+                        if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 2, tipoCPI, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
                             throw new InvalidParameterExcelException("Error en el parámetro cpi para el mes de " + mesString + ".");
