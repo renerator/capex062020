@@ -6094,7 +6094,7 @@ namespace Capex.Web.Controllers
                 registro.Add(token);
                 registro.Add(usuario);
                 registro.Add(ws.Cell(i, 1).Value.ToString());
-                if (!string.IsNullOrEmpty(ws.Cell(i, 2).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws.Cell(i, 2).Value.ToString()) && !(ws.Cell(i, 2).Value.ToString().Equals("NaN")))
                 {
                     decimal d01 = decimal.Parse(ws.Cell(i, 2).Value.ToString()) * 100;
                     string sd01 = d01.ToString("0.0");
@@ -6167,11 +6167,16 @@ namespace Capex.Web.Controllers
                     registro.Add(ws.Cell((i + 2), 20).Value.ToString());
                 }
                 string PorInvNacExt = string.Empty;
-                if (!string.IsNullOrEmpty(ws.Cell(33, 5).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws.Cell(33, 5).Value.ToString()) && !(ws.Cell(33, 5).Value.ToString().Equals("NaN")))
                 {
                     PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(33, 5).Value.ToString()) * 100)).ToString();
                 }
-                if (!string.IsNullOrEmpty(ws.Cell(33, 7).Value.ToString()))
+                else
+                {
+                    PorInvNacExt = "0";
+                }
+
+                if (!string.IsNullOrEmpty(ws.Cell(33, 7).Value.ToString()) && !(ws.Cell(33, 7).Value.ToString().Equals("NaN")))
                 {
                     if (!string.IsNullOrEmpty(PorInvNacExt))
                     {
@@ -6180,6 +6185,17 @@ namespace Capex.Web.Controllers
                     else
                     {
                         PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(33, 7).Value.ToString()) * 100)).ToString();
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(PorInvNacExt))
+                    {
+                        PorInvNacExt = PorInvNacExt + "/" + "0";
+                    }
+                    else
+                    {
+                        PorInvNacExt = "0/0";
                     }
                 }
                 InsertarInformacionFinanciera(registro, PorInvNacExt, numIngreso);
@@ -6225,7 +6241,7 @@ namespace Capex.Web.Controllers
                 registro.Add(token);
                 registro.Add(usuario);
                 registro.Add(ws1.Cell(e, 1).Value.ToString());
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 2).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 2).Value.ToString()) && !(ws1.Cell(e, 2).Value.ToString().Equals("NaN")))
                 {
                     decimal t01 = decimal.Parse(ws1.Cell(e, 2).Value.ToString()) * 100;
                     string st01 = t01.ToString("0.0");
@@ -6236,7 +6252,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 3).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 3).Value.ToString()) && !(ws1.Cell(e, 3).Value.ToString().Equals("NaN")))
                 {
                     decimal t03 = decimal.Parse(ws1.Cell(e, 3).Value.ToString()) * 100;
                     string st03 = t03.ToString("0.0");
@@ -6247,7 +6263,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 4).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 4).Value.ToString()) && !(ws1.Cell(e, 4).Value.ToString().Equals("NaN")))
                 {
                     decimal t04 = decimal.Parse(ws1.Cell(e, 4).Value.ToString()) * 100;
                     string st04 = t04.ToString("0.0");
@@ -6258,7 +6274,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 5).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 5).Value.ToString()) && !(ws1.Cell(e, 5).Value.ToString().Equals("NaN")))
                 {
                     decimal t05 = decimal.Parse(ws1.Cell(e, 5).Value.ToString()) * 100;
                     string st05 = t05.ToString("0.0");
@@ -6269,7 +6285,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 6).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 6).Value.ToString()) && !(ws1.Cell(e, 6).Value.ToString().Equals("NaN")))
                 {
                     decimal t06 = decimal.Parse(ws1.Cell(e, 6).Value.ToString()) * 100;
                     string st06 = t06.ToString("0.0");
@@ -6280,7 +6296,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 7).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 7).Value.ToString()) && !(ws1.Cell(e, 7).Value.ToString().Equals("NaN")))
                 {
                     decimal t07 = decimal.Parse(ws1.Cell(e, 7).Value.ToString()) * 100;
                     string st07 = t07.ToString("0.0");
@@ -6291,7 +6307,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 8).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 8).Value.ToString()) && !(ws1.Cell(e, 8).Value.ToString().Equals("NaN")))
                 {
                     decimal t08 = decimal.Parse(ws1.Cell(e, 8).Value.ToString()) * 100;
                     string st08 = t08.ToString("0.0");
@@ -6302,7 +6318,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 9).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 9).Value.ToString()) && !(ws1.Cell(e, 9).Value.ToString().Equals("NaN")))
                 {
                     decimal t09 = decimal.Parse(ws1.Cell(e, 9).Value.ToString()) * 100;
                     string st09 = t09.ToString("0.0");
@@ -6313,7 +6329,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 10).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 10).Value.ToString()) && !(ws1.Cell(e, 10).Value.ToString().Equals("NaN")))
                 {
                     decimal t10 = decimal.Parse(ws1.Cell(e, 10).Value.ToString()) * 100;
                     string st10 = t10.ToString("0.0");
@@ -6324,7 +6340,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 11).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 11).Value.ToString()) && !(ws1.Cell(e, 11).Value.ToString().Equals("NaN")))
                 {
                     decimal t11 = decimal.Parse(ws1.Cell(e, 11).Value.ToString()) * 100;
                     string st11 = t11.ToString("0.0");
@@ -6335,7 +6351,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 12).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 12).Value.ToString()) && !(ws1.Cell(e, 12).Value.ToString().Equals("NaN")))
                 {
                     decimal t12 = decimal.Parse(ws1.Cell(e, 12).Value.ToString()) * 100;
                     string st12 = t12.ToString("0.0");
@@ -6346,7 +6362,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 13).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 13).Value.ToString()) && !(ws1.Cell(e, 13).Value.ToString().Equals("NaN")))
                 {
                     decimal t13 = decimal.Parse(ws1.Cell(e, 13).Value.ToString()) * 100;
                     string st13 = t13.ToString("0.0");
@@ -6357,7 +6373,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 14).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 14).Value.ToString()) && !(ws1.Cell(e, 14).Value.ToString().Equals("NaN")))
                 {
                     decimal t14 = decimal.Parse(ws1.Cell(e, 14).Value.ToString()) * 100;
                     string st14 = t14.ToString("0.0");
@@ -6368,7 +6384,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 15).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 15).Value.ToString()) && !(ws1.Cell(e, 15).Value.ToString().Equals("NaN")))
                 {
                     decimal t15 = decimal.Parse(ws1.Cell(e, 15).Value.ToString()) * 100;
                     string st15 = t15.ToString("0.0");
@@ -6379,7 +6395,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 16).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 16).Value.ToString()) && !(ws1.Cell(e, 16).Value.ToString().Equals("NaN")))
                 {
                     decimal t16 = decimal.Parse(ws1.Cell(e, 16).Value.ToString()) * 100;
                     string st16 = t16.ToString("0.0");
@@ -6390,7 +6406,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 17).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 17).Value.ToString()) && !(ws1.Cell(e, 17).Value.ToString().Equals("NaN")))
                 {
                     decimal t17 = decimal.Parse(ws1.Cell(e, 17).Value.ToString()) * 100;
                     string st17 = t17.ToString("0.0");
@@ -6401,7 +6417,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 18).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 18).Value.ToString()) && !(ws1.Cell(e, 18).Value.ToString().Equals("NaN")))
                 {
                     decimal t18 = decimal.Parse(ws1.Cell(e, 18).Value.ToString()) * 100;
                     string st18 = t18.ToString("0.0");
@@ -6412,7 +6428,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 19).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 19).Value.ToString()) && !(ws1.Cell(e, 19).Value.ToString().Equals("NaN")))
                 {
                     decimal t19 = decimal.Parse(ws1.Cell(e, 19).Value.ToString()) * 100;
                     string st19 = t19.ToString("0.0");
@@ -6423,7 +6439,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 20).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 20).Value.ToString()) && !(ws1.Cell(e, 20).Value.ToString().Equals("NaN")))
                 {
                     decimal t20 = decimal.Parse(ws1.Cell(e, 20).Value.ToString()) * 100;
                     string st20 = t20.ToString("0.0");
