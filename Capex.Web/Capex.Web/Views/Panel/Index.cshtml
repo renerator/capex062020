@@ -12,7 +12,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="viewport" content="widtha=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <title>@ViewBag.Title</title>
     <meta content="CAPEX" name="description">
     <meta content="AMSA S.A." name="author">
@@ -89,8 +89,7 @@
                         <div class="card-body">
                             <h6 class="card-title">Ejercicios Oficiales</h6>
                             <p class="card-text">Contiene Ejercicios anteriores oficiales de la compañía. Presupuesto anual, Caso Base y Caso de Desarrollo.</p>
-                            <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Index", "Ejercicios")';">Ingresar</a>
-
+                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ModalTipoIniciativaEjercicioOficial">Ingresar</a>
                         </div>
                     </div>
                 </div>
@@ -112,7 +111,6 @@
                                 <div class="card-body ">
                                     <h6 class="card-title">Mantenedores</h6>
                                     <p class="card-text">Herramientas para el mantenimiento de información, usuarios y parámetros del sistema CAPEX.</p>
-
                                     <a href="#" class="btn btn-primary" onclick="document.location.href='@Url.Action("Index", "Mantenedor")'">Ingresar</a>
                                 </div>
                             </div>
@@ -153,7 +151,20 @@
                         </div>
                     </div>
                 </div>
-
+                @{
+                    if (Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1" || Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador2" || Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador3")
+                    {
+                        <div class="col-md-12 col-xl-3">
+                            <div class="card m-b-30">
+                                <div class="card-body ">
+                                    <h6 class="card-title">Generación Ejercicio Oficial - Orientación Comercial Vn</h6>
+                                    <p class="card-text">Generación de Parámetros Comerciales.</p>
+                                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#ModalTipoIniciativaOrientacionComercial">Ingresar</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
         </div>
     </div>
@@ -212,6 +223,108 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal inmodal" id="ModalTipoIniciativaEjercicioOficial" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Tipo Iniciativa</h6>
+                </div>
+                <div>
+                    <span>
+                        <input type="number" class="form-control EPfieldBox" id="caso_ann" style="display:none; width: 90%" placeholder="Ingresar Año" />
+                    </span>
+                </div>
+                <div id="ContenedorIniciativasTipoIniciativa" class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                    <div style="height:130px;">
+                        <div class="" style="margin-top:0px;">
+                            <div class="row" style="height:50px;">
+                                <div class="col-md-12">
+                                    <div style="float: left;width: 30px;margin-right: 20px;text-align: center;">
+                                    </div>
+                                    <h7 style="color:#333"><strong>Seleccione tipo de iniciativa</strong></h7>
+                                    <div class="form-group mb-1 row">
+                                        <div class="col-md-12">
+                                            <select id="TipoIniciativaEjercicioOficial" class="form-control" onchange="FnSeleccionarTipoIniciativaEjercicioOficial(this.value)" style="font-size:12px;">
+                                                <option value="" selected>Seleccionar..</option>
+                                                <option value="PP">Presupuesto</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <h7 style="color:#333"><strong>Año</strong></h7>
+                                    <div class="form-group mb-1 row">
+                                        <div class="col-md-12">
+                                            <select id="AnioIniciativaEjercicioOficial" class="form-control" onchange="FnSeleccionarAnioIniciativaEjercicioOficial(this.value)" style="font-size:12px;">
+                                                <option value="" selected>Seleccionar..</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="idBotonTipoIniciativaEjercicioOficial" onclick="FnProcesarSeleccionEjercicioOficial();">Ingresar</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="document.location.reload();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal inmodal" id="ModalTipoIniciativaOrientacionComercial" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Parámetros de Orientación Comercial</h6>
+                </div>
+                <div>
+                    <span>
+                        <input type="number" class="form-control EPfieldBox" id="caso_ann" style="display:none; width: 90%" placeholder="Ingresar Año" />
+                    </span>
+                </div>
+                <div id="ContenedorIniciativasOrientacionComercial" class="modal-body" style="margin-left:5px;width:490px; font-size:14px;">
+                    <div style="height:130px;">
+                        <div class="" style="margin-top:0px;">
+                            <div class="row" style="height:50px;">
+                                <div class="col-md-12">
+                                    <div style="float: left;width: 30px;margin-right: 20px;text-align: center;">
+                                    </div>
+                                    <h7 style="color:#333"><strong>Seleccione ejercicio de planificación</strong></h7>
+                                    <div class="form-group mb-1 row">
+                                        <div class="col-md-12">
+                                            <select id="TipoIniciativaOrientacionComercial" class="form-control" onchange="FnSeleccionarTipoIniciativaOrientacionComercial(this.value)" style="font-size:12px;">
+                                                <option value="" selected>Seleccionar..</option>
+                                                <option value="CB">Caso Base</option>
+                                                <option value="CD">Caso Desarrollo</option>
+                                                <option value="PP">Presupuesto</option>
+                                                <option value="EX">Extraordinario</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <h7 style="color:#333"><strong>Año</strong></h7>
+                                    <div class="form-group mb-1 row">
+                                        <div class="col-md-12">
+                                            <select id="AnioIniciativaOrientacionComercial" class="form-control" onchange="FnSeleccionarAnioIniciativaOrientacionComercial(this.value)" style="font-size:12px;">
+                                                <option value="" selected>Seleccionar..</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="idBotonTipoIniciativaOrientacionComercial" onclick="FnProcesarSeleccionOrientacionComercial();">Ingresar</button>
+                        <button type="button" class="btn btn-white" data-dismiss="modal" onclick="document.location.reload();">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal inmodal" id="ModalTipoIniciativa" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -233,6 +346,14 @@
                                                 <option value="1">Presupuesto</option>
                                                 <option value="2">Caso Base</option>
                                                 <option value="0">Ambos</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <h7 style="color:#333"><strong>Año</strong></h7>
+                                    <div class="form-group mb-1 row">
+                                        <div class="col-md-12">
+                                            <select id="AnioGestionIniciativa" class="form-control" onchange="FnSeleccionarAnioGestionIniciativa(this.value)" style="font-size:12px;">
+                                                <option value="" selected>Seleccionar..</option>
                                             </select>
                                         </div>
                                     </div>
@@ -261,9 +382,8 @@
             @Html.Hidden("CAPEX_H_USERNAME", Convert.ToString(Session["CAPEX_SESS_USERNAME"]));
         }
     }
-
     <!--Preloader-->
-        @Html.Partial("_PreLoader")
+    @Html.Partial("_PreLoader")
     <!--End Preloader-->
     <!-- Footer -->
     <footer class="footer">
@@ -282,6 +402,7 @@
     <script src="~/Scripts/jquery.nicescroll.js"></script>
     <script src="~/Scripts/jquery.scrollTo.min.js"></script>
     <script src="~/Scripts/waves.js"></script>
+    <script src="~/Scripts/moment.js"></script>
     <script src="~/Scripts/sweetalert2.all.min.js"></script>
     <script src="~/Scripts/Modules/Contexto/Contexto.js"></script>
 
@@ -302,15 +423,107 @@
         localStorage.setItem("CAPEX_TIPO_INICIATIVA", tipo);
     }
 
-     FnSeleccionarTipoIniciativa = function (tipo) {
-         console.log("FnSeleccionarTipoIniciativa tipo=", tipo);
-         localStorage.setItem("CAPEX_FILTRO_TIPO_INICIATIVA", tipo);
-         if (tipo == '-1') {
-             $('#idBotonTipoIniciativa').prop('disabled', true);
-         } else {
-            $('#idBotonTipoIniciativa').prop('disabled', false);
-         }
+    FnCheckSeleccion = function () {
+        var tipoIniciativaOrientacionComercial = $('#TipoIniciativaOrientacionComercial').val();
+        var anioIniciativaOrientacionComercial = $('#AnioIniciativaOrientacionComercial').val();
+        if (tipoIniciativaOrientacionComercial && tipoIniciativaOrientacionComercial != undefined && tipoIniciativaOrientacionComercial != "" && tipoIniciativaOrientacionComercial != "-1"
+            && anioIniciativaOrientacionComercial && anioIniciativaOrientacionComercial != undefined && anioIniciativaOrientacionComercial != "" && anioIniciativaOrientacionComercial != "-1") {
+            $('#idBotonTipoIniciativaOrientacionComercial').prop('disabled', false);
+        } else {
+            $('#idBotonTipoIniciativaOrientacionComercial').prop('disabled', true);
+        }
     }
+
+    FnCheckSeleccionEjercicioOficial = function () {
+        var tipoIniciativaEjercicioOficial = $('#TipoIniciativaEjercicioOficial').val();
+        var anioIniciativaEjercicioOficial = $('#AnioIniciativaEjercicioOficial').val();
+        if (tipoIniciativaEjercicioOficial && tipoIniciativaEjercicioOficial != undefined && tipoIniciativaEjercicioOficial != "" && tipoIniciativaEjercicioOficial != "-1"
+            && anioIniciativaEjercicioOficial && anioIniciativaEjercicioOficial != undefined && anioIniciativaEjercicioOficial != "" && anioIniciativaEjercicioOficial != "-1") {
+            $('#idBotonTipoIniciativaEjercicioOficial').prop('disabled', false);
+        } else {
+            $('#idBotonTipoIniciativaEjercicioOficial').prop('disabled', true);
+        }
+    }
+
+    FnSeleccionarTipoIniciativaOrientacionComercial = function (tipo) {
+        console.log("FnSeleccionarTipoIniciativaOrientacionComercial tipo=", tipo);
+        FnCheckSeleccion();
+    }
+
+    FnSeleccionarTipoIniciativaEjercicioOficial = function (tipo) {
+        console.log("FnSeleccionarTipoIniciativaEjercicioOficial tipo=", tipo);
+        FnCheckSeleccionEjercicioOficial();
+    }
+
+    FnSeleccionarTipoIniciativa = function (tipo) {
+        console.log("FnSeleccionarTipoIniciativa tipo=", tipo);
+        localStorage.setItem("CAPEX_FILTRO_TIPO_INICIATIVA", tipo);
+        FnCheckSeleccionGestionIniciativa();
+        /*if (tipo == '-1') {
+            $('#idBotonTipoIniciativa').prop('disabled', true);
+        } else {
+            $('#idBotonTipoIniciativa').prop('disabled', false);
+        }*/
+    }
+
+    FnSeleccionarAnioGestionIniciativa = function (anio) {
+        console.log("FnSeleccionarAnioGestionIniciativa anio=", anio);
+        FnCheckSeleccionGestionIniciativa();
+    }
+
+    FnCheckSeleccionGestionIniciativa = function () {
+        var tipoIniciativaGestion = $('#idTipoIniciativa').val();
+        var anioIniciativaGestion = $('#AnioGestionIniciativa').val();
+        if (tipoIniciativaGestion && tipoIniciativaGestion != undefined && tipoIniciativaGestion != "" && tipoIniciativaGestion != "-1"
+            && anioIniciativaGestion && anioIniciativaGestion != undefined && anioIniciativaGestion != "" && anioIniciativaGestion != "-1") {
+            $('#idBotonTipoIniciativa').prop('disabled', false);
+        } else {
+            $('#idBotonTipoIniciativa').prop('disabled', true);
+        }
+    }
+
+    FnSeleccionarAnioIniciativaOrientacionComercial = function (anio) {
+        console.log("FnSeleccionarAnioIniciativaOrientacionComercial anio=", anio);
+        FnCheckSeleccion();
+    }
+
+    FnSeleccionarAnioIniciativaEjercicioOficial = function (anio) {
+        console.log("FnSeleccionarAnioIniciativaEjercicioOficial anio=", anio);
+        FnCheckSeleccionEjercicioOficial();
+    }
+
+    FnProcesarSeleccionOrientacionComercial = function () {
+        console.log("FnProcesarSeleccionOrientacionComercial");
+        $('#ModalTipoIniciativaOrientacionComercial').hide();
+        $("#AppLoaderContainer").show();
+        var tipoIniciativaOrientacionComercial = $('#TipoIniciativaOrientacionComercial').val();
+        if (tipoIniciativaOrientacionComercial == "CB" || tipoIniciativaOrientacionComercial == "CD") {
+            tipoIniciativaOrientacionComercial = 1;
+        } else {
+            tipoIniciativaOrientacionComercial = 2;
+        }
+        var anioIniciativaOrientacionComercial = $('#AnioIniciativaOrientacionComercial').val();
+        var url = '/Orientacion?tipoIniciativaOrientacionComercial=' + tipoIniciativaOrientacionComercial + '&anioIniciativaOrientacionComercial=' + anioIniciativaOrientacionComercial;
+        console.log("FnProcesarSeleccionOrientacionComercial url=", url);
+        window.location.href = encodeURI(url);
+    }
+
+    FnProcesarSeleccionEjercicioOficial = function () {
+        console.log("FnProcesarSeleccionEjercicioOficial");
+        $('#ModalTipoIniciativaEjercicioOficial').hide();
+        $("#AppLoaderContainer").show();
+        var tipoIniciativaEjercicioOficial = $('#TipoIniciativaEjercicioOficial').val();
+        if (tipoIniciativaEjercicioOficial == "CB" || tipoIniciativaEjercicioOficial == "CD") {
+            tipoIniciativaEjercicioOficial = 1;
+        } else {
+            tipoIniciativaEjercicioOficial = 2;
+        }
+        var anioIniciativaEjercicioOficial = $('#AnioIniciativaEjercicioOficial').val();
+        var url = '/Ejercicios?tipoIniciativaEjercicioOficial=' + tipoIniciativaEjercicioOficial + '&anioIniciativaEjercicioOficial=' + anioIniciativaEjercicioOficial;
+        console.log("FnProcesarSeleccionEjercicioOficial url=", url);
+        window.location.href = encodeURI(url);
+    }
+
     //
     // RESGISTRO DE DATOS PARA EJERICICIO
     //
@@ -363,16 +576,17 @@
         }
         else {
             window.location.href = '@Url.RouteUrl("Planificacion")';
-
         }
     }
 
     FnProcesarSeleccionTipoIniciativa = function () {
         $('#ModalTipoIniciativa').hide();
         $("#AppLoaderContainer").show();
-        var url = '@Url.Action("Index", "Gestion", new { tipoIniciativaSeleccionado = "__id__" })';
         var param = localStorage.getItem("CAPEX_FILTRO_TIPO_INICIATIVA");
-        window.location.href = url.replace('__id__', param);
+        var anioGestionIniciativa = $('#AnioGestionIniciativa').val();
+        var url = '/Gestion?tipoIniciativaSeleccionado=' + param + '&anioIniciativaGestion=' + anioGestionIniciativa;
+        console.log("FnProcesarSeleccionTipoIniciativa url=", url);
+        window.location.href = encodeURI(url);
     }
     //
     // INICIALIZAR
@@ -382,7 +596,46 @@
         $('#ModalTipoIniciativa').on('shown.bs.modal', function (e) {
             console.log("ModalTipoIniciativa shown.bs.modal");
             $('#idBotonTipoIniciativa').prop('disabled', true);
+            var hoy = new Date();
+            var anioActual = moment(hoy).year();
             $('#idTipoIniciativa').val("-1");
+            var anioGestionIniciativa = $('#AnioGestionIniciativa');
+            anioGestionIniciativa.empty();
+            anioGestionIniciativa.append('<option value="" selected="true">Seleccionar..</option>');
+            $('#AnioGestionIniciativa').append(new Option(anioActual, anioActual, false, false));
+            $('#AnioGestionIniciativa').append(new Option((anioActual + 1), (anioActual + 1), false, false));
+            $('#AnioGestionIniciativa').val('');
+            console.log("ModalTipoIniciativa shown.bs.modal anioActual=", anioActual);
+        });
+
+        $('#ModalTipoIniciativaOrientacionComercial').on('shown.bs.modal', function (e) {
+            console.log("ModalTipoIniciativaOrientacionComercial shown.bs.modal");
+            $('#idBotonTipoIniciativaOrientacionComercial').prop('disabled', true);
+            var hoy = new Date();
+            var anioActual = moment(hoy).year();
+            $('#TipoIniciativaOrientacionComercial').val('');
+            var anioIniciativaOrientacionComercial = $('#AnioIniciativaOrientacionComercial');
+            anioIniciativaOrientacionComercial.empty();
+            anioIniciativaOrientacionComercial.append('<option value="" selected="true">Seleccionar..</option>');
+            $('#AnioIniciativaOrientacionComercial').append(new Option(anioActual, anioActual, false, false));
+            $('#AnioIniciativaOrientacionComercial').append(new Option((anioActual + 1), (anioActual + 1), false, false));
+            $('#AnioIniciativaOrientacionComercial').val('');
+            console.log("ModalTipoIniciativaOrientacionComercial shown.bs.modal anioActual=", anioActual);
+        });
+
+        $('#ModalTipoIniciativaEjercicioOficial').on('shown.bs.modal', function (e) {
+            console.log("ModalTipoIniciativaEjercicioOficial shown.bs.modal");
+            $('#idBotonTipoIniciativaEjercicioOficial').prop('disabled', true);
+            var hoy = new Date();
+            var anioActual = moment(hoy).year();
+            $('#TipoIniciativaEjercicioOficial').val('');
+            var anioIniciativaEjercicioOficial = $('#AnioIniciativaEjercicioOficial');
+            anioIniciativaEjercicioOficial.empty();
+            anioIniciativaEjercicioOficial.append('<option value="" selected="true">Seleccionar..</option>');
+            $('#AnioIniciativaEjercicioOficial').append(new Option(anioActual, anioActual, false, false));
+            $('#AnioIniciativaEjercicioOficial').append(new Option((anioActual + 1), (anioActual + 1), false, false));
+            $('#AnioIniciativaEjercicioOficial').val('');
+            console.log("ModalTipoIniciativaEjercicioOficial shown.bs.modal anioActual=", anioActual);
         });
 
         var estado_menu_opcion_ingresar_iniciativa = localStorage.getItem("CAPEX_MENU_INGRESAR_INICIATIVA");

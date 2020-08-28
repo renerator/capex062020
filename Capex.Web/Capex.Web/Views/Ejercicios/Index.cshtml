@@ -163,25 +163,18 @@
                     <div class="page-title-box">
                         <div class="btn-group float-right">
                             <ol class="breadcrumb hide-phone p-0 m-0">
-                                @*<li class="breadcrumb-item"><a href="#">Capex</a></li>
+                                <li class="breadcrumb-item"><a href="#">Capex</a></li>
                                 <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Login")'">Login</a></li>
-                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>*@
-                                
-                                <li class="breadcrumb-item active">Capex</li>
-                                <li class="breadcrumb-item active">Login</li>
-                                <li class="breadcrumb-item active">Panel</li>
+                                <li class="breadcrumb-item"><a href="#" onclick="document.location='@Url.Action("Index", "Panel")'">Panel</a></li>
                                 <li class="breadcrumb-item active">Ejercicios Oficiales</li>
                             </ol>
                         </div>
-
                         <h6 class="page-title">
                             <input type="button" id="BotonVolverGeneral" onclick="$('#AppLoaderContainer').show();document.location='@Url.Action("Index", "Panel")'" class="btn btn-primary btn-sm" value="Volver al Panel" />&nbsp;
-                            @*<input type="button" id="BotonVolverGeneral" onclick="Actualizar()" class="btn btn-success btn-sm" value="Actualizar Vista" />*@
+                            <input type="button" id="BotonVolverGeneral" onclick="Actualizar()" class="btn btn-success btn-sm" value="Actualizar Vista" />
                         </h6>
-
                     </div>
-
-                    <h6 class="page-title">Ejercicios Oficiales</h6> <div id="iconFilter"></div>
+                    <h6 class="page-title">Ejercicios Oficiales @ViewBag.TituloOpcionSeleccionada</h6> <div id="iconFilter"></div>
                 </div>
             </div>
 
@@ -336,7 +329,11 @@
                                                                         <!--<td class="text-center" width="120px"><div style="text-transform:uppercase;text-align:left">ini.PidCodigoProyecto</div></td> -->
                                                                         <td class="text-center" width="120px"><div style="text-transform:uppercase;text-align:left">@ini.CatMacroCategoria</div></td>
 
-                                                                        <td class="text-center" width="200px"><div style="text-transform:uppercase;text-align:center" id="TotalCapex">@ini.IfDato19</div></td>
+                                                                        <td class="text-center" width="200px">
+                                                                            <div style="text-transform:uppercase;text-align:center" id="TotalCapex">
+                                                                                @((string.IsNullOrEmpty(ini.IfDato19) || ini.IfDato19.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(ini.IfDato19, System.Globalization.CultureInfo.GetCultureInfo("es-CL"))))
+                                                                            </div>
+                                                                        </td>
                                                                         <td class="text-center" width="100px" onclick="exitFilterPanel();FNRegistrarIniciativa('@ini.PidToken')">
                                                                             <select id="Funcionalidades" class="form-control" style="font-size:11px;text-align:center" onchange="FNEvaluarAccion(this.value,'@ini.PidToken')">
                                                                                 <option value="-1" selected>...</option>

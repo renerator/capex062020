@@ -2211,7 +2211,6 @@ namespace Capex.Web.Controllers
                 if (!string.IsNullOrEmpty(ws.Cell(i, 2).Value.ToString()))
                 {
                     decimal d01 = decimal.Parse(ws.Cell(i, 2).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
-                    // decimal.Parse(ws.Cell(i, 2).Value.ToString()) hhh
                     string sd01 = d01.ToString("0.0");
                     registro.Add(sd01);
                 }
@@ -8202,7 +8201,7 @@ namespace Capex.Web.Controllers
         /// <param name="token"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult EnviarIniciativa(string IniToken, string WrfUsuario, string WrfObservacion)
+        public ActionResult EnviarIniciativa(string IniToken, string WrfUsuario, string WrfObservacion, string tipoIniciativaSeleccionado)
         {
             if (!@User.Identity.IsAuthenticated || Session["CAPEX_SESS_USERNAME"] == null)
             {
@@ -8213,6 +8212,10 @@ namespace Capex.Web.Controllers
             {
                 try
                 {
+                    if (!string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        Session["tipoIniciativaSeleccionado"] = tipoIniciativaSeleccionado;
+                    }
                     var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
                     var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
                     IPlanificacion = FactoryPlanificacion.delega(EI);
@@ -8363,7 +8366,33 @@ namespace Capex.Web.Controllers
                         DataTable dt = new DataTable();
                         DateTime todaysDate = DateTime.Now.Date;
                         int year = todaysDate.Year;
-                        var IniciativaPdfPresupuesto = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO", new { @IniToken = token }, commandType: CommandType.StoredProcedure).ToList();
+
+                        string tipoIniciativaEjercicioOficial = ((Session["tipoIniciativaEjercicioOficial"] != null) ? Convert.ToString(Session["tipoIniciativaEjercicioOficial"]) : "");
+                        string anioIniciativaEjercicioOficial = ((Session["anioIniciativaEjercicioOficial"] != null) ? Convert.ToString(Session["anioIniciativaEjercicioOficial"]) : "");
+                        bool esEjercicioOficial = ((!string.IsNullOrEmpty(tipoIniciativaEjercicioOficial) && !string.IsNullOrEmpty(anioIniciativaEjercicioOficial)) ? true : false);
+
+                        string tipoIniciativaOrientacionComercial = ((Session["tipoIniciativaOrientacionComercial"] != null) ? Convert.ToString(Session["tipoIniciativaOrientacionComercial"]) : "");
+                        string anioIniciativaOrientacionComercial = ((Session["anioIniciativaOrientacionComercial"] != null) ? Convert.ToString(Session["anioIniciativaOrientacionComercial"]) : "");
+                        string parametroVNToken = ((Session["ParametroVNToken"] != null) ? Convert.ToString(Session["ParametroVNToken"]) : "");
+                        bool esParametroVNToken = ((!string.IsNullOrEmpty(tipoIniciativaOrientacionComercial) && !string.IsNullOrEmpty(anioIniciativaOrientacionComercial) && !string.IsNullOrEmpty(parametroVNToken)) ? true : false);
+
+                        string procedimientoAmacenado = "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO";
+                        var parametros = new DynamicParameters();
+                        parametros.Add("IniToken", token);
+                        if (esEjercicioOficial)
+                        {
+                            parametros.Add("TipoIniciativa", tipoIniciativaEjercicioOficial);
+                            parametros.Add("Periodo", anioIniciativaEjercicioOficial);
+                            procedimientoAmacenado = "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO_EJERCICIO_OFICIAL";
+                        }
+                        else if (esParametroVNToken)
+                        {
+                            parametros.Add("TipoIniciativa", tipoIniciativaOrientacionComercial);
+                            parametros.Add("Periodo", anioIniciativaOrientacionComercial);
+                            parametros.Add("ParametroVNToken", parametroVNToken);
+                            procedimientoAmacenado = "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO_PARAMETROVN";
+                        }
+                        var IniciativaPdfPresupuesto = SqlMapper.Query(objConnection, procedimientoAmacenado, parametros, commandType: CommandType.StoredProcedure).ToList();
                         foreach (var ini in IniciativaPdfPresupuesto)
                         {
                             ViewBag.Anio = ini.IniPeriodo;
@@ -8627,7 +8656,33 @@ namespace Capex.Web.Controllers
                         DateTime todaysDate = DateTime.Now.Date;
                         int year = todaysDate.Year;
                         CultureInfo ciCL = new CultureInfo("es-CL", false);
-                        var IniciativaPdfPresupuesto = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO", new { @IniToken = token }, commandType: CommandType.StoredProcedure).ToList();
+
+                        string tipoIniciativaEjercicioOficial = ((Session["tipoIniciativaEjercicioOficial"] != null) ? Convert.ToString(Session["tipoIniciativaEjercicioOficial"]) : "");
+                        string anioIniciativaEjercicioOficial = ((Session["anioIniciativaEjercicioOficial"] != null) ? Convert.ToString(Session["anioIniciativaEjercicioOficial"]) : "");
+                        bool esEjercicioOficial = ((!string.IsNullOrEmpty(tipoIniciativaEjercicioOficial) && !string.IsNullOrEmpty(anioIniciativaEjercicioOficial)) ? true : false);
+
+                        string tipoIniciativaOrientacionComercial = ((Session["tipoIniciativaOrientacionComercial"] != null) ? Convert.ToString(Session["tipoIniciativaOrientacionComercial"]) : "");
+                        string anioIniciativaOrientacionComercial = ((Session["anioIniciativaOrientacionComercial"] != null) ? Convert.ToString(Session["anioIniciativaOrientacionComercial"]) : "");
+                        string parametroVNToken = ((Session["ParametroVNToken"] != null) ? Convert.ToString(Session["ParametroVNToken"]) : "");
+                        bool esParametroVNToken = ((!string.IsNullOrEmpty(tipoIniciativaOrientacionComercial) && !string.IsNullOrEmpty(anioIniciativaOrientacionComercial) && !string.IsNullOrEmpty(parametroVNToken)) ? true : false);
+
+                        string procedimientoAmacenado = "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO";
+                        var parametros = new DynamicParameters();
+                        parametros.Add("IniToken", token);
+                        if (esEjercicioOficial)
+                        {
+                            parametros.Add("TipoIniciativa", tipoIniciativaEjercicioOficial);
+                            parametros.Add("Periodo", anioIniciativaEjercicioOficial);
+                            procedimientoAmacenado = "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO_EJERCICIO_OFICIAL";
+                        }
+                        else if (esParametroVNToken)
+                        {
+                            parametros.Add("TipoIniciativa", tipoIniciativaOrientacionComercial);
+                            parametros.Add("Periodo", anioIniciativaOrientacionComercial);
+                            parametros.Add("ParametroVNToken", parametroVNToken);
+                            procedimientoAmacenado = "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO_PARAMETROVN";
+                        }
+                        var IniciativaPdfPresupuesto = SqlMapper.Query(objConnection, procedimientoAmacenado, parametros, commandType: CommandType.StoredProcedure).ToList();
                         foreach (var ini in IniciativaPdfPresupuesto)
                         {
                             sheetOne.Cell("E3").Value = titulo + ini.DESCRIPCION;
@@ -9272,6 +9327,36 @@ namespace Capex.Web.Controllers
             return dt;
         }
 
+        private Presupuesto.ParametroOrientacionVN getParametroVN(string parametroVNToken)
+        {
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var parametroVN = SqlMapper.Query<Presupuesto.ParametroOrientacionVN>(objConnection, "CAPEX_GET_PARAMETRO_VN", new { ParametroVNToken = parametroVNToken }, commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.Version = string.Empty;
+                    if (parametroVN != null && parametroVN.Count > 0)
+                    {
+                        foreach (var parVN in parametroVN)
+                        {
+                            return parVN;
+                        }
+                    }
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+                return null;
+            }
+
+        }
+
         private Hashtable getDataExcelEjerciciosOficialesFormat(string token)
         {
             //Creating DataTable  
@@ -9351,9 +9436,9 @@ namespace Capex.Web.Controllers
 
             using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
-                objConnection.Open();
                 try
                 {
+                    objConnection.Open();
                     var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
                     var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
                     /*if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
@@ -9361,7 +9446,8 @@ namespace Capex.Web.Controllers
                         usuario = "";
                     }*/
                     usuario = "";
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_EJERCICIOS_OFICIALES", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+                    string periodo = ((Session["anioIniciativaEjercicioOficial"] != null && !string.IsNullOrEmpty(Convert.ToString(Session["anioIniciativaEjercicioOficial"]))) ? Convert.ToString(Session["anioIniciativaEjercicioOficial"]) : "0");
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_EJERCICIOS_OFICIALES", new { @usuario = usuario, @opcion = token, @periodo = periodo }, commandType: CommandType.StoredProcedure).ToList();
 
                     var filaActual = 2;
                     foreach (var fila in contenido)
@@ -9613,6 +9699,368 @@ namespace Capex.Web.Controllers
             return hashtable;
         }
 
+        private Hashtable getDataExcelFormatParametroVN(string tipoIniciativaSeleccionado, string anioIniciativaSeleccionado, string parametroVN)
+        {
+            //Creating DataTable  
+            Hashtable hashtable = new Hashtable();
+            List<string> numerosSeparadorMiles = new List<string>();
+            List<string> numerosSeparadorMilesDecimales = new List<string>();
+            DataTable dt = new DataTable();
+            DateTime todaysDate = DateTime.Now.Date;
+            int year = todaysDate.Year;
+            //Setiing Table Name  
+            dt.TableName = "Resumen PP-EX";
+            //Add Columns  
+            dt.Columns.Add("Id Iniciativa", typeof(int));
+            dt.Columns.Add("Usuario", typeof(string));
+            dt.Columns.Add("Estado Flujo", typeof(string));
+            dt.Columns.Add("Codigo Iniciativa", typeof(string));
+            dt.Columns.Add("Nombre Proyecto", typeof(string));
+            dt.Columns.Add("Nombre Proyecto(Alias)", typeof(string));
+            dt.Columns.Add("Tipo Ejercicio", typeof(string));
+            dt.Columns.Add("Periodo", typeof(int));
+            dt.Columns.Add("Fecha Inicio", typeof(string));
+            dt.Columns.Add("Fecha Termino", typeof(string));
+            dt.Columns.Add("Fecha Cierre", typeof(string));
+            dt.Columns.Add("Proceso", typeof(string));
+            dt.Columns.Add("Objeto", typeof(string));
+            dt.Columns.Add("Area", typeof(string));
+            dt.Columns.Add("Compania", typeof(string));
+            dt.Columns.Add("Etapa", typeof(string));
+            dt.Columns.Add("Codigo Proyecto", typeof(string));
+            dt.Columns.Add("Gerencia Inversion (Cliente)", typeof(string));
+            dt.Columns.Add("Gerente Inversion (Cliente)", typeof(string));
+            dt.Columns.Add("Gerencia Ejecucion", typeof(string));
+            dt.Columns.Add("Gerente Ejecucion", typeof(string));
+            dt.Columns.Add("Superintendencia", typeof(string));
+            dt.Columns.Add("Superintendente", typeof(string));
+            dt.Columns.Add("Encargado Control SAP", typeof(string));
+            dt.Columns.Add("Estado Proyecto", typeof(string));
+            dt.Columns.Add("Tipo Cotizacion", typeof(string));
+            dt.Columns.Add("Categoria", typeof(string));
+            dt.Columns.Add("Nivel Ingenieria", typeof(string));
+            dt.Columns.Add("Clasificacion SSO", typeof(string));
+            dt.Columns.Add("Estandar Seguridad", typeof(string));
+            dt.Columns.Add("Clase", typeof(string));
+            dt.Columns.Add("MacroCategoria", typeof(string));
+            dt.Columns.Add("Clas. Riesgo sin Proy.", typeof(string));
+            dt.Columns.Add("MFL (KUS$)", typeof(double));
+            dt.Columns.Add("Clas. Riesgo con Proy.", typeof(string));
+            dt.Columns.Add("MPE (KUS$)", typeof(double));
+            dt.Columns.Add("VAN (KUS$)", typeof(double));
+            dt.Columns.Add("TIR", typeof(double));
+            dt.Columns.Add("IVAN", typeof(double));
+            dt.Columns.Add("PayBack", typeof(double));
+            dt.Columns.Add("Vida Util (Años)", typeof(double));
+            dt.Columns.Add("Costo Dueño", typeof(double));
+            dt.Columns.Add("Contingencia", typeof(double));
+            dt.Columns.Add("Per. Ant.", typeof(double));
+            dt.Columns.Add("Ene", typeof(double));
+            dt.Columns.Add("Feb", typeof(double));
+            dt.Columns.Add("Mar", typeof(double));
+            dt.Columns.Add("Abr", typeof(double));
+            dt.Columns.Add("May", typeof(double));
+            dt.Columns.Add("Jun", typeof(double));
+            dt.Columns.Add("Jul", typeof(double));
+            dt.Columns.Add("Ago", typeof(double));
+            dt.Columns.Add("Sep", typeof(double));
+            dt.Columns.Add("Oct", typeof(double));
+            dt.Columns.Add("Nov", typeof(double));
+            dt.Columns.Add("Dic", typeof(double));
+            dt.Columns.Add("Total Año" + (year + 1), typeof(double));
+            dt.Columns.Add("Año " + (year + 2), typeof(double));
+            dt.Columns.Add("Año " + (year + 3), typeof(double));
+            dt.Columns.Add("Año " + (year + 4), typeof(double));
+            dt.Columns.Add("Total Capex (Parcial)", typeof(double));
+
+            dt.Columns.Add("% Inversion Nacional", typeof(double));
+            dt.Columns.Add("% Inversion Extranjera", typeof(double));
+            dt.Columns.Add("Riesgo Clave", typeof(string));
+
+            dt.Columns.Add("Objetivo de la Inversión", typeof(string));
+            dt.Columns.Add("Alcance /Descripción de la Inversión", typeof(string));
+
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                    var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
+                    if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
+                    {
+                        usuario = "";
+                    }
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_PARAMETROVN", new { @periodo = anioIniciativaSeleccionado, @parametroVN = parametroVN }, commandType: CommandType.StoredProcedure).ToList();
+                    var filaActual = 2;
+                    var ultimoIdPid = 0;
+                    foreach (var fila in contenido)
+                    {
+                        if (ultimoIdPid == fila.IdPid)
+                        {
+                            continue;
+                        }
+                        if (!esCero(fila.TotalCapexTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 61;
+                            if (esNumeroEntero(fila.TotalCapexTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.PresAnioMasTresTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 60;
+                            if (esNumeroEntero(fila.PresAnioMasTresTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.PresAnioMasDosTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 59;
+                            if (esNumeroEntero(fila.PresAnioMasDosTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.PresAnioMasUnoTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 58;
+                            if (esNumeroEntero(fila.PresAnioMasUnoTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.TotalTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 57;
+                            if (esNumeroEntero(fila.TotalTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.DiciembreTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 56;
+                            if (esNumeroEntero(fila.DiciembreTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.NoviembreTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 55;
+                            if (esNumeroEntero(fila.NoviembreTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.OctubreTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 54;
+                            if (esNumeroEntero(fila.OctubreTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.SeptiembreTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 53;
+                            if (esNumeroEntero(fila.SeptiembreTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.AgostoTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 52;
+                            if (esNumeroEntero(fila.AgostoTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.JulioTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 51;
+                            if (esNumeroEntero(fila.JulioTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.JunioTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 50;
+                            if (esNumeroEntero(fila.JunioTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.MayoTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 49;
+                            if (esNumeroEntero(fila.MayoTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.AbrilTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 48;
+                            if (esNumeroEntero(fila.AbrilTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.MarzoTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 47;
+                            if (esNumeroEntero(fila.MarzoTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.FebreroTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 46;
+                            if (esNumeroEntero(fila.FebreroTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.EneroTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 45;
+                            if (esNumeroEntero(fila.EneroTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.TotalPeriodoAnterior.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 44;
+                            if (esNumeroEntero(fila.TotalPeriodoAnterior.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        ultimoIdPid = fila.IdPid;
+                        double inversionNacional = 0.0;
+                        double inversionExtranjera = 0.0;
+                        if (fila.HitNacExt != null && !string.IsNullOrEmpty(fila.HitNacExt.ToString()))
+                        {
+                            string[] hitNacExt = fila.HitNacExt.ToString().Split('/');
+                            if (hitNacExt.Length == 2)
+                            {
+                                CultureInfo ciCL = new CultureInfo("es-CL", false);
+                                inversionNacional = double.Parse(hitNacExt[0], ciCL);
+                                inversionExtranjera = double.Parse(hitNacExt[1], ciCL);
+                            }
+                        }
+                        dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidEstadoFlujo, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias,
+                             fila.IniTipo, fila.IniPeriodo, fila.IgFechaInicio, fila.IgFechaTermino, fila.IgFechaCierre,
+                             fila.PidProceso, fila.PidObjeto, fila.PidArea, fila.PidCompania, fila.PidEtapa, fila.PidCodigoProyecto, fila.PidGerenciaInversion,
+                             fila.PidGerenteInversion, fila.PidGerenciaEjecucion, fila.PidGerenteEjecucion, fila.PidSuperintendencia, fila.PidSuperintendente,
+                             fila.PidEncargadoControl, fila.CatEstadoProyecto, fila.CatTipoCotizacion, fila.CatCategoria, fila.CatNivelIngenieria,
+                             fila.CatClasificacionSSO, fila.CatEstandarSeguridad, fila.CatClase, fila.CatMacroCategoria,
+                             fila.EriClas1, fila.EriMFL1, fila.EriClas2, fila.EriMFL2, fila.EveVan, fila.EveTir, fila.EveIvan, fila.EvePayBack, fila.EveVidaUtil, fila.PorCostoDueno, fila.PorContingencia,
+                             fila.TotalPeriodoAnterior, fila.EneroTotAcum, fila.FebreroTotAcum, fila.MarzoTotAcum, fila.AbrilTotAcum, fila.MayoTotAcum, fila.JunioTotAcum, fila.JulioTotAcum,
+                             fila.AgostoTotAcum, fila.SeptiembreTotAcum, fila.OctubreTotAcum, fila.NoviembreTotAcum, fila.DiciembreTotAcum, fila.TotalTotAcum,
+                             fila.PresAnioMasUnoTotAcum, fila.PresAnioMasDosTotAcum, fila.PresAnioMasTresTotAcum, fila.TotalCapexTotAcum, inversionNacional, inversionExtranjera, ((fila.MatrizRiesgoNombre != null) ? fila.MatrizRiesgoNombre.ToString().Trim() : ""), fila.ObjetivoInversion, fila.AlcanceInversion);
+                        filaActual++;
+                    }
+                    dt.AcceptChanges();
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                    //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    //Utils.LogError(ExceptionResult);
+                    //return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            hashtable.Add(1, dt);
+            hashtable.Add(2, numerosSeparadorMiles);
+            hashtable.Add(3, numerosSeparadorMilesDecimales);
+            return hashtable;
+        }
+
         private Hashtable getDataExcelFormat(string token)
         {
             //Creating DataTable  
@@ -9705,9 +10153,13 @@ namespace Capex.Web.Controllers
                     {
                         usuario = "";
                     }
-
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
-
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA", new { @usuario = usuario, @opcion = token, @periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                     var filaActual = 2;
                     var ultimoIdPid = 0;
                     foreach (var fila in contenido)
@@ -9976,6 +10428,1391 @@ namespace Capex.Web.Controllers
             return hashtable;
         }
 
+
+        private Hashtable getDataExcelCasoBaseFormatParametroVN(string tipoIniciativaSeleccionado, string anioIniciativaSeleccionado, string parametroVN)
+        {
+            //Creating DataTable  
+            Hashtable hashtable = new Hashtable();
+            List<string> numerosSeparadorMiles = new List<string>();
+            List<string> numerosSeparadorMilesDecimales = new List<string>();
+            DataTable dt = new DataTable();
+            DateTime todaysDate = DateTime.Now.Date;
+            int year = (todaysDate.Year + 1);
+            //Setiing Table Name  
+            dt.TableName = "Resumen CB-CD";
+            //Add Columns  
+            dt.Columns.Add("Id Iniciativa", typeof(int));
+            dt.Columns.Add("Usuario", typeof(string));
+            dt.Columns.Add("Estado Flujo", typeof(string));
+            dt.Columns.Add("Codigo Iniciativa", typeof(string));
+            dt.Columns.Add("Nombre Proyecto", typeof(string));
+            dt.Columns.Add("Nombre Proyecto(Alias)", typeof(string));
+            dt.Columns.Add("Tipo Ejercicio", typeof(string));
+            dt.Columns.Add("Periodo", typeof(int));
+            dt.Columns.Add("Fecha Inicio", typeof(string));
+            dt.Columns.Add("Fecha Termino", typeof(string));
+            dt.Columns.Add("Fecha Cierre", typeof(string));
+            dt.Columns.Add("Proceso", typeof(string));
+            dt.Columns.Add("Objeto", typeof(string));
+            dt.Columns.Add("Area", typeof(string));
+            dt.Columns.Add("Compania", typeof(string));
+            dt.Columns.Add("Etapa", typeof(string));
+            dt.Columns.Add("Codigo Proyecto", typeof(string));
+            dt.Columns.Add("Gerencia Inversion (Cliente)", typeof(string));
+            dt.Columns.Add("Gerente Inversion (Cliente)", typeof(string));
+            dt.Columns.Add("Gerencia Ejecucion", typeof(string));
+            dt.Columns.Add("Gerente Ejecucion", typeof(string));
+            dt.Columns.Add("Superintendencia", typeof(string));
+            dt.Columns.Add("Superintendente", typeof(string));
+            dt.Columns.Add("Encargado Control SAP", typeof(string));
+            dt.Columns.Add("Estado Proyecto", typeof(string));
+            dt.Columns.Add("Tipo Cotizacion", typeof(string));
+            dt.Columns.Add("Categoria", typeof(string));
+            dt.Columns.Add("Nivel Ingenieria", typeof(string));
+            dt.Columns.Add("Clasificacion SSO", typeof(string));
+            dt.Columns.Add("Estandar Seguridad", typeof(string));
+            dt.Columns.Add("Clase", typeof(string));
+            dt.Columns.Add("MacroCategoria", typeof(string));
+            dt.Columns.Add("Clas. Riesgo sin Proy.", typeof(string));
+            dt.Columns.Add("MFL (KUS$)", typeof(double));
+            dt.Columns.Add("Clas. Riesgo con Proy.", typeof(string));
+            dt.Columns.Add("MPE (KUS$)", typeof(double));
+            dt.Columns.Add("VAN (KUS$)", typeof(double));
+            dt.Columns.Add("TIR", typeof(double));
+            dt.Columns.Add("IVAN", typeof(double));
+            dt.Columns.Add("PayBack", typeof(double));
+            dt.Columns.Add("Vida Util (Años)", typeof(double));
+            dt.Columns.Add("Costo Dueño", typeof(double));
+            dt.Columns.Add("Contingencia", typeof(double));
+            dt.Columns.Add("Per. Ant.", typeof(double));
+            dt.Columns.Add("Ene", typeof(double));
+            dt.Columns.Add("Feb", typeof(double));
+            dt.Columns.Add("Mar", typeof(double));
+            dt.Columns.Add("Abr", typeof(double));
+            dt.Columns.Add("May", typeof(double));
+            dt.Columns.Add("Jun", typeof(double));
+            dt.Columns.Add("Jul", typeof(double));
+            dt.Columns.Add("Ago", typeof(double));
+            dt.Columns.Add("Sep", typeof(double));
+            dt.Columns.Add("Oct", typeof(double));
+            dt.Columns.Add("Nov", typeof(double));
+            dt.Columns.Add("Dic", typeof(double));
+            dt.Columns.Add("Total Año" + (year), typeof(double));
+            dt.Columns.Add("Año " + (year + 1), typeof(double));
+            dt.Columns.Add("Año " + (year + 2), typeof(double));
+            dt.Columns.Add("Año " + (year + 3), typeof(double));
+            dt.Columns.Add("Año " + (year + 4), typeof(double));
+            dt.Columns.Add("Año " + (year + 5), typeof(double));
+            dt.Columns.Add("Año " + (year + 6), typeof(double));
+            dt.Columns.Add("Año " + (year + 7), typeof(double));
+            dt.Columns.Add("Año " + (year + 8), typeof(double));
+            dt.Columns.Add("Año " + (year + 9), typeof(double));
+            dt.Columns.Add("Año " + (year + 10), typeof(double));
+            dt.Columns.Add("Año " + (year + 11), typeof(double));
+            dt.Columns.Add("Año " + (year + 12), typeof(double));
+            dt.Columns.Add("Año " + (year + 13), typeof(double));
+            dt.Columns.Add("Año " + (year + 14), typeof(double));
+            dt.Columns.Add("Año " + (year + 15), typeof(double));
+            dt.Columns.Add("Año " + (year + 16), typeof(double));
+            dt.Columns.Add("Año " + (year + 17), typeof(double));
+            dt.Columns.Add("Año " + (year + 18), typeof(double));
+            dt.Columns.Add("Año " + (year + 19), typeof(double));
+            dt.Columns.Add("Año " + (year + 20), typeof(double));
+            dt.Columns.Add("Año " + (year + 21), typeof(double));
+            dt.Columns.Add("Año " + (year + 22), typeof(double));
+            dt.Columns.Add("Año " + (year + 23), typeof(double));
+            dt.Columns.Add("Año " + (year + 24), typeof(double));
+            dt.Columns.Add("Año " + (year + 25), typeof(double));
+            dt.Columns.Add("Año " + (year + 26), typeof(double));
+            dt.Columns.Add("Año " + (year + 27), typeof(double));
+            dt.Columns.Add("Año " + (year + 28), typeof(double));
+            dt.Columns.Add("Año " + (year + 29), typeof(double));
+            dt.Columns.Add("Año " + (year + 30), typeof(double));
+            dt.Columns.Add("Año " + (year + 31), typeof(double));
+            dt.Columns.Add("Año " + (year + 32), typeof(double));
+            dt.Columns.Add("Año " + (year + 33), typeof(double));
+            dt.Columns.Add("Año " + (year + 34), typeof(double));
+            dt.Columns.Add("Año " + (year + 35), typeof(double));
+            dt.Columns.Add("Año " + (year + 36), typeof(double));
+            dt.Columns.Add("Año " + (year + 37), typeof(double));
+            dt.Columns.Add("Año " + (year + 38), typeof(double));
+            dt.Columns.Add("Año " + (year + 39), typeof(double));
+            dt.Columns.Add("Año " + (year + 40), typeof(double));
+            dt.Columns.Add("Año " + (year + 41), typeof(double));
+            dt.Columns.Add("Año " + (year + 42), typeof(double));
+            dt.Columns.Add("Año " + (year + 43), typeof(double));
+            dt.Columns.Add("Año " + (year + 44), typeof(double));
+            dt.Columns.Add("Año " + (year + 45), typeof(double));
+            dt.Columns.Add("Año " + (year + 46), typeof(double));
+            dt.Columns.Add("Año " + (year + 47), typeof(double));
+            dt.Columns.Add("Año " + (year + 48), typeof(double));
+            dt.Columns.Add("Año " + (year + 49), typeof(double));
+            dt.Columns.Add("Año " + (year + 50), typeof(double));
+            dt.Columns.Add("Año " + (year + 51), typeof(double));
+            dt.Columns.Add("Año " + (year + 52), typeof(double));
+            dt.Columns.Add("Año " + (year + 53), typeof(double));
+            dt.Columns.Add("Año " + (year + 54), typeof(double));
+            dt.Columns.Add("Año " + (year + 55), typeof(double));
+            dt.Columns.Add("Año " + (year + 56), typeof(double));
+            dt.Columns.Add("Año " + (year + 57), typeof(double));
+            dt.Columns.Add("Año " + (year + 58), typeof(double));
+            dt.Columns.Add("Año " + (year + 59), typeof(double));
+            dt.Columns.Add("Año " + (year + 60), typeof(double));
+            dt.Columns.Add("Año " + (year + 61), typeof(double));
+            dt.Columns.Add("Año " + (year + 62), typeof(double));
+            dt.Columns.Add("Año " + (year + 63), typeof(double));
+            dt.Columns.Add("Año " + (year + 64), typeof(double));
+            dt.Columns.Add("Año " + (year + 65), typeof(double));
+            dt.Columns.Add("Año " + (year + 66), typeof(double));
+            dt.Columns.Add("Año " + (year + 67), typeof(double));
+            dt.Columns.Add("Año " + (year + 68), typeof(double));
+            dt.Columns.Add("Año " + (year + 69), typeof(double));
+            dt.Columns.Add("Año " + (year + 70), typeof(double));
+            dt.Columns.Add("Año " + (year + 71), typeof(double));
+            dt.Columns.Add("Año " + (year + 72), typeof(double));
+            dt.Columns.Add("Año " + (year + 73), typeof(double));
+            dt.Columns.Add("Año " + (year + 74), typeof(double));
+            dt.Columns.Add("Año " + (year + 75), typeof(double));
+            dt.Columns.Add("Año " + (year + 76), typeof(double));
+            dt.Columns.Add("Año " + (year + 77), typeof(double));
+            dt.Columns.Add("Año " + (year + 78), typeof(double));
+            dt.Columns.Add("Año " + (year + 79), typeof(double));
+            dt.Columns.Add("Año " + (year + 80), typeof(double));
+            dt.Columns.Add("Total Capex (Parcial)", typeof(double));
+
+            dt.Columns.Add("% Inversion Nacional", typeof(double));
+            dt.Columns.Add("% Inversion Extranjera", typeof(double));
+            dt.Columns.Add("Riesgo Clave", typeof(string));
+
+            dt.Columns.Add("Objetivo de la Inversión", typeof(string));
+            dt.Columns.Add("Alcance /Descripción de la Inversión", typeof(string));
+
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                    var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
+                    if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
+                    {
+                        usuario = "";
+                    }
+
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_CASO_BASE_PARAMETROVN", new { @periodo = anioIniciativaSeleccionado, @parametroVN = @parametroVN }, commandType: CommandType.StoredProcedure).ToList();
+
+                    var filaActual = 2;
+                    var ultimoIdPid = 0;
+                    foreach (var fila in contenido)
+                    {
+
+                        if (ultimoIdPid == fila.IdPid)
+                        {
+                            continue;
+                        }
+                        if (!esCero(fila.TotalPeriodoAnterior.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 44;
+                            if (esNumeroEntero(fila.TotalPeriodoAnterior.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.EneroTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 45;
+                            if (esNumeroEntero(fila.EneroTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.FebreroTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 46;
+                            if (esNumeroEntero(fila.FebreroTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.MarzoTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 47;
+                            if (esNumeroEntero(fila.MarzoTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.AbrilTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 48;
+                            if (esNumeroEntero(fila.AbrilTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.MayoTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 49;
+                            if (esNumeroEntero(fila.MayoTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.JunioTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 50;
+                            if (esNumeroEntero(fila.JunioTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.JulioTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 51;
+                            if (esNumeroEntero(fila.JulioTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.AgostoTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 52;
+                            if (esNumeroEntero(fila.AgostoTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.SeptiembreTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 53;
+                            if (esNumeroEntero(fila.SeptiembreTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.OctubreTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 54;
+                            if (esNumeroEntero(fila.OctubreTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.NoviembreTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 55;
+                            if (esNumeroEntero(fila.NoviembreTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.DiciembreTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 56;
+                            if (esNumeroEntero(fila.DiciembreTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.TotalTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 57;
+                            if (esNumeroEntero(fila.TotalTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.PresAnioMasUnoTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 58;
+                            if (esNumeroEntero(fila.PresAnioMasUnoTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.PresAnioMasDosTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 59;
+                            if (esNumeroEntero(fila.PresAnioMasDosTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.PresAnioMasTresTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 60;
+                            if (esNumeroEntero(fila.PresAnioMasTresTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+                        if (!esCero(fila.Ano4.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 61;
+                            if (esNumeroEntero(fila.Ano4.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano5.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 62;
+                            if (esNumeroEntero(fila.Ano5.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano6.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 63;
+                            if (esNumeroEntero(fila.Ano6.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano7.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 64;
+                            if (esNumeroEntero(fila.Ano7.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano8.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 65;
+                            if (esNumeroEntero(fila.Ano8.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano9.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 66;
+                            if (esNumeroEntero(fila.Ano9.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano10.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 67;
+                            if (esNumeroEntero(fila.Ano10.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano11.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 68;
+                            if (esNumeroEntero(fila.Ano11.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano12.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 69;
+                            if (esNumeroEntero(fila.Ano12.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano13.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 70;
+                            if (esNumeroEntero(fila.Ano13.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano14.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 71;
+                            if (esNumeroEntero(fila.Ano14.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano15.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 72;
+                            if (esNumeroEntero(fila.Ano15.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano16.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 73;
+                            if (esNumeroEntero(fila.Ano16.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano17.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 74;
+                            if (esNumeroEntero(fila.Ano17.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano18.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 75;
+                            if (esNumeroEntero(fila.Ano18.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano19.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 76;
+                            if (esNumeroEntero(fila.Ano19.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano20.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 77;
+                            if (esNumeroEntero(fila.Ano20.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+
+                        if (!esCero(fila.Ano21.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 78;
+                            if (esNumeroEntero(fila.Ano21.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano22.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 79;
+                            if (esNumeroEntero(fila.Ano22.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano23.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 80;
+                            if (esNumeroEntero(fila.Ano23.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano24.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 81;
+                            if (esNumeroEntero(fila.Ano24.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano25.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 82;
+                            if (esNumeroEntero(fila.Ano25.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano26.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 83;
+                            if (esNumeroEntero(fila.Ano26.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano27.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 84;
+                            if (esNumeroEntero(fila.Ano27.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano28.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 85;
+                            if (esNumeroEntero(fila.Ano28.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano29.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 86;
+                            if (esNumeroEntero(fila.Ano29.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano30.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 87;
+                            if (esNumeroEntero(fila.Ano30.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano31.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 88;
+                            if (esNumeroEntero(fila.Ano31.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano32.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 89;
+                            if (esNumeroEntero(fila.Ano32.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano33.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 90;
+                            if (esNumeroEntero(fila.Ano33.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano34.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 91;
+                            if (esNumeroEntero(fila.Ano34.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano35.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 92;
+                            if (esNumeroEntero(fila.Ano35.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano36.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 93;
+                            if (esNumeroEntero(fila.Ano36.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano37.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 94;
+                            if (esNumeroEntero(fila.Ano37.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano38.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 95;
+                            if (esNumeroEntero(fila.Ano38.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano39.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 96;
+                            if (esNumeroEntero(fila.Ano39.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano40.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 97;
+                            if (esNumeroEntero(fila.Ano40.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano41.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 98;
+                            if (esNumeroEntero(fila.Ano41.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano42.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 99;
+                            if (esNumeroEntero(fila.Ano42.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano43.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 100;
+                            if (esNumeroEntero(fila.Ano43.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano44.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 101;
+                            if (esNumeroEntero(fila.Ano44.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano45.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 102;
+                            if (esNumeroEntero(fila.Ano45.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano46.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 103;
+                            if (esNumeroEntero(fila.Ano46.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano47.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 104;
+                            if (esNumeroEntero(fila.Ano47.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano48.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 105;
+                            if (esNumeroEntero(fila.Ano48.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano49.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 106;
+                            if (esNumeroEntero(fila.Ano49.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano50.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 107;
+                            if (esNumeroEntero(fila.Ano50.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano51.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 108;
+                            if (esNumeroEntero(fila.Ano51.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano52.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 109;
+                            if (esNumeroEntero(fila.Ano52.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano53.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 110;
+                            if (esNumeroEntero(fila.Ano53.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano54.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 111;
+                            if (esNumeroEntero(fila.Ano54.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano55.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 112;
+                            if (esNumeroEntero(fila.Ano55.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano56.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 113;
+                            if (esNumeroEntero(fila.Ano56.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano57.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 114;
+                            if (esNumeroEntero(fila.Ano57.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano58.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 115;
+                            if (esNumeroEntero(fila.Ano58.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano59.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 116;
+                            if (esNumeroEntero(fila.Ano59.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano60.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 117;
+                            if (esNumeroEntero(fila.Ano60.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+                        if (!esCero(fila.Ano61.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 118;
+                            if (esNumeroEntero(fila.Ano61.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano62.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 119;
+                            if (esNumeroEntero(fila.Ano62.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano63.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 120;
+                            if (esNumeroEntero(fila.Ano63.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano64.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 121;
+                            if (esNumeroEntero(fila.Ano64.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano65.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 122;
+                            if (esNumeroEntero(fila.Ano65.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano66.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 123;
+                            if (esNumeroEntero(fila.Ano66.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano67.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 124;
+                            if (esNumeroEntero(fila.Ano67.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano68.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 125;
+                            if (esNumeroEntero(fila.Ano68.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano69.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 126;
+                            if (esNumeroEntero(fila.Ano69.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano70.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 127;
+                            if (esNumeroEntero(fila.Ano70.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+                        if (!esCero(fila.Ano71.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 128;
+                            if (esNumeroEntero(fila.Ano71.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano72.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 129;
+                            if (esNumeroEntero(fila.Ano72.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano73.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 130;
+                            if (esNumeroEntero(fila.Ano73.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano74.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 131;
+                            if (esNumeroEntero(fila.Ano74.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano75.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 132;
+                            if (esNumeroEntero(fila.Ano75.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano76.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 133;
+                            if (esNumeroEntero(fila.Ano76.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano77.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 134;
+                            if (esNumeroEntero(fila.Ano77.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano78.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 135;
+                            if (esNumeroEntero(fila.Ano78.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano79.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 136;
+                            if (esNumeroEntero(fila.Ano79.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano80.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 137;
+                            if (esNumeroEntero(fila.Ano80.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.TotalCapexTotAcum.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 138;
+                            if (esNumeroEntero(fila.TotalCapexTotAcum.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        double inversionNacional = 0.0;
+                        double inversionExtranjera = 0.0;
+                        if (fila.HitNacExt != null && !string.IsNullOrEmpty(fila.HitNacExt.ToString()))
+                        {
+                            string[] hitNacExt = fila.HitNacExt.ToString().Split('/');
+                            if (hitNacExt.Length == 2)
+                            {
+                                CultureInfo ciCL = new CultureInfo("es-CL", false);
+                                inversionNacional = double.Parse(hitNacExt[0], ciCL);
+                                inversionExtranjera = double.Parse(hitNacExt[1], ciCL);
+                            }
+                        }
+                        ultimoIdPid = fila.IdPid;
+                        dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidEstadoFlujo, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias,
+                             fila.IniTipo, (fila.IniPeriodo + 1), fila.IgFechaInicio, fila.IgFechaTermino, fila.IgFechaCierre,
+                             fila.PidProceso, fila.PidObjeto, fila.PidArea, fila.PidCompania, fila.PidEtapa, fila.PidCodigoProyecto, fila.PidGerenciaInversion,
+                             fila.PidGerenteInversion, fila.PidGerenciaEjecucion, fila.PidGerenteEjecucion, fila.PidSuperintendencia, fila.PidSuperintendente,
+                             fila.PidEncargadoControl, fila.CatEstadoProyecto, fila.CatTipoCotizacion, fila.CatCategoria, fila.CatNivelIngenieria,
+                             fila.CatClasificacionSSO, fila.CatEstandarSeguridad, fila.CatClase, fila.CatMacroCategoria,
+                             fila.EriClas1, fila.EriMFL1, fila.EriClas2, fila.EriMFL2, fila.EveVan, fila.EveTir, fila.EveIvan, fila.EvePayBack, fila.EveVidaUtil, fila.PorCostoDueno, fila.PorContingencia,
+                             fila.TotalPeriodoAnterior, fila.EneroTotAcum, fila.FebreroTotAcum, fila.MarzoTotAcum, fila.AbrilTotAcum, fila.MayoTotAcum, fila.JunioTotAcum, fila.JulioTotAcum,
+                             fila.AgostoTotAcum, fila.SeptiembreTotAcum, fila.OctubreTotAcum, fila.NoviembreTotAcum, fila.DiciembreTotAcum, fila.TotalTotAcum,
+                             fila.PresAnioMasUnoTotAcum, fila.PresAnioMasDosTotAcum, fila.PresAnioMasTresTotAcum
+
+                             , fila.Ano4, fila.Ano5
+                             , fila.Ano6, fila.Ano7, fila.Ano8, fila.Ano9, fila.Ano10, fila.Ano11, fila.Ano12, fila.Ano13, fila.Ano14, fila.Ano15, fila.Ano16, fila.Ano17, fila.Ano18, fila.Ano19, fila.Ano20, fila.Ano21
+                             , fila.Ano22, fila.Ano23, fila.Ano24, fila.Ano25, fila.Ano26, fila.Ano27, fila.Ano28, fila.Ano29, fila.Ano30, fila.Ano31, fila.Ano32, fila.Ano33, fila.Ano34, fila.Ano35, fila.Ano36, fila.Ano37
+                             , fila.Ano38, fila.Ano39, fila.Ano40, fila.Ano41, fila.Ano42, fila.Ano43, fila.Ano44, fila.Ano45, fila.Ano46, fila.Ano47, fila.Ano48, fila.Ano49, fila.Ano50, fila.Ano51, fila.Ano52, fila.Ano53
+                             , fila.Ano54, fila.Ano55, fila.Ano56, fila.Ano57, fila.Ano58, fila.Ano59, fila.Ano60, fila.Ano61, fila.Ano62, fila.Ano63, fila.Ano64, fila.Ano65, fila.Ano66, fila.Ano67, fila.Ano68, fila.Ano69, fila.Ano70
+                             , fila.Ano71, fila.Ano72, fila.Ano73, fila.Ano74, fila.Ano75, fila.Ano76, fila.Ano77, fila.Ano78, fila.Ano79, fila.Ano80,
+
+
+                             fila.TotalCapexTotAcum, inversionNacional, inversionExtranjera, ((fila.MatrizRiesgoNombre != null) ? fila.MatrizRiesgoNombre.ToString().Trim() : ""), fila.ObjetivoInversion, fila.AlcanceInversion);
+
+
+                        filaActual++;
+                    }
+                    dt.AcceptChanges();
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                    ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            hashtable.Add(1, dt);
+            hashtable.Add(2, numerosSeparadorMiles);
+            hashtable.Add(3, numerosSeparadorMilesDecimales);
+            return hashtable;
+        }
+
+
+
+
         private Hashtable getDataExcelCasoBaseFormat(string token)
         {
             //Creating DataTable  
@@ -10146,7 +11983,13 @@ namespace Capex.Web.Controllers
                         usuario = "";
                     }
 
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_CASO_BASE", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado)) //AMBAS
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_CASO_BASE", new { @usuario = usuario, @opcion = token, @periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
 
                     var filaActual = 2;
                     var ultimoIdPid = 0;
@@ -11515,7 +13358,8 @@ namespace Capex.Web.Controllers
                     {
                         usuario = "";
                     }
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FINANCIERO_EJERCICIOS_OFICIALES", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+                    string periodo = ((Session["anioIniciativaEjercicioOficial"] != null && !string.IsNullOrEmpty(Convert.ToString(Session["anioIniciativaEjercicioOficial"]))) ? Convert.ToString(Session["anioIniciativaEjercicioOficial"]) : "0");
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FINANCIERO_EJERCICIOS_OFICIALES", new { @usuario = usuario, @opcion = token, @periodo = periodo }, commandType: CommandType.StoredProcedure).ToList();
                     var contadorFila = 0;
                     var ultimoPid = 0;
                     var filaActual = 2;
@@ -11782,6 +13626,324 @@ namespace Capex.Web.Controllers
             return hashtable;
         }
 
+        private Hashtable getDataFinancieroExcelFormatParametroVN(string tipoIniciativaSeleccionado, string anioIniciativaSeleccionado, string parametroVN)
+        {
+            Hashtable hashtable = new Hashtable();
+            List<string> numerosSeparadorMiles = new List<string>();
+            List<string> numerosSeparadorMilesDecimales = new List<string>();
+            //Creating DataTable  
+            DataTable dt = new DataTable();
+            DateTime todaysDate = DateTime.Now.Date;
+            int year = todaysDate.Year;
+            //Setiing Table Name  
+            dt.TableName = "Financiero PP-EX";
+            //Add Columns  
+            dt.Columns.Add("Id Iniciativa", typeof(int));
+            dt.Columns.Add("Usuario", typeof(string));
+            dt.Columns.Add("Codigo Iniciativa", typeof(string));
+            dt.Columns.Add("Nombre Proyecto", typeof(string));
+            dt.Columns.Add("Nombre Proyecto(Alias)", typeof(string));
+            dt.Columns.Add("Fase", typeof(string));
+            dt.Columns.Add("Pond_Fina", typeof(double));
+            dt.Columns.Add("Per_Ant", typeof(double));
+            dt.Columns.Add("Ene", typeof(double));
+            dt.Columns.Add("Feb", typeof(double));
+            dt.Columns.Add("Mar", typeof(double));
+            dt.Columns.Add("Abr", typeof(double));
+            dt.Columns.Add("May", typeof(double));
+            dt.Columns.Add("Jun", typeof(double));
+            dt.Columns.Add("Jul", typeof(double));
+            dt.Columns.Add("Ago", typeof(double));
+            dt.Columns.Add("Sep", typeof(double));
+            dt.Columns.Add("Oct", typeof(double));
+            dt.Columns.Add("Nov", typeof(double));
+            dt.Columns.Add("Dic", typeof(double));
+            dt.Columns.Add("Total Año" + (year + 1), typeof(double));
+            dt.Columns.Add("Año " + (year + 2), typeof(double));
+            dt.Columns.Add("Año " + (year + 3), typeof(double));
+            dt.Columns.Add("Año " + (year + 4), typeof(double));
+            dt.Columns.Add("Total_Capex", typeof(double));
+
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                    var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
+                    if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
+                    {
+                        usuario = "";
+                    }
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FINANCIERO_PARAMETROVN", new { @periodo = anioIniciativaSeleccionado, @parametroVN = parametroVN }, commandType: CommandType.StoredProcedure).ToList();
+                    var contadorFila = 0;
+                    var ultimoPid = 0;
+                    var filaActual = 2;
+                    foreach (var fila in contenido)
+                    {
+                        //Add Rows in DataTable
+                        if (contadorFila > 0 && ultimoPid != fila.IdPid)
+                        {
+                            /*dt.Rows.Add();
+                            contadorFila++;
+                            filaActual++;*/
+                        }
+
+                        if (!esCero(fila.Ponderacion_Financiera.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 7;
+                            if (esNumeroEntero(fila.Ponderacion_Financiera.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+                        if (!esCero(fila.Periodos_Anteriores.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 8;
+                            if (esNumeroEntero(fila.Periodos_Anteriores.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Enero.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 9;
+                            if (esNumeroEntero(fila.Enero.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Febrero.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 10;
+                            if (esNumeroEntero(fila.Febrero.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Marzo.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 11;
+                            if (esNumeroEntero(fila.Marzo.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Abril.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 12;
+                            if (esNumeroEntero(fila.Abril.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Mayo.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 13;
+                            if (esNumeroEntero(fila.Mayo.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Junio.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 14;
+                            if (esNumeroEntero(fila.Junio.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Julio.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 15;
+                            if (esNumeroEntero(fila.Julio.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Agosto.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 16;
+                            if (esNumeroEntero(fila.Agosto.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Septiembre.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 17;
+                            if (esNumeroEntero(fila.Septiembre.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Octubre.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 18;
+                            if (esNumeroEntero(fila.Octubre.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Noviembre.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 19;
+                            if (esNumeroEntero(fila.Noviembre.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Diciembre.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 20;
+                            if (esNumeroEntero(fila.Diciembre.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Total.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 21;
+                            if (esNumeroEntero(fila.Total.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano1.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 22;
+                            if (esNumeroEntero(fila.Ano1.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano2.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 23;
+                            if (esNumeroEntero(fila.Ano2.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano3.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 24;
+                            if (esNumeroEntero(fila.Ano3.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Total_Capex.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 25;
+                            if (esNumeroEntero(fila.Total_Capex.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias, fila.Fase, fila.Ponderacion_Financiera, fila.Periodos_Anteriores, fila.Enero, fila.Febrero, fila.Marzo,
+                        fila.Abril, fila.Mayo, fila.Junio, fila.Julio, fila.Agosto, fila.Septiembre, fila.Octubre, fila.Noviembre, fila.Diciembre, fila.Total, fila.Ano1, fila.Ano2, fila.Ano3, fila.Total_Capex);
+                        ultimoPid = fila.IdPid;
+                        contadorFila++;
+                        filaActual++;
+                    }
+                    dt.AcceptChanges();
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                    //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    //Utils.LogError(ExceptionResult);
+                    //return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            hashtable.Add(1, dt);
+            hashtable.Add(2, numerosSeparadorMiles);
+            hashtable.Add(3, numerosSeparadorMilesDecimales);
+            return hashtable;
+        }
+
         private Hashtable getDataFinancieroExcelFormat(string token)
         {
             Hashtable hashtable = new Hashtable();
@@ -11831,7 +13993,18 @@ namespace Capex.Web.Controllers
                     {
                         usuario = "";
                     }
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FINANCIERO", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+
+                    int anio = todaysDate.Year;
+                    int anioMasUno = anio + 1;
+                    string anioUno = string.Empty;
+                    string anioDos = string.Empty;
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FINANCIERO", new { @usuario = usuario, @opcion = token, @periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                     var contadorFila = 0;
                     var ultimoPid = 0;
                     var filaActual = 2;
@@ -11848,7 +14021,7 @@ namespace Capex.Web.Controllers
                         if (!esCero(fila.Ponderacion_Financiera.ToString()))
                         {
                             string filaColumna = filaActual + "," + 7;
-                            if (esNumeroEntero(fila.Periodos_Anteriores.ToString()))
+                            if (esNumeroEntero(fila.Ponderacion_Financiera.ToString()))
                             {
                                 numerosSeparadorMiles.Add(filaColumna);
                             }
@@ -12099,6 +14272,1339 @@ namespace Capex.Web.Controllers
             return hashtable;
         }
 
+        private Hashtable getDataFinancieroCasoBaseExcelFormatParametroVN(string tipoIniciativaSeleccionado, string anioIniciativaSeleccionado, string parametroVN)
+        {
+            Hashtable hashtable = new Hashtable();
+            List<string> numerosSeparadorMiles = new List<string>();
+            List<string> numerosSeparadorMilesDecimales = new List<string>();
+            //Creating DataTable  
+            DataTable dt = new DataTable();
+            DateTime todaysDate = DateTime.Now.Date;
+            int year = (todaysDate.Year + 1);
+            //Setiing Table Name  
+            dt.TableName = "Financiero CB-CD";
+            //Add Columns  
+            dt.Columns.Add("Id Iniciativa", typeof(int));
+            dt.Columns.Add("Usuario", typeof(string));
+            dt.Columns.Add("Codigo Iniciativa", typeof(string));
+            dt.Columns.Add("Nombre Proyecto", typeof(string));
+            dt.Columns.Add("Nombre Proyecto(Alias)", typeof(string));
+            dt.Columns.Add("Fase", typeof(string));
+            dt.Columns.Add("Pond_Fina", typeof(double));
+            dt.Columns.Add("Per_Ant", typeof(double));
+            dt.Columns.Add("Ene", typeof(double));
+            dt.Columns.Add("Feb", typeof(double));
+            dt.Columns.Add("Mar", typeof(double));
+            dt.Columns.Add("Abr", typeof(double));
+            dt.Columns.Add("May", typeof(double));
+            dt.Columns.Add("Jun", typeof(double));
+            dt.Columns.Add("Jul", typeof(double));
+            dt.Columns.Add("Ago", typeof(double));
+            dt.Columns.Add("Sep", typeof(double));
+            dt.Columns.Add("Oct", typeof(double));
+            dt.Columns.Add("Nov", typeof(double));
+            dt.Columns.Add("Dic", typeof(double));
+            dt.Columns.Add("Total Año" + (year), typeof(double));
+            dt.Columns.Add("Año " + (year + 1), typeof(double));
+            dt.Columns.Add("Año " + (year + 2), typeof(double));
+            dt.Columns.Add("Año " + (year + 3), typeof(double));
+            dt.Columns.Add("Año " + (year + 4), typeof(double));
+            dt.Columns.Add("Año " + (year + 5), typeof(double));
+            dt.Columns.Add("Año " + (year + 6), typeof(double));
+            dt.Columns.Add("Año " + (year + 7), typeof(double));
+            dt.Columns.Add("Año " + (year + 8), typeof(double));
+            dt.Columns.Add("Año " + (year + 9), typeof(double));
+            dt.Columns.Add("Año " + (year + 10), typeof(double));
+            dt.Columns.Add("Año " + (year + 11), typeof(double));
+            dt.Columns.Add("Año " + (year + 12), typeof(double));
+            dt.Columns.Add("Año " + (year + 13), typeof(double));
+            dt.Columns.Add("Año " + (year + 14), typeof(double));
+            dt.Columns.Add("Año " + (year + 15), typeof(double));
+            dt.Columns.Add("Año " + (year + 16), typeof(double));
+            dt.Columns.Add("Año " + (year + 17), typeof(double));
+            dt.Columns.Add("Año " + (year + 18), typeof(double));
+            dt.Columns.Add("Año " + (year + 19), typeof(double));
+            dt.Columns.Add("Año " + (year + 20), typeof(double));
+            dt.Columns.Add("Año " + (year + 21), typeof(double));
+            dt.Columns.Add("Año " + (year + 22), typeof(double));
+            dt.Columns.Add("Año " + (year + 23), typeof(double));
+            dt.Columns.Add("Año " + (year + 24), typeof(double));
+            dt.Columns.Add("Año " + (year + 25), typeof(double));
+            dt.Columns.Add("Año " + (year + 26), typeof(double));
+            dt.Columns.Add("Año " + (year + 27), typeof(double));
+            dt.Columns.Add("Año " + (year + 28), typeof(double));
+            dt.Columns.Add("Año " + (year + 29), typeof(double));
+            dt.Columns.Add("Año " + (year + 30), typeof(double));
+            dt.Columns.Add("Año " + (year + 31), typeof(double));
+            dt.Columns.Add("Año " + (year + 32), typeof(double));
+            dt.Columns.Add("Año " + (year + 33), typeof(double));
+            dt.Columns.Add("Año " + (year + 34), typeof(double));
+            dt.Columns.Add("Año " + (year + 35), typeof(double));
+            dt.Columns.Add("Año " + (year + 36), typeof(double));
+            dt.Columns.Add("Año " + (year + 37), typeof(double));
+            dt.Columns.Add("Año " + (year + 38), typeof(double));
+            dt.Columns.Add("Año " + (year + 39), typeof(double));
+            dt.Columns.Add("Año " + (year + 40), typeof(double));
+            dt.Columns.Add("Año " + (year + 41), typeof(double));
+            dt.Columns.Add("Año " + (year + 42), typeof(double));
+            dt.Columns.Add("Año " + (year + 43), typeof(double));
+            dt.Columns.Add("Año " + (year + 44), typeof(double));
+            dt.Columns.Add("Año " + (year + 45), typeof(double));
+            dt.Columns.Add("Año " + (year + 46), typeof(double));
+            dt.Columns.Add("Año " + (year + 47), typeof(double));
+            dt.Columns.Add("Año " + (year + 48), typeof(double));
+            dt.Columns.Add("Año " + (year + 49), typeof(double));
+            dt.Columns.Add("Año " + (year + 50), typeof(double));
+            dt.Columns.Add("Año " + (year + 51), typeof(double));
+            dt.Columns.Add("Año " + (year + 52), typeof(double));
+            dt.Columns.Add("Año " + (year + 53), typeof(double));
+            dt.Columns.Add("Año " + (year + 54), typeof(double));
+            dt.Columns.Add("Año " + (year + 55), typeof(double));
+            dt.Columns.Add("Año " + (year + 56), typeof(double));
+            dt.Columns.Add("Año " + (year + 57), typeof(double));
+            dt.Columns.Add("Año " + (year + 58), typeof(double));
+            dt.Columns.Add("Año " + (year + 59), typeof(double));
+            dt.Columns.Add("Año " + (year + 60), typeof(double));
+            dt.Columns.Add("Año " + (year + 61), typeof(double));
+            dt.Columns.Add("Año " + (year + 62), typeof(double));
+            dt.Columns.Add("Año " + (year + 63), typeof(double));
+            dt.Columns.Add("Año " + (year + 64), typeof(double));
+            dt.Columns.Add("Año " + (year + 65), typeof(double));
+            dt.Columns.Add("Año " + (year + 66), typeof(double));
+            dt.Columns.Add("Año " + (year + 67), typeof(double));
+            dt.Columns.Add("Año " + (year + 68), typeof(double));
+            dt.Columns.Add("Año " + (year + 69), typeof(double));
+            dt.Columns.Add("Año " + (year + 70), typeof(double));
+            dt.Columns.Add("Año " + (year + 71), typeof(double));
+            dt.Columns.Add("Año " + (year + 72), typeof(double));
+            dt.Columns.Add("Año " + (year + 73), typeof(double));
+            dt.Columns.Add("Año " + (year + 74), typeof(double));
+            dt.Columns.Add("Año " + (year + 75), typeof(double));
+            dt.Columns.Add("Año " + (year + 76), typeof(double));
+            dt.Columns.Add("Año " + (year + 77), typeof(double));
+            dt.Columns.Add("Año " + (year + 78), typeof(double));
+            dt.Columns.Add("Año " + (year + 79), typeof(double));
+            dt.Columns.Add("Año " + (year + 80), typeof(double));
+            dt.Columns.Add("Total_Capex", typeof(double));
+
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                    var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
+                    if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
+                    {
+                        usuario = "";
+                    }
+
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FINANCIERO_CASO_BASE_PARAMETROVN", new { @periodo = anioIniciativaSeleccionado, @parametroVN = parametroVN }, commandType: CommandType.StoredProcedure).ToList();
+                    var contadorFila = 0;
+                    var ultimoPid = 0;
+                    var filaActual = 2;
+                    foreach (var fila in contenido)
+                    {
+                        //Add Rows in DataTable
+                        if (contadorFila > 0 && ultimoPid != fila.IdPid)
+                        {
+                            /*dt.Rows.Add();
+                            contadorFila++;
+                            filaActual++;*/
+                        }
+
+
+                        if (!esCero(fila.Ponderacion_Financiera.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 7;
+                            if (esNumeroEntero(fila.Ponderacion_Financiera.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Periodos_Anteriores.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 8;
+                            if (esNumeroEntero(fila.Periodos_Anteriores.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Enero.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 9;
+                            if (esNumeroEntero(fila.Enero.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Febrero.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 10;
+                            if (esNumeroEntero(fila.Febrero.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Marzo.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 11;
+                            if (esNumeroEntero(fila.Marzo.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Abril.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 12;
+                            if (esNumeroEntero(fila.Abril.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Mayo.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 13;
+                            if (esNumeroEntero(fila.Mayo.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Junio.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 14;
+                            if (esNumeroEntero(fila.Junio.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Julio.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 15;
+                            if (esNumeroEntero(fila.Julio.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Agosto.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 16;
+                            if (esNumeroEntero(fila.Agosto.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Septiembre.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 17;
+                            if (esNumeroEntero(fila.Septiembre.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Octubre.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 18;
+                            if (esNumeroEntero(fila.Octubre.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Noviembre.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 19;
+                            if (esNumeroEntero(fila.Noviembre.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Diciembre.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 20;
+                            if (esNumeroEntero(fila.Diciembre.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Total.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 21;
+                            if (esNumeroEntero(fila.Total.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano1.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 22;
+                            if (esNumeroEntero(fila.Ano1.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano2.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 23;
+                            if (esNumeroEntero(fila.Ano2.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano3.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 24;
+                            if (esNumeroEntero(fila.Ano3.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+                        if (!esCero(fila.Ano4.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 25;
+                            if (esNumeroEntero(fila.Ano4.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano5.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 26;
+                            if (esNumeroEntero(fila.Ano5.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano6.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 27;
+                            if (esNumeroEntero(fila.Ano6.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano7.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 28;
+                            if (esNumeroEntero(fila.Ano4.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano8.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 29;
+                            if (esNumeroEntero(fila.Ano8.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano9.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 30;
+                            if (esNumeroEntero(fila.Ano9.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano10.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 31;
+                            if (esNumeroEntero(fila.Ano10.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano11.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 32;
+                            if (esNumeroEntero(fila.Ano11.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano12.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 33;
+                            if (esNumeroEntero(fila.Ano12.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano13.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 34;
+                            if (esNumeroEntero(fila.Ano13.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano14.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 35;
+                            if (esNumeroEntero(fila.Ano14.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano15.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 36;
+                            if (esNumeroEntero(fila.Ano15.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano16.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 37;
+                            if (esNumeroEntero(fila.Ano16.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano17.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 38;
+                            if (esNumeroEntero(fila.Ano17.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano18.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 39;
+                            if (esNumeroEntero(fila.Ano18.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano19.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 40;
+                            if (esNumeroEntero(fila.Ano19.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano20.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 41;
+                            if (esNumeroEntero(fila.Ano20.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+
+                        if (!esCero(fila.Ano21.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 42;
+                            if (esNumeroEntero(fila.Ano21.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano22.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 43;
+                            if (esNumeroEntero(fila.Ano22.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano23.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 44;
+                            if (esNumeroEntero(fila.Ano23.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano24.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 45;
+                            if (esNumeroEntero(fila.Ano24.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano25.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 46;
+                            if (esNumeroEntero(fila.Ano25.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano26.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 47;
+                            if (esNumeroEntero(fila.Ano26.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano27.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 48;
+                            if (esNumeroEntero(fila.Ano27.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano28.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 49;
+                            if (esNumeroEntero(fila.Ano28.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano29.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 50;
+                            if (esNumeroEntero(fila.Ano29.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano30.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 51;
+                            if (esNumeroEntero(fila.Ano30.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano31.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 52;
+                            if (esNumeroEntero(fila.Ano31.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano32.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 53;
+                            if (esNumeroEntero(fila.Ano32.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano33.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 54;
+                            if (esNumeroEntero(fila.Ano33.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano34.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 55;
+                            if (esNumeroEntero(fila.Ano34.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano35.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 56;
+                            if (esNumeroEntero(fila.Ano35.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano36.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 57;
+                            if (esNumeroEntero(fila.Ano36.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano37.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 58;
+                            if (esNumeroEntero(fila.Ano37.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano38.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 59;
+                            if (esNumeroEntero(fila.Ano38.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano39.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 60;
+                            if (esNumeroEntero(fila.Ano39.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano40.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 61;
+                            if (esNumeroEntero(fila.Ano40.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano41.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 62;
+                            if (esNumeroEntero(fila.Ano41.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano42.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 63;
+                            if (esNumeroEntero(fila.Ano42.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano43.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 64;
+                            if (esNumeroEntero(fila.Ano43.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano44.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 65;
+                            if (esNumeroEntero(fila.Ano44.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano45.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 66;
+                            if (esNumeroEntero(fila.Ano45.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano46.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 67;
+                            if (esNumeroEntero(fila.Ano46.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano47.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 68;
+                            if (esNumeroEntero(fila.Ano47.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano48.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 69;
+                            if (esNumeroEntero(fila.Ano48.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano49.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 70;
+                            if (esNumeroEntero(fila.Ano49.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano50.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 71;
+                            if (esNumeroEntero(fila.Ano50.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano51.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 72;
+                            if (esNumeroEntero(fila.Ano51.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano52.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 73;
+                            if (esNumeroEntero(fila.Ano52.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano53.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 74;
+                            if (esNumeroEntero(fila.Ano53.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano54.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 75;
+                            if (esNumeroEntero(fila.Ano54.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano55.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 76;
+                            if (esNumeroEntero(fila.Ano55.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano56.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 77;
+                            if (esNumeroEntero(fila.Ano56.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano57.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 78;
+                            if (esNumeroEntero(fila.Ano57.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano58.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 79;
+                            if (esNumeroEntero(fila.Ano58.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano59.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 80;
+                            if (esNumeroEntero(fila.Ano59.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano60.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 81;
+                            if (esNumeroEntero(fila.Ano60.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+                        if (!esCero(fila.Ano61.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 82;
+                            if (esNumeroEntero(fila.Ano61.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano62.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 83;
+                            if (esNumeroEntero(fila.Ano62.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano63.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 84;
+                            if (esNumeroEntero(fila.Ano63.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano64.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 85;
+                            if (esNumeroEntero(fila.Ano64.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano65.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 86;
+                            if (esNumeroEntero(fila.Ano65.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano66.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 87;
+                            if (esNumeroEntero(fila.Ano66.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano67.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 88;
+                            if (esNumeroEntero(fila.Ano67.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano68.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 89;
+                            if (esNumeroEntero(fila.Ano68.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano69.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 90;
+                            if (esNumeroEntero(fila.Ano69.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano70.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 91;
+                            if (esNumeroEntero(fila.Ano70.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+                        if (!esCero(fila.Ano71.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 92;
+                            if (esNumeroEntero(fila.Ano71.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano72.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 93;
+                            if (esNumeroEntero(fila.Ano72.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano73.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 94;
+                            if (esNumeroEntero(fila.Ano73.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano74.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 95;
+                            if (esNumeroEntero(fila.Ano74.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano75.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 96;
+                            if (esNumeroEntero(fila.Ano75.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano76.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 97;
+                            if (esNumeroEntero(fila.Ano76.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano77.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 98;
+                            if (esNumeroEntero(fila.Ano77.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano78.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 99;
+                            if (esNumeroEntero(fila.Ano78.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano79.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 100;
+                            if (esNumeroEntero(fila.Ano79.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+                        if (!esCero(fila.Ano80.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 101;
+                            if (esNumeroEntero(fila.Ano80.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+
+                        if (!esCero(fila.Total_Capex.ToString()))
+                        {
+                            string filaColumna = filaActual + "," + 102;
+                            if (esNumeroEntero(fila.Total_Capex.ToString()))
+                            {
+                                numerosSeparadorMiles.Add(filaColumna);
+                            }
+                            else
+                            {
+                                numerosSeparadorMilesDecimales.Add(filaColumna);
+                            }
+                        }
+
+                        dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias, fila.Fase, fila.Ponderacion_Financiera, fila.Periodos_Anteriores, fila.Enero, fila.Febrero, fila.Marzo,
+                        fila.Abril, fila.Mayo, fila.Junio, fila.Julio, fila.Agosto, fila.Septiembre, fila.Octubre, fila.Noviembre, fila.Diciembre, fila.Total, fila.Ano1, fila.Ano2, fila.Ano3, fila.Ano4, fila.Ano5
+                        , fila.Ano6, fila.Ano7, fila.Ano8, fila.Ano9, fila.Ano10, fila.Ano11, fila.Ano12, fila.Ano13, fila.Ano14, fila.Ano15, fila.Ano16, fila.Ano17, fila.Ano18, fila.Ano19, fila.Ano20, fila.Ano21
+                        , fila.Ano22, fila.Ano23, fila.Ano24, fila.Ano25, fila.Ano26, fila.Ano27, fila.Ano28, fila.Ano29, fila.Ano30, fila.Ano31, fila.Ano32, fila.Ano33, fila.Ano34, fila.Ano35, fila.Ano36, fila.Ano37
+                        , fila.Ano38, fila.Ano39, fila.Ano40, fila.Ano41, fila.Ano42, fila.Ano43, fila.Ano44, fila.Ano45, fila.Ano46, fila.Ano47, fila.Ano48, fila.Ano49, fila.Ano50, fila.Ano51, fila.Ano52, fila.Ano53
+                        , fila.Ano54, fila.Ano55, fila.Ano56, fila.Ano57, fila.Ano58, fila.Ano59, fila.Ano60, fila.Ano61, fila.Ano62, fila.Ano63, fila.Ano64, fila.Ano65, fila.Ano66, fila.Ano67, fila.Ano68, fila.Ano69, fila.Ano70
+                        , fila.Ano71, fila.Ano72, fila.Ano73, fila.Ano74, fila.Ano75, fila.Ano76, fila.Ano77, fila.Ano78, fila.Ano79, fila.Ano80, fila.Total_Capex);
+                        ultimoPid = fila.IdPid;
+                        contadorFila++;
+                        filaActual++;
+                    }
+                    dt.AcceptChanges();
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
+                    //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    //Utils.LogError(ExceptionResult);
+                    //return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            hashtable.Add(1, dt);
+            hashtable.Add(2, numerosSeparadorMiles);
+            hashtable.Add(3, numerosSeparadorMilesDecimales);
+            return hashtable;
+        }
+
         private Hashtable getDataFinancieroCasoBaseExcelFormat(string token)
         {
             Hashtable hashtable = new Hashtable();
@@ -12225,7 +15731,18 @@ namespace Capex.Web.Controllers
                     {
                         usuario = "";
                     }
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FINANCIERO_CASO_BASE", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+
+                    int anio = todaysDate.Year;
+                    int anioMasUno = anio + 1;
+                    string anioUno = string.Empty;
+                    string anioDos = string.Empty;
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FINANCIERO_CASO_BASE", new { @usuario = usuario, @opcion = token, @periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                     var contadorFila = 0;
                     var ultimoPid = 0;
                     var filaActual = 2;
@@ -13476,8 +16993,8 @@ namespace Capex.Web.Controllers
                     {
                         usuario = "";
                     }
-
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FISICO_EJERCICIOS_OFICIALES", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+                    string periodo = ((Session["anioIniciativaEjercicioOficial"] != null && !string.IsNullOrEmpty(Convert.ToString(Session["anioIniciativaEjercicioOficial"]))) ? Convert.ToString(Session["anioIniciativaEjercicioOficial"]) : "0");
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FISICO_EJERCICIOS_OFICIALES", new { @usuario = usuario, @opcion = token, @periodo = periodo }, commandType: CommandType.StoredProcedure).ToList();
                     var contadorFila = 0;
                     var ultimoPid = 0;
                     foreach (var fila in contenido)
@@ -13497,6 +17014,86 @@ namespace Capex.Web.Controllers
                 }
                 catch (Exception err)
                 {
+                    //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    //Utils.LogError(ExceptionResult);
+                    //return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return dt;
+        }
+
+        private DataTable getDataFisicoExcelParametroVN(string tipoIniciativaSeleccionado, string anioIniciativaSeleccionado, string parametroVN)
+        {
+            //Creating DataTable  
+            DataTable dt = new DataTable();
+            DateTime todaysDate = DateTime.Now.Date;
+            int year = todaysDate.Year;
+            //Setiing Table Name  
+            dt.TableName = "Fisico PP-EX";
+            //Add Columns  
+            dt.Columns.Add("IdPid", typeof(int));
+            dt.Columns.Add("PidUsuario", typeof(string));
+            dt.Columns.Add("PidCodigoIniciativa", typeof(string));
+            dt.Columns.Add("Nombre Proyecto", typeof(string));
+            dt.Columns.Add("Nombre Proyecto(Alias)", typeof(string));
+            dt.Columns.Add("Fase", typeof(string));
+            dt.Columns.Add("Pond_Fina", typeof(double));
+            dt.Columns.Add("Per_Ant", typeof(double));
+            dt.Columns.Add("Ene", typeof(double));
+            dt.Columns.Add("Feb", typeof(double));
+            dt.Columns.Add("Mar", typeof(double));
+            dt.Columns.Add("Abr", typeof(double));
+            dt.Columns.Add("May", typeof(double));
+            dt.Columns.Add("Jun", typeof(double));
+            dt.Columns.Add("Jul", typeof(double));
+            dt.Columns.Add("Ago", typeof(double));
+            dt.Columns.Add("Sep", typeof(double));
+            dt.Columns.Add("Oct", typeof(double));
+            dt.Columns.Add("Nov", typeof(double));
+            dt.Columns.Add("Dic", typeof(double));
+            dt.Columns.Add("Total Año" + (year + 1), typeof(double));
+            dt.Columns.Add("Año " + (year + 2), typeof(double));
+            dt.Columns.Add("Año " + (year + 3), typeof(double));
+            dt.Columns.Add("Año " + (year + 4), typeof(double));
+            dt.Columns.Add("Total_Capex", typeof(double));
+
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                    var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
+                    if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
+                    {
+                        usuario = "";
+                    }
+
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FISICO_PARAMETROVN", new { @periodo = anioIniciativaSeleccionado, @parametroVN = parametroVN }, commandType: CommandType.StoredProcedure).ToList();
+                    var contadorFila = 0;
+                    var ultimoPid = 0;
+                    foreach (var fila in contenido)
+                    {
+                        //Add Rows in DataTable
+                        if (contadorFila > 0 && ultimoPid != fila.IdPid)
+                        {
+                            //dt.Rows.Add();
+                        }
+                        dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias, fila.Fase, fila.Ponderacion_Financiera, fila.Periodos_Anteriores, fila.Enero,
+                        fila.Febrero, fila.Marzo, fila.Abril, fila.Mayo, fila.Junio, fila.Julio, fila.Agosto, fila.Septiembre, fila.Octubre, fila.Noviembre, fila.Diciembre, fila.Total, fila.Ano1,
+                        fila.Ano2, fila.Ano3, fila.Total_Capex);
+                        ultimoPid = fila.IdPid;
+                        contadorFila++;
+                    }
+                    dt.AcceptChanges();
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
                     //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
                     //Utils.LogError(ExceptionResult);
                     //return null;
@@ -13556,7 +17153,17 @@ namespace Capex.Web.Controllers
                         usuario = "";
                     }
 
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FISICO", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+                    int anio = todaysDate.Year;
+                    int anioMasUno = anio + 1;
+                    string anioUno = string.Empty;
+                    string anioDos = string.Empty;
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FISICO", new { @usuario = usuario, @opcion = token, @periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                     var contadorFila = 0;
                     var ultimoPid = 0;
                     foreach (var fila in contenido)
@@ -13576,6 +17183,167 @@ namespace Capex.Web.Controllers
                 }
                 catch (Exception err)
                 {
+                    //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    //Utils.LogError(ExceptionResult);
+                    //return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return dt;
+        }
+
+        private DataTable getDataFisicoCasoBaseExcelParametroVN(string tipoIniciativaSeleccionado, string anioIniciativaSeleccionado, string parametroVN)
+        {
+            //Creating DataTable  
+            DataTable dt = new DataTable();
+            DateTime todaysDate = DateTime.Now.Date;
+            int year = (todaysDate.Year + 1);
+            //Setiing Table Name  
+            dt.TableName = "Fisico CB-CD";
+            //Add Columns  
+            dt.Columns.Add("IdPid", typeof(int));
+            dt.Columns.Add("PidUsuario", typeof(string));
+            dt.Columns.Add("PidCodigoIniciativa", typeof(string));
+            dt.Columns.Add("Nombre Proyecto", typeof(string));
+            dt.Columns.Add("Nombre Proyecto(Alias)", typeof(string));
+            dt.Columns.Add("Fase", typeof(string));
+            dt.Columns.Add("Pond_Fina", typeof(double));
+            dt.Columns.Add("Per_Ant", typeof(double));
+            dt.Columns.Add("Ene", typeof(double));
+            dt.Columns.Add("Feb", typeof(double));
+            dt.Columns.Add("Mar", typeof(double));
+            dt.Columns.Add("Abr", typeof(double));
+            dt.Columns.Add("May", typeof(double));
+            dt.Columns.Add("Jun", typeof(double));
+            dt.Columns.Add("Jul", typeof(double));
+            dt.Columns.Add("Ago", typeof(double));
+            dt.Columns.Add("Sep", typeof(double));
+            dt.Columns.Add("Oct", typeof(double));
+            dt.Columns.Add("Nov", typeof(double));
+            dt.Columns.Add("Dic", typeof(double));
+            dt.Columns.Add("Total Año" + (year), typeof(double));
+            dt.Columns.Add("Año " + (year + 1), typeof(double));
+            dt.Columns.Add("Año " + (year + 2), typeof(double));
+            dt.Columns.Add("Año " + (year + 3), typeof(double));
+            dt.Columns.Add("Año " + (year + 4), typeof(double));
+            dt.Columns.Add("Año " + (year + 5), typeof(double));
+            dt.Columns.Add("Año " + (year + 6), typeof(double));
+            dt.Columns.Add("Año " + (year + 7), typeof(double));
+            dt.Columns.Add("Año " + (year + 8), typeof(double));
+            dt.Columns.Add("Año " + (year + 9), typeof(double));
+            dt.Columns.Add("Año " + (year + 10), typeof(double));
+            dt.Columns.Add("Año " + (year + 11), typeof(double));
+            dt.Columns.Add("Año " + (year + 12), typeof(double));
+            dt.Columns.Add("Año " + (year + 13), typeof(double));
+            dt.Columns.Add("Año " + (year + 14), typeof(double));
+            dt.Columns.Add("Año " + (year + 15), typeof(double));
+            dt.Columns.Add("Año " + (year + 16), typeof(double));
+            dt.Columns.Add("Año " + (year + 17), typeof(double));
+            dt.Columns.Add("Año " + (year + 18), typeof(double));
+            dt.Columns.Add("Año " + (year + 19), typeof(double));
+            dt.Columns.Add("Año " + (year + 20), typeof(double));
+            dt.Columns.Add("Año " + (year + 21), typeof(double));
+            dt.Columns.Add("Año " + (year + 22), typeof(double));
+            dt.Columns.Add("Año " + (year + 23), typeof(double));
+            dt.Columns.Add("Año " + (year + 24), typeof(double));
+            dt.Columns.Add("Año " + (year + 25), typeof(double));
+            dt.Columns.Add("Año " + (year + 26), typeof(double));
+            dt.Columns.Add("Año " + (year + 27), typeof(double));
+            dt.Columns.Add("Año " + (year + 28), typeof(double));
+            dt.Columns.Add("Año " + (year + 29), typeof(double));
+            dt.Columns.Add("Año " + (year + 30), typeof(double));
+            dt.Columns.Add("Año " + (year + 31), typeof(double));
+            dt.Columns.Add("Año " + (year + 32), typeof(double));
+            dt.Columns.Add("Año " + (year + 33), typeof(double));
+            dt.Columns.Add("Año " + (year + 34), typeof(double));
+            dt.Columns.Add("Año " + (year + 35), typeof(double));
+            dt.Columns.Add("Año " + (year + 36), typeof(double));
+            dt.Columns.Add("Año " + (year + 37), typeof(double));
+            dt.Columns.Add("Año " + (year + 38), typeof(double));
+            dt.Columns.Add("Año " + (year + 39), typeof(double));
+            dt.Columns.Add("Año " + (year + 40), typeof(double));
+            dt.Columns.Add("Año " + (year + 41), typeof(double));
+            dt.Columns.Add("Año " + (year + 42), typeof(double));
+            dt.Columns.Add("Año " + (year + 43), typeof(double));
+            dt.Columns.Add("Año " + (year + 44), typeof(double));
+            dt.Columns.Add("Año " + (year + 45), typeof(double));
+            dt.Columns.Add("Año " + (year + 46), typeof(double));
+            dt.Columns.Add("Año " + (year + 47), typeof(double));
+            dt.Columns.Add("Año " + (year + 48), typeof(double));
+            dt.Columns.Add("Año " + (year + 49), typeof(double));
+            dt.Columns.Add("Año " + (year + 50), typeof(double));
+            dt.Columns.Add("Año " + (year + 51), typeof(double));
+            dt.Columns.Add("Año " + (year + 52), typeof(double));
+            dt.Columns.Add("Año " + (year + 53), typeof(double));
+            dt.Columns.Add("Año " + (year + 54), typeof(double));
+            dt.Columns.Add("Año " + (year + 55), typeof(double));
+            dt.Columns.Add("Año " + (year + 56), typeof(double));
+            dt.Columns.Add("Año " + (year + 57), typeof(double));
+            dt.Columns.Add("Año " + (year + 58), typeof(double));
+            dt.Columns.Add("Año " + (year + 59), typeof(double));
+            dt.Columns.Add("Año " + (year + 60), typeof(double));
+            dt.Columns.Add("Año " + (year + 61), typeof(double));
+            dt.Columns.Add("Año " + (year + 62), typeof(double));
+            dt.Columns.Add("Año " + (year + 63), typeof(double));
+            dt.Columns.Add("Año " + (year + 64), typeof(double));
+            dt.Columns.Add("Año " + (year + 65), typeof(double));
+            dt.Columns.Add("Año " + (year + 66), typeof(double));
+            dt.Columns.Add("Año " + (year + 67), typeof(double));
+            dt.Columns.Add("Año " + (year + 68), typeof(double));
+            dt.Columns.Add("Año " + (year + 69), typeof(double));
+            dt.Columns.Add("Año " + (year + 70), typeof(double));
+            dt.Columns.Add("Año " + (year + 71), typeof(double));
+            dt.Columns.Add("Año " + (year + 72), typeof(double));
+            dt.Columns.Add("Año " + (year + 73), typeof(double));
+            dt.Columns.Add("Año " + (year + 74), typeof(double));
+            dt.Columns.Add("Año " + (year + 75), typeof(double));
+            dt.Columns.Add("Año " + (year + 76), typeof(double));
+            dt.Columns.Add("Año " + (year + 77), typeof(double));
+            dt.Columns.Add("Año " + (year + 78), typeof(double));
+            dt.Columns.Add("Año " + (year + 79), typeof(double));
+            dt.Columns.Add("Año " + (year + 80), typeof(double));
+            dt.Columns.Add("Total_Capex", typeof(double));
+
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                    var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
+                    if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
+                    {
+                        usuario = "";
+                    }
+
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FISICO_CASO_BASE_PARAMETROVN", new { @periodo = anioIniciativaSeleccionado, @parametroVN = parametroVN }, commandType: CommandType.StoredProcedure).ToList();
+                    var contadorFila = 0;
+                    var ultimoPid = 0;
+                    foreach (var fila in contenido)
+                    {
+                        //Add Rows in DataTable
+                        if (contadorFila > 0 && ultimoPid != fila.IdPid)
+                        {
+                            //dt.Rows.Add();
+                        }
+                        dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias, fila.Fase, fila.Ponderacion_Financiera, fila.Periodos_Anteriores, fila.Enero, fila.Febrero, fila.Marzo,
+                        fila.Abril, fila.Mayo, fila.Junio, fila.Julio, fila.Agosto, fila.Septiembre, fila.Octubre, fila.Noviembre, fila.Diciembre, fila.Total, fila.Ano1, fila.Ano2,
+                        fila.Ano3, fila.Ano4, fila.Ano5, fila.Ano6, fila.Ano7, fila.Ano8, fila.Ano9, fila.Ano10, fila.Ano11, fila.Ano12, fila.Ano13, fila.Ano14, fila.Ano15, fila.Ano16, fila.Ano17, fila.Ano18, fila.Ano19,
+                        fila.Ano20, fila.Ano21, fila.Ano22, fila.Ano23, fila.Ano24, fila.Ano25, fila.Ano26, fila.Ano27, fila.Ano28, fila.Ano29, fila.Ano30, fila.Ano31, fila.Ano32, fila.Ano33, fila.Ano34, fila.Ano35, fila.Ano36,
+                        fila.Ano37, fila.Ano38, fila.Ano39, fila.Ano40, fila.Ano41, fila.Ano42, fila.Ano43, fila.Ano44, fila.Ano45, fila.Ano46, fila.Ano47, fila.Ano48, fila.Ano49, fila.Ano50, fila.Ano51, fila.Ano52, fila.Ano53,
+                        fila.Ano54, fila.Ano55, fila.Ano56, fila.Ano57, fila.Ano58, fila.Ano59, fila.Ano60, fila.Ano61, fila.Ano62, fila.Ano63, fila.Ano64, fila.Ano65, fila.Ano66, fila.Ano67, fila.Ano68, fila.Ano69, fila.Ano70,
+                        fila.Ano71, fila.Ano72, fila.Ano73, fila.Ano74, fila.Ano75, fila.Ano76, fila.Ano77, fila.Ano78, fila.Ano79, fila.Ano80, fila.Total_Capex);
+                        ultimoPid = fila.IdPid;
+                        contadorFila++;
+                    }
+                    dt.AcceptChanges();
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
                     //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
                     //Utils.LogError(ExceptionResult);
                     //return null;
@@ -13712,7 +17480,17 @@ namespace Capex.Web.Controllers
                         usuario = "";
                     }
 
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FISICO_CASO_BASE", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+                    int anio = todaysDate.Year;
+                    int anioMasUno = anio + 1;
+                    string anioUno = string.Empty;
+                    string anioDos = string.Empty;
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_FISICO_CASO_BASE", new { @usuario = usuario, @opcion = token, @periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                     var contadorFila = 0;
                     var ultimoPid = 0;
                     foreach (var fila in contenido)
@@ -13902,8 +17680,8 @@ namespace Capex.Web.Controllers
                     {
                         usuario = "";
                     }
-
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_DOTACION_EJERCICIOS_OFICIALES", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+                    string periodo = ((Session["anioIniciativaEjercicioOficial"] != null && !string.IsNullOrEmpty(Convert.ToString(Session["anioIniciativaEjercicioOficial"]))) ? Convert.ToString(Session["anioIniciativaEjercicioOficial"]) : "0");
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_DOTACION_EJERCICIOS_OFICIALES", new { @usuario = usuario, @opcion = token, @periodo = periodo }, commandType: CommandType.StoredProcedure).ToList();
                     var contadorFila = 0;
                     var ultimoPid = 0;
                     foreach (var fila in contenido)
@@ -13924,6 +17702,93 @@ namespace Capex.Web.Controllers
                 }
                 catch (Exception err)
                 {
+                    //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    //Utils.LogError(ExceptionResult);
+                    //return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return dt;
+        }
+
+        private DataTable getDataDotacionesExcelParametroVN(string tipoIniciativaSeleccionado, string anioIniciativaSeleccionado, string parametroVN)
+        {
+            //Creating DataTable  
+            DataTable dt = new DataTable();
+            DateTime todaysDate = DateTime.Now.Date;
+            int year = todaysDate.Year;
+            //Setiing Table Name  
+            dt.TableName = "Dotaciones PP-EX";
+            //Add Columns  
+            dt.Columns.Add("IdPid", typeof(int));
+            dt.Columns.Add("PidUsuario", typeof(string));
+            dt.Columns.Add("PidCodigoIniciativa", typeof(string));
+            dt.Columns.Add("Nombre Proyecto", typeof(string));
+            dt.Columns.Add("Nombre Proyecto(Alias)", typeof(string));
+            dt.Columns.Add("Año Dotacion", typeof(string));
+            dt.Columns.Add("Sit. Proyecto", typeof(string));
+            dt.Columns.Add("Sit. Faena", typeof(string));
+            dt.Columns.Add("Depto.", typeof(string));
+            dt.Columns.Add("Num. Contrato", typeof(string));
+            dt.Columns.Add("Nombre EE.CC", typeof(string));
+            dt.Columns.Add("Servicio", typeof(string));
+            dt.Columns.Add("Num. Subcontrato", typeof(string));
+            dt.Columns.Add("Centro Costo", typeof(string));
+            dt.Columns.Add("Hoteleria", typeof(string));
+            dt.Columns.Add("Alimentacion", typeof(string));
+            dt.Columns.Add("Ubicacion", typeof(string));
+            dt.Columns.Add("Clasificacion", typeof(string));
+            dt.Columns.Add("Tipo EE.CC", typeof(string));
+            dt.Columns.Add("Ene", typeof(double));
+            dt.Columns.Add("Feb", typeof(double));
+            dt.Columns.Add("Mar", typeof(double));
+            dt.Columns.Add("Abr", typeof(double));
+            dt.Columns.Add("May", typeof(double));
+            dt.Columns.Add("Jun", typeof(double));
+            dt.Columns.Add("Jul", typeof(double));
+            dt.Columns.Add("Ago", typeof(double));
+            dt.Columns.Add("Sep", typeof(double));
+            dt.Columns.Add("Oct", typeof(double));
+            dt.Columns.Add("Nov", typeof(double));
+            dt.Columns.Add("Dic", typeof(double));
+            dt.Columns.Add("Total Dotacion", typeof(double));
+
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                    var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
+                    if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
+                    {
+                        usuario = "";
+                    }
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_DOTACION_PARAMETROVN", new { @periodo = anioIniciativaSeleccionado, @parametroVN = parametroVN }, commandType: CommandType.StoredProcedure).ToList();
+                    var contadorFila = 0;
+                    var ultimoPid = 0;
+                    foreach (var fila in contenido)
+                    {
+                        //Add Rows in DataTable
+                        if (contadorFila > 0 && ultimoPid != fila.IdPid)
+                        {
+                            //dt.Rows.Add();
+                        }
+                        dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias, fila.AnoDotacion, fila.SitProyecto, fila.SitFaena, fila.Depto,
+                        fila.NumContrato, fila.NombreEECC, fila.Servicio, fila.NumSubContrato, fila.CentroCosto, fila.Hoteleria, fila.Alimentacion, fila.Ubicacion,
+                        fila.Clasificacion, fila.TipoEECC, fila.Enero, fila.Febrero, fila.Marzo, fila.Abril, fila.Mayo, fila.Junio, fila.Julio, fila.Agosto,
+                        fila.Septiembre, fila.Octubre, fila.Noviembre, fila.Diciembre, fila.TotalDotacionCalculado);
+                        ultimoPid = fila.IdPid;
+                        //  contadorFila++;
+                    }
+                    dt.AcceptChanges();
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
                     //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
                     //Utils.LogError(ExceptionResult);
                     //return null;
@@ -13989,8 +17854,13 @@ namespace Capex.Web.Controllers
                     {
                         usuario = "";
                     }
-
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_DOTACION", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_DOTACION", new { @usuario = usuario, @opcion = token, @periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                     var contadorFila = 0;
                     var ultimoPid = 0;
                     foreach (var fila in contenido)
@@ -14011,6 +17881,93 @@ namespace Capex.Web.Controllers
                 }
                 catch (Exception err)
                 {
+                    //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    //Utils.LogError(ExceptionResult);
+                    //return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return dt;
+        }
+
+        private DataTable getDataDotacionesCasoBaseExcelParametroVN(string tipoIniciativaSeleccionado, string anioIniciativaSeleccionado, string parametroVN)
+        {
+            //Creating DataTable  
+            DataTable dt = new DataTable();
+            DateTime todaysDate = DateTime.Now.Date;
+            int year = todaysDate.Year;
+            //Setiing Table Name  
+            dt.TableName = "Dotaciones CB-CD";
+            //Add Columns  
+            dt.Columns.Add("IdPid", typeof(int));
+            dt.Columns.Add("PidUsuario", typeof(string));
+            dt.Columns.Add("PidCodigoIniciativa", typeof(string));
+            dt.Columns.Add("Nombre Proyecto", typeof(string));
+            dt.Columns.Add("Nombre Proyecto(Alias)", typeof(string));
+            dt.Columns.Add("Año Dotacion", typeof(string));
+            dt.Columns.Add("Sit. Proyecto", typeof(string));
+            dt.Columns.Add("Sit. Faena", typeof(string));
+            dt.Columns.Add("Depto.", typeof(string));
+            dt.Columns.Add("Num. Contrato", typeof(string));
+            dt.Columns.Add("Nombre EE.CC", typeof(string));
+            dt.Columns.Add("Servicio", typeof(string));
+            dt.Columns.Add("Num. Subcontrato", typeof(string));
+            dt.Columns.Add("Centro Costo", typeof(string));
+            dt.Columns.Add("Hoteleria", typeof(string));
+            dt.Columns.Add("Alimentacion", typeof(string));
+            dt.Columns.Add("Ubicacion", typeof(string));
+            dt.Columns.Add("Clasificacion", typeof(string));
+            dt.Columns.Add("Tipo EE.CC", typeof(string));
+            dt.Columns.Add("Ene", typeof(double));
+            dt.Columns.Add("Feb", typeof(double));
+            dt.Columns.Add("Mar", typeof(double));
+            dt.Columns.Add("Abr", typeof(double));
+            dt.Columns.Add("May", typeof(double));
+            dt.Columns.Add("Jun", typeof(double));
+            dt.Columns.Add("Jul", typeof(double));
+            dt.Columns.Add("Ago", typeof(double));
+            dt.Columns.Add("Sep", typeof(double));
+            dt.Columns.Add("Oct", typeof(double));
+            dt.Columns.Add("Nov", typeof(double));
+            dt.Columns.Add("Dic", typeof(double));
+            dt.Columns.Add("Total Dotacion", typeof(double));
+
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                objConnection.Open();
+                try
+                {
+                    var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                    var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
+                    if (rol.Contains("Administrador1") || rol.Contains("Administrador2") || rol.Contains("Administrador3"))
+                    {
+                        usuario = "";
+                    }
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_DOTACION_CASO_BASE_PARAMETROVN", new { @periodo = anioIniciativaSeleccionado, @parametroVN = parametroVN }, commandType: CommandType.StoredProcedure).ToList();
+                    var contadorFila = 0;
+                    var ultimoPid = 0;
+                    foreach (var fila in contenido)
+                    {
+                        //Add Rows in DataTable
+                        if (contadorFila > 0 && ultimoPid != fila.IdPid)
+                        {
+                            //dt.Rows.Add();
+                        }
+                        dt.Rows.Add(fila.IdPid, fila.PidUsuario, fila.PidCodigoIniciativa, fila.PidNombreProyecto, fila.PidNombreProyectoAlias, fila.AnoDotacion, fila.SitProyecto, fila.SitFaena, fila.Depto,
+                        fila.NumContrato, fila.NombreEECC, fila.Servicio, fila.NumSubContrato, fila.CentroCosto, fila.Hoteleria, fila.Alimentacion, fila.Ubicacion,
+                        fila.Clasificacion, fila.TipoEECC, fila.Enero, fila.Febrero, fila.Marzo, fila.Abril, fila.Mayo, fila.Junio, fila.Julio, fila.Agosto,
+                        fila.Septiembre, fila.Octubre, fila.Noviembre, fila.Diciembre, fila.TotalDotacionCalculado);
+                        ultimoPid = fila.IdPid;
+                        //  contadorFila++;
+                    }
+                    dt.AcceptChanges();
+                }
+                catch (Exception err)
+                {
+                    err.ToString();
                     //ExceptionResult = AppModule + "PdfCasoBase, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
                     //Utils.LogError(ExceptionResult);
                     //return null;
@@ -14077,7 +18034,17 @@ namespace Capex.Web.Controllers
                         usuario = "";
                     }
 
-                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_DOTACION_CASO_BASE", new { @usuario = usuario, @opcion = token }, commandType: CommandType.StoredProcedure).ToList();
+                    int anio = todaysDate.Year;
+                    int anioMasUno = anio + 1;
+                    string anioUno = string.Empty;
+                    string anioDos = string.Empty;
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    var contenido = SqlMapper.Query(objConnection, "CAPEX_SEL_REPORTE_INICIATIVA_DOTACION_CASO_BASE", new { @usuario = usuario, @opcion = token, @periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                     var contadorFila = 0;
                     var ultimoPid = 0;
                     foreach (var fila in contenido)
@@ -14108,6 +18075,302 @@ namespace Capex.Web.Controllers
                 }
             }
             return dt;
+        }
+
+        /// <summary>
+        /// METODO GENERADOR PDF
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public ActionResult ExcelResumenIniciativaParametroVN()
+        {
+            if (!@User.Identity.IsAuthenticated || Session["CAPEX_SESS_USERNAME"] == null)
+            {
+                //return RedirectToAction("Logout", "Login");
+                return Json(new { redirectUrlLogout = "true" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                string tipoIniciativaOrientacionComercial = ((Session["tipoIniciativaOrientacionComercial"] != null) ? Convert.ToString(Session["tipoIniciativaOrientacionComercial"]) : "");
+                string anioIniciativaOrientacionComercial = ((Session["anioIniciativaOrientacionComercial"] != null) ? Convert.ToString(Session["anioIniciativaOrientacionComercial"]) : "");
+                string parametroVNToken = ((Session["ParametroVNToken"] != null) ? Convert.ToString(Session["ParametroVNToken"]) : "");
+                bool esParametroVNToken = ((!string.IsNullOrEmpty(tipoIniciativaOrientacionComercial) && !string.IsNullOrEmpty(anioIniciativaOrientacionComercial) && !string.IsNullOrEmpty(parametroVNToken)) ? true : false);
+                int hojaResumen = 0;
+                int hojaResumenCasoBase = 0;
+                int hojaPresupuesto = 0;
+                int hojaPresupuestoCasoBase = 0;
+                int hojaFisico = 0;
+                int hojaFisicoCasoBase = 0;
+                int hojaDotacion = 0;
+                int hojaDotacionCasoBase = 0;
+                int numeroHoja = 1;
+
+                //DataTable dt = getDataExcel(token);
+                DataTable dtResumen = null;
+                IList<string> dtNumerosSeparadorMilesResumen = null;
+                IList<string> dtNumerosSeparadorMilesDecimalesResumen = null;
+
+                Presupuesto.ParametroOrientacionVN parametroVN = getParametroVN(parametroVNToken);
+                string fileName = String.Empty;
+                if (tipoIniciativaOrientacionComercial.Equals("1"))//CASO BASE
+                {
+                    fileName = "V" + parametroVN.PVNVERSION + "_ParamComerciales_CB_" + parametroVN.PVNPERIODO;
+                }
+                else if (tipoIniciativaOrientacionComercial.Equals("2"))//PRESUPUESTO
+                {
+                    fileName = "V" + parametroVN.PVNVERSION + "_ParamComerciales_PP_" + parametroVN.PVNPERIODO;
+                }
+
+                fileName += "_" + CurrentMillis.Millis + ".xlsx";
+                if (tipoIniciativaOrientacionComercial.Equals("2"))
+                {
+                    hojaResumen = numeroHoja++;
+                    Hashtable htFormat = getDataExcelFormatParametroVN(tipoIniciativaOrientacionComercial, anioIniciativaOrientacionComercial, parametroVNToken);
+                    dtResumen = (DataTable)htFormat[1];
+                    dtNumerosSeparadorMilesResumen = (System.Collections.Generic.List<string>)htFormat[2];
+                    dtNumerosSeparadorMilesDecimalesResumen = (System.Collections.Generic.List<string>)htFormat[3];
+                }
+                DataTable dtResumenCasoBase = null;
+                IList<string> dtNumerosSeparadorMilesResumenCasoBase = null;
+                IList<string> dtNumerosSeparadorMilesDecimalesResumenCasoBase = null;
+                if (tipoIniciativaOrientacionComercial.Equals("1"))
+                {
+                    hojaResumenCasoBase = numeroHoja++;
+                    Hashtable htFormat = getDataExcelCasoBaseFormatParametroVN(tipoIniciativaOrientacionComercial, anioIniciativaOrientacionComercial, parametroVNToken);
+                    dtResumenCasoBase = (DataTable)htFormat[1];
+                    dtNumerosSeparadorMilesResumenCasoBase = (System.Collections.Generic.List<string>)htFormat[2];
+                    dtNumerosSeparadorMilesDecimalesResumenCasoBase = (System.Collections.Generic.List<string>)htFormat[3];
+                }
+
+
+                //2 PRESUPUESTO|| 1 CASO BASE
+                DataTable dtFinanciero = null;
+                IList<string> dtNumerosSeparadorMilesFinanciero = null;
+                IList<string> dtNumerosSeparadorMilesDecimalesFinanciero = null;
+                if (tipoIniciativaOrientacionComercial.Equals("2"))
+                {
+                    hojaPresupuesto = numeroHoja++;
+                    Hashtable htFormatFinanciero = getDataFinancieroExcelFormatParametroVN(tipoIniciativaOrientacionComercial, anioIniciativaOrientacionComercial, parametroVNToken);
+                    //DataTable dtFinanciero = getDataFinancieroExcel(token);
+                    dtFinanciero = (DataTable)htFormatFinanciero[1];
+                    dtNumerosSeparadorMilesFinanciero = (System.Collections.Generic.List<string>)htFormatFinanciero[2];
+                    dtNumerosSeparadorMilesDecimalesFinanciero = (System.Collections.Generic.List<string>)htFormatFinanciero[3];
+                }
+
+                DataTable dtFinancieroCasoBase = null;
+                IList<string> dtNumerosSeparadorMilesFinancieroCasoBase = null;
+                IList<string> dtNumerosSeparadorMilesDecimalesFinancieroCasoBase = null;
+                if (tipoIniciativaOrientacionComercial.Equals("1"))
+                {
+                    hojaPresupuestoCasoBase = numeroHoja++;
+                    Hashtable htFormatFinancieroCasoBase = getDataFinancieroCasoBaseExcelFormatParametroVN(tipoIniciativaOrientacionComercial, anioIniciativaOrientacionComercial, parametroVNToken);
+                    dtFinancieroCasoBase = (DataTable)htFormatFinancieroCasoBase[1];
+                    dtNumerosSeparadorMilesFinancieroCasoBase = (System.Collections.Generic.List<string>)htFormatFinancieroCasoBase[2];
+                    dtNumerosSeparadorMilesDecimalesFinancieroCasoBase = (System.Collections.Generic.List<string>)htFormatFinancieroCasoBase[3];
+                }
+
+                DataTable dtFisico = null;
+                if (tipoIniciativaOrientacionComercial.Equals("2"))
+                {
+                    hojaFisico = numeroHoja++;
+                    dtFisico = getDataFisicoExcelParametroVN(tipoIniciativaOrientacionComercial, anioIniciativaOrientacionComercial, parametroVNToken);
+                }
+
+                DataTable dtFisicoCasoBase = null;
+                if (tipoIniciativaOrientacionComercial.Equals("1"))
+                {
+                    hojaFisicoCasoBase = numeroHoja++;
+                    dtFisicoCasoBase = getDataFisicoCasoBaseExcelParametroVN(tipoIniciativaOrientacionComercial, anioIniciativaOrientacionComercial, parametroVNToken);
+                }
+
+                DataTable dtDotaciones = null;
+                if (tipoIniciativaOrientacionComercial.Equals("2"))
+                {
+                    hojaDotacion = numeroHoja++;
+                    dtDotaciones = getDataDotacionesExcelParametroVN(tipoIniciativaOrientacionComercial, anioIniciativaOrientacionComercial, parametroVNToken);
+                }
+
+                DataTable dtDotacionesCasoBase = null;
+                if (tipoIniciativaOrientacionComercial.Equals("1"))
+                {
+                    hojaDotacionCasoBase = numeroHoja++;
+                    dtDotacionesCasoBase = getDataDotacionesCasoBaseExcelParametroVN(tipoIniciativaOrientacionComercial, anioIniciativaOrientacionComercial, parametroVNToken);
+                }
+
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    if (dtResumen != null)
+                    {
+                        //Add DataTable in worksheet 
+                        wb.Worksheets.Add(dtResumen);
+                        ClosedXML.Excel.IXLWorksheet xlWorksheet = wb.Worksheet(hojaResumen);
+                        foreach (string value in dtNumerosSeparadorMilesResumen)
+                        {
+                            string[] posiciones = value.Split(',');
+                            try
+                            {
+                                var posx = System.Convert.ToInt32(posiciones[0]);
+                                var posy = System.Convert.ToInt32(posiciones[1]);
+                                ClosedXML.Excel.IXLCell cell = xlWorksheet.Cell(posx, posy);
+                                //cell.Style.NumberFormat.Format = "#,##0";
+                                cell.Style.NumberFormat.Format = "#,##0";
+                            }
+                            catch (FormatException)
+                            {
+
+                            }
+                        }
+                        foreach (string value in dtNumerosSeparadorMilesDecimalesResumen)
+                        {
+                            string[] posiciones = value.Split(',');
+                            try
+                            {
+                                var posx = System.Convert.ToInt32(posiciones[0]);
+                                var posy = System.Convert.ToInt32(posiciones[1]);
+                                ClosedXML.Excel.IXLCell cell = xlWorksheet.Cell(posx, posy);
+                                //cell.Style.NumberFormat.Format = "#,##0.##";// #,##0.00 //#.##0,#0
+                                //cell.Style.NumberFormat.Format = "$ #,##0.00";
+                                cell.Style.NumberFormat.Format = "#,##0.00";
+                            }
+                            catch (FormatException)
+                            {
+
+                            }
+                        }
+                    }
+                    if (dtResumenCasoBase != null)
+                    {
+                        //Add DataTable in worksheet 
+                        wb.Worksheets.Add(dtResumenCasoBase);
+                        ClosedXML.Excel.IXLWorksheet xlWorksheet = wb.Worksheet(hojaResumenCasoBase);
+                        foreach (string value in dtNumerosSeparadorMilesResumenCasoBase)
+                        {
+                            string[] posiciones = value.Split(',');
+                            try
+                            {
+                                var posx = System.Convert.ToInt32(posiciones[0]);
+                                var posy = System.Convert.ToInt32(posiciones[1]);
+                                ClosedXML.Excel.IXLCell cell = xlWorksheet.Cell(posx, posy);
+                                //cell.Style.NumberFormat.Format = "#,##0";//#,##0
+                                cell.Style.NumberFormat.Format = "#,##0";
+                            }
+                            catch (FormatException)
+                            {
+
+                            }
+                        }
+                        foreach (string value in dtNumerosSeparadorMilesDecimalesResumenCasoBase)
+                        {
+                            string[] posiciones = value.Split(',');
+                            try
+                            {
+                                var posx = System.Convert.ToInt32(posiciones[0]);
+                                var posy = System.Convert.ToInt32(posiciones[1]);
+                                ClosedXML.Excel.IXLCell cell = xlWorksheet.Cell(posx, posy);
+                                cell.Style.NumberFormat.Format = "#,##0.##";// #,##0.00 //#.##0,#0
+                                //cell.Style.NumberFormat.Format = "$ #,##0.00";
+                            }
+                            catch (FormatException)
+                            {
+
+                            }
+                        }
+                    }
+                    if (dtFinanciero != null)
+                    {
+                        wb.Worksheets.Add(dtFinanciero);
+                        ClosedXML.Excel.IXLWorksheet xlWorksheetFinanciero = wb.Worksheet(hojaPresupuesto);
+                        foreach (string value in dtNumerosSeparadorMilesFinanciero)
+                        {
+                            string[] posiciones = value.Split(',');
+                            try
+                            {
+                                var posx = System.Convert.ToInt32(posiciones[0]);
+                                var posy = System.Convert.ToInt32(posiciones[1]);
+                                ClosedXML.Excel.IXLCell cell = xlWorksheetFinanciero.Cell(posx, posy);
+                                cell.Style.NumberFormat.Format = "#,##0";//#,##0
+                            }
+                            catch (FormatException)
+                            {
+
+                            }
+                        }
+                        foreach (string value in dtNumerosSeparadorMilesDecimalesFinanciero)
+                        {
+                            string[] posiciones = value.Split(',');
+                            try
+                            {
+                                var posx = System.Convert.ToInt32(posiciones[0]);
+                                var posy = System.Convert.ToInt32(posiciones[1]);
+                                ClosedXML.Excel.IXLCell cell = xlWorksheetFinanciero.Cell(posx, posy);
+                                cell.Style.NumberFormat.Format = "#,##0.##";// #,##0.00 //#.##0,#0
+                                //cell.Style.NumberFormat.Format = "$ #,##0.00";
+                            }
+                            catch (FormatException)
+                            {
+
+                            }
+                        }
+                    }
+                    if (dtFinancieroCasoBase != null)
+                    {
+                        wb.Worksheets.Add(dtFinancieroCasoBase);
+                        ClosedXML.Excel.IXLWorksheet xlWorksheetFinancieroCasoBase = wb.Worksheet(hojaPresupuestoCasoBase);
+                        foreach (string value in dtNumerosSeparadorMilesFinancieroCasoBase)
+                        {
+                            string[] posiciones = value.Split(',');
+                            try
+                            {
+                                var posx = System.Convert.ToInt32(posiciones[0]);
+                                var posy = System.Convert.ToInt32(posiciones[1]);
+                                ClosedXML.Excel.IXLCell cell = xlWorksheetFinancieroCasoBase.Cell(posx, posy);
+                                cell.Style.NumberFormat.Format = "#,##0";//#,##0
+                            }
+                            catch (FormatException)
+                            {
+
+                            }
+                        }
+                        foreach (string value in dtNumerosSeparadorMilesDecimalesFinancieroCasoBase)
+                        {
+                            string[] posiciones = value.Split(',');
+                            try
+                            {
+                                var posx = System.Convert.ToInt32(posiciones[0]);
+                                var posy = System.Convert.ToInt32(posiciones[1]);
+                                ClosedXML.Excel.IXLCell cell = xlWorksheetFinancieroCasoBase.Cell(posx, posy);
+                                cell.Style.NumberFormat.Format = "#,##0.##";// #,##0.00 //#.##0,#0
+                                //cell.Style.NumberFormat.Format = "$ #,##0.00";
+                            }
+                            catch (FormatException)
+                            {
+
+                            }
+                        }
+                    }
+                    if (dtFisico != null)
+                    {
+                        wb.Worksheets.Add(dtFisico);
+                    }
+                    if (dtFisicoCasoBase != null)
+                    {
+                        wb.Worksheets.Add(dtFisicoCasoBase);
+                    }
+                    if (dtDotaciones != null)
+                    {
+                        wb.Worksheets.Add(dtDotaciones);
+                    }
+                    if (dtDotacionesCasoBase != null)
+                    {
+                        wb.Worksheets.Add(dtDotacionesCasoBase);
+                    }
+                    using (MemoryStream stream = new MemoryStream())
+                    {
+                        wb.SaveAs(stream);
+                        return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
+                    }
+                }
+            }
         }
 
 
@@ -14515,11 +18778,9 @@ namespace Capex.Web.Controllers
                 DataTable dtDotaciones = getDataDotacionesExcelEjerciciosOficiales(token);
 
 
-
-                DateTime todaysDate = DateTime.Now.Date;
-                int year = todaysDate.Year;
+                string periodo = ((Session["anioIniciativaEjercicioOficial"] != null && !string.IsNullOrEmpty(Convert.ToString(Session["anioIniciativaEjercicioOficial"]))) ? Convert.ToString(Session["anioIniciativaEjercicioOficial"]) : "0");
                 //Name of File  
-                string fileName = "PresupuestoCapex_" + (year + 1) + "_" + DateTime.Now.Millisecond + ".xlsx";
+                string fileName = "EjercicioOficialCapex_" + periodo + "_" + CurrentMillis.Millis + ".xlsx";
                 using (XLWorkbook wb = new XLWorkbook())
                 {
                     if (dtResumen != null)

@@ -445,6 +445,7 @@ FNBuscarEnTabla = function (value) {
         }
     });
 }
+
 FNEvaluarEstadoFiltro = function (valor) {
     var contenido = valor;
     if (contenido.length > 1) {
@@ -490,6 +491,75 @@ FNEvaluarAccion = function (accion, token) {
             document.location.href = '../../Planificacion/descargaPdfPresupuesto?token=' + iniciativa;
             //document.location.reload();
             break;
+        case "23":
+            $('#AppLoaderContainer').show();
+            event.preventDefault();
+            var url = 'Orientacion/ListarIniciativas/' + iniciativa;
+            window.location.href = url;
+            break;
+        case "24":
+            swal({
+                title: 'Está seguro?',
+                text: "Se generará Ejercicio Oficial con la versión de parámetros comerciales " + $("#versionSeleccionada").val() + ". Está seguro que desea continuar?",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, continuar!',
+                cancelButtonText: 'No!',
+                confirmButtonClass: 'btn btn-primary',
+                cancelButtonClass: 'btn btn-danger'
+            }).then(function (isConfirm) {
+                if (isConfirm && isConfirm.value) {
+                    $('#AppLoaderContainer').show();
+                    /*setTimeout(function () {
+                        $('#AppLoaderContainer').hide();
+                        $(".orderselect").val('-1').prop('selected', true);
+                        swal("", "Ejercicio oficial generado correctamente para la versión " + $("#versionSeleccionada").val(), "success");
+                        setTimeout(function () {
+                            window.location.reload(true);
+                        }, 3000);
+                    }, 3000);*/
+                    $.ajaxSetup({ cache: false });
+                    $.ajax({
+                        url: "/Orientacion/GenerarEjercicionOficial",
+                        method: "POST",
+                        data: { "ParametroVNToken": token }
+                    }).done(function (r) {
+                        $('#AppLoaderContainer').hide();
+                        $(".orderselect").val('-1').prop('selected', true);
+                        if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                            document.getElementById('linkToLogout').click();
+                            return;
+                        }
+                        console.log("Done generar ejercicio oficial JSON.stringify(r)=", JSON.stringify(r));
+                        var obj = JSON.parse(JSON.stringify(r));
+                        if (obj.Mensaje.startsWith("Guardado")) {
+                            swal("", "Ejercicio Oficial generada con la versión " + $("#versionSeleccionada").val() + ".", "success");
+                            setTimeout(function () {
+                                window.location.reload(true);
+                            }, 3000);
+                        } else {
+                            swal("", "Problemas al generar el ejercicio oficial.", "error");
+                            setTimeout(function () {
+                                window.location.reload(true);
+                            }, 3000);
+                        }
+                    }).fail(function (xhr) {
+                        console.log("fail GenerarParametroV0");
+                        $('#AppLoaderContainer').hide();
+                        $(".orderselect").val('-1').prop('selected', true);
+                        console.log('error', xhr);
+                    });
+                } else {
+                    $(".orderselect").val('-1').prop('selected', true);
+                    /*setTimeout(function () {
+                        document.location.reload();
+                    }, 2500);*/
+                    return false;
+                }
+            });
+            break;
     }
 }
 // CERRAR MODAL ADJUNTOS
@@ -501,6 +571,31 @@ FNCerrarModalAdjuntos = function () {
 FNResetear = function () {
     document.EjercicioFormIndex.reset();
 }
+
+Actualizar = function () {
+    $("#AppLoaderContainer").show();
+    document.location.reload(true);
+}
+
+FNDescargarAdjuntoFinal = function (token) {
+    var link = document.createElement("a");
+    console.info("token=", token);
+    $.ajax({
+        url: "/Documentacion/DescargarDocumentoAdjuntoFinal/" + token,
+        method: "GET",
+        data: { "token": token },
+        async: false
+    }).done(function (r) {
+        if (r && r.IsSuccess && r.ResponseData) {
+            console.log("r.ResponseData=", r.ResponseData);
+            document.location.href = r.ResponseData;
+        }
+    }).fail(function (xhr) {
+        console.log('fail error', xhr);
+    });
+    return;
+}
+
 //
 // INICIALIZADOR
 //

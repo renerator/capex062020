@@ -103,13 +103,19 @@ namespace Capex.Web.Controllers
             }
             else
             {
+                Session["tipoIniciativaEjercicioOficial"] = "";
+                Session["anioIniciativaEjercicioOficial"] = "";
+                Session["tipoIniciativaOrientacionComercial"] = "";
+                Session["anioIniciativaOrientacionComercial"] = "";
+                Session["ParametroVNToken"] = "";
                 var tipoIniciativaSeleccionado = Request.QueryString["tipoIniciativaSeleccionado"];
-
+                var anioIniciativaSeleccionado = Request.QueryString["anioIniciativaGestion"];
                 if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
                 {
                     tipoIniciativaSeleccionado = "0";
                 }
                 Session["tipoIniciativaSeleccionado"] = tipoIniciativaSeleccionado;
+                Session["anioIniciativaSeleccionado"] = anioIniciativaSeleccionado;
                 var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
                 var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
                 if (string.IsNullOrEmpty(Convert.ToString(Session["CAPEX_SESS_USERNAME"])) || string.IsNullOrEmpty(rol) || string.IsNullOrEmpty(usuario))
@@ -172,7 +178,7 @@ namespace Capex.Web.Controllers
             {
                 tipoIniciativaSeleccionado = "0";
             }
-
+            var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
             switch (cual)
             {
                 case "RESUMEN":
@@ -180,30 +186,30 @@ namespace Capex.Web.Controllers
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniUsuarioOwner]='" + usuario + "' AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
+                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND INI.[IniUsuarioOwner]='" + usuario + "' AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1")) //PRESUPUESTO AND [IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniUsuarioOwner]='" + usuario + "' AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
+                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND INI.[IniUsuarioOwner]='" + usuario + "' AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2")) //CASO BASE AND [IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniUsuarioOwner]='" + usuario + "' AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
+                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND INI.[IniUsuarioOwner]='" + usuario + "' AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
                         }
                     }
                     else
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
+                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
+                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
+                            sql = "SELECT COUNT(DISTINCT([IdIni])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND NOT EXISTS (SELECT * FROM [dbo].[CAPEX_FLUJO] FLU2 WHERE INI.[IniToken] = FLU2.[IniToken] AND FLU2.[WrfEstadoActual] = 11)";
                         }
                     }
                     break;
@@ -212,31 +218,31 @@ namespace Capex.Web.Controllers
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.IniToken = IDEN.PidToken AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND INI.IniToken = IDEN.PidToken AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                             //sql = "SELECT COUNT([IdIni]) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] WHERE [IniEstadoFlujo]=0 AND [IniEstado]=1 AND [IniUsuario]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.IniToken = IDEN.PidToken AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND INI.IniToken = IDEN.PidToken AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.IniToken = IDEN.PidToken AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND INI.IniToken = IDEN.PidToken AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                     }
                     else
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1";
+                            sql = "SELECT COUNT(DISTINCT(IDEN.[IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.IniToken = IDEN.PidToken AND INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.IniToken = IDEN.PidToken AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1";
+                            sql = "SELECT COUNT(DISTINCT(IDEN.[IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.IniToken = IDEN.PidToken AND INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.IniToken = IDEN.PidToken AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1";
+                            sql = "SELECT COUNT(DISTINCT(IDEN.[IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_INICIATIVA] INI, [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN WHERE INI.IniToken = IDEN.PidToken AND INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND IDEN.[PidEstadoFlujo] = 0 AND IDEN.[PidEstado] = 1";
                         }
                     }
                     break;
@@ -246,30 +252,30 @@ namespace Capex.Web.Controllers
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 1 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(DISTINCT(IDEN.[IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 1 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 1 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 1 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 1 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 1 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                     }
                     else
                     {
                         if (tipoIniciativaSeleccionado.Equals("0")) //AMBAS
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.WrfEstadoActual = 1 AND FLU.WrfEstado = 1";
+                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.WrfEstadoActual = 1 AND FLU.WrfEstado = 1";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1")) //PRESUPUESTO
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.WrfEstadoActual = 1 AND FLU.WrfEstado = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
+                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.WrfEstadoActual = 1 AND FLU.WrfEstado = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2")) //CASO BASE
                         {
-                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.WrfEstadoActual = 1 AND FLU.WrfEstado = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
+                            sql = "SELECT COUNT(DISTINCT([IdPid])) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.WrfEstadoActual = 1 AND FLU.WrfEstado = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
                         }
                     }
                     break;
@@ -282,30 +288,30 @@ namespace Capex.Web.Controllers
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                     }
                     else
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 3 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
                         }
                     }
                     break;
@@ -314,30 +320,30 @@ namespace Capex.Web.Controllers
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                     }
                     else
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 2 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
                         }
                     }
                     break;
@@ -346,30 +352,30 @@ namespace Capex.Web.Controllers
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                     }
                     else
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 4 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
                         }
                     }
                     break;
@@ -378,30 +384,30 @@ namespace Capex.Web.Controllers
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                     }
                     else
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 12 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
                         }
                     }
                     break;
@@ -410,30 +416,30 @@ namespace Capex.Web.Controllers
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                     }
                     else
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 8 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
                         }
                     }
                     break;
@@ -442,30 +448,30 @@ namespace Capex.Web.Controllers
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                     }
                     else
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 9 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
                         }
                     }
                     break;
@@ -474,30 +480,30 @@ namespace Capex.Web.Controllers
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1 AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3)) AND INI.[IniUsuarioOwner]='" + usuario + "'";
                         }
                     }
                     else
                     {
                         if (tipoIniciativaSeleccionado.Equals("0"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("1"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(2,4))";
                         }
                         else if (tipoIniciativaSeleccionado.Equals("2"))
                         {
-                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
+                            sql = "SELECT COUNT(FLU.[IdWrf]) AS NumIniciativas FROM [dbo].[CAPEX_PLANIFICACION_IDENTIFICACION] IDEN RIGHT JOIN [dbo].[CAPEX_INICIATIVA] INI ON INI.IniToken = IDEN.PidToken LEFT JOIN [dbo].[CAPEX_FLUJO] FLU ON FLU.IniToken = IDEN.PidToken WHERE INI.[IniPeriodo]=" + anioIniciativaSeleccionado + " AND IDEN.[PidEstadoFlujo] = 1 AND IDEN.[PidEstado] = 1 AND FLU.[WrfEstadoActual] = 10 AND FLU.[WrfEstado] = 1 AND INI.[IniTipo] in (SELECT [TipAcronimo] FROM [dbo].[CAPEX_TIPO_INICIATIVA] WHERE [IdTipini] in(1,3))";
                         }
                     }
                     break;
@@ -521,6 +527,12 @@ namespace Capex.Web.Controllers
                 }
             }
         }
+
+        private bool decimalIsZero(decimal paramValue)
+        {
+            return (Decimal.Compare(Decimal.Zero, paramValue) == 0);
+        }
+
         /// <summary>
         /// METODO VER INICIATIVA
         /// </summary>
@@ -534,8 +546,8 @@ namespace Capex.Web.Controllers
             }
             else
             {
-                var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
-                var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
+                string usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                string rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
                 if (string.IsNullOrEmpty(Convert.ToString(Session["CAPEX_SESS_USERNAME"])) || string.IsNullOrEmpty(rol) || string.IsNullOrEmpty(usuario))
                 {
                     return RedirectToAction("Logout", "Login");
@@ -549,13 +561,52 @@ namespace Capex.Web.Controllers
                             try
                             {
                                 objConnection.Open();
+                                string parametroVNToken = ((Session["ParametroVNToken"] != null) ? Convert.ToString(Session["ParametroVNToken"]) : "");
+                                string tipoIniciativaEjercicioOficial = ((Session["tipoIniciativaEjercicioOficial"] != null) ? Convert.ToString(Session["tipoIniciativaEjercicioOficial"]) : "");
+                                string anioIniciativaEjercicioOficial = ((Session["anioIniciativaEjercicioOficial"] != null) ? Convert.ToString(Session["anioIniciativaEjercicioOficial"]) : "");
+                                if (string.IsNullOrEmpty(parametroVNToken) && !string.IsNullOrEmpty(tipoIniciativaEjercicioOficial) && !string.IsNullOrEmpty(anioIniciativaEjercicioOficial))
+                                {
+                                    var selParametroVNEjercicioOficial = SqlMapper.Query(objConnection, "CAPEX_GET_PARAMETRO_VN_OFICIAL", new { PVNPERIODO = anioIniciativaEjercicioOficial, @PVNTIPO = tipoIniciativaEjercicioOficial }, commandType: CommandType.StoredProcedure).ToList();
+                                    if (selParametroVNEjercicioOficial != null && selParametroVNEjercicioOficial.Count > 0)
+                                    {
+                                        foreach (var s in selParametroVNEjercicioOficial)
+                                        {
+                                            parametroVNToken = s.ParametroVNToken;
+                                        }
+                                    }
+                                }
+
+                                bool isV0 = false;
+                                if (string.IsNullOrEmpty(parametroVNToken))
+                                {
+                                    isV0 = true;
+                                }
+                                else
+                                {
+                                    var parametosOrigen = new DynamicParameters();
+                                    parametosOrigen.Add("ParametroVNToken", parametroVNToken);
+                                    parametosOrigen.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 1);
+                                    SqlMapper.Query(objConnection, "CAPEX_PARAMETRO_IS_V0", parametosOrigen, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                                    string respuestaOrigen = parametosOrigen.Get<string>("Respuesta");
+                                    if (respuestaOrigen != null && !string.IsNullOrEmpty(respuestaOrigen.Trim()) && "1".Equals(respuestaOrigen.Trim()))
+                                    {
+                                        isV0 = true;
+                                    }
+                                }
                                 ViewBag.Identificacion = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_IDENTIFICACION_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
                                 ViewBag.Categorizacion = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_CATEGORIZACION_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
                                 ViewBag.DescripcionDetallada = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_DESCRIPCIONDETALLADA_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
                                 ViewBag.EvaluacionEconomica = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_EVALUACIONECONOMICA_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
                                 ViewBag.EvaluacionRiesgo = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_EVALUACIONRIESGO_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
-                                ViewBag.Hito = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_HITO_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
-                                ViewBag.HitoDetalle = PoblarVistaHitos(token);
+                                if (isV0)
+                                {
+                                    ViewBag.Hito = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_HITO_INI", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
+                                }
+                                else
+                                {
+                                    ViewBag.Hito = SqlMapper.Query(objConnection, "CAPEX_SEL_VER_HITO_INI_PARAMETRO_VN", new { @token = token, @PARAMETROVN = parametroVNToken }, commandType: CommandType.StoredProcedure).ToList();
+                                }
+                                ViewBag.HitoDetalle = (isV0 ? PoblarVistaHitos(token) : PoblarVistaHitos(token, parametroVNToken));
                             }
                             catch (Exception err)
                             {
@@ -577,6 +628,7 @@ namespace Capex.Web.Controllers
             }
             return View("~/Views/Gestion/VerIniciativa.cshtml");
         }
+
         /// <summary>
         /// METODO MODIFICAR INICIATIVA
         /// </summary>
@@ -604,6 +656,25 @@ namespace Capex.Web.Controllers
                         try
                         {
                             objConnection.Open();
+                            string parametroVNToken = ((Session["ParametroVNToken"] != null) ? Convert.ToString(Session["ParametroVNToken"]) : "");
+                            bool isV0 = false;
+                            if (string.IsNullOrEmpty(parametroVNToken))
+                            {
+                                isV0 = true;
+                            }
+                            else
+                            {
+                                var parametosOrigen = new DynamicParameters();
+                                parametosOrigen.Add("ParametroVNToken", parametroVNToken);
+                                parametosOrigen.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 1);
+                                SqlMapper.Query(objConnection, "CAPEX_PARAMETRO_IS_V0", parametosOrigen, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                                string respuestaOrigen = parametosOrigen.Get<string>("Respuesta");
+                                if (respuestaOrigen != null && !string.IsNullOrEmpty(respuestaOrigen.Trim()) && "1".Equals(respuestaOrigen.Trim()))
+                                {
+                                    isV0 = true;
+                                }
+                            }
+
                             var Situacion = SqlMapper.Query(objConnection, "CAPEX_SEL_SITUACION_INICIATIVA", new { @token = token }, commandType: CommandType.StoredProcedure).ToList();
                             foreach (var s in Situacion)
                             {
@@ -831,11 +902,8 @@ namespace Capex.Web.Controllers
                                 ViewBag.HitPE = hi.HitPE;
                                 ViewBag.HitDIRCEN = hi.HitDIRCEN;
                                 ViewBag.HitDirPLC = hi.HitDirPLC;
-                                /* ViewBag.HitDirPLC = hi.HitDirPLC;
-                                   ViewBag.HitDirPLC = hi.HitDirPLC;
-                                   ViewBag.HitDirPLC = hi.HitDirPLC;*/
                             }
-                            ViewBag.HitoDetalle = PoblarVistaHitos(token);
+                            ViewBag.HitoDetalle = ((isV0) ? PoblarVistaHitos(token) : PoblarVistaHitos(token, parametroVNToken));
                         }
                         catch (Exception err)
                         {
@@ -878,6 +946,44 @@ namespace Capex.Web.Controllers
                 }
             }
             return codigoProyectoFormateado.ToString();
+        }
+
+        private decimal stringToDecimal(string paramValue)
+        {
+            try
+            {
+                return decimal.Parse(stringNumberFormat(paramValue), NumberStyles.Number | NumberStyles.AllowExponent);
+            }
+            catch (Exception err)
+            {
+                err.ToString();
+            }
+            return 0;
+        }
+
+        private string stringNumberFormat(string paramValue)
+        {
+            if (!string.IsNullOrEmpty(paramValue))
+            {
+                if (paramValue.IndexOf(".") != -1 && paramValue.IndexOf(",") != -1)
+                {
+                    paramValue = paramValue.Replace(".", "");
+                    return paramValue.Replace(",", ".");
+                }
+                else if (paramValue.IndexOf(".") != -1 && paramValue.IndexOf(",") == -1)
+                {
+                    return paramValue.Replace(".", "");
+                }
+                else if (paramValue.IndexOf(".") == -1 && paramValue.IndexOf(",") != -1)
+                {
+                    return paramValue.Replace(",", ".");
+                }
+                else
+                {
+                    return paramValue;
+                }
+            }
+            return "0";
         }
 
         private string varEvaluacionEconomica(string param)
@@ -1021,6 +1127,91 @@ namespace Capex.Web.Controllers
             }
             return Desplegable.ToString();
         }
+
+        /// <summary>
+        /// METODO POBLAR CUADRO RESULTADO HITOS
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        private string PoblarVistaHitos(string token, string parametroVNToken)
+        {
+            string Desplegable = String.Empty;
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_RESUMEN_FINANCIERO_PARAMETRO_VN", new { Token = token, ParametroVNToken = parametroVNToken }, commandType: CommandType.StoredProcedure).ToList();
+                    var table = new StringBuilder();
+                    var contador = 1;
+                    var fondocelda = "transparent";
+
+                    if (resultado.Count > 0)
+                    {
+                        foreach (var result in resultado)
+                        {
+                            if (contador < 7)
+                            {
+                                table.Append("<tr>");
+                                if (contador == 4)
+                                {
+                                    table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> Administración o Costos Dueños  (<span id='HitosCostos'></span>%)</td>");
+                                }
+                                else if (contador == 5)
+                                {
+                                    table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> Contingencia (<span id='HitosContingencia'></span>%)</td>");
+                                }
+                                else if (contador == 6)
+                                {
+                                    table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> Total Presupuesto</td>");
+                                }
+                                else
+                                {
+                                    table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> " + result.Fase + "</td>");
+                                }
+                                CultureInfo ciCL = new CultureInfo("es-CL", false);
+                                if (contador < 6)
+                                {
+                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString() + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString() + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString() + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "'></td>");
+                                }
+                                else
+                                {
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString() + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString() + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString() + "</td>");
+                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "'></td>");
+                                }
+                                table.Append("</tr>");
+                            }
+                            contador++;
+                        }
+                        Desplegable = table.ToString();
+                        table = null;
+                    }
+                    else
+                    {
+                        Desplegable = "";
+                        table = null;
+                    }
+
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = "PoblarVistaHitos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                    Desplegable = "ERROR";
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return Desplegable.ToString();
+        }
+
         /// <summary>
         /// VER ADJUNTOS
         /// </summary>

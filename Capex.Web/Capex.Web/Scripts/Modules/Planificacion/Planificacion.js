@@ -348,14 +348,17 @@
     /*********************************** TIPO  DE INICIATIVA **********************************/
     var tipo_iniciativa = localStorage.getItem("CAPEX_TIPO_INICIATIVA");
     var iniPeriodo = localStorage.getItem("CAPEX_PERIODO_EP");
+    var iniPeriodoEjercicio = "";
     if (iniPeriodo && iniPeriodo != undefined && iniPeriodo != "") {
+        iniPeriodoEjercicio = iniPeriodo;
         $(".iniPeridioHito").text(iniPeriodo);
     }
+
     switch (tipo_iniciativa) {
-        case "CB": $("#TipoIniTit").html("Caso Base"); break;
-        case "CD": $("#TipoIniTit").html("Caso Desarrollo"); break;
-        case "PP": $("#TipoIniTit").html("Presupuesto"); break;
-        case "EX": $("#TipoIniTit").html("Extraordinario"); break;
+        case "CB": $("#TipoIniTit").html("Caso Base " + iniPeriodoEjercicio); break;
+        case "CD": $("#TipoIniTit").html("Caso Desarrollo " + iniPeriodoEjercicio); break;
+        case "PP": $("#TipoIniTit").html("Presupuesto " + iniPeriodoEjercicio); break;
+        case "EX": $("#TipoIniTit").html("Extraordinario " + iniPeriodoEjercicio); break;
     }
     if (tipo_iniciativa == "CB" || tipo_iniciativa == "CD") {
         $("#ContenedorBotoneraComprobacion").hide();

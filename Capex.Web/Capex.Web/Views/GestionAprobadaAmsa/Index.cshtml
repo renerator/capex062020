@@ -239,7 +239,7 @@
                         <div class="card-body">
                             <div class="card-title mb-3">
                                 <div class="d-inline-block ml-2">
-                                    <h6>Aprobada AMSA</h6><div id="iconFilter"></div>
+                                    <h6>Aprobada AMSA @ViewBag.TituloOpcionSeleccionada</h6><div id="iconFilter"></div>
                                 </div>
                             </div>
                             <!--CONTENEDOR PANEL LATERAL ESTADOS-->
@@ -310,6 +310,15 @@
                                             </div>
                                         </div>
                                         <div class="col-md-2">
+
+                                            @{
+                                                if (@Session["CAPEX_SESS_ROLNOMBRE"] != null && Convert.ToString(@Session["CAPEX_SESS_ROLNOMBRE"]) == "Administrador1" && @Session["tipoIniciativaSeleccionado"] != null && (Convert.ToString(@Session["tipoIniciativaSeleccionado"]) == "1" || Convert.ToString(@Session["tipoIniciativaSeleccionado"]) == "2"))
+                                                {
+                                                    <div id="botonGenerarParametroV0" style="display: none;">
+                                                        <button type="button" id="idParametroV0" class="btn btn-success btn-sm" onclick="FNGenerarParametroV0()">Generar Parámetro VO</button>
+                                                    </div>
+                                                }
+                                            }
                                         </div>
                                         <div class="col-md-1">
                                             <div id="botonDescargarMasivaXLS" style="display: none;">
@@ -403,6 +412,32 @@
         // METODOS          :
 
         $(function () {
+
+            var rowCount = $('#iniciativas >tbody >tr').length;
+            var ejercicioOficial = '@ViewBag.ExisteEjercicioOficial';
+            console.log("rowCount=", rowCount);
+            if (rowCount > 2) {
+                if (ejercicioOficial == "0") {
+                    $("#botonGenerarParametroV0").show();
+                }
+            } else if (rowCount == 1) {
+                var hasContent = false;
+                $('#iniciativas tr').each(function () {
+                    $(this).find('td').each(function () {
+                        var data = $(this).html();
+                        if (data && data != undefined && data != "") {
+                            hasContent = true;
+                            return false;
+                        }
+                    });
+                });
+                if (hasContent) {
+                    if (ejercicioOficial == "0") {
+                        $("#botonGenerarParametroV0").show();
+                    }
+                }
+            }
+
             $("#defaultCheckedAll").on("click", function () {
                 console.log("defaultCheckedAll this.checked=", this.checked);
                 seleccionarTodo(this.checked);

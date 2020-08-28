@@ -602,18 +602,38 @@ FNEditarTemplate = function (cual) {
             if (estructura && estructura.Mensaje && estructura.Mensaje == "Ok" && estructura.Resultados) {
                 var TPEPERIODOS = estructura.Resultados.TPEPERIODOS.split(";");
                 var TPEPERIODORESPALDO = estructura.Resultados.TPEPERIODORESPALDO;
+                var EJERCICIOOFICIAL = estructura.Resultados.EJERCICIOOFICIAL;
                 $('#tpPeriodoRespaldo').val(TPEPERIODORESPALDO);
                 if (TPEPERIODOS && TPEPERIODOS.length == 2) {
-                    $('#ActualizarTemplateAnio')
-                        .append($("<option></option>")
-                            .attr("value", TPEPERIODOS[0])
-                            .text(TPEPERIODOS[0]));
-                    $('#ActualizarTemplateAnio')
-                        .append($("<option></option>")
-                            .attr("value", TPEPERIODOS[1])
-                            .text(TPEPERIODOS[1]));
-                    $('#ActualizarTemplateAnio').val(estructura.Resultados.TPEPERIODO);
-                    FNActualizarAnioChange(estructura.Resultados.TPEPERIODO);
+                    if (EJERCICIOOFICIAL == 0) {
+                        $('#ActualizarTemplateAnio')
+                            .append($("<option></option>")
+                                .attr("value", TPEPERIODOS[0])
+                                .text(TPEPERIODOS[0]));
+                        $('#ActualizarTemplateAnio')
+                            .append($("<option></option>")
+                                .attr("value", TPEPERIODOS[1])
+                                .text(TPEPERIODOS[1]));
+                        $('#ActualizarTemplateAnio').val(estructura.Resultados.TPEPERIODO);
+                        FNActualizarAnioChange(estructura.Resultados.TPEPERIODO);
+                    } else {
+                        $("#ActualizarTemplateAnio").empty();
+                        if (TPEPERIODOS[0] == estructura.Resultados.TPEPERIODO) {
+                            $('#ActualizarTemplateAnio')
+                                .append($("<option></option>")
+                                    .attr("value", TPEPERIODOS[0])
+                                    .text(TPEPERIODOS[0]));
+                            $('#ActualizarTemplateAnio').val(estructura.Resultados.TPEPERIODO);
+                            FNActualizarAnioChange(estructura.Resultados.TPEPERIODO);
+                        } else if (TPEPERIODOS[1] == estructura.Resultados.TPEPERIODO) {
+                            $('#ActualizarTemplateAnio')
+                                .append($("<option></option>")
+                                    .attr("value", TPEPERIODOS[1])
+                                    .text(TPEPERIODOS[1]));
+                            $('#ActualizarTemplateAnio').val(estructura.Resultados.TPEPERIODO);
+                            FNActualizarAnioChange(estructura.Resultados.TPEPERIODO);
+                        }
+                    }
                 } else {
                     $('#ActualizarTemplateAnio').val('-1');
                     FNActualizarAnioChange("-1");
@@ -756,7 +776,11 @@ FNEditarTemplate = function (cual) {
                         $('#cpiIdParamEconomicoDetalleAnio').val(cpiIdParamEconomicoDetalleAnioSplit);
                     }
                 }
-                setTimeout(function () { $('#actualizarTemplate').prop('disabled', false); }, 500);
+                if (EJERCICIOOFICIAL == 0) {
+                    setTimeout(function () { $('#actualizarTemplate').prop('disabled', false); }, 500);
+                } else {
+                    setTimeout(function () { $('#actualizarTemplate').prop('disabled', true); }, 500);
+                }
             }
         },
         error: function (error) {
@@ -766,6 +790,51 @@ FNEditarTemplate = function (cual) {
     $('#ModalActualizarTemplate').show();
     return false;
 }
+
+FNRealizarValidacionIniciativaExiste = function (DTO) {
+    var response = '';
+    $.ajaxSetup({ cache: false });
+    $.ajax({
+        url: "/Orientacion/FNRealizarValidacionIniciativaExiste",
+        type: "POST",
+        async: false,
+        dataType: "json",
+        data: DTO,
+        success: function (r) {
+            if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                document.getElementById('linkToLogout').click();
+                return;
+            }
+            if (r && r.Mensaje) {
+                response = r.Mensaje;
+            }
+        }
+    });
+    return response;
+}
+
+FNRealizarValidacionIniciativaEstadoProyecto = function (DTO) {
+    var response = '';
+    $.ajaxSetup({ cache: false });
+    $.ajax({
+        url: "/Orientacion/ValidarEstadoParametroV0DesdeMantenedor",
+        type: "POST",
+        async: false,
+        dataType: "json",
+        data: DTO,
+        success: function (r) {
+            if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                document.getElementById('linkToLogout').click();
+                return;
+            }
+            if (r && r.Mensaje) {
+                response = r.Mensaje;
+            }
+        }
+    });
+    return response;
+}
+
 //
 // ACTUALIZAR CATEGORIA
 //
@@ -887,54 +956,190 @@ FNActualizarTemplate = function () {
         swal("", "Debe completar el formulario.", "error");
         return false;
     } else {
-        var DTO = {
-            'TipoIniciativaSeleccionado': radioValue,
-            'ITPEToken': $('#itPEToken').val(),
-            'TPEPERIODO': anioSeleccionado,
-            'TPEPERIODORESPALDO': $('#tpPeriodoRespaldo').val(),
-            'PETokenTC': $('#PETokenTC').val(),
-            'PETokenIPC': $('#PETokenIPC').val(),
-            'PETokenCPI': $('#PETokenCPI').val(),
-            'IdParamEconomicoDetalleTCMES': tcIdParamEconomicoDetalleMesFinal,
-            'IdParamEconomicoDetalleIPCMES': ipcIdParamEconomicoDetalleMesFinal,
-            'IdParamEconomicoDetalleCPIMES': cpiIdParamEconomicoDetalleMesFinal,
-            'IdParamEconomicoDetalleTCANIO': tcIdParamEconomicoDetalleAnioFinal,
-            'IdParamEconomicoDetalleIPCANIO': ipcIdParamEconomicoDetalleAnioFinal,
-            'IdParamEconomicoDetalleCPIANIO': cpiIdParamEconomicoDetalleAnioFinal
-        }
-        $.ajax({
-            url: "TemplateIniciativa/Actualizar",
-            type: "POST",
-            dataType: "json",
-            data: (DTO),
-            success: function (r) {
-                //PARSEAR RESPUESTA
-                var estructura = JSON.parse(JSON.stringify(r));
-                estructura = estructura.Mensaje;
-                //PROCESAR RESPUESTA
-                if (estructura == "Actualizado") {
-                    $('#ModalActualizarTemplate').hide();
-                    swal("", "Template actualizado.", "success");
-                    $(".orderselect").val('-1').prop('selected', true);
-                    setTimeout(function () {
-                        $('#ModalActualizarExcelTemplate').show();
-                    }, 500);
-                } else if (estructura.startsWith("Error") && estructura.length > 5) {
-                    swal("Error", "No es posible actualizar el template seleccionado.", "error");
-                    $(".orderselect").val('-1').prop('selected', true);
-                    setTimeout(function () {
-                        document.location.reload();
-                    }, 2500);
-                } else if (estructura == "Error") {
-                    swal("Error", "No es posible actualizar el template seleccionado.", "error");
-                    $(".orderselect").val('-1').prop('selected', true);
-                    setTimeout(function () {
-                        document.location.reload();
-                    }, 2500);
+        var DTOValidacion = {
+            'TIPOSELECCIONADO': radioValue,
+            'ANIOSELECCIONADO': anioSeleccionado
+        };
+        var responseValidacion = FNRealizarValidacionIniciativaEstadoProyecto(DTOValidacion);
+        if (responseValidacion && responseValidacion != undefined && responseValidacion != "") {
+            if (responseValidacion == "true") {
+                $('#ModalActualizarTemplate').hide();
+                $('#AppLoaderContainer').hide();
+                swal({
+                    title: 'Esta seguro?',
+                    text: "Ya existe Parámetro V0 Generado. Si usted continúa este se volvera a generar perdiendo el existente. Está seguro que desea continuar?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Si, continuar!',
+                    cancelButtonText: 'No!',
+                    confirmButtonClass: 'btn btn-primary',
+                    cancelButtonClass: 'btn btn-danger'
+                }).then(function (isConfirm) {
+                    if (isConfirm && isConfirm.value) {
+                        $('#AppLoaderContainer').show();
+                        var DTOValidacionExiste = {
+                            'TPEPERIODO': anioSeleccionado,
+                            'ITPEToken': $('#itPEToken').val(),
+                            'TipoIniciativaSeleccionado': radioValue
+                        };
+                        var responseValidacionExiste = FNRealizarValidacionIniciativaExiste(DTOValidacionExiste);
+                        if (responseValidacionExiste && responseValidacionExiste != undefined && responseValidacionExiste != "" && responseValidacionExiste == "true") {
+                            $('#AppLoaderContainer').hide();
+                            var errorMessage = 'Error al actualizar, ya existe un template de ' + ((radioValue == "1") ? "Caso Base" : "Presupuesto") + ' para el año ' + anioSeleccionado;
+                            swal("Error", errorMessage, "error");
+                            $(".orderselect").val('-1').prop('selected', true);
+                            return;
+                        }
+                        $.ajaxSetup({ cache: false });
+                        $.ajax({
+                            url: "/GestionAprobadaAmsa/GenerarParametroV0Mantenedor",
+                            method: "POST",
+                            data: DTOValidacion
+                        }).done(function (r) {
+                            console.log("Done GenerarParametroV0 r=", r);
+                            var obj = JSON.parse(JSON.stringify(r));
+                            if (obj.Mensaje.startsWith("Guardado")) {
+                                var DTO = {
+                                    'TipoIniciativaSeleccionado': radioValue,
+                                    'ITPEToken': $('#itPEToken').val(),
+                                    'TPEPERIODO': anioSeleccionado,
+                                    'TPEPERIODORESPALDO': $('#tpPeriodoRespaldo').val(),
+                                    'PETokenTC': $('#PETokenTC').val(),
+                                    'PETokenIPC': $('#PETokenIPC').val(),
+                                    'PETokenCPI': $('#PETokenCPI').val(),
+                                    'IdParamEconomicoDetalleTCMES': tcIdParamEconomicoDetalleMesFinal,
+                                    'IdParamEconomicoDetalleIPCMES': ipcIdParamEconomicoDetalleMesFinal,
+                                    'IdParamEconomicoDetalleCPIMES': cpiIdParamEconomicoDetalleMesFinal,
+                                    'IdParamEconomicoDetalleTCANIO': tcIdParamEconomicoDetalleAnioFinal,
+                                    'IdParamEconomicoDetalleIPCANIO': ipcIdParamEconomicoDetalleAnioFinal,
+                                    'IdParamEconomicoDetalleCPIANIO': cpiIdParamEconomicoDetalleAnioFinal
+                                }
+                                $.ajax({
+                                    url: "TemplateIniciativa/Actualizar",
+                                    type: "POST",
+                                    dataType: "json",
+                                    data: (DTO),
+                                    success: function (r) {
+                                        $('#AppLoaderContainer').hide();
+                                        //PARSEAR RESPUESTA
+                                        var estructura = JSON.parse(JSON.stringify(r));
+                                        estructura = estructura.Mensaje;
+                                        //PROCESAR RESPUESTA
+                                        if (estructura == "Actualizado") {
+                                            $('#ModalActualizarTemplate').hide();
+                                            swal("", "Template actualizado.", "success");
+                                            $(".orderselect").val('-1').prop('selected', true);
+                                            setTimeout(function () {
+                                                $('#ModalActualizarExcelTemplate').show();
+                                            }, 500);
+                                        } else if (estructura.startsWith("Error") && estructura.length > 5) {
+                                            swal("Error", estructura, "error");
+                                            $(".orderselect").val('-1').prop('selected', true);
+                                            setTimeout(function () {
+                                                document.location.reload();
+                                            }, 2500);
+                                        } else if (estructura == "Error") {
+                                            swal("Error", "No es posible actualizar el template seleccionado.", "error");
+                                            $(".orderselect").val('-1').prop('selected', true);
+                                            setTimeout(function () {
+                                                document.location.reload();
+                                            }, 2500);
+                                        }
+                                    },
+                                    error: function (result) {
+                                        console.log('error', result);
+                                        $('#AppLoaderContainer').hide();
+                                    }
+                                });
+                                return false;
+                            }
+                            else {
+                                swal("", "Problemas al generar parámetro V0.", "error");
+                                $(".orderselect").val('-1').prop('selected', true);
+                                setTimeout(function () {
+                                    document.location.reload();
+                                }, 2500);
+                            }
+                        }).fail(function (xhr) {
+                            console.log("fail GenerarParametroV0 error", xhr);
+                            $('#AppLoaderContainer').hide();
+                        });
+                    } else {
+                        $(".orderselect").val('-1').prop('selected', true);
+                        setTimeout(function () {
+                            document.location.reload();
+                        }, 2500);
+                        return false;
+                    }
+                });
+            } else {
+                var DTO = {
+                    'TipoIniciativaSeleccionado': radioValue,
+                    'ITPEToken': $('#itPEToken').val(),
+                    'TPEPERIODO': anioSeleccionado,
+                    'TPEPERIODORESPALDO': $('#tpPeriodoRespaldo').val(),
+                    'PETokenTC': $('#PETokenTC').val(),
+                    'PETokenIPC': $('#PETokenIPC').val(),
+                    'PETokenCPI': $('#PETokenCPI').val(),
+                    'IdParamEconomicoDetalleTCMES': tcIdParamEconomicoDetalleMesFinal,
+                    'IdParamEconomicoDetalleIPCMES': ipcIdParamEconomicoDetalleMesFinal,
+                    'IdParamEconomicoDetalleCPIMES': cpiIdParamEconomicoDetalleMesFinal,
+                    'IdParamEconomicoDetalleTCANIO': tcIdParamEconomicoDetalleAnioFinal,
+                    'IdParamEconomicoDetalleIPCANIO': ipcIdParamEconomicoDetalleAnioFinal,
+                    'IdParamEconomicoDetalleCPIANIO': cpiIdParamEconomicoDetalleAnioFinal
                 }
+                $.ajax({
+                    url: "TemplateIniciativa/Actualizar",
+                    type: "POST",
+                    dataType: "json",
+                    data: (DTO),
+                    success: function (r) {
+                        //PARSEAR RESPUESTA
+                        var estructura = JSON.parse(JSON.stringify(r));
+                        estructura = estructura.Mensaje;
+                        //PROCESAR RESPUESTA
+                        if (estructura == "Actualizado") {
+                            $('#ModalActualizarTemplate').hide();
+                            swal("", "Template actualizado.", "success");
+                            $(".orderselect").val('-1').prop('selected', true);
+                            setTimeout(function () {
+                                $('#ModalActualizarExcelTemplate').show();
+                            }, 500);
+                        } else if (estructura.startsWith("Error") && estructura.length > 5) {
+                            swal("Error", estructura, "error");
+                            $(".orderselect").val('-1').prop('selected', true);
+                            setTimeout(function () {
+                                document.location.reload();
+                            }, 2500);
+                        } else if (estructura == "Error") {
+                            swal("Error", "No es posible actualizar el template seleccionado.", "error");
+                            $(".orderselect").val('-1').prop('selected', true);
+                            setTimeout(function () {
+                                document.location.reload();
+                            }, 2500);
+                        }
+                    },
+                    error: function (result) {
+                        alert("Data not found");
+                    }
+                });
+                return false;
             }
-        });
-        return false;
+        } else {
+            $('#ModalActualizarTemplate').hide();
+            $('#AppLoaderContainer').hide();
+            swal("Error", "No es posible actualizar el template seleccionado.", "error");
+            $(".orderselect").val('-1').prop('selected', true);
+            setTimeout(function () {
+                document.location.reload();
+            }, 2500);
+            return false;
+        }
+
+
+
     }
 }
 //

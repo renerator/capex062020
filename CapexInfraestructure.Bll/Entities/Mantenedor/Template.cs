@@ -71,6 +71,7 @@ namespace CapexInfraestructure.Bll.Entities.Mantenedor
             public string ITPEToken { get; set; }
             public int TPEPERIODO { get; set; }
             public int TPEPERIODORESPALDO { get; set; }
+            public int EJERCICIOOFICIAL { get; set; }
             public string TPEPERIODOS { get; set; }
             public string PETokenTC { get; set; }
             public string TPETokenTC { get; set; }
@@ -142,6 +143,33 @@ namespace CapexInfraestructure.Bll.Entities.Mantenedor
             public string IdParamEconomicoDetalleTCANIO { get; set; }
             public string IdParamEconomicoDetalleIPCANIO { get; set; }
             public string IdParamEconomicoDetalleCPIANIO { get; set; }
+        }
+
+        public class GuardarOrientacionCorregido
+        {
+            public int TPEPERIODO { get; set; }
+            public int TipoIniciativaSeleccionado { get; set; }
+            public string ORIGENPARAMETROVN { get; set; }
+            public string VERSIONPARAMETROVN { get; set; }
+            public string VALUEMESTC { get; set; }
+            public string VALUEMESIPC { get; set; }
+            public string VALUEMESCPI { get; set; }
+            public string VALUEANIOTC { get; set; }
+            public string VALUEANIOIPC { get; set; }
+            public string VALUEANIOCPI { get; set; }
+        }
+
+        public class ValidarEstadoParametroVN
+        {
+            public string TIPOSELECCIONADO { get; set; }
+            public string ANIOSELECCIONADO { get; set; }
+        }
+
+        public class ValidarTemplateExiste
+        {
+            public int TPEPERIODO { get; set; }
+            public string ITPEToken { get; set; }
+            public int TipoIniciativaSeleccionado { get; set; }
         }
 
     }

@@ -17,6 +17,7 @@ using System.Data.SqlClient;
 using Dapper;
 using System.Text;
 using System.Globalization;
+using CapexInfraestructure.Bll.Entities.Mantenedor;
 
 namespace Capex.Web.Controllers
 {
@@ -65,16 +66,48 @@ namespace Capex.Web.Controllers
                 }
                 else
                 {
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    string titulo = string.Empty;
+                    if ("1".Equals(tipoIniciativaSeleccionado))
+                    {
+                        titulo = "Presupuesto";
+                    }
+                    else if ("2".Equals(tipoIniciativaSeleccionado))
+                    {
+                        titulo = "Caso Base";
+                    }
+                    else
+                    {
+                        titulo = "Presupuesto/Caso Base";
+                    }
+                    titulo += " " + anioIniciativaSeleccionado;
+                    ViewBag.TituloOpcionSeleccionada = titulo;
                     using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
                     {
                         try
                         {
                             objConnection.Open();
-                            var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
-                            if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+
+                            ViewBag.ExisteEjercicioOficial = "0";
+                            if (!"0".Equals(tipoIniciativaSeleccionado))
                             {
-                                tipoIniciativaSeleccionado = "0";
+                                string tipo = (("1".Equals(tipoIniciativaSeleccionado)) ? "2" : "1");
+
+                                var selParametroVNEjercicioOficial = SqlMapper.Query(objConnection, "CAPEX_GET_PARAMETRO_VN_OFICIAL", new { PVNPERIODO = anioIniciativaSeleccionado, @PVNTIPO = tipo }, commandType: CommandType.StoredProcedure).ToList();
+                                if (selParametroVNEjercicioOficial != null && selParametroVNEjercicioOficial.Count > 0)
+                                {
+                                    foreach (var s in selParametroVNEjercicioOficial)
+                                    {
+                                        ViewBag.ExisteEjercicioOficial = "1";
+                                    }
+                                }
                             }
+
                             var usuarioAux = "";
                             if (!rol.Contains("Administrador1") && !rol.Contains("Administrador2") && !rol.Contains("Administrador3"))
                             {
@@ -82,7 +115,7 @@ namespace Capex.Web.Controllers
                             }
                             if (tipoIniciativaSeleccionado.Equals("0"))
                             {
-                                var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_APROBADA_AMSA", new { @usuario = usuarioAux }, commandType: CommandType.StoredProcedure).ToList();
+                                var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_APROBADA_AMSA", new { @usuario = usuarioAux, @periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                                 if (Iniciativa != null && Iniciativa.Count > 0)
                                 {
                                     ViewBag.Iniciativas = Iniciativa;
@@ -94,7 +127,7 @@ namespace Capex.Web.Controllers
                             }
                             else
                             {
-                                var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_APROBADA_AMSA_2", new { @usuario = usuarioAux, @tipoIniciativa = tipoIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
+                                var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_APROBADA_AMSA_2", new { @usuario = usuarioAux, @tipoIniciativa = tipoIniciativaSeleccionado, @periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                                 if (Iniciativa != null && Iniciativa.Count > 0)
                                 {
                                     ViewBag.Iniciativas = Iniciativa;
@@ -163,12 +196,14 @@ namespace Capex.Web.Controllers
                     {
                         tipoIniciativaSeleccionado = "0";
                     }
+                    anio = Convert.ToString(Session["anioIniciativaSeleccionado"]);
                     using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
                     {
                         try
                         {
                             objConnection.Open();
                             var categorias = SqlMapper.Query(objConnection, "CAPEX_SEL_CATEGORIA_FILTRO_VIGENTES", new { @pagina = 8, @categoria = tipoIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
+
                             if (categorias != null && categorias.Count > 0)
                             {
                                 foreach (var cats in categorias)
@@ -177,9 +212,9 @@ namespace Capex.Web.Controllers
                                     {
                                         switch (Convert.ToInt32(cats.Orden))
                                         {
-                                            case 1:
+                                            /*case 1:
                                                 anio = ((jsonFilter[cats.Sigla] != null && jsonFilter[cats.Sigla].Length > 0) ? string.Join(",", jsonFilter[cats.Sigla]) : "0");
-                                                break;
+                                                break;*/
                                             case 2:
                                                 etapa = ((jsonFilter[cats.Sigla] != null && jsonFilter[cats.Sigla].Length > 0) ? string.Join(",", jsonFilter[cats.Sigla]) : "0");
                                                 break;
@@ -423,6 +458,10 @@ namespace Capex.Web.Controllers
                         {
                             foreach (var categoria in categorias)
                             {
+                                if (categoria.Id == null || categoria.Id == 70)
+                                {
+                                    continue;// Id = '70', Nombre = 'AÑO EJERCICIO',
+                                }
                                 arbol.Append("<div class=" + Convert.ToChar(34) + "card" + Convert.ToChar(34) + " > ");
                                 arbol.Append("<div class=" + Convert.ToChar(34) + "card-header" + Convert.ToChar(34) + " id =" + Convert.ToChar(34) + "heading_" + contador + Convert.ToChar(34) + ">");
                                 arbol.Append("<div class=" + Convert.ToChar(34) + "kkkkk" + Convert.ToChar(34) + " data-toggle=" + Convert.ToChar(34) + "collapse" + Convert.ToChar(34) + " data-target=" + Convert.ToChar(34) + "#collapse_" + contador + Convert.ToChar(34) + " aria-expanded=" + Convert.ToChar(34) + "true" + Convert.ToChar(34) + " aria-controls=" + Convert.ToChar(34) + "collapse_" + contador + Convert.ToChar(34) + " onclick=FNChangeIcon('class_span_'," + contador + "," + categorias.Count + ");> ");
@@ -487,6 +526,98 @@ namespace Capex.Web.Controllers
                     }
                 }
                 return Json(new { success = true, message = Desplegable.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpPost]
+        [Route("GestionAprobadaAmsa/GenerarParametroV0")]
+        public ActionResult GenerarParametroV0()
+        {
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    string Tipo = string.Empty;
+                    var Usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                    string Periodo = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    if (tipoIniciativaSeleccionado.Equals("1"))
+                    {
+                        Tipo = "2";
+                    }
+                    else
+                    {
+                        Tipo = "1";
+                    }
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("USUARIO", Usuario);
+                    parametos.Add("TPEPERIODO", Periodo);
+                    parametos.Add("TipoIniciativaSeleccionado", Tipo);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 100);
+                    SqlMapper.Query(objConnection, "CAPEX_INS_INICIATIVA_PARAMETRO_VN", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return Json(new { Mensaje = "Guardado|" + parametos.Get<string>("Respuesta") }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                catch (Exception err)
+                {
+                    var ExceptionResult = "GuardarComentario, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+        }
+
+        [HttpPost]
+        [Route("GestionAprobadaAmsa/GenerarParametroV0Mantenedor")]
+        public ActionResult GenerarParametroV0Mantenedor(Template.ValidarEstadoParametroVN Datos)
+        {
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    var Usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("USUARIO", Usuario);
+                    parametos.Add("TPEPERIODO", Datos.ANIOSELECCIONADO);
+                    parametos.Add("TipoIniciativaSeleccionado", Datos.TIPOSELECCIONADO);
+                    parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 100);
+                    SqlMapper.Query(objConnection, "CAPEX_INS_INICIATIVA_PARAMETRO_VN", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
+                    {
+                        return Json(new { Mensaje = "Guardado|" + parametos.Get<string>("Respuesta") }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                catch (Exception err)
+                {
+                    var ExceptionResult = "GuardarComentario, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                    return Json(new { Mensaje = "Error" }, JsonRequestBehavior.AllowGet);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
             }
         }
 

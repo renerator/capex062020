@@ -263,6 +263,7 @@
     <Compile Include="Controllers\MantenedorController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Controllers\MensajeController.cs" />
+    <Compile Include="Controllers\OrientacionController.cs" />
     <Compile Include="Controllers\PanelController.cs" />
     <Compile Include="Controllers\PlanificacionController.cs" />
     <Compile Include="Controllers\SolicitudController.cs" />
@@ -2034,6 +2035,7 @@
     <Content Include="Scripts\Modules\Mantenedor\Gerente.js" />
     <Content Include="Scripts\Modules\Mantenedor\MatrizRiesgo.js" />
     <Content Include="Scripts\Modules\Mantenedor\TemplateIniciativa.js" />
+    <Content Include="Scripts\Modules\Orientacion\ListarIniciativas.js" />
     <Content Include="WebForm1.aspx" />
     <Content Include="fonts_glyphicon\glyphicons-halflings-regular.eot" />
     <Content Include="fonts_glyphicon\glyphicons-halflings-regular.ttf" />
@@ -2226,6 +2228,8 @@
     <Content Include="Views\Mantenedor\MatrizRiesgo.cshtml" />
     <Content Include="Views\Mantenedor\TemplateIniciativa.cshtml" />
     <Content Include="Views\Mantenedor\Bloqueo.cshtml" />
+    <Content Include="Views\Orientacion\Index.cshtml" />
+    <Content Include="Views\Orientacion\ListarIniciativas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Export\" />

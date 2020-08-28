@@ -116,16 +116,32 @@ namespace Capex.Web.Controllers
                 }
                 else
                 {
+                    var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
+                    var anioIniciativaSeleccionado = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
+                    {
+                        tipoIniciativaSeleccionado = "0";
+                    }
+                    string titulo = string.Empty;
+                    if ("1".Equals(tipoIniciativaSeleccionado))
+                    {
+                        titulo = "Presupuesto";
+                    }
+                    else if ("2".Equals(tipoIniciativaSeleccionado))
+                    {
+                        titulo = "Caso Base";
+                    }
+                    else
+                    {
+                        titulo = "Presupuesto/Caso Base";
+                    }
+                    titulo += " " + anioIniciativaSeleccionado;
+                    ViewBag.TituloOpcionSeleccionada = titulo;
                     using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
                     {
                         try
                         {
                             objConnection.Open();
-                            var tipoIniciativaSeleccionado = Convert.ToString(Session["tipoIniciativaSeleccionado"]);
-                            if (string.IsNullOrEmpty(tipoIniciativaSeleccionado))
-                            {
-                                tipoIniciativaSeleccionado = "0";
-                            }
                             var usuarioAux = "";
                             if (!rol.Contains("Administrador1") && !rol.Contains("Administrador2") && !rol.Contains("Administrador3"))
                             {
@@ -139,7 +155,7 @@ namespace Capex.Web.Controllers
                                 Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"] = "GestionNoAprobadaGAF";
                                 if (tipoIniciativaSeleccionado.Equals("0"))
                                 {
-                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_GAF", new { @usuario = "" }, commandType: CommandType.StoredProcedure).ToList();
+                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_GAF", new { @usuario = "", @Periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                                     if (Iniciativa != null && Iniciativa.Count > 0)
                                     {
                                         ViewBag.Iniciativas = Iniciativa;
@@ -151,7 +167,7 @@ namespace Capex.Web.Controllers
                                 }
                                 else
                                 {
-                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_GAF_2", new { @usuario = usuarioAux, @tipoIniciativa = tipoIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
+                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_GAF_2", new { @usuario = usuarioAux, @tipoIniciativa = tipoIniciativaSeleccionado, @Periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                                     if (Iniciativa != null && Iniciativa.Count > 0)
                                     {
                                         ViewBag.Iniciativas = Iniciativa;
@@ -169,7 +185,7 @@ namespace Capex.Web.Controllers
                                 Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"] = "GestionNoAprobadaCE";
                                 if (tipoIniciativaSeleccionado.Equals("0"))
                                 {
-                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_CE", new { @usuario = "" }, commandType: CommandType.StoredProcedure).ToList();
+                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_CE", new { @usuario = "", @Periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                                     if (Iniciativa != null && Iniciativa.Count > 0)
                                     {
                                         ViewBag.Iniciativas = Iniciativa;
@@ -181,7 +197,7 @@ namespace Capex.Web.Controllers
                                 }
                                 else
                                 {
-                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_CE_2", new { @usuario = usuarioAux, @tipoIniciativa = tipoIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
+                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_CE_2", new { @usuario = usuarioAux, @tipoIniciativa = tipoIniciativaSeleccionado, @Periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                                     if (Iniciativa != null && Iniciativa.Count > 0)
                                     {
                                         ViewBag.Iniciativas = Iniciativa;
@@ -199,7 +215,7 @@ namespace Capex.Web.Controllers
                                 Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"] = "GestionNoAprobadaAMSA";
                                 if (tipoIniciativaSeleccionado.Equals("0"))
                                 {
-                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_AMSA", new { @usuario = "" }, commandType: CommandType.StoredProcedure).ToList();
+                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_AMSA", new { @usuario = "", @Periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                                     if (Iniciativa != null && Iniciativa.Count > 0)
                                     {
                                         ViewBag.Iniciativas = Iniciativa;
@@ -211,7 +227,7 @@ namespace Capex.Web.Controllers
                                 }
                                 else
                                 {
-                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_AMSA_2", new { @usuario = usuarioAux, @tipoIniciativa = tipoIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
+                                    var Iniciativa = SqlMapper.Query(objConnection, "CAPEX_SEL_GESTION_NO_APROBADA_AMSA_2", new { @usuario = usuarioAux, @tipoIniciativa = tipoIniciativaSeleccionado, @Periodo = anioIniciativaSeleccionado }, commandType: CommandType.StoredProcedure).ToList();
                                     if (Iniciativa != null && Iniciativa.Count > 0)
                                     {
                                         ViewBag.Iniciativas = Iniciativa;
@@ -326,6 +342,10 @@ namespace Capex.Web.Controllers
                         {
                             foreach (var categoria in categorias)
                             {
+                                if (categoria.Id == null)
+                                {
+                                    continue;//
+                                }
                                 arbol.Append("<div class=" + Convert.ToChar(34) + "card" + Convert.ToChar(34) + " > ");
                                 arbol.Append("<div class=" + Convert.ToChar(34) + "card-header" + Convert.ToChar(34) + " id =" + Convert.ToChar(34) + "heading_" + contador + Convert.ToChar(34) + ">");
                                 arbol.Append("<div class=" + Convert.ToChar(34) + "kkkkk" + Convert.ToChar(34) + " data-toggle=" + Convert.ToChar(34) + "collapse" + Convert.ToChar(34) + " data-target=" + Convert.ToChar(34) + "#collapse_" + contador + Convert.ToChar(34) + " aria-expanded=" + Convert.ToChar(34) + "true" + Convert.ToChar(34) + " aria-controls=" + Convert.ToChar(34) + "collapse_" + contador + Convert.ToChar(34) + " onclick=FNChangeIcon('class_span_'," + contador + "," + categorias.Count + ");> ");
@@ -449,6 +469,7 @@ namespace Capex.Web.Controllers
                     {
                         tipoIniciativaSeleccionado = "0";
                     }
+                    anio = Convert.ToString(Session["anioIniciativaSeleccionado"]);
                     using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
                     {
                         try
@@ -463,9 +484,9 @@ namespace Capex.Web.Controllers
                                     {
                                         switch (Convert.ToInt32(cats.Orden))
                                         {
-                                            case 1:
+                                            /*case 1:
                                                 anio = ((jsonFilter[cats.Sigla] != null && jsonFilter[cats.Sigla].Length > 0) ? string.Join(",", jsonFilter[cats.Sigla]) : "0");
-                                                break;
+                                                break;*/
                                             case 2:
                                                 etapa = ((jsonFilter[cats.Sigla] != null && jsonFilter[cats.Sigla].Length > 0) ? string.Join(",", jsonFilter[cats.Sigla]) : "0");
                                                 break;

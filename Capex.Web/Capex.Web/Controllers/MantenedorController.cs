@@ -2205,6 +2205,7 @@ namespace Capex.Web.Controllers
                             obtenerTemplateCorregido.TPETokenIPC = result.TPETokenIPC;
                             obtenerTemplateCorregido.PETokenCPI = result.PETokenCPI;
                             obtenerTemplateCorregido.TPETokenCPI = result.TPETokenCPI;
+                            obtenerTemplateCorregido.EJERCICIOOFICIAL = result.EJERCICIOOFICIAL;
                             StringBuilder paramTCMes = new StringBuilder();
                             if (result.IdParamEconomicoDetalleMesTCUNO != null)
                             {

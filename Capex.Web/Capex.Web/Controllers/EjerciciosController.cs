@@ -94,6 +94,24 @@ namespace Capex.Web.Controllers
             }
             else
             {
+                string tipoIniciativaEjercicioOficialKey = "tipoIniciativaEjercicioOficial";
+                string anioIniciativaEjercicioOficialKey = "anioIniciativaEjercicioOficial";
+                var tipoIniciativaEjercicioOficial = Request.QueryString[tipoIniciativaEjercicioOficialKey];
+                var anioIniciativaEjercicioOficial = Request.QueryString[anioIniciativaEjercicioOficialKey];
+                Session[tipoIniciativaEjercicioOficialKey] = tipoIniciativaEjercicioOficial;
+                Session[anioIniciativaEjercicioOficialKey] = anioIniciativaEjercicioOficial;
+                if (tipoIniciativaEjercicioOficial == null || string.IsNullOrEmpty(tipoIniciativaEjercicioOficial.ToString())
+                    || anioIniciativaEjercicioOficial == null || string.IsNullOrEmpty(anioIniciativaEjercicioOficial.ToString()))
+                {
+                    return RedirectToAction("Index", "Panel");
+                }
+
+                Session["tipoIniciativaOrientacionComercial"] = "";
+                Session["anioIniciativaOrientacionComercial"] = "";
+                Session["tipoIniciativaSeleccionado"] = "";
+                Session["anioIniciativaSeleccionado"] = "";
+                Session["ParametroVNToken"] = "";
+                Session["CAPEX_SESS_VISTA_CONTENEDORA_PADRE"] = "";
                 var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
                 var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
                 if (string.IsNullOrEmpty(Convert.ToString(Session["CAPEX_SESS_USERNAME"])))
@@ -102,7 +120,8 @@ namespace Capex.Web.Controllers
                 }
                 else
                 {
-                    ViewBag.Iniciativas = ORM.Query("CAPEX_SEL_EJERCICIOS_OFICIALES", commandType: CommandType.StoredProcedure).ToList();
+                    ViewBag.TituloOpcionSeleccionada = "Presupuesto " + anioIniciativaEjercicioOficial;
+                    ViewBag.Iniciativas = ORM.Query("CAPEX_SEL_EJERCICIOS_OFICIALES", new { PERIODO = anioIniciativaEjercicioOficial, TipoIniciativa = tipoIniciativaEjercicioOficial }, commandType: CommandType.StoredProcedure).ToList();
                 }
             }
             return View();
@@ -149,6 +168,7 @@ namespace Capex.Web.Controllers
                 {
                     try
                     {
+                        anio = ((Session["anioIniciativaEjercicioOficial"] != null && !string.IsNullOrEmpty(Convert.ToString(Session["anioIniciativaEjercicioOficial"]))) ? Convert.ToString(Session["anioIniciativaEjercicioOficial"]) : "0");
                         var categorias = ORM.Query("CAPEX_SEL_CATEGORIA_FILTRO_VIGENTES", new { @pagina = 2, @categoria = "1" }, commandType: CommandType.StoredProcedure).ToList();
                         if (categorias != null && categorias.Count > 0)
                         {
@@ -158,9 +178,9 @@ namespace Capex.Web.Controllers
                                 {
                                     switch (Convert.ToInt32(cats.Orden))
                                     {
-                                        case 1:
+                                        /*case 1:
                                             anio = ((jsonFilter[cats.Sigla] != null && jsonFilter[cats.Sigla].Length > 0) ? string.Join(",", jsonFilter[cats.Sigla]) : "0");
-                                            break;
+                                            break;*/
                                         case 2:
                                             etapa = ((jsonFilter[cats.Sigla] != null && jsonFilter[cats.Sigla].Length > 0) ? string.Join(",", jsonFilter[cats.Sigla]) : "0");
                                             break;
@@ -322,6 +342,10 @@ namespace Capex.Web.Controllers
                 {
                     foreach (var categoria in categorias)
                     {
+                        if (categoria.Id == null || categoria.Id == 16)
+                        {
+                            continue;// Id = '16', Nombre = 'AÑO EJERCICIO',
+                        }
                         arbol.Append("<div class=" + Convert.ToChar(34) + "card" + Convert.ToChar(34) + " > ");
                         arbol.Append("<div class=" + Convert.ToChar(34) + "card-header" + Convert.ToChar(34) + " id =" + Convert.ToChar(34) + "heading_" + contador + Convert.ToChar(34) + ">");
                         arbol.Append("<div class=" + Convert.ToChar(34) + "kkkkk" + Convert.ToChar(34) + " data-toggle=" + Convert.ToChar(34) + "collapse" + Convert.ToChar(34) + " data-target=" + Convert.ToChar(34) + "#collapse_" + contador + Convert.ToChar(34) + " aria-expanded=" + Convert.ToChar(34) + "true" + Convert.ToChar(34) + " aria-controls=" + Convert.ToChar(34) + "collapse_" + contador + Convert.ToChar(34) + " onclick=FNChangeIcon('class_span_'," + contador + "," + categorias.Count + ");> ");

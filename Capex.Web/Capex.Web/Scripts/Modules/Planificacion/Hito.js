@@ -484,7 +484,8 @@ FNGuarEnviarConValidacionQuarter = function () {
                     var DTO = {
                         "IniToken": iniciativa_token,
                         "WrfUsuario": ParUsuario,
-                        "WrfObservacion": ''
+                        "WrfObservacion": '',
+                        "tipoIniciativaSeleccionado": "1"
                     }
                     $.ajax({
                         url: "../Planificacion/EnviarIniciativa",
@@ -562,7 +563,8 @@ FNGuarEnviarSinValidacionQuarter = function () {
                 var DTO = {
                     "IniToken": iniciativa_token,
                     "WrfUsuario": ParUsuario,
-                    "WrfObservacion": ''
+                    "WrfObservacion": '',
+                    "tipoIniciativaSeleccionado": "2"
                 }
                 $.ajax({
                     url: "../Planificacion/EnviarIniciativa",

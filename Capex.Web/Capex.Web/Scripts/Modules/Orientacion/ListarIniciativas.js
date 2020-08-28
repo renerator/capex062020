@@ -7,7 +7,7 @@
 // DESARROLLADO POR : PMO 360 SpA
 //
 // ----------------------------------------------
-// SECCION          : CAPEX MODULO - VISTA APROBADA AMSA
+// SECCION          : CAPEX MODULO - VISTA VISACION
 //
 
 //
@@ -20,19 +20,79 @@ var filtrosSeleccionados = [];
 var filtroUtilizado = false;
 var iniciativasSeleccionadas = [];
 
-FNLimpiarSelect = function () {
-    setTimeout(function () {
-        console.log("setTimeout 500");
-        $('#iniciativas > tbody  > tr').each(function (index, tr) {
-            //console.log('$(tr).attr(style)=', $(tr).attr('style'));
-            if (!$(tr).attr('style')) {
-                //console.log('if not tr=', $(tr));
-                var selectElm = $("td:last-child", tr).children("select");
-                //console.log('selectElm.val()=', selectElm.val());
-                selectElm.val(-1);
-            }
-        });
-    }, 500);
+//
+// REGISTRAR INICIATIVA
+//
+FNRegistrarIniciativa = function (token) {
+    localStorage.setItem("CAPEX_GESTION_INICIATIVA_TOKEN", token);
+    return true;
+}
+
+// CERRAR MODAL ADJUNTOS
+FNCerrarModalAdjuntos = function () {
+    $("#ModalAdjuntos").hide();
+    document.location.reload(true);
+}
+
+//
+// ACTUALIZAR VISTA 
+//
+Actualizar = function () {
+    $("#AppLoaderContainer").show();
+    document.location.reload(true);
+}
+
+//
+// ACCIONES SOBRE ESTADO DEL WORKFLOW
+//
+FNEvaluarAccion = function (accion) {
+    var iniciativa = localStorage.getItem("CAPEX_GESTION_INICIATIVA_TOKEN");
+    var usuario = $("#CAPEX_H_USERNAME").val();
+    localStorage.setItem("CAPEX_GESTION_INICIATIVA_USUARIO", usuario);
+    switch (accion) {
+        case "0":
+            $('#AppLoaderContainer').show();
+            event.preventDefault();
+            localStorage.setItem("CAPEX_GESTION_INICIATIVA_TOKEN", iniciativa)
+            var url = '/Gestion/VerIniciativa/' + iniciativa;
+            window.location.href = url;
+            break;
+        case "2":
+            $.ajaxSetup({ cache: false });
+            $('#AppLoaderContainer').show();
+            $.ajax({
+                url: "/Gestion/VerAdjuntos",
+                method: "GET",
+                data: { "token": iniciativa }
+            }).done(function (request) {
+                $('#AppLoaderContainer').hide();
+                $("#ContenedorElementosAdjuntos").html(request);
+                $("#ModalAdjuntos").show();
+            }).fail(function (xhr) {
+                $('#AppLoaderContainer').hide();
+                console.log('error', xhr);
+            });
+            break;
+        case "3":
+            $('#AppLoaderContainer').show();
+            document.location.href = '/Planificacion/descargaPdfPresupuesto?token=' + iniciativa;
+            setTimeout(function () {
+                $('#AppLoaderContainer').hide();
+                setTimeout(function () {
+                    FNLimpiarSelect();
+                }, 2000);
+            }, 6000);
+            break;
+        case "4":
+            $("#Comentario").val("");
+            $('#Prioridad>option:eq(0)').prop('selected', true);
+            $("#ModalComentar").show();
+            break;
+        default:
+            alert("todavia no esta lista");
+            return true;
+            break;
+    }
 }
 
 FNDescargaMasiva = function () {
@@ -73,120 +133,6 @@ function downloadAll(files) {
     theAnchor[0].click();
     theAnchor.remove();
     downloadAll(files);
-}
-
-FNRealizarValidacionIniciativaEstadoProyecto = function () {
-    var response = '';
-    $.ajaxSetup({ cache: false });
-    $.ajax({
-        url: "/Orientacion/ValidarEstadoParametroV0",
-        type: "POST",
-        async: false,
-        dataType: "json",
-        data: {},
-        success: function (r) {
-            if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
-                document.getElementById('linkToLogout').click();
-                return;
-            }
-            if (r && r.Mensaje) {
-                response = r.Mensaje;
-            }
-        }
-    });
-    return response;
-}
-
-FNGenerarParametroV0 = function () {
-    console.log("Inicio FNGenerarParametroV0");
-    $('#AppLoaderContainer').show();
-    $("#idParametroVO").prop("disabled", true);
-    var responseValidacion = FNRealizarValidacionIniciativaEstadoProyecto();
-    if (responseValidacion && responseValidacion != undefined && responseValidacion != "") {
-        if (responseValidacion == "true") {
-            $('#AppLoaderContainer').hide();
-            swal({
-                title: 'Esta seguro?',
-                text: "Ya existe Parámetro V0 Generado. Si usted continúa este se volvera a generar perdiendo el existente. Está seguro que desea continuar?",
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Si, continuar!',
-                cancelButtonText: 'No!',
-                confirmButtonClass: 'btn btn-primary',
-                cancelButtonClass: 'btn btn-danger'
-            }).then(function (isConfirm) {
-                if (isConfirm && isConfirm.value) {
-                    $('#AppLoaderContainer').show();
-                    $.ajaxSetup({ cache: false });
-                    $.ajax({
-                        url: "GestionAprobadaAmsa/GenerarParametroV0",
-                        method: "POST",
-                        data: {}
-                    }).done(function (r) {
-                        console.log("Done GenerarParametroV0 r=", r);
-                        var obj = JSON.parse(JSON.stringify(r));
-                        $("#idParametroV0").prop("disabled", false);
-                        $('#AppLoaderContainer').hide();
-                        if (obj.Mensaje.startsWith("Guardado")) {
-                            swal("", "Parámetro V0 generada.", "success");
-                            setTimeout(function () {
-                                window.location.reload(true);
-                            }, 3000);
-                        }
-                        else {
-                            swal("", "Problemas al generar parámetro V0.", "error");
-                            setTimeout(function () {
-                                window.location.reload(true);
-                            }, 3000);
-                        }
-                    }).fail(function (xhr) {
-                        console.log("fail GenerarParametroV0");
-                        $("#idParametroV0").prop("disabled", false);
-                        $('#AppLoaderContainer').hide();
-                        console.log('error', xhr);
-                    });
-                } else {
-                    return false;
-                }
-            });
-        } else {
-            $.ajaxSetup({ cache: false });
-            $.ajax({
-                url: "GestionAprobadaAmsa/GenerarParametroV0",
-                method: "POST",
-                data: {}
-            }).done(function (r) {
-                console.log("Done GenerarParametroV0 r=", r);
-                var obj = JSON.parse(JSON.stringify(r));
-                $("#idParametroV0").prop("disabled", false);
-                $('#AppLoaderContainer').hide();
-                if (obj.Mensaje.startsWith("Guardado")) {
-                    swal("", "Parámetro V0 generada.", "success");
-                    setTimeout(function () {
-                        window.location.reload(true);
-                    }, 3000);
-                }
-                else {
-                    swal("", "Problemas al generar parámetro V0.", "error");
-                    setTimeout(function () {
-                        window.location.reload(true);
-                    }, 3000);
-                }
-            }).fail(function (xhr) {
-                console.log("fail GenerarParametroV0");
-                $("#idParametroV0").prop("disabled", false);
-                $('#AppLoaderContainer').hide();
-                console.log('error', xhr);
-            });
-        }
-    } else {
-        $('#AppLoaderContainer').hide();
-        swal("Error", "Error al Generar Parámetro V0!", "error");
-        return false;
-    }
-    console.log("Fin FNGenerarParametroV0");
 }
 
 FNDescargaMasivaXls = function () {
@@ -317,123 +263,6 @@ seleccionarIniciativaPdf = function (selector, token, masiva) {
     }
 }
 
-FNAprobarIniciativaAdmin1 = function (token) {
-    var usuario = $("#CAPEX_H_USERNAME").val();
-    $.ajaxSetup({ cache: false });
-    $.ajax({
-        url: "GestionIngresada/AprobarIniciativa",
-        method: "POST",
-        data: { "IniToken": token, "Usuario": usuario }
-    }).done(function (r) {
-        var obj = JSON.parse(JSON.stringify(r));
-        if (obj.Mensaje == "Aprobada") {
-            swal("", "Iniciativa Aprobada.", "success");
-            setTimeout(function () {
-                window.location.reload(true);
-            }, 3000);
-        }
-        else {
-            swal("", "Problemas al Aprobar iniciativa.", "error");
-            setTimeout(function () {
-                window.location.reload(true);
-            }, 3000);
-        }
-    }).fail(function (xhr) {
-        console.log('error', xhr);
-    });
-}
-
-//
-// ABRIR VENTANA DE RECHAZO INICIATIVA
-//
-FNRechazoIniciativaAdmin1 = function () {
-    var iniciativa = localStorage.getItem("CAPEX_GESTION_INICIATIVA_TOKEN");
-    if (!iniciativa) {
-        return false;
-    }
-    else {
-        FNEjecutarRechazoIniciativaAdmin1(iniciativa);
-        return true;
-    }
-}
-//
-// EJECUTA RECHAZO
-//
-FNEjecutarRechazoIniciativaAdmin1 = function (token) {
-    var usuario = $("#CAPEX_H_USERNAME").val();
-    var observacion = $("#ObservacionRechazoAdmin1").val();
-
-    $.ajaxSetup({ cache: false });
-
-    $.ajax({
-        url: "GestionIngresada/RechazarIniciativa",
-        method: "POST",
-        data: { "IniToken": token, "Usuario": usuario, "Observacion": observacion }
-    }).done(function (r) {
-        var obj = JSON.parse(JSON.stringify(r));
-        if (obj.Mensaje == "Rechazada") {
-            swal("", "Iniciativa Rechazada.", "success");
-            setTimeout(function () {
-                window.location.reload(true);
-            }, 3000);
-        }
-        else {
-            swal("", "Problemas al Rechazar iniciativa.", "error");
-            setTimeout(function () {
-                window.location.reload(true);
-            }, 3000);
-        }
-    }).fail(function (xhr) {
-        console.log('error', xhr);
-    });
-}
-//
-// ASIGNAR REVISOR
-//
-FNAsignarRevisor = function (usuario) {
-    var iniciativa = localStorage.getItem("CAPEX_GESTION_INICIATIVA_TOKEN");
-    $.ajaxSetup({ cache: false });
-
-    $.ajax({
-        url: "GestionIngresada/Asignar",
-        method: "POST",
-        data: { "IniToken": iniciativa, "Usuario": usuario, "Observacion": 'REVISOR ASIGNADO A FLUJO DE REVISION, ESTADO INICIAL "0", PENDIENTE DE REVISION ', "Estado": 0 }
-    }).done(function (r) {
-        return true;
-    }).fail(function (xhr) {
-        return false;
-    });
-    return;
-}
-//
-// ASIGNACION  INICIATIVA
-//
-FNAsignarIniciativa = function () {
-    swal("", "Revisor asignado.", "info");
-    localStorage.setItem("CAPEX_GESTION_ESTADO_ASIGNACION_REVISORES", "ASIGNADO");
-    setTimeout(function () {
-        window.location.reload(true);
-    }, 3000);
-}
-//
-// CERRAR VENTANA RECHAZO
-//
-FNCerrarRechazoAdmin1 = function () {
-    $("#ModalRechazoAdmin1").hide();
-    setTimeout(function () {
-        window.location.reload(true);
-    }, 300);
-}
-//
-// CERRAR VENTANA ASIGNAR
-//
-FNCerrarAsignacion = function () {
-    $("#ModalAsignacion").hide();
-    setTimeout(function () {
-        window.location.reload(true);
-    }, 300);
-}
-
 FNResizeScroll = function () {
     var rowLength = $('#iniciativas >tbody >tr').filter(function () {
         return !$(this).attr('style');
@@ -459,7 +288,25 @@ FNGotoPage = function (page, perPage) {
         var item = $(this);
         if (index > 0) {
             if (index >= startAt && index < endOn) {
-                item.attr("style", "");
+                var lastTd = item.find(':last-child');
+                var valueStyle = "";
+                console.log("FNGotoPage lastTd=", lastTd);
+                if (lastTd && lastTd != undefined) {
+                    var dropDown = lastTd.find('select');
+                    console.log("FNGotoPage dropDown=", dropDown);
+                    if (dropDown && dropDown != undefined) {
+                        dropDown.find('option').each(function (index, element) {
+                            if (element.value == "20") {
+                                valueStyle = "background-color:#f4a90d;color:#ffffff";
+                                return false;
+                            } else if (element.value == "22") {
+                                valueStyle = "background-color:#f4a90d;Red:#ffffff";
+                                return false;
+                            }
+                        });
+                    }
+                }
+                item.attr("style", valueStyle);
                 //console.log("FNGotoPage if index=", index);
             } else {
                 item.attr("style", "display: none");
@@ -598,7 +445,7 @@ FNFilterActionGetData = function (load) {
     }
     $.ajaxSetup({ cache: false });
     $.ajax({
-        url: "GestionAprobadaAmsa/getData",
+        url: "Orientacion/getData",
         method: "POST",
         data: { "filtroGetData": JSON.stringify(filtroGetData) }
     }).done(function (r) {
@@ -610,10 +457,10 @@ FNFilterActionGetData = function (load) {
         if (r && r.success && r.tableTrs) {
             $("#TBodyIdSummary").html(r.tableTrs);
             $("#paginador").html(r.paginator);
-            $("#ContenedorContAprobadaAMSAIni").html(r.countBadge);
+            $("#ContenedorContVisIni").html(r.countBadge);
         } else {
             $("#paginador").html('');
-            $("#ContenedorContAprobadaAMSAIni").html('0');
+            $("#ContenedorContVisIni").html('0');
         }
         if (!filtrosSeleccionados || filtrosSeleccionados == undefined || filtrosSeleccionados.length == 0) {
             $("#iconFilter").html("");
@@ -630,7 +477,7 @@ FNFilterActionGetData = function (load) {
         console.log('error', xhr);
         $("#TBodyIdSummary").html('');
         $("#paginador").html('');
-        $("#ContenedorContAprobadaAMSAIni").html('0');
+        $("#ContenedorContVisIni").html('0');
         $("#iconFilter").html("");
     });
 }
@@ -640,7 +487,7 @@ FNFilterData = function () {
     $('#idMostrarOcultarFiltros').prop('disabled', true);
     $.ajaxSetup({ cache: false });
     $.ajax({
-        url: "GestionAprobadaAmsa/getTreeFilter",
+        url: "Orientacion/getTreeFilter",
         method: "GET"
     }).done(function (r) {
         //var obj = JSON.parse(JSON.stringify(r));
@@ -699,44 +546,11 @@ exitFilterPanel = function () {
     $("#idMostrarOcultarFiltros").html("Mostrar Filtros");
 }
 
-FNNoAprobarIniciativaCE = function (token) {
-    $.ajaxSetup({ cache: false });
-    $.ajax({
-        url: "GestionAprobadaAmsa/NoAprobarIniciativaCE",
-        method: "POST",
-        data: { "IniToken": token }
-    }).done(function (r) {
-        //PARSEAR RESPUESTA
-        var estructura = JSON.parse(JSON.stringify(r));
-        estructura = estructura.Mensaje;
-        //DESCOMPONER RESPUESTA
-        var parte = estructura.split("|");
-        var estado = parte[0];
-        var estado1 = parte[1];
-        var estado2 = parte[2];
-        //PROCESAR RESPUESTA
-        if (estado == "Error") {
-            swal("Error", "No es posible enviar a revisión esta inicativa.", "error");
-            setTimeout(function () {
-                document.location.reload();
-            }, 3000);
-        }
-        else if (estado == "NoAprobada") {
-            swal("Exito", "Iniciatica enviada a revisión.", "success");
-            setTimeout(function () {
-                window.location.reload(true);
-            }, 3000);
-        }
-    }).fail(function (xhr) {
-        console.log('error', xhr);
-    });
-}
-
 FNDescargarAdjuntoFinal = function (token) {
     var link = document.createElement("a");
     console.info("token=", token);
     $.ajax({
-        url: "Documentacion/DescargarDocumentoAdjuntoFinal/" + token,
+        url: "/Documentacion/DescargarDocumentoAdjuntoFinal/" + token,
         method: "GET",
         data: { "token": token },
         async: false
@@ -749,4 +563,17 @@ FNDescargarAdjuntoFinal = function (token) {
         console.log('fail error', xhr);
     });
     return;
+}
+
+FNLimpiarSelect = function () {
+    console.log("FNLimpiarSelect desde Listar iniciativas");
+    setTimeout(function () {
+        console.log("setTimeout 500");
+        $('#iniciativas > tbody  > tr').each(function (index, tr) {
+            if (!$(tr).attr('style') || $(tr).attr('style').includes('background-color')) {
+                var selectElm = $("td:last-child", tr).children("select");
+                selectElm.val(-1);
+            }
+        });
+    }, 500);
 }
