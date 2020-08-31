@@ -6020,13 +6020,17 @@ namespace Capex.Web.Controllers
                 //Proceso por MESES
                 for (int M = 4; M <= 15; M++)
                 {
-                    string cellValue = checkNumberFormat(((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : ""));
+                    string originalCellValue = ((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : "");
+                    InsertarTraceLog(token, "T=" + T + ",M=" + M + ", Mes originalCellValue=" + originalCellValue, usuario);
+                    string cellValue = checkNumberFormat(originalCellValue);
+                    InsertarTraceLog(token, "T=" + T + ",M=" + M + ", Mes cellValue=" + cellValue, usuario);
                     int mes = (M - 3);
                     if (T == 27) //TC
                     {
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 2, tipoTC, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
+                            InsertarTraceLog(token, "Error en el parámetro tc para el mes de " + mesString + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro tc para el mes de " + mesString + ".");
                         }
                     }
@@ -6035,6 +6039,7 @@ namespace Capex.Web.Controllers
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 2, tipoIPC, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
+                            InsertarTraceLog(token, "Error en el parámetro ipc para el mes de " + mesString + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro ipc para el mes de " + mesString + ".");
                         }
                     }
@@ -6043,6 +6048,7 @@ namespace Capex.Web.Controllers
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 2, tipoCPI, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
+                            InsertarTraceLog(token, "Error en el parámetro ipc para el mes de " + mesString + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro cpi para el mes de " + mesString + ".");
                         }
                     }
@@ -6069,11 +6075,15 @@ namespace Capex.Web.Controllers
                 {
                     iniciativaIniPeriodo++;
                     offsetAnio++;
-                    string cellValue = checkNumberFormat(((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : ""));
+                    string originalCellValue = ((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : "");
+                    InsertarTraceLog(token, "T=" + T + ",M=" + M + ", Anio originalCellValue=" + originalCellValue, usuario);
+                    string cellValue = checkNumberFormat(originalCellValue);
+                    InsertarTraceLog(token, "T=" + T + ",M=" + M + ", Anio cellValue=" + cellValue, usuario);
                     if (T == 27) //TC
                     {
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 2, tipoTC, offsetAnio, cellValue))
                         {
+                            InsertarTraceLog(token, "Error en el parámetro tc para el año " + iniciativaIniPeriodo + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro tc para el año " + iniciativaIniPeriodo + ".");
                         }
                     }
@@ -6081,6 +6091,7 @@ namespace Capex.Web.Controllers
                     {
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 2, tipoIPC, offsetAnio, cellValue))
                         {
+                            InsertarTraceLog(token, "Error en el parámetro ipc para el año " + iniciativaIniPeriodo + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro ipc para el año " + iniciativaIniPeriodo + ".");
                         }
                     }
@@ -6088,6 +6099,7 @@ namespace Capex.Web.Controllers
                     {
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 2, tipoCPI, offsetAnio, cellValue))
                         {
+                            InsertarTraceLog(token, "Error en el parámetro cpi para el año " + iniciativaIniPeriodo + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro cpi para el año " + iniciativaIniPeriodo + ".");
                         }
                     }
@@ -6976,6 +6988,45 @@ namespace Capex.Web.Controllers
                 }
             }
         }
+
+        private void InsertarTraceLog(string IniToken, string Log, string usuario)
+        {
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    string finalLog = string.Empty;
+                    if (!string.IsNullOrEmpty(Log))
+                    {
+                        if (Log.Trim().Length <= 2000)
+                        {
+                            finalLog = Log;
+                        }
+                        else
+                        {
+                            finalLog = Log.Trim().Substring(0, 2000);
+                        }
+                    }
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("IniToken", IniToken);
+                    parametos.Add("TraceLog", Log);
+                    parametos.Add("TraceUsuario", usuario);
+                    SqlMapper.Execute(objConnection, "CAPEX_INS_TRACE_LOG", parametos, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "CAPEX_INS_TRACE_LOG, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    CapexInfraestructure.Utilities.Utils.LogError(ExceptionResult);
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+        }
+
+
         /// <summary>
         /// INSERTAR DATOS DE FINANCIERO RESUMIDA
         /// </summary>
