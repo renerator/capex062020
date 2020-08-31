@@ -2045,16 +2045,68 @@ namespace Capex.Web.Controllers
             {
                 if (paramValue.IndexOf(".") != -1 && paramValue.IndexOf(",") != -1)
                 {
-                    paramValue = paramValue.Replace(".", "");
-                    return paramValue.Replace(",", ".");
+                    int posicionPunto = paramValue.IndexOf(".");
+                    int posicionComa = paramValue.IndexOf(",");
+                    if (posicionComa > posicionPunto)
+                    {
+                        //separador decimal es la coma, separador de miles es el punto
+                        paramValue = paramValue.Replace(".", "");
+                        return paramValue.Replace(",", ".");
+                    }
+                    else
+                    {
+                        paramValue = paramValue.Replace(",", ";");
+                        paramValue = paramValue.Replace(".", ",");
+                        return paramValue.Replace(";", "");
+                    }
                 }
-                else if (paramValue.IndexOf(".") != -1 && paramValue.IndexOf(",") == -1)
+                else if (paramValue.IndexOf(".") != -1 && paramValue.IndexOf(",") == -1)//tiene puntos pero no tiene comas
                 {
-                    return paramValue.Replace(".", "");
+                    string[] splitParamValue = paramValue.Split('.');
+                    if (splitParamValue.Length == 2)
+                    {
+                        if (splitParamValue[1].Length < 3)
+                        {
+                            //el punto se ocupo para separador decimal
+                            return paramValue;
+                        }
+                        else if (splitParamValue[0].Length >= 1 && splitParamValue[0].Length <= 3 && splitParamValue[1].Length == 3)
+                        {
+                            return paramValue.Replace(".", "");
+                        }
+                        else
+                        {
+                            return paramValue;
+                        }
+                    }
+                    else
+                    {
+                        paramValue = paramValue.Replace(".", "");
+                    }
                 }
                 else if (paramValue.IndexOf(".") == -1 && paramValue.IndexOf(",") != -1)
                 {
-                    return paramValue.Replace(",", ".");
+                    string[] splitParamValue = paramValue.Split(',');
+                    if (splitParamValue.Length == 2)
+                    {
+                        if (splitParamValue[1].Length < 3)
+                        {
+                            //la coma se ocupo para separador decimal
+                            return paramValue.Replace(",", ".");
+                        }
+                        else if (splitParamValue[0].Length >= 1 && splitParamValue[0].Length <= 3 && splitParamValue[1].Length == 3)
+                        {
+                            return paramValue.Replace(",", "");
+                        }
+                        else
+                        {
+                            return paramValue;
+                        }
+                    }
+                    else
+                    {
+                        paramValue = paramValue.Replace(",", "");
+                    }
                 }
                 else
                 {
@@ -6020,6 +6072,7 @@ namespace Capex.Web.Controllers
                 //Proceso por MESES
                 for (int M = 4; M <= 15; M++)
                 {
+                    
                     string originalCellValue = ((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : "");
                     InsertarTraceLog(token, "T=" + T + ",M=" + M + ", Mes originalCellValue=" + originalCellValue, usuario);
                     string cellValue = checkNumberFormat(originalCellValue);
