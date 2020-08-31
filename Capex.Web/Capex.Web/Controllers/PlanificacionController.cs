@@ -155,6 +155,13 @@ namespace Capex.Web.Controllers
             {
                 HttpContext.Session["CAPEX_SESS_USERNAME"] = @User.Identity.Name;
             }
+            Session["tipoIniciativaOrientacionComercial"] = "";
+            Session["anioIniciativaOrientacionComercial"] = "";
+            Session["tipoIniciativaEjercicioOficial"] = "";
+            Session["anioIniciativaEjercicioOficial"] = "";
+            Session["tipoIniciativaSeleccionado"] = "";
+            Session["anioIniciativaSeleccionado"] = "";
+            Session["ParametroVNToken"] = "";
             return View("Index");
         }
         /// <remark>
@@ -8228,9 +8235,14 @@ namespace Capex.Web.Controllers
             {
                 try
                 {
+                    string iniPeriodo = iniPeriodoIniciativa(IniToken);
                     if (!string.IsNullOrEmpty(tipoIniciativaSeleccionado))
                     {
                         Session["tipoIniciativaSeleccionado"] = tipoIniciativaSeleccionado;
+                        if (!string.IsNullOrEmpty(iniPeriodo))
+                        {
+                            Session["anioIniciativaSeleccionado"] = iniPeriodo;
+                        }
                     }
                     var usuario = Convert.ToString(Session["CAPEX_SESS_USERNAME"]);
                     var rol = Convert.ToString(Session["CAPEX_SESS_ROLNOMBRE"]);
