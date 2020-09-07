@@ -166,6 +166,7 @@ namespace Capex.Web.Controllers
                                     ViewBag.Iniciativas = null;
                                 }
                             }
+                            ViewBag.ENUS = ObtenerParametroSistema("en-US");
                         }
                         catch (Exception ex)
                         {
@@ -179,6 +180,38 @@ namespace Capex.Web.Controllers
                 }
             }
             return View("Index");
+        }
+
+        private string ObtenerParametroSistema(string paramKey)
+        {
+            string paramValue = string.Empty;
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("ParamKey", paramKey);
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_PARAMETRO_SISTEMA", parametos, commandType: CommandType.StoredProcedure).ToList();
+                    if (resultado.Count > 0)
+                    {
+                        foreach (var result in resultado)
+                        {
+                            paramValue = ((result.ParamValue != null && !string.IsNullOrEmpty(result.ParamValue.ToString())) ? result.ParamValue.ToString() : "");
+                        }
+                    }
+                }
+                catch (Exception err)
+                {
+                    paramValue = string.Empty;
+                    err.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return paramValue;
         }
 
         [HttpPost]

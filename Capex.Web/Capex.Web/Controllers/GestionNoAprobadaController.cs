@@ -85,6 +85,39 @@ namespace Capex.Web.Controllers
         }
         #endregion
 
+
+        private string ObtenerParametroSistema(string paramKey)
+        {
+            string paramValue = string.Empty;
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("ParamKey", paramKey);
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_PARAMETRO_SISTEMA", parametos, commandType: CommandType.StoredProcedure).ToList();
+                    if (resultado.Count > 0)
+                    {
+                        foreach (var result in resultado)
+                        {
+                            paramValue = ((result.ParamValue != null && !string.IsNullOrEmpty(result.ParamValue.ToString())) ? result.ParamValue.ToString() : "");
+                        }
+                    }
+                }
+                catch (Exception err)
+                {
+                    paramValue = string.Empty;
+                    err.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return paramValue;
+        }
+
         #region "METODOS BANDEJA DE ENTRADA"
         /// <summary>
         /// METODO VISTA INICIAL
@@ -147,7 +180,7 @@ namespace Capex.Web.Controllers
                             {
                                 usuarioAux = usuario;
                             }
-
+                            ViewBag.ENUS = ObtenerParametroSistema("en-US");
                             if (string.IsNullOrEmpty(opcion) || "1".Equals(opcion))
                             {
                                 Session["CAPEX_SESS_OPCION_ENVIADA"] = "1";
@@ -470,6 +503,7 @@ namespace Capex.Web.Controllers
                         tipoIniciativaSeleccionado = "0";
                     }
                     anio = Convert.ToString(Session["anioIniciativaSeleccionado"]);
+                    string ENUS = ObtenerParametroSistema("en-US");
                     using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
                     {
                         try
@@ -660,7 +694,14 @@ namespace Capex.Web.Controllers
                                         tableTrs.Append("<td>" + result.IniTipo + "</td>");
                                         tableTrs.Append("<td>" + result.PidEtapa + "</td>");
                                         tableTrs.Append("<td class='text-center' width='100px'>" + result.CatClasificacionSSO + "</td>");
-                                        tableTrs.Append("<td class='text-center' width='140px'>" + ((string.IsNullOrEmpty(result.TotalCapex) || result.TotalCapex.Equals("0")) ? "0" : String.Format("{0:0,0}", double.Parse(result.TotalCapex, CultureInfo.InvariantCulture))) + "</td>");
+                                        if (ENUS != null && !string.IsNullOrEmpty(ENUS.ToString()))
+                                        {
+                                            tableTrs.Append("<td class='text-center' width='140px'>" + ((string.IsNullOrEmpty(result.TotalCapex) || result.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(result.TotalCapex, CultureInfo.GetCultureInfo("es-CL"))).Replace(',', ':').Replace('.', ',').Replace(':', '.')) + "</td>");
+                                        }
+                                        else
+                                        {
+                                            tableTrs.Append("<td class='text-center' width='140px'>" + ((string.IsNullOrEmpty(result.TotalCapex) || result.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(result.TotalCapex, CultureInfo.GetCultureInfo("es-CL")))) + "</td>");
+                                        }
                                         tableTrs.Append("<td class='text-center' width='100px' onclick='exitFilterPanel();FNRegistrarIniciativa(" + Convert.ToChar(34) + result.PidToken + Convert.ToChar(34) + ")'>" + selectTrs.ToString() + "</td>");
                                         tableTrs.Append("</tr>");
                                         countRows++;
@@ -812,7 +853,14 @@ namespace Capex.Web.Controllers
                                         tableTrs.Append("<td>" + result.IniTipo + "</td>");
                                         tableTrs.Append("<td>" + result.PidEtapa + "</td>");
                                         tableTrs.Append("<td class='text-center' width='100px'>" + result.CatClasificacionSSO + "</td>");
-                                        tableTrs.Append("<td class='text-center' width='140px'>" + ((string.IsNullOrEmpty(result.TotalCapex) || result.TotalCapex.Equals("0")) ? "0" : String.Format("{0:0,0}", double.Parse(result.TotalCapex, CultureInfo.InvariantCulture))) + "</td>");
+                                        if (ENUS != null && !string.IsNullOrEmpty(ENUS.ToString()))
+                                        {
+                                            tableTrs.Append("<td class='text-center' width='140px'>" + ((string.IsNullOrEmpty(result.TotalCapex) || result.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(result.TotalCapex, CultureInfo.GetCultureInfo("es-CL"))).Replace(',', ':').Replace('.', ',').Replace(':', '.')) + "</td>");
+                                        }
+                                        else
+                                        {
+                                            tableTrs.Append("<td class='text-center' width='140px'>" + ((string.IsNullOrEmpty(result.TotalCapex) || result.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(result.TotalCapex, CultureInfo.GetCultureInfo("es-CL")))) + "</td>");
+                                        }
                                         tableTrs.Append("<td class='text-center' width='100px' onclick='exitFilterPanel();FNRegistrarIniciativa(" + Convert.ToChar(34) + result.PidToken + Convert.ToChar(34) + ")'>" + selectTrs.ToString() + "</td>");
                                         tableTrs.Append("</tr>");
                                         countRows++;
@@ -964,7 +1012,14 @@ namespace Capex.Web.Controllers
                                         tableTrs.Append("<td>" + result.IniTipo + "</td>");
                                         tableTrs.Append("<td>" + result.PidEtapa + "</td>");
                                         tableTrs.Append("<td class='text-center' width='100px'>" + result.CatClasificacionSSO + "</td>");
-                                        tableTrs.Append("<td class='text-center' width='140px'>" + ((string.IsNullOrEmpty(result.TotalCapex) || result.TotalCapex.Equals("0")) ? "0" : String.Format("{0:0,0}", double.Parse(result.TotalCapex, CultureInfo.InvariantCulture))) + "</td>");
+                                        if (ENUS != null && !string.IsNullOrEmpty(ENUS.ToString()))
+                                        {
+                                            tableTrs.Append("<td class='text-center' width='140px'>" + ((string.IsNullOrEmpty(result.TotalCapex) || result.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(result.TotalCapex, CultureInfo.GetCultureInfo("es-CL"))).Replace(',', ':').Replace('.', ',').Replace(':', '.')) + "</td>");
+                                        }
+                                        else
+                                        {
+                                            tableTrs.Append("<td class='text-center' width='140px'>" + ((string.IsNullOrEmpty(result.TotalCapex) || result.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(result.TotalCapex, CultureInfo.GetCultureInfo("es-CL")))) + "</td>");
+                                        }
                                         tableTrs.Append("<td class='text-center' width='100px' onclick='exitFilterPanel();FNRegistrarIniciativa(" + Convert.ToChar(34) + result.PidToken + Convert.ToChar(34) + ")'>" + selectTrs.ToString() + "</td>");
                                         tableTrs.Append("</tr>");
                                         countRows++;

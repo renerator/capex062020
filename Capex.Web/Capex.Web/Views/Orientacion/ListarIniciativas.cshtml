@@ -366,14 +366,30 @@
                                                                         @ini.CatClasificacionSSO
                                                                     </td>
                                                                     <td class="text-center" width="140px">
-
-                                                                        @((string.IsNullOrEmpty(ini.TotalCapex) || ini.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(ini.TotalCapex, System.Globalization.CultureInfo.GetCultureInfo("es-CL"))))
+                                                                        @{ if (ViewBag.ENUS != null && !string.IsNullOrEmpty(ViewBag.ENUS.ToString()))
+                                                                            {
+                                                                                @((string.IsNullOrEmpty(ini.TotalCapex) || ini.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(ini.TotalCapex, System.Globalization.CultureInfo.GetCultureInfo("es-CL"))).Replace(',', ':').Replace('.', ',').Replace(':', '.'))
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                @((string.IsNullOrEmpty(ini.TotalCapex) || ini.TotalCapex.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(ini.TotalCapex, System.Globalization.CultureInfo.GetCultureInfo("es-CL"))))
+                                                                            }
+                                                                        }
                                                                     </td>
                                                                     <td class="text-center" width="100px" onclick="exitFilterPanel();FNRegistrarIniciativa('@ini.PidToken')">
-                                                                        <select id="Funcionalidades" class="form-control" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
+                                                                        <select id="Funcionalidades" class="form-control orderselect" style="font-size:11px;" onchange="FNEvaluarAccion(this.value)">
                                                                             <option value="-1" selected>...</option>
                                                                             <option value="0">Ver</option>
-                                                                            <option value="2">Adjuntos</option>
+                                                                            @{ if (ViewBag.Version != null && ViewBag.Version == 0)
+                                                                                {
+                                                                                    <option value="2">Adjuntos</option>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <option value="20">Adjuntos</option>
+
+                                                                                }
+                                                                            }
                                                                             <option value="3">Pdf</option>
                                                                         </select>
                                                                     </td>

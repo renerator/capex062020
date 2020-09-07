@@ -2186,13 +2186,17 @@ namespace Capex.Web.Controllers
                 //Proceso por MESES
                 for (int M = 4; M <= 15; M++)
                 {
-                    string cellValue = checkNumberFormat(((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : ""));
+                    string originalCellValue = ((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : "");
+                    InsertarTraceLog(token, "T=" + T + ",M=" + M + ", Mes originalCellValue=" + originalCellValue, usuario);
+                    string cellValue = checkNumberFormat(originalCellValue);
+                    InsertarTraceLog(token, "T=" + T + ",M=" + M + ", Mes cellValue=" + cellValue, usuario);
                     int mes = (M - 3);
                     if (T == 27) //TC
                     {
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 1, tipoTC, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
+                            InsertarTraceLog(token, "Error en el parámetro tc para el mes de " + mesString + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro tc para el mes de " + mesString + ".");
                         }
                     }
@@ -2201,6 +2205,7 @@ namespace Capex.Web.Controllers
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 1, tipoIPC, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
+                            InsertarTraceLog(token, "Error en el parámetro ipc para el mes de " + mesString + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro ipc para el mes de " + mesString + ".");
                         }
                     }
@@ -2209,6 +2214,7 @@ namespace Capex.Web.Controllers
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 1, tipoCPI, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
+                            InsertarTraceLog(token, "Error en el parámetro cpi para el mes de " + mesString + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro cpi para el mes de " + mesString + ".");
                         }
                     }
@@ -2235,11 +2241,15 @@ namespace Capex.Web.Controllers
                 {
                     iniciativaIniPeriodo++;
                     offsetAnio++;
-                    string cellValue = checkNumberFormat(((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : ""));
+                    string originalCellValue = ((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : "");
+                    InsertarTraceLog(token, "T=" + T + ",M=" + M + ", Anio originalCellValue=" + originalCellValue, usuario);
+                    string cellValue = checkNumberFormat(originalCellValue);
+                    InsertarTraceLog(token, "T=" + T + ",M=" + M + ", Anio cellValue=" + cellValue, usuario);
                     if (T == 27) //TC
                     {
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 1, tipoTC, offsetAnio, cellValue))
                         {
+                            InsertarTraceLog(token, "Error en el parámetro tc para el año " + iniciativaIniPeriodo + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro tc para el año " + iniciativaIniPeriodo + ".");
                         }
                     }
@@ -2247,6 +2257,7 @@ namespace Capex.Web.Controllers
                     {
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 1, tipoIPC, offsetAnio, cellValue))
                         {
+                            InsertarTraceLog(token, "Error en el parámetro ipc para el año " + iniciativaIniPeriodo + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro ipc para el año " + iniciativaIniPeriodo + ".");
                         }
                     }
@@ -2254,6 +2265,7 @@ namespace Capex.Web.Controllers
                     {
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialAnio(token, 1, tipoCPI, offsetAnio, cellValue))
                         {
+                            InsertarTraceLog(token, "Error en el parámetro cpi para el año " + iniciativaIniPeriodo + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro cpi para el año " + iniciativaIniPeriodo + ".");
                         }
                     }
@@ -2267,7 +2279,7 @@ namespace Capex.Web.Controllers
                 registro.Add(usuario);
                 registro.Add(ws.Cell(i, 1).Value.ToString());
 
-                if (!string.IsNullOrEmpty(ws.Cell(i, 2).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws.Cell(i, 2).Value.ToString()) && !(ws.Cell(i, 2).Value.ToString().Equals("NaN")))
                 {
                     decimal d01 = decimal.Parse(ws.Cell(i, 2).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string sd01 = d01.ToString("0.0");
@@ -2633,12 +2645,18 @@ namespace Capex.Web.Controllers
                     registro.Add(ws.Cell((i + 2), 97).Value.ToString());
 
                 }
+
                 string PorInvNacExt = string.Empty;
-                if (!string.IsNullOrEmpty(ws.Cell(33, 5).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws.Cell(33, 5).Value.ToString()) && !(ws.Cell(33, 5).Value.ToString().Equals("NaN")))
                 {
                     PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(33, 5).Value.ToString()) * 100)).ToString();
                 }
-                if (!string.IsNullOrEmpty(ws.Cell(33, 7).Value.ToString()))
+                else
+                {
+                    PorInvNacExt = "0";
+                }
+
+                if (!string.IsNullOrEmpty(ws.Cell(33, 7).Value.ToString()) && !(ws.Cell(33, 7).Value.ToString().Equals("NaN")))
                 {
                     if (!string.IsNullOrEmpty(PorInvNacExt))
                     {
@@ -2647,6 +2665,17 @@ namespace Capex.Web.Controllers
                     else
                     {
                         PorInvNacExt = Math.Round((ConvertToDouble(ws.Cell(33, 7).Value.ToString()) * 100)).ToString();
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(PorInvNacExt))
+                    {
+                        PorInvNacExt = PorInvNacExt + "/" + "0";
+                    }
+                    else
+                    {
+                        PorInvNacExt = "0/0";
                     }
                 }
                 InsertarInformacionFinancieraCasoBase(registro, PorInvNacExt, numIngreso);
@@ -2692,7 +2721,7 @@ namespace Capex.Web.Controllers
                 registro.Add(token);
                 registro.Add(usuario);
                 registro.Add(ws1.Cell(e, 1).Value.ToString());
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 2).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 2).Value.ToString()) && !(ws1.Cell(e, 2).Value.ToString().Equals("NaN")))
                 {
                     decimal t01 = decimal.Parse(ws1.Cell(e, 2).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st01 = t01.ToString("0.0");
@@ -2703,7 +2732,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 3).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 3).Value.ToString()) && !(ws1.Cell(e, 3).Value.ToString().Equals("NaN")))
                 {
                     decimal t03 = decimal.Parse(ws1.Cell(e, 3).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st03 = t03.ToString("0.0");
@@ -2714,7 +2743,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 4).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 4).Value.ToString()) && !(ws1.Cell(e, 4).Value.ToString().Equals("NaN")))
                 {
                     decimal t04 = decimal.Parse(ws1.Cell(e, 4).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st04 = t04.ToString("0.0");
@@ -2725,7 +2754,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 5).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 5).Value.ToString()) && !(ws1.Cell(e, 5).Value.ToString().Equals("NaN")))
                 {
                     decimal t05 = decimal.Parse(ws1.Cell(e, 5).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st05 = t05.ToString("0.0");
@@ -2736,7 +2765,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 6).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 6).Value.ToString()) && !(ws1.Cell(e, 6).Value.ToString().Equals("NaN")))
                 {
                     decimal t06 = decimal.Parse(ws1.Cell(e, 6).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st06 = t06.ToString("0.0");
@@ -2747,7 +2776,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 7).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 7).Value.ToString()) && !(ws1.Cell(e, 7).Value.ToString().Equals("NaN")))
                 {
                     //decimal t07 = decimal.Parse(ws1.Cell(e, 7).Value.ToString()) * 100;
                     decimal t07 = decimal.Parse(ws1.Cell(e, 7).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
@@ -2759,7 +2788,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 8).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 8).Value.ToString()) && !(ws1.Cell(e, 8).Value.ToString().Equals("NaN")))
                 {
                     decimal t08 = decimal.Parse(ws1.Cell(e, 8).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st08 = t08.ToString("0.0");
@@ -2770,7 +2799,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 9).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 9).Value.ToString()) && !(ws1.Cell(e, 9).Value.ToString().Equals("NaN")))
                 {
                     decimal t09 = decimal.Parse(ws1.Cell(e, 9).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st09 = t09.ToString("0.0");
@@ -2781,7 +2810,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 10).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 10).Value.ToString()) && !(ws1.Cell(e, 10).Value.ToString().Equals("NaN")))
                 {
                     decimal t10 = decimal.Parse(ws1.Cell(e, 10).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st10 = t10.ToString("0.0");
@@ -2792,7 +2821,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 11).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 11).Value.ToString()) && !(ws1.Cell(e, 11).Value.ToString().Equals("NaN")))
                 {
                     decimal t11 = decimal.Parse(ws1.Cell(e, 11).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st11 = t11.ToString("0.0");
@@ -2803,7 +2832,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 12).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 12).Value.ToString()) && !(ws1.Cell(e, 12).Value.ToString().Equals("NaN")))
                 {
                     decimal t12 = decimal.Parse(ws1.Cell(e, 12).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st12 = t12.ToString("0.0");
@@ -2814,7 +2843,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 13).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 13).Value.ToString()) && !(ws1.Cell(e, 13).Value.ToString().Equals("NaN")))
                 {
                     decimal t13 = decimal.Parse(ws1.Cell(e, 13).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st13 = t13.ToString("0.0");
@@ -2825,7 +2854,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 14).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 14).Value.ToString()) && !(ws1.Cell(e, 14).Value.ToString().Equals("NaN")))
                 {
                     decimal t14 = decimal.Parse(ws1.Cell(e, 14).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st14 = t14.ToString("0.0");
@@ -2836,7 +2865,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 15).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 15).Value.ToString()) && !(ws1.Cell(e, 15).Value.ToString().Equals("NaN")))
                 {
                     decimal t15 = decimal.Parse(ws1.Cell(e, 15).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st15 = t15.ToString("0.0");
@@ -2847,7 +2876,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 16).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 16).Value.ToString()) && !(ws1.Cell(e, 16).Value.ToString().Equals("NaN")))
                 {
                     decimal t16 = decimal.Parse(ws1.Cell(e, 16).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st16 = t16.ToString("0.0");
@@ -2858,7 +2887,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 17).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 17).Value.ToString()) && !(ws1.Cell(e, 17).Value.ToString().Equals("NaN")))
                 {
                     decimal t17 = decimal.Parse(ws1.Cell(e, 17).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st17 = t17.ToString("0.0");
@@ -2869,7 +2898,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 18).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 18).Value.ToString()) && !(ws1.Cell(e, 18).Value.ToString().Equals("NaN")))
                 {
                     decimal t18 = decimal.Parse(ws1.Cell(e, 18).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st18 = t18.ToString("0.0");
@@ -2880,7 +2909,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 19).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 19).Value.ToString()) && !(ws1.Cell(e, 19).Value.ToString().Equals("NaN")))
                 {
                     decimal t19 = decimal.Parse(ws1.Cell(e, 19).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st19 = t19.ToString("0.0");
@@ -2891,7 +2920,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 20).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 20).Value.ToString()) && !(ws1.Cell(e, 20).Value.ToString().Equals("NaN")))
                 {
                     decimal t20 = decimal.Parse(ws1.Cell(e, 20).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st20 = t20.ToString("0.0");
@@ -2904,7 +2933,7 @@ namespace Capex.Web.Controllers
                 ///
                 /// 21-30
                 ///
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 21).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 21).Value.ToString()) && !(ws1.Cell(e, 21).Value.ToString().Equals("NaN")))
                 {
                     decimal t21 = decimal.Parse(ws1.Cell(e, 21).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st21 = t21.ToString("0.0");
@@ -2915,7 +2944,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 22).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 22).Value.ToString()) && !(ws1.Cell(e, 22).Value.ToString().Equals("NaN")))
                 {
                     decimal t22 = decimal.Parse(ws1.Cell(e, 22).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st22 = t22.ToString("0.0");
@@ -2926,7 +2955,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 23).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 23).Value.ToString()) && !(ws1.Cell(e, 23).Value.ToString().Equals("NaN")))
                 {
                     decimal t23 = decimal.Parse(ws1.Cell(e, 23).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st23 = t23.ToString("0.0");
@@ -2937,7 +2966,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 24).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 24).Value.ToString()) && !(ws1.Cell(e, 24).Value.ToString().Equals("NaN")))
                 {
                     decimal t24 = decimal.Parse(ws1.Cell(e, 24).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st24 = t24.ToString("0.0");
@@ -2948,7 +2977,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 25).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 25).Value.ToString()) && !(ws1.Cell(e, 25).Value.ToString().Equals("NaN")))
                 {
                     decimal t25 = decimal.Parse(ws1.Cell(e, 25).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st25 = t25.ToString("0.0");
@@ -2959,7 +2988,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 26).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 26).Value.ToString()) && !(ws1.Cell(e, 26).Value.ToString().Equals("NaN")))
                 {
                     decimal t26 = decimal.Parse(ws1.Cell(e, 26).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st26 = t26.ToString("0.0");
@@ -2970,7 +2999,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 27).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 27).Value.ToString()) && !(ws1.Cell(e, 27).Value.ToString().Equals("NaN")))
                 {
                     decimal t27 = decimal.Parse(ws1.Cell(e, 27).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st27 = t27.ToString("0.0");
@@ -2981,7 +3010,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 28).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 28).Value.ToString()) && !(ws1.Cell(e, 28).Value.ToString().Equals("NaN")))
                 {
                     decimal t28 = decimal.Parse(ws1.Cell(e, 28).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st28 = t28.ToString("0.0");
@@ -2992,7 +3021,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 29).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 29).Value.ToString()) && !(ws1.Cell(e, 29).Value.ToString().Equals("NaN")))
                 {
                     decimal t29 = decimal.Parse(ws1.Cell(e, 29).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st29 = t29.ToString("0.0");
@@ -3003,7 +3032,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 30).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 30).Value.ToString()) && !(ws1.Cell(e, 30).Value.ToString().Equals("NaN")))
                 {
                     decimal t30 = decimal.Parse(ws1.Cell(e, 30).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st30 = t30.ToString("0.0");
@@ -3016,7 +3045,7 @@ namespace Capex.Web.Controllers
                 ///
                 /// 31-40
                 ///
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 31).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 31).Value.ToString()) && !(ws1.Cell(e, 31).Value.ToString().Equals("NaN")))
                 {
                     decimal t31 = decimal.Parse(ws1.Cell(e, 31).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st31 = t31.ToString("0.0");
@@ -3027,7 +3056,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 32).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 32).Value.ToString()) && !(ws1.Cell(e, 32).Value.ToString().Equals("NaN")))
                 {
                     decimal t32 = decimal.Parse(ws1.Cell(e, 32).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st32 = t32.ToString("0.0");
@@ -3038,7 +3067,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 33).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 33).Value.ToString()) && !(ws1.Cell(e, 33).Value.ToString().Equals("NaN")))
                 {
                     decimal t33 = decimal.Parse(ws1.Cell(e, 33).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st33 = t33.ToString("0.0");
@@ -3049,7 +3078,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 34).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 34).Value.ToString()) && !(ws1.Cell(e, 34).Value.ToString().Equals("NaN")))
                 {
                     decimal t34 = decimal.Parse(ws1.Cell(e, 34).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st34 = t34.ToString("0.0");
@@ -3060,7 +3089,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 35).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 35).Value.ToString()) && !(ws1.Cell(e, 35).Value.ToString().Equals("NaN")))
                 {
                     decimal t35 = decimal.Parse(ws1.Cell(e, 35).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st35 = t35.ToString("0.0");
@@ -3071,7 +3100,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 36).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 36).Value.ToString()) && !(ws1.Cell(e, 36).Value.ToString().Equals("NaN")))
                 {
                     decimal t36 = decimal.Parse(ws1.Cell(e, 36).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st36 = t36.ToString("0.0");
@@ -3082,7 +3111,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 37).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 37).Value.ToString()) && !(ws1.Cell(e, 37).Value.ToString().Equals("NaN")))
                 {
                     decimal t37 = decimal.Parse(ws1.Cell(e, 37).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st37 = t37.ToString("0.0");
@@ -3093,7 +3122,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 38).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 38).Value.ToString()) && !(ws1.Cell(e, 38).Value.ToString().Equals("NaN")))
                 {
                     decimal t38 = decimal.Parse(ws1.Cell(e, 38).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st38 = t38.ToString("0.0");
@@ -3104,7 +3133,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 39).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 39).Value.ToString()) && !(ws1.Cell(e, 39).Value.ToString().Equals("NaN")))
                 {
                     decimal t39 = decimal.Parse(ws1.Cell(e, 39).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st39 = t39.ToString("0.0");
@@ -3115,7 +3144,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 40).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 40).Value.ToString()) && !(ws1.Cell(e, 40).Value.ToString().Equals("NaN")))
                 {
 
                     decimal t40 = decimal.Parse(ws1.Cell(e, 40).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
@@ -3127,7 +3156,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 41).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 41).Value.ToString()) && !(ws1.Cell(e, 41).Value.ToString().Equals("NaN")))
                 {
                     decimal t41 = decimal.Parse(ws1.Cell(e, 41).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st41 = t41.ToString("0.0");
@@ -3138,7 +3167,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 42).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 42).Value.ToString()) && !(ws1.Cell(e, 42).Value.ToString().Equals("NaN")))
                 {
                     decimal t42 = decimal.Parse(ws1.Cell(e, 42).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st42 = t42.ToString("0.0");
@@ -3149,7 +3178,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 43).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 43).Value.ToString()) && !(ws1.Cell(e, 43).Value.ToString().Equals("NaN")))
                 {
                     decimal t43 = decimal.Parse(ws1.Cell(e, 43).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st43 = t43.ToString("0.0");
@@ -3161,7 +3190,7 @@ namespace Capex.Web.Controllers
                 }
 
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 44).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 44).Value.ToString()) && !(ws1.Cell(e, 44).Value.ToString().Equals("NaN")))
                 {
                     decimal t44 = decimal.Parse(ws1.Cell(e, 44).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st44 = t44.ToString("0.0");
@@ -3172,7 +3201,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 45).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 45).Value.ToString()) && !(ws1.Cell(e, 45).Value.ToString().Equals("NaN")))
                 {
                     decimal t45 = decimal.Parse(ws1.Cell(e, 45).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st45 = t45.ToString("0.0");
@@ -3183,7 +3212,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 46).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 46).Value.ToString()) && !(ws1.Cell(e, 46).Value.ToString().Equals("NaN")))
                 {
                     decimal t46 = decimal.Parse(ws1.Cell(e, 46).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st46 = t46.ToString("0.0");
@@ -3194,7 +3223,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 47).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 47).Value.ToString()) && !(ws1.Cell(e, 47).Value.ToString().Equals("NaN")))
                 {
                     decimal t47 = decimal.Parse(ws1.Cell(e, 47).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st47 = t47.ToString("0.0");
@@ -3205,7 +3234,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 48).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 48).Value.ToString()) && !(ws1.Cell(e, 48).Value.ToString().Equals("NaN")))
                 {
                     decimal t48 = decimal.Parse(ws1.Cell(e, 48).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st48 = t48.ToString("0.0");
@@ -3216,7 +3245,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 49).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 49).Value.ToString()) && !(ws1.Cell(e, 49).Value.ToString().Equals("NaN")))
                 {
                     decimal t49 = decimal.Parse(ws1.Cell(e, 49).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st49 = t49.ToString("0.0");
@@ -3228,7 +3257,7 @@ namespace Capex.Web.Controllers
                 }
 
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 50).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 50).Value.ToString()) && !(ws1.Cell(e, 50).Value.ToString().Equals("NaN")))
                 {
                     decimal t50 = decimal.Parse(ws1.Cell(e, 50).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st50 = t50.ToString("0.0");
@@ -3241,7 +3270,7 @@ namespace Capex.Web.Controllers
                 ///
                 /// 51-60
                 ///
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 51).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 51).Value.ToString()) && !(ws1.Cell(e, 51).Value.ToString().Equals("NaN")))
                 {
                     decimal t51 = decimal.Parse(ws1.Cell(e, 51).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st51 = t51.ToString("0.0");
@@ -3252,7 +3281,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 52).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 52).Value.ToString()) && !(ws1.Cell(e, 52).Value.ToString().Equals("NaN")))
                 {
                     decimal t52 = decimal.Parse(ws1.Cell(e, 52).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st52 = t52.ToString("0.0");
@@ -3263,7 +3292,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 53).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 53).Value.ToString()) && !(ws1.Cell(e, 53).Value.ToString().Equals("NaN")))
                 {
                     decimal t53 = decimal.Parse(ws1.Cell(e, 53).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st53 = t53.ToString("0.0");
@@ -3274,7 +3303,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 54).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 54).Value.ToString()) && !(ws1.Cell(e, 54).Value.ToString().Equals("NaN")))
                 {
                     decimal t54 = decimal.Parse(ws1.Cell(e, 54).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st54 = t54.ToString("0.0");
@@ -3285,7 +3314,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 55).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 55).Value.ToString()) && !(ws1.Cell(e, 55).Value.ToString().Equals("NaN")))
                 {
                     decimal t55 = decimal.Parse(ws1.Cell(e, 55).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st55 = t55.ToString("0.0");
@@ -3296,7 +3325,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 56).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 56).Value.ToString()) && !(ws1.Cell(e, 56).Value.ToString().Equals("NaN")))
                 {
                     decimal t56 = decimal.Parse(ws1.Cell(e, 56).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st56 = t56.ToString("0.0");
@@ -3307,7 +3336,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 57).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 57).Value.ToString()) && !(ws1.Cell(e, 57).Value.ToString().Equals("NaN")))
                 {
                     decimal t57 = decimal.Parse(ws1.Cell(e, 57).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st57 = t57.ToString("0.0");
@@ -3318,7 +3347,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 58).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 58).Value.ToString()) && !(ws1.Cell(e, 58).Value.ToString().Equals("NaN")))
                 {
                     decimal t58 = decimal.Parse(ws1.Cell(e, 58).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st58 = t58.ToString("0.0");
@@ -3329,7 +3358,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 59).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 59).Value.ToString()) && !(ws1.Cell(e, 59).Value.ToString().Equals("NaN")))
                 {
                     decimal t59 = decimal.Parse(ws1.Cell(e, 59).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st59 = t59.ToString("0.0");
@@ -3340,7 +3369,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 60).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 60).Value.ToString()) && !(ws1.Cell(e, 60).Value.ToString().Equals("NaN")))
                 {
                     decimal t60 = decimal.Parse(ws1.Cell(e, 60).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st60 = t60.ToString("0.0");
@@ -3354,7 +3383,7 @@ namespace Capex.Web.Controllers
                 ///
                 /// 61-70
                 ///
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 61).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 61).Value.ToString()) && !(ws1.Cell(e, 61).Value.ToString().Equals("NaN")))
                 {
                     decimal t61 = decimal.Parse(ws1.Cell(e, 61).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st61 = t61.ToString("0.0");
@@ -3365,7 +3394,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 62).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 62).Value.ToString()) && !(ws1.Cell(e, 62).Value.ToString().Equals("NaN")))
                 {
                     decimal t62 = decimal.Parse(ws1.Cell(e, 62).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st62 = t62.ToString("0.0");
@@ -3376,7 +3405,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 63).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 63).Value.ToString()) && !(ws1.Cell(e, 63).Value.ToString().Equals("NaN")))
                 {
                     decimal t63 = decimal.Parse(ws1.Cell(e, 63).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st63 = t63.ToString("0.0");
@@ -3387,7 +3416,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 64).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 64).Value.ToString()) && !(ws1.Cell(e, 64).Value.ToString().Equals("NaN")))
                 {
                     decimal t64 = decimal.Parse(ws1.Cell(e, 64).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st64 = t64.ToString("0.0");
@@ -3398,7 +3427,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 65).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 65).Value.ToString()) && !(ws1.Cell(e, 65).Value.ToString().Equals("NaN")))
                 {
                     decimal t65 = decimal.Parse(ws1.Cell(e, 65).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st65 = t65.ToString("0.0");
@@ -3409,7 +3438,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 66).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 66).Value.ToString()) && !(ws1.Cell(e, 66).Value.ToString().Equals("NaN")))
                 {
                     decimal t66 = decimal.Parse(ws1.Cell(e, 66).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st66 = t66.ToString("0.0");
@@ -3420,7 +3449,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 67).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 67).Value.ToString()) && !(ws1.Cell(e, 67).Value.ToString().Equals("NaN")))
                 {
                     decimal t67 = decimal.Parse(ws1.Cell(e, 67).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st67 = t67.ToString("0.0");
@@ -3431,7 +3460,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 68).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 68).Value.ToString()) && !(ws1.Cell(e, 68).Value.ToString().Equals("NaN")))
                 {
                     decimal t68 = decimal.Parse(ws1.Cell(e, 68).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st68 = t68.ToString("0.0");
@@ -3442,7 +3471,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 69).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 69).Value.ToString()) && !(ws1.Cell(e, 69).Value.ToString().Equals("NaN")))
                 {
                     decimal t69 = decimal.Parse(ws1.Cell(e, 69).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st69 = t69.ToString("0.0");
@@ -3453,7 +3482,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 70).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 70).Value.ToString()) && !(ws1.Cell(e, 70).Value.ToString().Equals("NaN")))
                 {
                     decimal t70 = decimal.Parse(ws1.Cell(e, 70).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st70 = t70.ToString("0.0");
@@ -3467,7 +3496,7 @@ namespace Capex.Web.Controllers
                 ///
                 /// 71-80
                 ///
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 71).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 71).Value.ToString()) && !(ws1.Cell(e, 71).Value.ToString().Equals("NaN")))
                 {
                     decimal t71 = decimal.Parse(ws1.Cell(e, 71).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st71 = t71.ToString("0.0");
@@ -3478,7 +3507,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 72).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 72).Value.ToString()) && !(ws1.Cell(e, 72).Value.ToString().Equals("NaN")))
                 {
                     decimal t72 = decimal.Parse(ws1.Cell(e, 72).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st72 = t72.ToString("0.0");
@@ -3489,7 +3518,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 73).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 73).Value.ToString()) && !(ws1.Cell(e, 73).Value.ToString().Equals("NaN")))
                 {
                     decimal t73 = decimal.Parse(ws1.Cell(e, 73).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st73 = t73.ToString("0.0");
@@ -3500,7 +3529,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 74).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 74).Value.ToString()) && !(ws1.Cell(e, 74).Value.ToString().Equals("NaN")))
                 {
                     decimal t74 = decimal.Parse(ws1.Cell(e, 74).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st74 = t74.ToString("0.0");
@@ -3511,7 +3540,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 75).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 75).Value.ToString()) && !(ws1.Cell(e, 75).Value.ToString().Equals("NaN")))
                 {
                     decimal t75 = decimal.Parse(ws1.Cell(e, 75).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st75 = t75.ToString("0.0");
@@ -3522,7 +3551,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 76).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 76).Value.ToString()) && !(ws1.Cell(e, 76).Value.ToString().Equals("NaN")))
                 {
                     decimal t76 = decimal.Parse(ws1.Cell(e, 76).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st76 = t76.ToString("0.0");
@@ -3533,7 +3562,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 77).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 77).Value.ToString()) && !(ws1.Cell(e, 77).Value.ToString().Equals("NaN")))
                 {
                     decimal t77 = decimal.Parse(ws1.Cell(e, 77).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st77 = t77.ToString("0.0");
@@ -3544,7 +3573,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 78).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 78).Value.ToString()) && !(ws1.Cell(e, 78).Value.ToString().Equals("NaN")))
                 {
                     decimal t78 = decimal.Parse(ws1.Cell(e, 78).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st78 = t78.ToString("0.0");
@@ -3555,7 +3584,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 79).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 79).Value.ToString()) && !(ws1.Cell(e, 79).Value.ToString().Equals("NaN")))
                 {
                     decimal t79 = decimal.Parse(ws1.Cell(e, 79).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st79 = t79.ToString("0.0");
@@ -3566,7 +3595,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 80).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 80).Value.ToString()) && !(ws1.Cell(e, 80).Value.ToString().Equals("NaN")))
                 {
                     decimal t80 = decimal.Parse(ws1.Cell(e, 80).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st80 = t80.ToString("0.0");
@@ -3581,7 +3610,7 @@ namespace Capex.Web.Controllers
                 ///
                 /// 81-90
                 ///
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 81).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 81).Value.ToString()) && !(ws1.Cell(e, 81).Value.ToString().Equals("NaN")))
                 {
                     decimal t81 = decimal.Parse(ws1.Cell(e, 81).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st81 = t81.ToString("0.0");
@@ -3592,7 +3621,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 82).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 82).Value.ToString()) && !(ws1.Cell(e, 82).Value.ToString().Equals("NaN")))
                 {
                     decimal t82 = decimal.Parse(ws1.Cell(e, 82).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st82 = t82.ToString("0.0");
@@ -3603,7 +3632,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 83).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 83).Value.ToString()) && !(ws1.Cell(e, 83).Value.ToString().Equals("NaN")))
                 {
                     decimal t83 = decimal.Parse(ws1.Cell(e, 83).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st83 = t83.ToString("0.0");
@@ -3614,7 +3643,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 84).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 84).Value.ToString()) && !(ws1.Cell(e, 84).Value.ToString().Equals("NaN")))
                 {
                     decimal t84 = decimal.Parse(ws1.Cell(e, 84).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st84 = t84.ToString("0.0");
@@ -3625,7 +3654,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 85).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 85).Value.ToString()) && !(ws1.Cell(e, 85).Value.ToString().Equals("NaN")))
                 {
                     decimal t85 = decimal.Parse(ws1.Cell(e, 85).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st85 = t85.ToString("0.0");
@@ -3636,7 +3665,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 86).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 86).Value.ToString()) && !(ws1.Cell(e, 86).Value.ToString().Equals("NaN")))
                 {
                     decimal t86 = decimal.Parse(ws1.Cell(e, 86).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st86 = t86.ToString("0.0");
@@ -3647,7 +3676,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 87).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 87).Value.ToString()) && !(ws1.Cell(e, 87).Value.ToString().Equals("NaN")))
                 {
                     decimal t87 = decimal.Parse(ws1.Cell(e, 87).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st87 = t87.ToString("0.0");
@@ -3658,7 +3687,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 88).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 88).Value.ToString()) && !(ws1.Cell(e, 88).Value.ToString().Equals("NaN")))
                 {
                     decimal t88 = decimal.Parse(ws1.Cell(e, 88).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st88 = t88.ToString("0.0");
@@ -3669,7 +3698,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 89).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 89).Value.ToString()) && !(ws1.Cell(e, 89).Value.ToString().Equals("NaN")))
                 {
                     decimal t89 = decimal.Parse(ws1.Cell(e, 89).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st89 = t89.ToString("0.0");
@@ -3680,7 +3709,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 90).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 90).Value.ToString()) && !(ws1.Cell(e, 90).Value.ToString().Equals("NaN")))
                 {
                     decimal t90 = decimal.Parse(ws1.Cell(e, 90).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st90 = t90.ToString("0.0");
@@ -3694,7 +3723,7 @@ namespace Capex.Web.Controllers
                 ///
                 /// 91-100
                 ///
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 91).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 91).Value.ToString()) && !(ws1.Cell(e, 91).Value.ToString().Equals("NaN")))
                 {
                     decimal t91 = decimal.Parse(ws1.Cell(e, 91).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st91 = t91.ToString("0.0");
@@ -3705,7 +3734,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 92).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 92).Value.ToString()) && !(ws1.Cell(e, 92).Value.ToString().Equals("NaN")))
                 {
                     decimal t92 = decimal.Parse(ws1.Cell(e, 92).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st92 = t92.ToString("0.0");
@@ -3716,7 +3745,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 93).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 93).Value.ToString()) && !(ws1.Cell(e, 93).Value.ToString().Equals("NaN")))
                 {
                     decimal t93 = decimal.Parse(ws1.Cell(e, 93).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st93 = t93.ToString("0.0");
@@ -3727,7 +3756,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 94).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 94).Value.ToString()) && !(ws1.Cell(e, 94).Value.ToString().Equals("NaN")))
                 {
                     decimal t94 = decimal.Parse(ws1.Cell(e, 94).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st94 = t94.ToString("0.0");
@@ -3738,7 +3767,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 95).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 95).Value.ToString()) && !(ws1.Cell(e, 95).Value.ToString().Equals("NaN")))
                 {
                     decimal t95 = decimal.Parse(ws1.Cell(e, 95).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st95 = t95.ToString("0.0");
@@ -3749,7 +3778,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 96).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 96).Value.ToString()) && !(ws1.Cell(e, 96).Value.ToString().Equals("NaN")))
                 {
                     decimal t96 = decimal.Parse(ws1.Cell(e, 96).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st96 = t96.ToString("0.0");
@@ -3760,7 +3789,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 97).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 97).Value.ToString()) && !(ws1.Cell(e, 97).Value.ToString().Equals("NaN")))
                 {
                     decimal t97 = decimal.Parse(ws1.Cell(e, 97).Value.ToString(), NumberStyles.Number | NumberStyles.AllowExponent) * 100;
                     string st97 = t97.ToString("0.0");
@@ -3771,7 +3800,7 @@ namespace Capex.Web.Controllers
                     registro.Add("0");
                 }
 
-                if (!string.IsNullOrEmpty(ws1.Cell(e, 98).Value.ToString()))
+                if (!string.IsNullOrEmpty(ws1.Cell(e, 98).Value.ToString()) && !(ws1.Cell(e, 98).Value.ToString().Equals("NaN")))
                 {
                     registro.Add(ws1.Cell(e, 98).Value.ToString());
                 }
@@ -3799,18 +3828,43 @@ namespace Capex.Web.Controllers
             return "OK";
         }
 
-
-
-
-
-
         private bool IsExponentialFormat(string str)
         {
             double dummy;
             return (str.Contains("E") || str.Contains("e")) && double.TryParse(str, out dummy);
         }
 
-
+        private string ObtenerParametroSistema(string paramKey)
+        {
+            string paramValue = string.Empty;
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("ParamKey", paramKey);
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_PARAMETRO_SISTEMA", parametos, commandType: CommandType.StoredProcedure).ToList();
+                    if (resultado.Count > 0)
+                    {
+                        foreach (var result in resultado)
+                        {
+                            paramValue = ((result.ParamValue != null && !string.IsNullOrEmpty(result.ParamValue.ToString())) ? result.ParamValue.ToString() : "");
+                        }
+                    }
+                }
+                catch (Exception err)
+                {
+                    paramValue = string.Empty;
+                    err.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return paramValue;
+        }
 
         /// <summary>
         /// IMPORTACION - CASO BASE 
@@ -6072,7 +6126,6 @@ namespace Capex.Web.Controllers
                 //Proceso por MESES
                 for (int M = 4; M <= 15; M++)
                 {
-                    
                     string originalCellValue = ((ws.Cell(T, M) != null && ws.Cell(T, M).Value != null) ? ws.Cell(T, M).Value.ToString() : "");
                     InsertarTraceLog(token, "T=" + T + ",M=" + M + ", Mes originalCellValue=" + originalCellValue, usuario);
                     string cellValue = checkNumberFormat(originalCellValue);
@@ -6101,7 +6154,7 @@ namespace Capex.Web.Controllers
                         if (string.IsNullOrEmpty(cellValue) || !isNumericValue(cellValue) || !validarParametroComercialMes(token, 2, tipoCPI, mes, cellValue))
                         {
                             string mesString = obtenerMes(mes);
-                            InsertarTraceLog(token, "Error en el parámetro ipc para el mes de " + mesString + ".", usuario);
+                            InsertarTraceLog(token, "Error en el parámetro cpi para el mes de " + mesString + ".", usuario);
                             throw new InvalidParameterExcelException("Error en el parámetro cpi para el mes de " + mesString + ".");
                         }
                     }
@@ -8519,12 +8572,21 @@ namespace Capex.Web.Controllers
                         }
                         else if (esParametroVNToken)
                         {
-                            parametros.Add("TipoIniciativa", tipoIniciativaOrientacionComercial);
-                            parametros.Add("Periodo", anioIniciativaOrientacionComercial);
-                            parametros.Add("ParametroVNToken", parametroVNToken);
-                            procedimientoAmacenado = "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO_PARAMETROVN";
+                            var parametosOrigen = new DynamicParameters();
+                            parametosOrigen.Add("ParametroVNToken", parametroVNToken);
+                            parametosOrigen.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 1);
+                            SqlMapper.Query(objConnection, "CAPEX_PARAMETRO_IS_V0", parametosOrigen, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                            string respuestaOrigen = parametosOrigen.Get<string>("Respuesta");
+                            if (respuestaOrigen == null || string.IsNullOrEmpty(respuestaOrigen.Trim()) || "0".Equals(respuestaOrigen.Trim()))
+                            {
+                                parametros.Add("TipoIniciativa", tipoIniciativaOrientacionComercial);
+                                parametros.Add("Periodo", anioIniciativaOrientacionComercial);
+                                parametros.Add("ParametroVNToken", parametroVNToken);
+                                procedimientoAmacenado = "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO_PARAMETROVN";
+                            }
                         }
                         var IniciativaPdfPresupuesto = SqlMapper.Query(objConnection, procedimientoAmacenado, parametros, commandType: CommandType.StoredProcedure).ToList();
+                        string ENUS = ObtenerParametroSistema("en-US");
                         foreach (var ini in IniciativaPdfPresupuesto)
                         {
                             ViewBag.Anio = ini.IniPeriodo;
@@ -8595,66 +8657,102 @@ namespace Capex.Web.Controllers
                             ViewBag.VidaUtil = ((string.IsNullOrEmpty(ini.EveVidaUtil)) ? "0" : formatNumberPdf(ini.EveVidaUtil));
                             ViewBag.Tir = ((string.IsNullOrEmpty(ini.EveTir)) ? "0" : double.Parse(varEvaluacionEconomicaPdf(ini.EveTir), CultureInfo.InvariantCulture).ToString());
 
-                            //ViewBag.FaseIngenieria = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexIng)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.FaseIngenieria = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexIng)).ToString();
-                            //ViewBag.FaseAdquisicion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexAdq)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.FaseAdquisicion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexAdq)).ToString();
-                            //ViewBag.FaseConstruccion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexConst)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.FaseConstruccion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexConst)).ToString();
-                            //ViewBag.FaseAdministracion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexAdm)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.FaseAdministracion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexAdm)).ToString();
-                            //ViewBag.TotalContingencia = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexCont)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.TotalContingencia = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexCont)).ToString();
-                            //ViewBag.CostoDueno = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PorCostoDueno)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.CostoDueno = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PorCostoDueno)).ToString();
-                            //ViewBag.Contingencia = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PorContingencia)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.Contingencia = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PorContingencia)).ToString();
+                            if (ENUS != null && !string.IsNullOrEmpty(ENUS.ToString()))
+                            {
+                                ViewBag.FaseIngenieria = ((ini.TotalCapexIng == null || string.IsNullOrEmpty(ini.TotalCapexIng)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexIng)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.FaseAdquisicion = ((ini.TotalCapexAdq == null || string.IsNullOrEmpty(ini.TotalCapexAdq)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexAdq)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.FaseConstruccion = ((ini.TotalCapexConst == null || string.IsNullOrEmpty(ini.TotalCapexConst)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexConst)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.FaseAdministracion = ((ini.TotalCapexAdm == null || string.IsNullOrEmpty(ini.TotalCapexAdm)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexAdm)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.TotalContingencia = ((ini.TotalCapexCont == null || string.IsNullOrEmpty(ini.TotalCapexCont)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexCont)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.CostoDueno = ((ini.PorCostoDueno == null || string.IsNullOrEmpty(ini.PorCostoDueno)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PorCostoDueno)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.Contingencia = ((ini.PorContingencia == null || string.IsNullOrEmpty(ini.PorContingencia)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PorContingencia)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
 
-                            //ViewBag.TotalCapexFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.TotalCapexFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexFisico)).ToString();
-                            //ViewBag.EneroFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.EneroFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.EneroFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.EneroFisico)).ToString();
-                            //ViewBag.FebreroFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.FebreroFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.FebreroFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.FebreroFisico)).ToString();
-                            //ViewBag.MarzoFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MarzoFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.MarzoFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MarzoFisico)).ToString();
-                            //ViewBag.AbrilFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.AbrilFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilFisico)).ToString();
-                            //ViewBag.MayoFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MayoFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.MayoFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MayoFisico)).ToString();
-                            //ViewBag.JunioFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JunioFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.JunioFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JunioFisico)).ToString();
-                            ViewBag.JulioFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JulioFisico)).ToString();
-                            ViewBag.AgostoFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AgostoFisico)).ToString();
-                            ViewBag.SeptiembreFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.SeptiembreFisico)).ToString();
-                            ViewBag.OctubreFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.OctubreFisico)).ToString();
-                            ViewBag.NoviembreFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.NoviembreFisico)).ToString();
-                            ViewBag.DiciembreFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.DiciembreFisico)).ToString();
-                            ViewBag.TotalFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalFisico)).ToString();
-                            ViewBag.PresAnioMasUnoFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasUnoFisico)).ToString();
-                            ViewBag.PresAnioMasDosFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasDosFisico)).ToString();
-                            ViewBag.PresAnioMasTresFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasTresFisico)).ToString();
-                            ViewBag.TotalAcumFisico = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalAcumFisico)).ToString();
+                                ViewBag.TotalCapexFisico = ((ini.TotalCapexFisico == null || string.IsNullOrEmpty(ini.TotalCapexFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.EneroFisico = ((ini.EneroFisico == null || string.IsNullOrEmpty(ini.EneroFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.EneroFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.FebreroFisico = ((ini.FebreroFisico == null || string.IsNullOrEmpty(ini.FebreroFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.FebreroFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.MarzoFisico = ((ini.MarzoFisico == null || string.IsNullOrEmpty(ini.MarzoFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MarzoFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.AbrilFisico = ((ini.AbrilFisico == null || string.IsNullOrEmpty(ini.AbrilFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.MayoFisico = ((ini.MayoFisico == null || string.IsNullOrEmpty(ini.MayoFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MayoFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.JunioFisico = ((ini.JunioFisico == null || string.IsNullOrEmpty(ini.JunioFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JunioFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.JulioFisico = ((ini.JulioFisico == null || string.IsNullOrEmpty(ini.JulioFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JulioFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.AgostoFisico = ((ini.AgostoFisico == null || string.IsNullOrEmpty(ini.AgostoFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AgostoFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.SeptiembreFisico = ((ini.SeptiembreFisico == null || string.IsNullOrEmpty(ini.SeptiembreFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.SeptiembreFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.OctubreFisico = ((ini.OctubreFisico == null || string.IsNullOrEmpty(ini.OctubreFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.OctubreFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.NoviembreFisico = ((ini.NoviembreFisico == null || string.IsNullOrEmpty(ini.NoviembreFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.NoviembreFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.DiciembreFisico = ((ini.DiciembreFisico == null || string.IsNullOrEmpty(ini.DiciembreFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.DiciembreFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.TotalFisico = ((ini.TotalFisico == null || string.IsNullOrEmpty(ini.TotalFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.PresAnioMasUnoFisico = ((ini.PresAnioMasUnoFisico == null || string.IsNullOrEmpty(ini.PresAnioMasUnoFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasUnoFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.PresAnioMasDosFisico = ((ini.PresAnioMasDosFisico == null || string.IsNullOrEmpty(ini.PresAnioMasDosFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasDosFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.PresAnioMasTresFisico = ((ini.PresAnioMasTresFisico == null || string.IsNullOrEmpty(ini.PresAnioMasTresFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasTresFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.TotalAcumFisico = ((ini.TotalAcumFisico == null || string.IsNullOrEmpty(ini.TotalAcumFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalAcumFisico)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
 
-                            ViewBag.TotalCapexTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexTotPar)).ToString();
-                            ViewBag.EneroTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.EneroTotPar)).ToString();
-                            ViewBag.FebreroTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.FebreroTotPar)).ToString();
-                            ViewBag.MarzoTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MarzoTotPar)).ToString();
-                            // ViewBag.AbrilTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.');
-                            ViewBag.AbrilTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilTotPar)).ToString();
-                            ViewBag.MayoTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MayoTotPar)).ToString();
-                            ViewBag.JunioTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JunioTotPar)).ToString();
-                            ViewBag.JulioTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JulioTotPar)).ToString();
-                            ViewBag.AgostoTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AgostoTotPar)).ToString();
-                            ViewBag.SeptiembreTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.SeptiembreTotPar)).ToString();
-                            ViewBag.OctubreTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.OctubreTotPar)).ToString();
-                            ViewBag.NoviembreTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.NoviembreTotPar)).ToString();
-                            ViewBag.DiciembreTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.DiciembreTotPar)).ToString();
-                            ViewBag.TotalTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalTotPar)).ToString();
-                            ViewBag.PresAnioMasUnoTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasUnoTotPar)).ToString();
-                            ViewBag.PresAnioMasDosTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasDosTotPar)).ToString();
-                            ViewBag.PresAnioMasTresTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasTresTotPar)).ToString();
-                            ViewBag.TotalAcumTotPar = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalAcumTOTPAR)).ToString();
+                                ViewBag.TotalCapexTotPar = ((ini.TotalCapexTotPar == null || string.IsNullOrEmpty(ini.TotalCapexTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.EneroTotPar = ((ini.EneroTotPar == null || string.IsNullOrEmpty(ini.EneroTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.EneroTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.FebreroTotPar = ((ini.FebreroTotPar == null || string.IsNullOrEmpty(ini.FebreroTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.FebreroTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.MarzoTotPar = ((ini.MarzoTotPar == null || string.IsNullOrEmpty(ini.MarzoTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MarzoTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.AbrilTotPar = ((ini.AbrilTotPar == null || string.IsNullOrEmpty(ini.AbrilTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.MayoTotPar = ((ini.MayoTotPar == null || string.IsNullOrEmpty(ini.MayoTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MayoTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.JunioTotPar = ((ini.JunioTotPar == null || string.IsNullOrEmpty(ini.JunioTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JunioTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.JulioTotPar = ((ini.JulioTotPar == null || string.IsNullOrEmpty(ini.JulioTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JulioTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.AgostoTotPar = ((ini.AgostoTotPar == null || string.IsNullOrEmpty(ini.AgostoTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AgostoTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.SeptiembreTotPar = ((ini.SeptiembreTotPar == null || string.IsNullOrEmpty(ini.SeptiembreTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.SeptiembreTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.OctubreTotPar = ((ini.OctubreTotPar == null || string.IsNullOrEmpty(ini.OctubreTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.OctubreTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.NoviembreTotPar = ((ini.NoviembreTotPar == null || string.IsNullOrEmpty(ini.NoviembreTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.NoviembreTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.DiciembreTotPar = ((ini.DiciembreTotPar == null || string.IsNullOrEmpty(ini.DiciembreTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.DiciembreTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.TotalTotPar = ((ini.TotalTotPar == null || string.IsNullOrEmpty(ini.TotalTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.PresAnioMasUnoTotPar = ((ini.PresAnioMasUnoTotPar == null || string.IsNullOrEmpty(ini.PresAnioMasUnoTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasUnoTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.PresAnioMasDosTotPar = ((ini.PresAnioMasDosTotPar == null || string.IsNullOrEmpty(ini.PresAnioMasDosTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasDosTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.PresAnioMasTresTotPar = ((ini.PresAnioMasTresTotPar == null || string.IsNullOrEmpty(ini.PresAnioMasTresTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasTresTotPar)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.TotalAcumTotPar = ((ini.TotalAcumTOTPAR == null || string.IsNullOrEmpty(ini.TotalAcumTOTPAR)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalAcumTOTPAR)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                            }
+                            else
+                            {
+                                ViewBag.FaseIngenieria = ((ini.TotalCapexIng == null || string.IsNullOrEmpty(ini.TotalCapexIng)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexIng)).ToString());
+                                ViewBag.FaseAdquisicion = ((ini.TotalCapexAdq == null || string.IsNullOrEmpty(ini.TotalCapexAdq)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexAdq)).ToString());
+                                ViewBag.FaseConstruccion = ((ini.TotalCapexConst == null || string.IsNullOrEmpty(ini.TotalCapexConst)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexConst)).ToString());
+                                ViewBag.FaseAdministracion = ((ini.TotalCapexAdm == null || string.IsNullOrEmpty(ini.TotalCapexAdm)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexAdm)).ToString());
+                                ViewBag.TotalContingencia = ((ini.TotalCapexCont == null || string.IsNullOrEmpty(ini.TotalCapexCont)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexCont)).ToString());
+                                ViewBag.CostoDueno = ((ini.PorCostoDueno == null || string.IsNullOrEmpty(ini.PorCostoDueno)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PorCostoDueno)).ToString());
+                                ViewBag.Contingencia = ((ini.PorContingencia == null || string.IsNullOrEmpty(ini.PorContingencia)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PorContingencia)).ToString());
+
+                                ViewBag.TotalCapexFisico = ((ini.TotalCapexFisico == null || string.IsNullOrEmpty(ini.TotalCapexFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexFisico)).ToString());
+                                ViewBag.EneroFisico = ((ini.EneroFisico == null || string.IsNullOrEmpty(ini.EneroFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.EneroFisico)).ToString());
+                                ViewBag.FebreroFisico = ((ini.FebreroFisico == null || string.IsNullOrEmpty(ini.FebreroFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.FebreroFisico)).ToString());
+                                ViewBag.MarzoFisico = ((ini.MarzoFisico == null || string.IsNullOrEmpty(ini.MarzoFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MarzoFisico)).ToString());
+                                ViewBag.AbrilFisico = ((ini.AbrilFisico == null || string.IsNullOrEmpty(ini.AbrilFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilFisico)).ToString());
+                                ViewBag.MayoFisico = ((ini.MayoFisico == null || string.IsNullOrEmpty(ini.MayoFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MayoFisico)).ToString());
+                                ViewBag.JunioFisico = ((ini.JunioFisico == null || string.IsNullOrEmpty(ini.JunioFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JunioFisico)).ToString());
+                                ViewBag.JulioFisico = ((ini.JulioFisico == null || string.IsNullOrEmpty(ini.JulioFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JulioFisico)).ToString());
+                                ViewBag.AgostoFisico = ((ini.AgostoFisico == null || string.IsNullOrEmpty(ini.AgostoFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AgostoFisico)).ToString());
+                                ViewBag.SeptiembreFisico = ((ini.SeptiembreFisico == null || string.IsNullOrEmpty(ini.SeptiembreFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.SeptiembreFisico)).ToString());
+                                ViewBag.OctubreFisico = ((ini.OctubreFisico == null || string.IsNullOrEmpty(ini.OctubreFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.OctubreFisico)).ToString());
+                                ViewBag.NoviembreFisico = ((ini.NoviembreFisico == null || string.IsNullOrEmpty(ini.NoviembreFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.NoviembreFisico)).ToString());
+                                ViewBag.DiciembreFisico = ((ini.DiciembreFisico == null || string.IsNullOrEmpty(ini.DiciembreFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.DiciembreFisico)).ToString());
+                                ViewBag.TotalFisico = ((ini.TotalFisico == null || string.IsNullOrEmpty(ini.TotalFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalFisico)).ToString());
+                                ViewBag.PresAnioMasUnoFisico = ((ini.PresAnioMasUnoFisico == null || string.IsNullOrEmpty(ini.PresAnioMasUnoFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasUnoFisico)).ToString());
+                                ViewBag.PresAnioMasDosFisico = ((ini.PresAnioMasDosFisico == null || string.IsNullOrEmpty(ini.PresAnioMasDosFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasDosFisico)).ToString());
+                                ViewBag.PresAnioMasTresFisico = ((ini.PresAnioMasTresFisico == null || string.IsNullOrEmpty(ini.PresAnioMasTresFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasTresFisico)).ToString());
+                                ViewBag.TotalAcumFisico = ((ini.TotalAcumFisico == null || string.IsNullOrEmpty(ini.TotalAcumFisico)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalAcumFisico)).ToString());
+
+                                ViewBag.TotalCapexTotPar = ((ini.TotalCapexTotPar == null || string.IsNullOrEmpty(ini.TotalCapexTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexTotPar)).ToString());
+                                ViewBag.EneroTotPar = ((ini.EneroTotPar == null || string.IsNullOrEmpty(ini.EneroTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.EneroTotPar)).ToString());
+                                ViewBag.FebreroTotPar = ((ini.FebreroTotPar == null || string.IsNullOrEmpty(ini.FebreroTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.FebreroTotPar)).ToString());
+                                ViewBag.MarzoTotPar = ((ini.MarzoTotPar == null || string.IsNullOrEmpty(ini.MarzoTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MarzoTotPar)).ToString());
+                                ViewBag.AbrilTotPar = ((ini.AbrilTotPar == null || string.IsNullOrEmpty(ini.AbrilTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilTotPar)).ToString());
+                                ViewBag.MayoTotPar = ((ini.MayoTotPar == null || string.IsNullOrEmpty(ini.MayoTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MayoTotPar)).ToString());
+                                ViewBag.JunioTotPar = ((ini.JunioTotPar == null || string.IsNullOrEmpty(ini.JunioTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JunioTotPar)).ToString());
+                                ViewBag.JulioTotPar = ((ini.JulioTotPar == null || string.IsNullOrEmpty(ini.JulioTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JulioTotPar)).ToString());
+                                ViewBag.AgostoTotPar = ((ini.AgostoTotPar == null || string.IsNullOrEmpty(ini.AgostoTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AgostoTotPar)).ToString());
+                                ViewBag.SeptiembreTotPar = ((ini.SeptiembreTotPar == null || string.IsNullOrEmpty(ini.SeptiembreTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.SeptiembreTotPar)).ToString());
+                                ViewBag.OctubreTotPar = ((ini.OctubreTotPar == null || string.IsNullOrEmpty(ini.OctubreTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.OctubreTotPar)).ToString());
+                                ViewBag.NoviembreTotPar = ((ini.NoviembreTotPar == null || string.IsNullOrEmpty(ini.NoviembreTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.NoviembreTotPar)).ToString());
+                                ViewBag.DiciembreTotPar = ((ini.DiciembreTotPar == null || string.IsNullOrEmpty(ini.DiciembreTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.DiciembreTotPar)).ToString());
+                                ViewBag.TotalTotPar = ((ini.TotalTotPar == null || string.IsNullOrEmpty(ini.TotalTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalTotPar)).ToString());
+                                ViewBag.PresAnioMasUnoTotPar = ((ini.PresAnioMasUnoTotPar == null || string.IsNullOrEmpty(ini.PresAnioMasUnoTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasUnoTotPar)).ToString());
+                                ViewBag.PresAnioMasDosTotPar = ((ini.PresAnioMasDosTotPar == null || string.IsNullOrEmpty(ini.PresAnioMasDosTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasDosTotPar)).ToString());
+                                ViewBag.PresAnioMasTresTotPar = ((ini.PresAnioMasTresTotPar == null || string.IsNullOrEmpty(ini.PresAnioMasTresTotPar)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasTresTotPar)).ToString());
+                                ViewBag.TotalAcumTotPar = ((ini.TotalAcumTOTPAR == null || string.IsNullOrEmpty(ini.TotalAcumTOTPAR)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalAcumTOTPAR)).ToString());
+                            }
 
                             ViewBag.TotalCapexTOTACUM = ini.TotalCapexTOTACUM;
                             ViewBag.TotalAcumTOTACUM = ini.TotalAcumTOTACUM;
@@ -8694,23 +8792,46 @@ namespace Capex.Web.Controllers
                             ViewBag.PresAnioMasTresFinanciero = ini.PresAnioMasTresFinanciero;
                             ViewBag.TotalAcumFinanciero = ini.TotalAcumFinanciero;
 
-                            ViewBag.TotalCapexDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexDotacion)).ToString();
-                            ViewBag.EneroDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.EneroDotacion)).ToString();
-                            ViewBag.FebreroDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.FebreroDotacion)).ToString();
-                            ViewBag.MarzoDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MarzoDotacion)).ToString();
-                            ViewBag.AbrilDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilDotacion)).ToString();
-                            ViewBag.MayoDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MayoDotacion)).ToString();
-                            ViewBag.JunioDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JunioDotacion)).ToString();
-                            ViewBag.JulioDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JulioDotacion)).ToString();
-                            ViewBag.AgostoDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AgostoDotacion)).ToString();
-                            ViewBag.SeptiembreDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.SeptiembreDotacion)).ToString();
-                            ViewBag.OctubreDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.OctubreDotacion)).ToString();
-                            ViewBag.NoviembreDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.NoviembreDotacion)).ToString();
-                            ViewBag.DiciembreDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.DiciembreDotacion)).ToString();
-                            ViewBag.TotalDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalDotacion)).ToString();
-                            ViewBag.PresAnioMasUnoDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasUnoDotacion)).ToString();
-                            ViewBag.PresAnioMasDosDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasDosDotacion)).ToString();
-                            ViewBag.PresAnioMasTresDotacion = String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasTresDotacion)).ToString();
+                            if (ENUS != null && !string.IsNullOrEmpty(ENUS.ToString()))
+                            {
+                                ViewBag.TotalCapexDotacion = ((ini.TotalCapexDotacion == null || string.IsNullOrEmpty(ini.TotalCapexDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.EneroDotacion = ((ini.EneroDotacion == null || string.IsNullOrEmpty(ini.EneroDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.EneroDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.FebreroDotacion = ((ini.FebreroDotacion == null || string.IsNullOrEmpty(ini.FebreroDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.FebreroDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.MarzoDotacion = ((ini.MarzoDotacion == null || string.IsNullOrEmpty(ini.MarzoDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MarzoDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.AbrilDotacion = ((ini.AbrilDotacion == null || string.IsNullOrEmpty(ini.AbrilDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.MayoDotacion = ((ini.MayoDotacion == null || string.IsNullOrEmpty(ini.MayoDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MayoDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.JunioDotacion = ((ini.JunioDotacion == null || string.IsNullOrEmpty(ini.JunioDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JunioDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.JulioDotacion = ((ini.JulioDotacion == null || string.IsNullOrEmpty(ini.JulioDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JulioDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.AgostoDotacion = ((ini.AgostoDotacion == null || string.IsNullOrEmpty(ini.AgostoDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AgostoDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.SeptiembreDotacion = ((ini.SeptiembreDotacion == null || string.IsNullOrEmpty(ini.SeptiembreDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.SeptiembreDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.OctubreDotacion = ((ini.OctubreDotacion == null || string.IsNullOrEmpty(ini.OctubreDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.OctubreDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.NoviembreDotacion = ((ini.NoviembreDotacion == null || string.IsNullOrEmpty(ini.NoviembreDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.NoviembreDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.DiciembreDotacion = ((ini.DiciembreDotacion == null || string.IsNullOrEmpty(ini.DiciembreDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.DiciembreDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.TotalDotacion = ((ini.TotalDotacion == null || string.IsNullOrEmpty(ini.TotalDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.PresAnioMasUnoDotacion = ((ini.PresAnioMasUnoDotacion == null || string.IsNullOrEmpty(ini.PresAnioMasUnoDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasUnoDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.PresAnioMasDosDotacion = ((ini.PresAnioMasDosDotacion == null || string.IsNullOrEmpty(ini.PresAnioMasDosDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasDosDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                                ViewBag.PresAnioMasTresDotacion = ((ini.PresAnioMasTresDotacion == null || string.IsNullOrEmpty(ini.PresAnioMasTresDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasTresDotacion)).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.'));
+                            }
+                            else
+                            {
+                                ViewBag.TotalCapexDotacion = ((ini.TotalCapexDotacion == null || string.IsNullOrEmpty(ini.TotalCapexDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalCapexDotacion)).ToString());
+                                ViewBag.EneroDotacion = ((ini.EneroDotacion == null || string.IsNullOrEmpty(ini.EneroDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.EneroDotacion)).ToString());
+                                ViewBag.FebreroDotacion = ((ini.FebreroDotacion == null || string.IsNullOrEmpty(ini.FebreroDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.FebreroDotacion)).ToString());
+                                ViewBag.MarzoDotacion = ((ini.MarzoDotacion == null || string.IsNullOrEmpty(ini.MarzoDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MarzoDotacion)).ToString());
+                                ViewBag.AbrilDotacion = ((ini.AbrilDotacion == null || string.IsNullOrEmpty(ini.AbrilDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AbrilDotacion)).ToString());
+                                ViewBag.MayoDotacion = ((ini.MayoDotacion == null || string.IsNullOrEmpty(ini.MayoDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.MayoDotacion)).ToString());
+                                ViewBag.JunioDotacion = ((ini.JunioDotacion == null || string.IsNullOrEmpty(ini.JunioDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JunioDotacion)).ToString());
+                                ViewBag.JulioDotacion = ((ini.JulioDotacion == null || string.IsNullOrEmpty(ini.JulioDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.JulioDotacion)).ToString());
+                                ViewBag.AgostoDotacion = ((ini.AgostoDotacion == null || string.IsNullOrEmpty(ini.AgostoDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.AgostoDotacion)).ToString());
+                                ViewBag.SeptiembreDotacion = ((ini.SeptiembreDotacion == null || string.IsNullOrEmpty(ini.SeptiembreDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.SeptiembreDotacion)).ToString());
+                                ViewBag.OctubreDotacion = ((ini.OctubreDotacion == null || string.IsNullOrEmpty(ini.OctubreDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.OctubreDotacion)).ToString());
+                                ViewBag.NoviembreDotacion = ((ini.NoviembreDotacion == null || string.IsNullOrEmpty(ini.NoviembreDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.NoviembreDotacion)).ToString());
+                                ViewBag.DiciembreDotacion = ((ini.DiciembreDotacion == null || string.IsNullOrEmpty(ini.DiciembreDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.DiciembreDotacion)).ToString());
+                                ViewBag.TotalDotacion = ((ini.TotalDotacion == null || string.IsNullOrEmpty(ini.TotalDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.TotalDotacion)).ToString());
+                                ViewBag.PresAnioMasUnoDotacion = ((ini.PresAnioMasUnoDotacion == null || string.IsNullOrEmpty(ini.PresAnioMasUnoDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasUnoDotacion)).ToString());
+                                ViewBag.PresAnioMasDosDotacion = ((ini.PresAnioMasDosDotacion == null || string.IsNullOrEmpty(ini.PresAnioMasDosDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasDosDotacion)).ToString());
+                                ViewBag.PresAnioMasTresDotacion = ((ini.PresAnioMasTresDotacion == null || string.IsNullOrEmpty(ini.PresAnioMasTresDotacion)) ? "0" : String.Format("{0:#,##0.##}", Convert.ToDouble(ini.PresAnioMasTresDotacion)).ToString());
+                            }
 
                             ViewBag.Prob1 = ini.Prob1;
                             ViewBag.Impacto1 = ini.Impacto1;
@@ -8809,10 +8930,18 @@ namespace Capex.Web.Controllers
                         }
                         else if (esParametroVNToken)
                         {
-                            parametros.Add("TipoIniciativa", tipoIniciativaOrientacionComercial);
-                            parametros.Add("Periodo", anioIniciativaOrientacionComercial);
-                            parametros.Add("ParametroVNToken", parametroVNToken);
-                            procedimientoAmacenado = "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO_PARAMETROVN";
+                            var parametosOrigen = new DynamicParameters();
+                            parametosOrigen.Add("ParametroVNToken", parametroVNToken);
+                            parametosOrigen.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 1);
+                            SqlMapper.Query(objConnection, "CAPEX_PARAMETRO_IS_V0", parametosOrigen, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                            string respuestaOrigen = parametosOrigen.Get<string>("Respuesta");
+                            if (respuestaOrigen == null || string.IsNullOrEmpty(respuestaOrigen.Trim()) || "0".Equals(respuestaOrigen.Trim()))
+                            {
+                                parametros.Add("TipoIniciativa", tipoIniciativaOrientacionComercial);
+                                parametros.Add("Periodo", anioIniciativaOrientacionComercial);
+                                parametros.Add("ParametroVNToken", parametroVNToken);
+                                procedimientoAmacenado = "CAPEX_SEL_REPORTE_INICIATIVA_PDF_PRESUPUESTO_PARAMETROVN";
+                            }
                         }
                         var IniciativaPdfPresupuesto = SqlMapper.Query(objConnection, procedimientoAmacenado, parametros, commandType: CommandType.StoredProcedure).ToList();
                         foreach (var ini in IniciativaPdfPresupuesto)

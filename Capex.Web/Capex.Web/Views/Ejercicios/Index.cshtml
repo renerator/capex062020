@@ -331,14 +331,32 @@
 
                                                                         <td class="text-center" width="200px">
                                                                             <div style="text-transform:uppercase;text-align:center" id="TotalCapex">
-                                                                                @((string.IsNullOrEmpty(ini.IfDato19) || ini.IfDato19.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(ini.IfDato19, System.Globalization.CultureInfo.GetCultureInfo("es-CL"))))
+                                                                                @{ if (ViewBag.ENUS != null && !string.IsNullOrEmpty(ViewBag.ENUS.ToString()))
+                                                                                    {
+                                                                                        @((string.IsNullOrEmpty(ini.IfDato19) || ini.IfDato19.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(ini.IfDato19, System.Globalization.CultureInfo.GetCultureInfo("es-CL"))).Replace(',', ':').Replace('.', ',').Replace(':', '.'))
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        @((string.IsNullOrEmpty(ini.IfDato19) || ini.IfDato19.Equals("0")) ? "0" : String.Format("{0:#,##0.##}", double.Parse(ini.IfDato19, System.Globalization.CultureInfo.GetCultureInfo("es-CL"))))
+                                                                                    }
+                                                                                }
+
                                                                             </div>
                                                                         </td>
-                                                                        <td class="text-center" width="100px" onclick="exitFilterPanel();FNRegistrarIniciativa('@ini.PidToken')">
-                                                                            <select id="Funcionalidades" class="form-control" style="font-size:11px;text-align:center" onchange="FNEvaluarAccion(this.value,'@ini.PidToken')">
+                                                                        <td class="text-center" width="100px" onclick="exitFilterPanel();FNRegistrarIniciativaEjercicioOficial('@ini.PidToken')">
+                                                                            <select id="Funcionalidades" class="form-control orderselect" style="font-size:11px;text-align:center" onchange="FNEvaluarAccion(this.value,'@ini.PidToken')">
                                                                                 <option value="-1" selected>...</option>
                                                                                 <option value="0">Ver</option>
-                                                                                <option value="2">Adjuntos</option>
+                                                                                @{ if (ViewBag.Version != null && ViewBag.Version == 0)
+                                                                                    {
+                                                                                        <option value="2">Adjuntos</option>
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <option value="20">Adjuntos</option>
+
+                                                                                    }
+                                                                                }
                                                                                 <option value="3">Pdf</option>
                                                                             </select>
                                                                         </td>

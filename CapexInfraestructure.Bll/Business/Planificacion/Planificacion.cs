@@ -4384,6 +4384,65 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
             return text;
         }
 
+
+        private string ObtenerParametroSistema(string paramKey)
+        {
+            string paramValue = string.Empty;
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("ParamKey", paramKey);
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_PARAMETRO_SISTEMA", parametos, commandType: CommandType.StoredProcedure).ToList();
+                    if (resultado.Count > 0)
+                    {
+                        foreach (var result in resultado)
+                        {
+                            paramValue = ((result.ParamValue != null && string.IsNullOrEmpty(result.ParamValue.ToString())) ? result.ParamValue.ToString() : "");
+                        }
+                    }
+                }
+                catch (Exception err)
+                {
+                    paramValue = string.Empty;
+                    err.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return paramValue;
+        }
+
+        private string ObtenerFechaFinalPorAmbiente(string fechaPostEval)
+        {
+            string fechaFinal = string.Empty;
+            if (fechaPostEval != null && !string.IsNullOrEmpty(fechaPostEval))
+            {
+                string ENUS = ObtenerParametroSistema("en-US");
+                if (ENUS != null && !string.IsNullOrEmpty(ENUS))
+                {
+                    string[] fechaPostEvalSplit = fechaPostEval.Split('/');
+                    if (fechaPostEvalSplit.Length == 3)
+                    {
+                        return fechaPostEvalSplit[1] + "/" + fechaPostEvalSplit[0] + "/" + fechaPostEvalSplit[2];
+                    }
+                    else
+                    {
+                        fechaFinal = fechaPostEval;
+                    }
+                }
+                else
+                {
+                    fechaFinal = fechaPostEval;
+                }
+            }
+            return fechaFinal;
+        }
+
         /// <summary>
         /// METODO PARA GUARDAR DESCRIPCION DETALLADA
         /// </summary>
@@ -4391,10 +4450,12 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string GuardarDescripcionDetallada(Descripcion.DescripcionDetallada DatosDescripcion)
         {
+            string fechaFinal = ObtenerFechaFinalPorAmbiente(DatosDescripcion.PddFechaPostEval.ToString("dd/MM/yyyy"));
             using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
                 try
                 {
+                    DateTime datefechaFinal = DateTime.ParseExact(fechaFinal, "dd/MM/yyyy", CultureInfo.GetCultureInfo("es-CL"));
                     objConnection.Open();
                     var parametos = new DynamicParameters();
                     parametos.Add("IniUsuario", DatosDescripcion.IniUsuario);
@@ -4414,7 +4475,7 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
                     parametos.Add("PddUnidad3", DatosDescripcion.PddUnidad3);
                     parametos.Add("PddActual3", DatosDescripcion.PddActual3);
                     parametos.Add("PddTarget3", DatosDescripcion.PddTarget3);
-                    parametos.Add("PddFechaPostEval", DatosDescripcion.PddFechaPostEval);
+                    parametos.Add("PddFechaPostEval", datefechaFinal);
                     parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
                     SqlMapper.Query(objConnection, "CAPEX_INS_IDENTIFICACION_DESCRIPCION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
                     if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
@@ -4446,10 +4507,12 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// <returns></returns>
         public string ActualizarDescripcionDetallada(Descripcion.DescripcionDetallada DatosDescripcion)
         {
+            string fechaFinal = ObtenerFechaFinalPorAmbiente(DatosDescripcion.PddFechaPostEval.ToString("dd/MM/yyyy"));
             using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
             {
                 try
                 {
+                    DateTime datefechaFinal = DateTime.ParseExact(fechaFinal, "dd/MM/yyyy", CultureInfo.GetCultureInfo("es-CL"));
                     objConnection.Open();
                     var parametos = new DynamicParameters();
                     parametos.Add("IniUsuario", DatosDescripcion.IniUsuario);
@@ -4469,7 +4532,7 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
                     parametos.Add("PddUnidad3", DatosDescripcion.PddUnidad3);
                     parametos.Add("PddActual3", DatosDescripcion.PddActual3);
                     parametos.Add("PddTarget3", DatosDescripcion.PddTarget3);
-                    parametos.Add("PddFechaPostEval", DatosDescripcion.PddFechaPostEval);
+                    parametos.Add("PddFechaPostEval", datefechaFinal);
                     parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
                     SqlMapper.Query(objConnection, "CAPEX_UPD_IDENTIFICACION_DESCRIPCION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
                     if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))

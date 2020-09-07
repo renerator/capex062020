@@ -533,6 +533,38 @@ namespace Capex.Web.Controllers
             return (Decimal.Compare(Decimal.Zero, paramValue) == 0);
         }
 
+        private string ObtenerParametroSistema(string paramKey)
+        {
+            string paramValue = string.Empty;
+            using (SqlConnection objConnection = new SqlConnection(CapexIdentity.Utilities.Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var parametos = new DynamicParameters();
+                    parametos.Add("ParamKey", paramKey);
+                    var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_PARAMETRO_SISTEMA", parametos, commandType: CommandType.StoredProcedure).ToList();
+                    if (resultado.Count > 0)
+                    {
+                        foreach (var result in resultado)
+                        {
+                            paramValue = ((result.ParamValue != null && !string.IsNullOrEmpty(result.ParamValue.ToString())) ? result.ParamValue.ToString() : "");
+                        }
+                    }
+                }
+                catch (Exception err)
+                {
+                    paramValue = string.Empty;
+                    err.ToString();
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
+            return paramValue;
+        }
+
         /// <summary>
         /// METODO VER INICIATIVA
         /// </summary>
@@ -561,6 +593,7 @@ namespace Capex.Web.Controllers
                             try
                             {
                                 objConnection.Open();
+                                ViewBag.ENUS = ObtenerParametroSistema("en-US");
                                 string parametroVNToken = ((Session["ParametroVNToken"] != null) ? Convert.ToString(Session["ParametroVNToken"]) : "");
                                 string tipoIniciativaEjercicioOficial = ((Session["tipoIniciativaEjercicioOficial"] != null) ? Convert.ToString(Session["tipoIniciativaEjercicioOficial"]) : "");
                                 string anioIniciativaEjercicioOficial = ((Session["anioIniciativaEjercicioOficial"] != null) ? Convert.ToString(Session["anioIniciativaEjercicioOficial"]) : "");
@@ -1056,6 +1089,8 @@ namespace Capex.Web.Controllers
 
                     if (resultado.Count > 0)
                     {
+                        CultureInfo ciCL = new CultureInfo("es-CL", false);
+                        string ENUS = ObtenerParametroSistema("en-US");
                         foreach (var result in resultado)
                         {
                             if (contador < 7)
@@ -1077,28 +1112,39 @@ namespace Capex.Web.Controllers
                                 {
                                     table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> " + result.Fase + "</td>");
                                 }
-                                CultureInfo ciCL = new CultureInfo("es-CL", false);
                                 if (contador < 6)
                                 {
-                                    /*table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");*/
-                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "'></td>");
+                                    if (ENUS != null && !string.IsNullOrEmpty(ENUS.ToString()))
+                                    {
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.AnterioresConvert == null || string.IsNullOrEmpty(result.AnterioresConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.ActualConvert == null || string.IsNullOrEmpty(result.ActualConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.ActualConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.Posteriores == null || string.IsNullOrEmpty(result.Posteriores.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.Posteriores).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()) + "'></td>");
+                                    }
+                                    else
+                                    {
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.AnterioresConvert == null || string.IsNullOrEmpty(result.AnterioresConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.ActualConvert == null || string.IsNullOrEmpty(result.ActualConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.ActualConvert).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.Posteriores == null || string.IsNullOrEmpty(result.Posteriores.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.Posteriores).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()) + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()) + "'></td>");
+                                    }
                                 }
                                 else
                                 {
-                                    /*table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString().Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");*/
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "'></td>");
+                                    if (ENUS != null && !string.IsNullOrEmpty(ENUS.ToString()))
+                                    {
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.AnterioresConvert == null || string.IsNullOrEmpty(result.AnterioresConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.ActualConvert == null || string.IsNullOrEmpty(result.ActualConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.ActualConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.Posteriores == null || string.IsNullOrEmpty(result.Posteriores.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.Posteriores).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");
+                                    }
+                                    else
+                                    {
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.AnterioresConvert == null || string.IsNullOrEmpty(result.AnterioresConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.ActualConvert == null || string.IsNullOrEmpty(result.ActualConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.ActualConvert).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.Posteriores == null || string.IsNullOrEmpty(result.Posteriores.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.Posteriores).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()) + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()) + "'></td>");
+                                    }
                                 }
                                 table.Append("</tr>");
                             }
@@ -1148,6 +1194,8 @@ namespace Capex.Web.Controllers
 
                     if (resultado.Count > 0)
                     {
+                        CultureInfo ciCL = new CultureInfo("es-CL", false);
+                        string ENUS = ObtenerParametroSistema("en-US");
                         foreach (var result in resultado)
                         {
                             if (contador < 7)
@@ -1169,20 +1217,40 @@ namespace Capex.Web.Controllers
                                 {
                                     table.Append("<td style='height:20px;text-align:left;font-weight:normal;background-color:#5c808d;'> " + result.Fase + "</td>");
                                 }
-                                CultureInfo ciCL = new CultureInfo("es-CL", false);
+
                                 if (contador < 6)
                                 {
-                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "'></td>");
+                                    if (ENUS != null && !string.IsNullOrEmpty(ENUS.ToString()))
+                                    {
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.AnterioresConvert == null || string.IsNullOrEmpty(result.AnterioresConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.ActualConvert == null || string.IsNullOrEmpty(result.ActualConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.ActualConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.Posteriores == null || string.IsNullOrEmpty(result.Posteriores.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.Posteriores).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()) + "'></td>");
+                                    }
+                                    else
+                                    {
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.AnterioresConvert == null || string.IsNullOrEmpty(result.AnterioresConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.ActualConvert == null || string.IsNullOrEmpty(result.ActualConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.ActualConvert).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:normal;color:#f0f0f0; text-align:center;background-color:" + fondocelda + ";'> " + ((result.Posteriores == null || string.IsNullOrEmpty(result.Posteriores.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.Posteriores).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()) + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()) + "'></td>");
+                                    }
                                 }
                                 else
                                 {
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.ActualConvert).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.Posteriores).ToString() + "</td>");
-                                    table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString() + "'></td>");
+                                    if (ENUS != null && !string.IsNullOrEmpty(ENUS.ToString()))
+                                    {
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.AnterioresConvert == null || string.IsNullOrEmpty(result.AnterioresConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.ActualConvert == null || string.IsNullOrEmpty(result.ActualConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.ActualConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.Posteriores == null || string.IsNullOrEmpty(result.Posteriores.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.Posteriores).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()).Replace(',', ':').Replace('.', ',').Replace(':', '.') + "'></td>");
+                                    }
+                                    else
+                                    {
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.AnterioresConvert == null || string.IsNullOrEmpty(result.AnterioresConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.AnterioresConvert).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.ActualConvert == null || string.IsNullOrEmpty(result.ActualConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.ActualConvert).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.Posteriores == null || string.IsNullOrEmpty(result.Posteriores.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.Posteriores).ToString()) + "</td>");
+                                        table.Append("<td style='height:20px;font-weight:bold;color:#fff; text-align:center;background-color:" + fondocelda + ";'> " + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()) + "<input type='hidden' id='HitosTotalCapex" + contador + "' value='" + ((result.TotalCapexConvert == null || string.IsNullOrEmpty(result.TotalCapexConvert.ToString())) ? "0" : String.Format("{0:#,##0.##}", result.TotalCapexConvert).ToString()) + "'></td>");
+                                    }
                                 }
                                 table.Append("</tr>");
                             }
@@ -1302,6 +1370,100 @@ namespace Capex.Web.Controllers
             }
             return Desplegable.ToString();
         }
+
+        [HttpGet]
+        public string VerAdjuntosParametroVN(string token)
+        {
+            string Desplegable = string.Empty;
+            string Estado = string.Empty;
+            try
+            {
+                using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+                {
+                    objConnection.Open();
+                    try
+                    {
+                        var categorias = SqlMapper.Query(objConnection, "CAPEX_SEL_ADJUNTOS", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                        var items = SqlMapper.Query(objConnection, "CAPEX_SEL_ADJUNTOS_ITEMS", new { token }, commandType: CommandType.StoredProcedure).ToList();
+                        var arbol = new StringBuilder();
+                        var contador = 1;
+                        if (categorias.Count > 0)
+                        {
+                            foreach (var categoria in categorias)
+                            {
+                                arbol.Append("<li>");
+                                arbol.Append("<i class='fa fa-folder fa-1x' style='color:#3476ad;'></i> <span style='color:#3476ad;'>" + categoria.ParPaso + "</span>");
+                                string ruta = String.Empty;
+                                string paso = String.Empty;
+                                switch (categoria.ParPaso)
+                                {
+                                    case "Presupuesto-Gantt":
+                                        ruta = "Presupuesto";
+                                        paso = "Gantt";
+                                        break;
+                                    case "Evaluacion-Economica":
+                                        ruta = "EvaluacionEconomica";
+                                        paso = "";
+                                        break;
+                                    case "Evaluacion-Riesgo":
+                                        ruta = "EvaluacionRiesgo";
+                                        paso = "";
+                                        break;
+                                    case "Categorizacion":
+                                        ruta = "Categorizacion";
+                                        paso = "";
+                                        break;
+                                    case "Descripcion-Detallada":
+                                        ruta = "Descripcion";
+                                        paso = "";
+                                        break;
+                                }
+                                foreach (var item in items)
+                                {
+                                    if (categoria.ParPaso == item.ParPaso)
+                                    {
+                                        string descarga = String.Empty;
+                                        if ("Presupuesto".Equals(categoria.ParPaso))
+                                        {
+                                            descarga = "<span onclick='FNDescargarExcelTemplateFinal2Pasos(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='color:#0094ff;cursor: pointer'> Descargar </span>";
+                                        }
+                                        else
+                                        {
+                                            descarga = "<span onclick='FNDescargarAdjuntoFinal(" + Convert.ToChar(34) + item.ParToken + Convert.ToChar(34) + ")' style='color:#0094ff;cursor: pointer'> Descargar </span>";
+                                        }
+                                        arbol.Append("<ul><li><span><i class='fa fa-file fa-1x' style='color:#0094ff; margin-left:10px;'></i> " + item.ParNombre + "</span> | <span style='color:#0094ff;' style='cursor:hand;'>" + descarga + "</span></li></ul>");
+                                    }
+                                }
+                                arbol.Append("</li>");
+                                contador++;
+                            }
+
+                            Desplegable = arbol.ToString();
+                            arbol = null;
+
+                        }
+                    }
+                    catch (Exception err)
+                    {
+                        Utils.LogError("VerAdjuntos, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString());
+                        Desplegable = "";
+                    }
+                    finally
+                    {
+                        objConnection.Close();
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                ExceptionResult = "VerAdjuntos, Mensaje: " + exc.Message.ToString() + "-" + ", Detalle: " + exc.StackTrace.ToString();
+                Utils.LogError(ExceptionResult);
+                Desplegable = "";
+            }
+            return Desplegable.ToString();
+        }
+
+
         /// <summary>
         /// DESCARGA DE ADJUNTOS
         /// </summary>

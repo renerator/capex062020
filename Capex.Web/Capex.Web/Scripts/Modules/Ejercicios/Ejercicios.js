@@ -19,6 +19,15 @@ var filtrosSeleccionados = [];
 var filtroUtilizado = false;
 var iniciativasSeleccionadas = [];
 
+
+//
+// REGISTRAR INICIATIVA
+//
+FNRegistrarIniciativaEjercicioOficial = function (token) {
+    localStorage.setItem("CAPEX_GESTION_INICIATIVA_TOKEN", token);
+    return true;
+}
+
 FNDescargaMasiva = function () {
     console.log("Descargar el pdf");
     $("#idDescargaMasiva").prop("disabled", true);
@@ -485,6 +494,22 @@ FNEvaluarAccion = function (accion, token) {
                 $("#ModalAdjuntos").show();
             }).fail(function (xhr) { console.log('error', xhr); });
             break;
+        case "20":
+            $.ajaxSetup({ cache: false });
+            $('#AppLoaderContainer').show();
+            $.ajax({
+                url: "/Gestion/VerAdjuntosParametroVN",
+                method: "GET",
+                data: { "token": iniciativa }
+            }).done(function (request) {
+                $('#AppLoaderContainer').hide();
+                $("#ContenedorElementosAdjuntos").html(request);
+                $("#ModalAdjuntos").show();
+            }).fail(function (xhr) {
+                $('#AppLoaderContainer').hide();
+                console.log('error', xhr);
+            });
+            break;
         case "3":
             event.preventDefault();
             //document.location.href = '../../Planificacion/PdfPresupuesto?token=' + iniciativa;
@@ -560,12 +585,16 @@ FNEvaluarAccion = function (accion, token) {
                 }
             });
             break;
+        default:
+            alert("todavia no esta lista");
+            break;
     }
 }
 // CERRAR MODAL ADJUNTOS
 FNCerrarModalAdjuntos = function () {
     $("#ModalAdjuntos").hide();
-    document.location.reload(true);
+    $(".orderselect").val('-1').prop('selected', true);
+    //document.location.reload(true);
 }
 // RESETEAR FORM
 FNResetear = function () {
@@ -589,6 +618,33 @@ FNDescargarAdjuntoFinal = function (token) {
         if (r && r.IsSuccess && r.ResponseData) {
             console.log("r.ResponseData=", r.ResponseData);
             document.location.href = r.ResponseData;
+        }
+    }).fail(function (xhr) {
+        console.log('fail error', xhr);
+    });
+    return;
+}
+
+FNDescargarExcelTemplateFinal2Pasos = function (token) {
+    var iniciativa_token = localStorage.getItem("CAPEX_GESTION_INICIATIVA_TOKEN");
+    if (!iniciativa_token || iniciativa_token == undefined || iniciativa_token == "") {
+        return;
+    }
+    //var link = document.createElement("a");
+    console.info("token=", token);
+    console.info("iniciativa_token=", iniciativa_token);
+    $.ajax({
+        url: "/Documentacion/DescargarExcelEjercicioOficial2Pasos/" + token,
+        method: "GET",
+        data: { "token": token },
+        async: true
+    }).done(function (r) {
+        console.log("r=", r);
+        if (r && r.IsSuccess && r.ResponseData) {
+            console.log("r.ResponseData=", r.ResponseData);
+            var urlFinal = '/Documentacion/DescargarExcelEjercicioOficialFinal2Pasos/' + r.ParToken + '?token=' + r.ParToken + '&iniciativaToken=' + iniciativa_token + '&filename=' + r.ResponseData;
+            console.log("done=" + urlFinal);
+            document.location.href = encodeURI(urlFinal);
         }
     }).fail(function (xhr) {
         console.log('fail error', xhr);

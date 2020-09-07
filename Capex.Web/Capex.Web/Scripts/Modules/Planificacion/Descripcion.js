@@ -30,6 +30,10 @@ FNCuentaLosCaracteres = function (control, val) {
         }
     }
 };
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
 //
 // GUARDAR DESCRIPCION DETALLADA
 //
@@ -106,7 +110,7 @@ FNGuardarDescripcion = function () {
             "PddUnidad3": PddUnidad3,
             "PddActual3": PddActual3,
             "PddTarget3": PddTarget3,
-            "PddFechaPostEval": PddFechaPostEval.replace("-", "/")
+            "PddFechaPostEval": replaceAll(PddFechaPostEval, "-", "/")
         }
 
         $.ajax({
@@ -216,7 +220,7 @@ FNActualizarDescripcion = function () {
             "PddUnidad3": PddUnidad3,
             "PddActual3": PddActual3,
             "PddTarget3": PddTarget3,
-            "PddFechaPostEval": PddFechaPostEval.replace("-", "/")
+            "PddFechaPostEval": replaceAll(PddFechaPostEval, "-", "/")
         }
 
         $.ajax({
