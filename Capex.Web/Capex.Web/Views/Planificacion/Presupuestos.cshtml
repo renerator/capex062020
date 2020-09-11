@@ -395,7 +395,6 @@
             </div>
 
             <div class="row">
-
                 <div class="col-xl-12 offset-md-0">
                     <hr />
                     <div class="form-row mt-0" style="width:100%;">
@@ -404,23 +403,13 @@
                         </div>
                         <div class="col-sm-4 pb-1">
                             <div>
-                                <!--
-                                <form name="form_importar_gantt" id="form_importar_gantt" action="">
-                                    <label for="ArchivoGantt" style="border: 1px dashed #6995a1;  height: 28px; width:210px; padding:3px 3px 3px 3px;"><span id="NombreArchivoGantt">Seleccione un archivo..</span></label>
-                                    <input id="ArchivoGantt" style="font-size:12px;" class="inputfile inputfile-1" type="file">
-                                    <input type="submit" class="btn btn-success btn-sm" id="BotonAccionImportarGantt" value="Adjuntar" />
-                                </form>
-                                -->
                                 <iframe src="~/WebForm1.aspx?type=23" scrolling="no" id="frame23" frameborder="0" height="70" width="390"></iframe>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-
             <div class="row">
-
                 <div class="col-xl-12 offset-md-0">
                     <hr />
                     <div class="form-row mt-0" style="width:100%;">
@@ -433,23 +422,20 @@
                     </div>
                 </div>
                 <!--PAGINACION DE CONTRATOS-->
-                <div id="ContenedorContratosDotacion" style="display:none;">
+                <div id="ContenedorContratosDotacion" class="pt-0" style="display:none;">
                     <div class="paginate 1">
-                        <div id="ContenedorDotacionesResumen" class="items"></div>
+                        <div id="ContenedorDotacionesResumen" class="items pb-0"></div>
                         <div class="pager">
-                            <div class="previousPage">&lsaquo;</div>
+                            <!--<div class="previousPage">&lsaquo;</div>-->
                             <div class="pageNumbers"></div>
-                            <div class="nextPage">&rsaquo;</div>
+                            <!--<div class="nextPage">&rsaquo;</div>-->
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </div>
-
-
 
 <!--Inicio Vista Dotacion-->
 <div id="ContenedorDotacion" class="card offset-md-0" style="display:none;">
@@ -461,7 +447,14 @@
     </div>
 </div>
 
-
+<div id="ContenedorDotacionMod" class="card offset-md-0" style="display:none;">
+    <div class="card-body offset-md-0">
+        <div class="row pb-2 offset-md-0"> <input type="button" id="BotonVolverPresupuestoMod" class="btn btn-primary btn-sm" value="Volver a Presupuesto" /></div>
+    </div>
+    <div class="card">
+        @Html.Partial("~/Views/Planificacion/ModificarDotacion.cshtml")
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal inmodal" id="ModalGraficoComprobacion1" tabindex="-1" role="dialog" aria-hidden="true">

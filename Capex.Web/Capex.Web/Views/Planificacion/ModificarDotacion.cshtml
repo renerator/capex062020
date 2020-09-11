@@ -1,6 +1,6 @@
-﻿
-<!--Inicio Vista Dotacion-->
-<div id="ContenedorDotacion" class="card offset-md-0">
+﻿<!--Inicio Vista Dotacion-->
+<div id="ContenedorDotacionMod" class="card offset-md-0">
+    <input id="DotToken" name="DotToken" type="hidden" value="">
     <div class="card-body offset-md-0">
         <div class="row">
             <!--Panel Izquierdo-->
@@ -10,25 +10,25 @@
                 <h7 class="mt-0">Contrato</h7>
                 <div class="row">
                     <div class="col-sm-3"><div style="height:36px;padding-top:8px;">N° de Contrato</div></div>
-                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="NumContrato" placeholder="Numero Conrato" required=""></div>
+                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="NumContratoMod" placeholder="Numero Conrato" required=""></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Nombre EECC</div></div>
-                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="NombreEECC" placeholder="Nombre EECC" required=""></div>
+                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="NombreEECCMod" placeholder="Nombre EECC" required=""></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Sub Contrato</div></div>
-                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="SubContrato" placeholder="Sub Contrato" required=""></div>
+                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="SubContratoMod" placeholder="Sub Contrato" required=""></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Descripción Servicio</div></div>
-                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="DescripcionServicio" placeholder="Descripción Servicio" required=""></div>
+                    <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="DescripcionServicioMod" placeholder="Descripción Servicio" required=""></div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Situación Faena</div></div>
                     <div class="col-sm-6">
-                        <select id="SituacionFaena" class="form-control" style="height:30px; font-size:11px;">
+                        <select id="SituacionFaenaMod" class="form-control" style="height:30px; font-size:11px;">
                             <option value="-1" selected>Seleccionar..</option>
                             <option value="Presente">Presente</option>
                             <option value="Fuera">Fuera Faena</option>
@@ -39,7 +39,7 @@
                 <div class="row">
                     <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Turno</div></div>
                     <div class="col-sm-6">
-                        <select id="Turno" class="form-control" style="height:30px; font-size:11px;">
+                        <select id="TurnoMod" class="form-control" style="height:30px; font-size:11px;">
                             <option value="-1" selected>Seleccionar..</option>
                         </select>
                     </div>
@@ -49,7 +49,7 @@
                 <div class="row">
                     <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Alimentación</div></div>
                     <div class="col-sm-6">
-                        <select id="Alimentacion" class="form-control" style="height:30px; font-size:11px;" onchange="FNGuardarSeleccion('COMBO_ALIMENTACION',this.value)">
+                        <select id="AlimentacionMod" class="form-control" style="height:30px; font-size:11px;" onchange="FNGuardarSeleccion('COMBO_ALIMENTACION',this.value)">
                             <option value="-1" selected>Seleccionar..</option>
                             <option value="SI">SI</option>
                             <option value="NO">NO</option>
@@ -61,7 +61,7 @@
                 <div class="row">
                     <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Hoteleria</div></div>
                     <div class="col-sm-6">
-                        <select id="Hoteleria" class="form-control" style="height:30px; font-size:11px;" onchange="FNGuardarSeleccion('COMBO_HOTELERIA',this.value)">
+                        <select id="HoteleriaMod" class="form-control" style="height:30px; font-size:11px;" onchange="FNGuardarSeleccion('COMBO_HOTELERIA',this.value)">
                             <option value="-1" selected>Seleccionar..</option>
                             <option value="SI">SI</option>
                             <option value="NO">NO</option>
@@ -74,16 +74,14 @@
             </div>
             <!--Panel Derecho-->
             <div class="col-md-6 order-md-1">
-                <h7 class="mt-0">Ingresar Nuevo Contrato de Dotación</h7>
-                <br />
-                <h7 class="mt-0">Contexto</h7>
+                <h7 class="mt-0">Modificar Contrato de Dotación</h7>
                 <div class="row">
                     <div class="card-body">
 
                         <div class="row">
                             <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Año</div></div>
                             <div class="col-sm-6">
-                                <select id="PeriodoAnn" class="form-control" style="height:30px; font-size:11px;">
+                                <select id="PeriodoAnnMod" class="form-control" style="height:30px; font-size:11px;">
                                     <option value="-1" selected>Seleccionar..</option>
                                     <option value="2017">2017</option>
                                     <option value="2018">2018</option>
@@ -106,7 +104,7 @@
                         <div class="row">
                             <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Departamento</div></div>
                             <div class="col-sm-6">
-                                <select id="DepartamentoDot" class="form-control" style="height:30px; font-size:11px;">
+                                <select id="DepartamentoDotMod" class="form-control" style="height:30px; font-size:11px;">
                                     <option value="-1" selected>Seleccionar..</option>
                                 </select>
                             </div>
@@ -114,13 +112,13 @@
 
                         <div class="row">
                             <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Centro de Costo</div></div>
-                            <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="CentroCosto" placeholder="Centro de Costo" required=""></div>
+                            <div class="col-sm-6"><input type="text" class="form-control" style="height:28px; font-size:11px;" id="CentroCostoMod" placeholder="Centro de Costo" required=""></div>
                         </div>
 
                         <div class="row">
                             <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Clasificación</div></div>
                             <div class="col-sm-6">
-                                <select id="ClasificacionDot" class="form-control" style="height:30px;font-size:11px;">
+                                <select id="ClasificacionDotMod" class="form-control" style="height:30px;font-size:11px;">
                                     <option value="-1" selected>Seleccionar..</option>
                                 </select>
                             </div>
@@ -129,7 +127,7 @@
                         <div class="row">
                             <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Tipo EECC</div></div>
                             <div class="col-sm-6">
-                                <select id="TipoEECC" class="form-control" style="height:30px;font-size:11px;">
+                                <select id="TipoEECCMod" class="form-control" style="height:30px;font-size:11px;">
                                     <option value="-1" selected>Seleccionar..</option>
                                 </select>
                             </div>
@@ -138,7 +136,7 @@
                         <div class="row">
                             <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Situación Proyecto</div></div>
                             <div class="col-sm-6">
-                                <select id="SituacionProyecto" class="form-control" style="height:30px;font-size:11px;">
+                                <select id="SituacionProyectoMod" class="form-control" style="height:30px;font-size:11px;">
                                     <option value="-1" selected>Seleccionar..</option>
                                     <option value="Normal">Normal Proyecto</option>
                                     <option value="Detencion">Detencion de Planta</option>
@@ -149,7 +147,7 @@
                         <div class="row">
                             <div class="col-sm-3"><div style="height:36px;padding-top:8px;">Ubicación</div></div>
                             <div class="col-sm-6">
-                                <select id="Ubicacion" class="form-control" style="height:30px;font-size:11px;">
+                                <select id="UbicacionMod" class="form-control" style="height:30px;font-size:11px;">
                                     <option value="-1" selected>Seleccionar..</option>
                                 </select>
                             </div>
@@ -166,7 +164,7 @@
                     <div class="card-body">
                         <div class="row offset-md-0">
                             <div style="width:900px;" alingn="left">
-                                <h7 class="mt-0">Ingrese detalle de dotaciones para el periodo seleccionado</h7>
+                                <h7 class="mt-0">Detalle de dotaciones para el periodo seleccionado</h7>
                                 <br />
                                 <table style="width:800px; text-align:center;margin-top:20px;">
                                     <tr>
@@ -184,27 +182,26 @@
                                         <th>DIC</th>
                                     </tr>
                                     <tr>
-                                        <td><input type="number" id="dotEne" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotFeb" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotMar" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotAbr" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotMay" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotJun" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotJul" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotAgo" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotSep" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotOct" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotNov" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
-                                        <td><input type="number" id="dotDic" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);"/></td>
+                                        <td><input type="number" id="dotEneMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotFebMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotMarMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotAbrMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotMayMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotJunMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotJulMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotAgoMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotSepMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotOctMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotNovMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
+                                        <td><input type="number" id="dotDicMod" class="DotPeriodoMes" min="0" max="10000" maxlength="5" value="0" onkeypress="return isNumberKey(event)" onkeyup="this.value = fnc(this.value, 0, 10000);" /></td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="m-t-30 m-b-30"><input type="button" class="btn btn-success btn-sm" value="Guardar Dotación" onclick="FNFuardarContratoDotacion()" id="BotonGuardarDotacion" /></div>
+                <div class="m-t-30 m-b-30"><input type="button" class="btn btn-success btn-sm" value="Actualizar Dotación" onclick="FNActualizarContratoDotacion()" id="BotonGuardarDotacionMod" /></div>
             </div>
         </div>
     </div>
 </div>
-

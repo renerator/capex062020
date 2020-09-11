@@ -7601,7 +7601,7 @@ namespace Capex.Web.Controllers
         /// <param name="DotToken"></param>
         /// <returns></returns>
         [HttpGet]
-        public string ListarContratosDotacionResumen(string IniToken)
+        public ActionResult ListarContratosDotacionResumen(string IniToken)
         {
 
             string Desplegable = String.Empty;
@@ -7613,13 +7613,19 @@ namespace Capex.Web.Controllers
                     var resultado = SqlMapper.Query(objConnection, "CAPEX_SEL_CONTRATO_DOTACION_RESUMIDO", new { IniToken }, commandType: CommandType.StoredProcedure).ToList();
                     var contenedor = new StringBuilder();
                     var contador = 1;
-                    if (resultado.Count > 0)
+                    int totalItems = 0;
+                    var Pager = new StringBuilder();
+                    if (resultado != null && resultado.Count > 0)
                     {
+                        totalItems = resultado.Count;
+                        //Pager.Append("<div class='previousPage disabled'>‹</div>");
+                        //Pager.Append("<div class='pageNumbers'>");
                         foreach (var result in resultado)
                         {
+                            Pager.Append("<a onclick=ChangePage(" + contador + "); href='javascript:void(0);' id='pageSelected_" + contador + "' data-page='" + contador + "' class='" + ((contador == 1) ? "active" : "") + "'>" + contador + "</a>");
                             // UI
                             //INICIO CONTENEDOR DE DATOS PRINCIPAL
-                            contenedor.Append("<div>");
+                            contenedor.Append("<div id='datosDotacionIniciativa_" + contador + "' class='pb-0'" + ((contador == 1) ? "" : " style='display: none;'") + ">");
                             contenedor.Append("<table>");
                             contenedor.Append("<tr>");
                             //INICIO PRIMER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO  Y ETIQUETA COD. CONTRATO
@@ -7646,66 +7652,41 @@ namespace Capex.Web.Controllers
                             contenedor.Append("</th>");
                             //FIN PRIMER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
                             //INICIO SEGUNDO ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
-                            contenedor.Append("<th rowspan='2'>");
-                            contenedor.Append("<label for='TablaDotacion" + contador + "' style='margin-left:50px;'> Dotación Mensual</label>");
-                            //INICIO TABLA CALENDARIO DOTACIONES
-                            contenedor.Append("<table id='TablaDotacion" + contador + "' style='margin-left:50px;width:100px; text-align:center;font-size:11px;' class='table table-bordered'>");
-                            contenedor.Append("<tr>");
-                            contenedor.Append("<td>ENE<br/><span>" + result.DotEne + "</span></td>");
-                            contenedor.Append("<td>FEB<br/><span>" + result.DotFeb + "</span></td>");
-                            contenedor.Append("<td>MAR<br/><span>" + result.DotMar + "</span></td>");
-                            contenedor.Append("<td>ABR<br/><span>" + result.DotAbr + "</span></td>");
-                            contenedor.Append("</tr>");
-                            contenedor.Append("<tr>");
-                            contenedor.Append("<td>MAY<br/><span>" + result.DotMay + "</span></td>");
-                            contenedor.Append("<td>JUN<br/><span>" + result.DotJun + "</span></td>");
-                            contenedor.Append("<td>JUL<br/><span>" + result.DotJul + "</span></td>");
-                            contenedor.Append("<td>AGO<br/><span>" + result.DotAgo + "</span></td>");
-                            contenedor.Append("</tr>");
-                            contenedor.Append("<tr>");
-                            contenedor.Append("<td>SEP<br/><span>" + result.DotSep + "</span></td>");
-                            contenedor.Append("<td>OCT<br/><span>" + result.DotOct + "</span></td>");
-                            contenedor.Append("<td>NOV<br/><span>" + result.DotNov + "</span></td>");
-                            contenedor.Append("<td>DIC<br/><span>" + result.DotDic + "</span></td>");
-                            contenedor.Append("</tr>");
-                            contenedor.Append("</table>");
-                            //FIN TABLA CALENDARIO DOTACIONES
+                            contenedor.Append("<th>");
+                            contenedor.Append("&nbsp;&nbsp;<input type='button' class='btn btn-primary btn-sm' onclick='FNObtenerDotacion(" + Convert.ToChar(34) + result.DotToken + Convert.ToChar(34) + ")' value='Editar' />");
+                            contenedor.Append("&nbsp;&nbsp;<input type='button' class='btn btn-warning btn-sm' onclick='FNEliminarContratoDotacion(" + Convert.ToChar(34) + result.DotToken + Convert.ToChar(34) + ")' value='Eliminar' />");
                             contenedor.Append("</th>");
                             contenedor.Append("</tr>");
-                            //FIN SEGUNDO ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
-                            //INICIO TERCER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
-                            contenedor.Append("<tr>");
-                            contenedor.Append("<td>");
-                            //contenedor.Append("<input type='button' class='btn btn-primary btn-sm' onclick='FNModificarContratoDotacion("+ Convert.ToChar(34) + result.DotToken + Convert.ToChar(34) + ")' value='Modificar' />");
-                            contenedor.Append("<input type='button' class='btn btn-warning btn-sm' onclick='FNEliminarContratoDotacion(" + Convert.ToChar(34) + result.DotToken + Convert.ToChar(34) + ")' value='Eliminar' />");
-                            contenedor.Append("</td>");
-                            contenedor.Append("</tr>");
-                            //FIN TERCER ESPACIO CONTENEDOR PARA DATOS DEL CONTRATO
                             contenedor.Append("</table>");
                             contenedor.Append(" </div>");
                             //FIN CONTENEDOR DE DATOS PRINCIPAL
                             contador++;
                         }
+                        Pager.Append("</div>");
+                        //Pager.Append("<div class='nextPage'>›</div>");
                         Desplegable = contenedor.ToString();
                         contenedor = null;
                     }
                     else
                     {
+                        //Pager.Append("<div class='previousPage'>></div>");
+                        Pager.Append("<div class='pageNumbers'></div>");
+                        //Pager.Append("<div class='nextPage'><</div>");
                         contenedor = null;
                         Desplegable = "";
                     }
-
+                    return Json(new { Error = "false", ContenedorDotacionesResumen = Desplegable.ToString(), Pager = Pager.ToString(), TotalItems = totalItems }, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception exc)
                 {
                     Desplegable = exc.Message.ToString() + "-----" + exc.StackTrace.ToString();
+                    return Json(new { Error = "true", Message = Desplegable.ToString() }, JsonRequestBehavior.AllowGet);
                 }
                 finally
                 {
                     objConnection.Close();
                 }
             }
-            return Desplegable.ToString();
         }
         /// <summary>
         /// METODO GUARDAR CONTRATO DOTACION
@@ -7740,6 +7721,75 @@ namespace Capex.Web.Controllers
                 }
             }
         }
+
+        /// <summary>
+        /// METODO GUARDAR CONTRATO DOTACION
+        /// </summary>
+        /// <param name="DatosContrato"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ActualizarContratoDotacion(Dotacion.ModificarDotacion DatosContrato)
+        {
+            if (!@User.Identity.IsAuthenticated || Session["CAPEX_SESS_USERNAME"] == null)
+            {
+                //return RedirectToAction("Logout", "Login");
+                return Json(new { redirectUrlLogout = "true" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                string mensaje = String.Empty;
+                try
+                {
+                    IPlanificacion = FactoryPlanificacion.delega(GI);
+                    var resultado = IPlanificacion.ActualizarContratoDotacion(DatosContrato);
+                    return Json(new { Mensaje = resultado }, JsonRequestBehavior.AllowGet);
+                }
+                catch (Exception exc)
+                {
+                    return Json(new { Resultado = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+                }
+                finally
+                {
+                    FactoryPlanificacion = null;
+                    IPlanificacion = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// METODO GUARDAR CONTRATO DOTACION
+        /// </summary>
+        /// <param name="DatosContrato"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ObtenerContratoDotacionByToken(string DotToken)
+        {
+            if (!@User.Identity.IsAuthenticated || Session["CAPEX_SESS_USERNAME"] == null)
+            {
+                return Json(new { redirectUrlLogout = "true" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+                {
+                    objConnection.Open();
+                    try
+                    {
+                        var dotacion = SqlMapper.Query<Dotacion.ModificarDotacion>(objConnection, "CAPEX_SEL_DOTACION_BY_TOKEN", new { DotToken = DotToken }, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                        return Json(new { Error = "false", Dotacion = dotacion }, JsonRequestBehavior.AllowGet);
+                    }
+                    catch (Exception exc)
+                    {
+                        return Json(new { Error = "true", Message = "ERROR|" + exc.Message.ToString() + "|" + exc.StackTrace.ToString() }, JsonRequestBehavior.AllowGet);
+                    }
+                    finally
+                    {
+                        objConnection.Close();
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// METODO ELIMINAR DOTACION
         /// </summary>

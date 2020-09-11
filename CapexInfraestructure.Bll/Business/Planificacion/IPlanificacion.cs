@@ -81,7 +81,7 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         List<Dotacion.DotacionEECC> ListarTipoEECC();
         List<Dotacion.DotacionClasificacion> ListarClasificacion();
         string GuardarContratoDotacion(Dotacion.ContratoDotacion DatosContratoDotacion);
-        string ActualizarContratoDotacion(Dotacion.ContratoDotacion DatosContratoDotacion);
+        string ActualizarContratoDotacion(Dotacion.ModificarDotacion DatosContratoDotacion);
         string GuardarPeriodosDotacion(string Token, string DatosPeriodoDotacion);
         string EliminarContratoDotacion(string Token);
 

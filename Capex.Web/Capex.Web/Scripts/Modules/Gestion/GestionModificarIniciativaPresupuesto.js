@@ -35,14 +35,49 @@ FNObtenerDepartamentoDotacion = function () {
                     return;
                 }
                 $.each(JSON && JSON.parse(r) || $.parseJSON(r), function (key, value) {
-                    DepartamentoDot.append(new Option(value.DepNombre, value.DepToken, false, false))
+                    DepartamentoDot.append(new Option(value.DepNombre, value.DepToken, false, false));
                     cuantos++;
                 });
                 if (cuantos == 1) {
                     DepartamentoDot.prop('selectedIndex', 0);
                 }
                 else if (cuantos > 1) {
-                    DepartamentoDot.append('<option selected="true">Departamento..</option>')
+                    DepartamentoDot.append('<option selected="true" value="-1">Seleccionar..</option>')
+                }
+            }, 200);
+        }
+    });
+}
+
+FNObtenerDepartamentoDotacionMod = function () {
+    //PREPARAR
+    var DepartamentoDot = $('#DepartamentoDotMod');
+    DepartamentoDot.empty();
+    DepartamentoDot.append('<option selected="true">Buscando..</option>');
+    //LISTO
+    var DTO = {};
+    var cuantos = 0
+    $.ajax({
+        url: "../../Planificacion/ListarDepartamentos",
+        type: "GET",
+        dataType: "json",
+        data: (DTO),
+        success: function (r) {
+            DepartamentoDot.empty();
+            setTimeout(function () {
+                if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                    document.getElementById('linkToLogout').click();
+                    return;
+                }
+                $.each(JSON && JSON.parse(r) || $.parseJSON(r), function (key, value) {
+                    DepartamentoDot.append(new Option(value.DepNombre, value.DepToken, false, false));
+                    cuantos++;
+                });
+                if (cuantos == 1) {
+                    DepartamentoDot.prop('selectedIndex', 0);
+                }
+                else if (cuantos > 1) {
+                    DepartamentoDot.append('<option selected="true" value="-1">Seleccionar..</option>')
                 }
             }, 200);
         }
@@ -79,12 +114,48 @@ FNObtenerTurnosDotacion = function () {
                     Turno.prop('selectedIndex', 0);
                 }
                 else if (cuantos > 1) {
-                    Turno.append('<option selected="true">Turnos..</option>')
+                    Turno.append('<option selected="true" value="-1">Seleccionar..</option>')
                 }
             }, 200);
         }
     });
 }
+
+FNObtenerTurnosDotacionMod = function () {
+    //PREPARAR
+    var Turno = $('#TurnoMod');
+    Turno.empty();
+    Turno.append('<option selected="true">Buscando..</option>');
+    //LISTO
+    var DTO = {};
+    var cuantos = 0
+    $.ajax({
+        url: "../../Planificacion/ListarTurnos",
+        type: "GET",
+        dataType: "json",
+        data: (DTO),
+        success: function (r) {
+            Turno.empty();
+            setTimeout(function () {
+                if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                    document.getElementById('linkToLogout').click();
+                    return;
+                }
+                $.each(JSON && JSON.parse(r) || $.parseJSON(r), function (key, value) {
+                    Turno.append(new Option(value.TurNombre, value.TurToken, false, false))
+                    cuantos++;
+                });
+                if (cuantos == 1) {
+                    Turno.prop('selectedIndex', 0);
+                }
+                else if (cuantos > 1) {
+                    Turno.append('<option selected="true" value="-1">Seleccionar..</option>')
+                }
+            }, 200);
+        }
+    });
+}
+
 //
 // LISTAR UBICACIONES
 //
@@ -116,7 +187,42 @@ FNObtenerUbicaciones = function () {
                     Ubicacion.prop('selectedIndex', 0);
                 }
                 else if (cuantos > 1) {
-                    Ubicacion.append('<option selected="true">Ubicacion..</option>')
+                    Ubicacion.append('<option selected="true" value="-1">Seleccionar..</option>')
+                }
+            }, 200);
+        }
+    });
+}
+
+FNObtenerUbicacionesMod = function () {
+    //PREPARAR
+    var Ubicacion = $('#UbicacionMod');
+    Ubicacion.empty();
+    Ubicacion.append('<option selected="true">Buscando..</option>');
+    //LISTO
+    var DTO = {};
+    var cuantos = 0
+    $.ajax({
+        url: "../../Planificacion/ListarUbicaciones",
+        type: "GET",
+        dataType: "json",
+        data: (DTO),
+        success: function (r) {
+            Ubicacion.empty();
+            setTimeout(function () {
+                if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                    document.getElementById('linkToLogout').click();
+                    return;
+                }
+                $.each(JSON && JSON.parse(r) || $.parseJSON(r), function (key, value) {
+                    Ubicacion.append(new Option(value.UbiNombre, value.UbiToken, false, false))
+                    cuantos++;
+                });
+                if (cuantos == 1) {
+                    Ubicacion.prop('selectedIndex', 0);
+                }
+                else if (cuantos > 1) {
+                    Ubicacion.append('<option selected="true" value="-1">Seleccionar..</option>')
                 }
             }, 200);
         }
@@ -153,7 +259,42 @@ FNObtenerTipoEECC = function () {
                     TipoEECC.prop('selectedIndex', 0);
                 }
                 else if (cuantos > 1) {
-                    TipoEECC.append('<option selected="true">Tipo EECC..</option>')
+                    TipoEECC.append('<option selected="true" value="-1">Seleccionar..</option>')
+                }
+            }, 200);
+        }
+    });
+}
+
+FNObtenerTipoEECCMod = function () {
+    //PREPARAR
+    var TipoEECC = $('#TipoEECCMod');
+    TipoEECC.empty();
+    TipoEECC.append('<option selected="true">Buscando..</option>');
+    //LISTO
+    var DTO = {};
+    var cuantos = 0
+    $.ajax({
+        url: "../../Planificacion/ListarTipoEECC",
+        type: "GET",
+        dataType: "json",
+        data: (DTO),
+        success: function (r) {
+            TipoEECC.empty();
+            setTimeout(function () {
+                if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                    document.getElementById('linkToLogout').click();
+                    return;
+                }
+                $.each(JSON && JSON.parse(r) || $.parseJSON(r), function (key, value) {
+                    TipoEECC.append(new Option(value.EeccNombre, value.EeccToken, false, false))
+                    cuantos++;
+                });
+                if (cuantos == 1) {
+                    TipoEECC.prop('selectedIndex', 0);
+                }
+                else if (cuantos > 1) {
+                    TipoEECC.append('<option selected="true" value="-1">Seleccionar..</option>')
                 }
             }, 200);
         }
@@ -190,13 +331,65 @@ FNObtenerClasificaciones = function () {
                     ClasificacionDot.prop('selectedIndex', 0);
                 }
                 else if (cuantos > 1) {
-                    ClasificacionDot.append('<option selected="true">Clasificacion..</option>')
+                    ClasificacionDot.append('<option selected="true" value="-1">Seleccionar..</option>')
                 }
             }, 200);
         }
     });
 }
 
+FNObtenerClasificacionesMod = function () {
+    //PREPARAR
+    var ClasificacionDot = $('#ClasificacionDotMod');
+    ClasificacionDot.empty();
+    ClasificacionDot.append('<option selected="true">Buscando..</option>');
+    //LISTO
+    var DTO = {};
+    var cuantos = 0
+    $.ajax({
+        url: "../../Planificacion/ListaClasificaciones",
+        type: "GET",
+        dataType: "json",
+        data: (DTO),
+        success: function (r) {
+            ClasificacionDot.empty();
+            setTimeout(function () {
+                if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                    document.getElementById('linkToLogout').click();
+                    return;
+                }
+                $.each(JSON && JSON.parse(r) || $.parseJSON(r), function (key, value) {
+                    ClasificacionDot.append(new Option(value.CdotNombre, value.CdotToken, false, false))
+                    cuantos++;
+                });
+                if (cuantos == 1) {
+                    ClasificacionDot.prop('selectedIndex', 0);
+                }
+                else if (cuantos > 1) {
+                    ClasificacionDot.append('<option selected="true" value="-1">Seleccionar..</option>')
+                }
+            }, 200);
+        }
+    });
+}
+
+function isNumberKey(evt) {
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
+    return true;
+}
+
+function fnc(value, min, max) {
+    var responseValue = value;
+    if (parseInt(value) < min || isNaN(value))
+        responseValue = min;
+    else if (parseInt(value) > max)
+        responseValue = max;
+    else
+        responseValue = value;
+    return responseValue;
+}
 //
 // GUARDAR CONTRATO DOTACION
 //
@@ -208,21 +401,6 @@ FNFuardarContratoDotacion = function () {
     var PidUsuario = $("#CAPEX_H_USERNAME").val();
 
     /***************************************** CAMPOS *********************************************/
-    var NumContrato = $("#NumContrato").val();
-    var NombreEECC = $("#NombreEECC").val();
-    var CentroCosto = $("#CentroCosto").val();
-    var SubContrato = $("#SubContrato").val();
-    var DescripcionServicio = $("#DescripcionServicio").val();
-    var SituacionFaena = $("#SituacionFaena").val();
-    var Turno = $("#Turno").val();
-    var Alimentacion = $("#Alimentacion").val();
-    if (Alimentacion == "Seleccionar.." || Alimentacion == "-1" || Alimentacion == "undefined") {
-        Alimentacion = "NO DISPONIBLE";
-    }
-    var Hoteleria = $("#Hoteleria").val();
-    if (Hoteleria == "Seleccionar.." || Hoteleria == "-1" || Hoteleria == "undefined") {
-        Hoteleria = "NO DISPONIBLE";
-    }
     var PeriodoAnn = $("#PeriodoAnn").val();
     var DepartamentoDot = $("#DepartamentoDot").val();
     var CentroCosto = $("#CentroCosto").val();
@@ -230,6 +408,15 @@ FNFuardarContratoDotacion = function () {
     var TipoEECC = $("#TipoEECC").val();
     var SituacionProyecto = $("#SituacionProyecto").val();
     var Ubicacion = $("#Ubicacion").val();
+    var NumContrato = $("#NumContrato").val();
+    var NombreEECC = $("#NombreEECC").val();
+    var SubContrato = $("#SubContrato").val();
+    var DescripcionServicio = $("#DescripcionServicio").val();
+    var SituacionFaena = $("#SituacionFaena").val();
+    var Turno = $("#Turno").val();
+    var Alimentacion = $("#Alimentacion").val();
+    var Hoteleria = $("#Hoteleria").val();
+
     /***************************************** TABLA DOTACION ***********************************/
 
     var dotEne = $("#dotEne").val();
@@ -258,6 +445,81 @@ FNFuardarContratoDotacion = function () {
     if (dotNov == "") { dotNov = "0"; }
     if (dotDic == "") { dotDic = "0"; }
 
+    if (!PeriodoAnn || PeriodoAnn == undefined || PeriodoAnn == "-1") {
+        swal("", "El Año es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!DepartamentoDot || DepartamentoDot == undefined || DepartamentoDot == "-1") {
+        swal("", "El Departamento es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!CentroCosto || CentroCosto == undefined || CentroCosto.trim() == "") {
+        swal("", "El Centro de Costo es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!ClasificacionDot || ClasificacionDot == undefined || ClasificacionDot == "-1") {
+        swal("", "La Clasificación es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!TipoEECC || TipoEECC == undefined || TipoEECC == "-1") {
+        swal("", "El Tipo EECC es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!SituacionProyecto || SituacionProyecto == undefined || SituacionProyecto == "-1") {
+        swal("", "La Situación del Proyecto es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!Ubicacion || Ubicacion == undefined || Ubicacion == "-1") {
+        swal("", "La Ubicación es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!NumContrato || NumContrato == undefined || NumContrato.trim() == "") {
+        swal("", "El N° de Contrato es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!NombreEECC || NombreEECC == undefined || NombreEECC.trim() == "") {
+        swal("", "El Nombre EECC es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!SubContrato || SubContrato == undefined || SubContrato.trim() == "") {
+        swal("", "El Sub Contrato es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!DescripcionServicio || DescripcionServicio == undefined || DescripcionServicio.trim() == "") {
+        swal("", "La Descripción del Servicio es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!SituacionFaena || SituacionFaena == undefined || SituacionFaena == "-1") {
+        swal("", "La Situación de la Faena es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!Turno || Turno == undefined || Turno == "-1") {
+        swal("", "El Turno es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!Alimentacion || Alimentacion == undefined || Alimentacion == "-1") {
+        swal("", "La Alimentación es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!Hoteleria || Hoteleria == undefined || Hoteleria == "-1") {
+        swal("", "La Hoteleria es un campo requerido.", "info");
+        return false;
+    }
+
     var dotTot = parseInt(parseInt(dotEne) + parseInt(dotFeb) + parseInt(dotMar) + parseInt(dotAbr) + parseInt(dotJun) + parseInt(dotJul) + parseInt(dotAgo) + parseInt(dotAgo) + parseInt(dotSep) + parseInt(dotOct) + parseInt(dotNov) + parseInt(dotDic));
     /*****************************************VALIDACIONES ***********************************/
 
@@ -265,7 +527,14 @@ FNFuardarContratoDotacion = function () {
         swal("", "Debe identificar y guardar la iniciativa en el paso de 'Identificación'.", "info");
         return false;
     }
-    else if (PeriodoAnn == "-1" || PeriodoAnn == "" || PeriodoAnn == null || NumContrato == "" || CentroCosto == "" || SituacionFaena == "-1" || Turno == "-1" || Alimentacion == "-1" || Hoteleria == "-1" || Ubicacion == "-1") {
+    if (!PeriodoAnn || PeriodoAnn == undefined || PeriodoAnn == "-1" || !DepartamentoDot || DepartamentoDot == undefined || DepartamentoDot == "-1"
+        || !CentroCosto || CentroCosto == undefined || CentroCosto.trim() == "" || !ClasificacionDot || ClasificacionDot == undefined || ClasificacionDot == "-1"
+        || !TipoEECC || TipoEECC == undefined || TipoEECC == "-1" || !SituacionProyecto || SituacionProyecto == undefined || SituacionProyecto == "-1"
+        || !Ubicacion || Ubicacion == undefined || Ubicacion == "-1" || !NumContrato || NumContrato == undefined || NumContrato.trim() == ""
+        || !NombreEECC || NombreEECC == undefined || NombreEECC.trim() == "" || !SubContrato || SubContrato == undefined || SubContrato.trim() == ""
+        || !DescripcionServicio || DescripcionServicio == undefined || DescripcionServicio.trim() == "" || !SituacionFaena || SituacionFaena == undefined || SituacionFaena == "-1"
+        || !Turno || Turno == undefined || Turno == "-1" || !Alimentacion || Alimentacion == undefined || Alimentacion == "-1"
+        || !Hoteleria || Hoteleria == undefined || Hoteleria == "-1") {
         swal("", "Debe completar el formulario, todos los campos son requeridos.", "info");
         return false;
     } else {
@@ -319,19 +588,19 @@ FNFuardarContratoDotacion = function () {
                 setTimeout(function () {
                     swal.close();
                     FNPoblarVistaDotacionResumen();
+                    FNLimpiarFormContratoDotacion();
                     $("#ContenedorPresupuesto").show();
                     $("#ContenedorContratosDotacion").show();
                     $("#ContenedorDotacion").hide()
-                    FNLimpiarFormContratoDotacion();
                 }, 3000);
             }
             else {
                 swal("", "Error al intentar guardar dotación, por favor intente nuevamente.", "error")
                 setTimeout(function () {
                     swal.close();
+                    FNLimpiarFormContratoDotacion();
                     $("#ContenedorPresupuesto").show();
                     $("#ContenedorDotacion").hide();
-                    FNLimpiarFormContratoDotacion();
                 }, 3000);
             }
         }).fail(function (xhr) {
@@ -342,20 +611,21 @@ FNFuardarContratoDotacion = function () {
 
 }
 FNLimpiarFormContratoDotacion = function () {
+    $("#PeriodoAnn").val("-1");
+    $("#DepartamentoDot").val("-1");
+    $("#CentroCosto").val("");
+    $("#ClasificacionDot").val("-1");
+    $("#TipoEECC").val("-1");
+    $("#SituacionProyecto").val("-1");
+    $("#Ubicacion").val("-1");
     $("#NumContrato").val("");
+    $("#NombreEECC").val("");
     $("#SubContrato").val("");
     $("#DescripcionServicio").val("");
-    $("#SituacionFaena").val("");
-    $("#Turno").val("");
-    $("#Alimentacion").val("");
-    $("#Hoteleria").val("");
-    $("#PeriodoAnn").val("");
-    $("#DepartamentoDot").val("");
-    $("#CentroCosto").val("");
-    $("#ClasificacionDot").val("");
-    $("#TipoEECC").val("");
-    $("#SituacionProyecto").val("");
-    $("#Ubicacion").val("");
+    $("#SituacionFaena").val("-1");
+    $("#Turno").val("-1");
+    $("#Alimentacion").val("-1");
+    $("#Hoteleria").val("-1");
     $("#dotEne").val("0");
     $("#dotFeb").val("0");
     $("#dotMar").val("0");
@@ -370,30 +640,374 @@ FNLimpiarFormContratoDotacion = function () {
     $("#dotDic").val("0");
     return true;
 }
-FNModificarContratoDotacion = function (token) {
-    swal("", "Esta funcionalidad se encuentra en desarrollo, ETA 23-03-2019.)", "info");
-    return false;
+
+FNLimpiarFormContratoDotacionMod = function () {
+    $("#DotToken").val("");
+    $("#PeriodoAnnMod").val("-1");
+    $("#DepartamentoDotMod").val("-1");
+    $("#CentroCostoMod").val("");
+    $("#ClasificacionDotMod").val("-1");
+    $("#TipoEECCMod").val("-1");
+    $("#SituacionProyectoMod").val("-1");
+    $("#UbicacionMod").val("-1");
+    $("#NumContratoMod").val("");
+    $("#NombreEECCMod").val("");
+    $("#SubContratoMod").val("");
+    $("#DescripcionServicioMod").val("");
+    $("#SituacionFaenaMod").val("-1");
+    $("#TurnoMod").val("-1");
+    $("#AlimentacionMod").val("-1");
+    $("#HoteleriaMod").val("-1");
+    $("#dotEneMod").val("0");
+    $("#dotFebMod").val("0");
+    $("#dotMarMod").val("0");
+    $("#dotAbrMod").val("0");
+    $("#dotMayMod").val("0");
+    $("#dotJunMod").val("0");
+    $("#dotJulMod").val("0");
+    $("#dotAgoMod").val("0");
+    $("#dotSepMod").val("0");
+    $("#dotOctMod").val("0");
+    $("#dotNovMod").val("0");
+    $("#dotDicMod").val("0");
+    return true;
+}
+
+FNActualizarContratoDotacion = function () {
+    var IniToken = localStorage.getItem("CAPEX_INICIATIVA_TOKEN");
+    var PidArea = localStorage.getItem("CAPEX_PLAN_AREA");
+    var PidCodigoIniciativa = $("#CodigoIniciativa").val();
+    var PidNombreProyecto = $("#NombreProyecto").val();
+    var PidUsuario = $("#CAPEX_H_USERNAME").val();
+    var DotToken = $("#DotToken").val();
+    /***************************************** CAMPOS *********************************************/
+    var PeriodoAnn = $("#PeriodoAnnMod").val();
+    var DepartamentoDot = $("#DepartamentoDotMod").val();
+    var CentroCosto = $("#CentroCostoMod").val();
+    var ClasificacionDot = $("#ClasificacionDotMod").val();
+    var TipoEECC = $("#TipoEECCMod").val();
+    var SituacionProyecto = $("#SituacionProyectoMod").val();
+    var Ubicacion = $("#UbicacionMod").val();
+    var NumContrato = $("#NumContratoMod").val();
+    var NombreEECC = $("#NombreEECCMod").val();
+    var SubContrato = $("#SubContratoMod").val();
+    var DescripcionServicio = $("#DescripcionServicioMod").val();
+    var SituacionFaena = $("#SituacionFaenaMod").val();
+    var Turno = $("#TurnoMod").val();
+    var Alimentacion = $("#AlimentacionMod").val();
+    var Hoteleria = $("#HoteleriaMod").val();
+
+    /***************************************** TABLA DOTACION ***********************************/
+
+    var dotEne = $("#dotEneMod").val();
+    var dotFeb = $("#dotFebMod").val();
+    var dotMar = $("#dotMarMod").val();
+    var dotAbr = $("#dotAbrMod").val();
+    var dotMay = $("#dotMayMod").val();
+    var dotJun = $("#dotJunMod").val();
+    var dotJul = $("#dotJulMod").val();
+    var dotAgo = $("#dotAgoMod").val();
+    var dotSep = $("#dotSepMod").val();
+    var dotOct = $("#dotOctMod").val();
+    var dotNov = $("#dotNovMod").val();
+    var dotDic = $("#dotDicMod").val();
+
+    if (dotEne == "") { dotEne = "0"; }
+    if (dotFeb == "") { dotFeb = "0"; }
+    if (dotMar == "") { dotMar = "0"; }
+    if (dotAbr == "") { dotAbr = "0"; }
+    if (dotMay == "") { dotMay = "0"; }
+    if (dotJun == "") { dotJun = "0"; }
+    if (dotJul == "") { dotJul = "0"; }
+    if (dotAgo == "") { dotAgo = "0"; }
+    if (dotSep == "") { dotSep = "0"; }
+    if (dotOct == "") { dotOct = "0"; }
+    if (dotNov == "") { dotNov = "0"; }
+    if (dotDic == "") { dotDic = "0"; }
+
+    if (!PeriodoAnn || PeriodoAnn == undefined || PeriodoAnn == "-1") {
+        swal("", "El Año es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!DepartamentoDot || DepartamentoDot == undefined || DepartamentoDot == "-1") {
+        swal("", "El Departamento es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!CentroCosto || CentroCosto == undefined || CentroCosto.trim() == "") {
+        swal("", "El Centro de Costo es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!ClasificacionDot || ClasificacionDot == undefined || ClasificacionDot == "-1") {
+        swal("", "La Clasificación es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!TipoEECC || TipoEECC == undefined || TipoEECC == "-1") {
+        swal("", "El Tipo EECC es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!SituacionProyecto || SituacionProyecto == undefined || SituacionProyecto == "-1") {
+        swal("", "La Situación del Proyecto es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!Ubicacion || Ubicacion == undefined || Ubicacion == "-1") {
+        swal("", "La Ubicación es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!NumContrato || NumContrato == undefined || NumContrato.trim() == "") {
+        swal("", "El N° de Contrato es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!NombreEECC || NombreEECC == undefined || NombreEECC.trim() == "") {
+        swal("", "El Nombre EECC es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!SubContrato || SubContrato == undefined || SubContrato.trim() == "") {
+        swal("", "El Sub Contrato es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!DescripcionServicio || DescripcionServicio == undefined || DescripcionServicio.trim() == "") {
+        swal("", "La Descripción del Servicio es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!SituacionFaena || SituacionFaena == undefined || SituacionFaena == "-1") {
+        swal("", "La Situación de la Faena es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!Turno || Turno == undefined || Turno == "-1") {
+        swal("", "El Turno es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!Alimentacion || Alimentacion == undefined || Alimentacion == "-1") {
+        swal("", "La Alimentación es un campo requerido.", "info");
+        return false;
+    }
+
+    if (!Hoteleria || Hoteleria == undefined || Hoteleria == "-1") {
+        swal("", "La Hoteleria es un campo requerido.", "info");
+        return false;
+    }
+
+    var dotTot = parseInt(parseInt(dotEne) + parseInt(dotFeb) + parseInt(dotMar) + parseInt(dotAbr) + parseInt(dotJun) + parseInt(dotJul) + parseInt(dotAgo) + parseInt(dotAgo) + parseInt(dotSep) + parseInt(dotOct) + parseInt(dotNov) + parseInt(dotDic));
+    /*****************************************VALIDACIONES ***********************************/
+
+    if (IniToken == "" || IniToken == null) {
+        swal("", "Debe identificar y guardar la iniciativa en el paso de 'Identificación'.", "info");
+        return false;
+    }
+    if (!PeriodoAnn || PeriodoAnn == undefined || PeriodoAnn == "-1" || !DepartamentoDot || DepartamentoDot == undefined || DepartamentoDot == "-1"
+        || !CentroCosto || CentroCosto == undefined || CentroCosto.trim() == "" || !ClasificacionDot || ClasificacionDot == undefined || ClasificacionDot == "-1"
+        || !TipoEECC || TipoEECC == undefined || TipoEECC == "-1" || !SituacionProyecto || SituacionProyecto == undefined || SituacionProyecto == "-1"
+        || !Ubicacion || Ubicacion == undefined || Ubicacion == "-1" || !NumContrato || NumContrato == undefined || NumContrato.trim() == ""
+        || !NombreEECC || NombreEECC == undefined || NombreEECC.trim() == "" || !SubContrato || SubContrato == undefined || SubContrato.trim() == ""
+        || !DescripcionServicio || DescripcionServicio == undefined || DescripcionServicio.trim() == "" || !SituacionFaena || SituacionFaena == undefined || SituacionFaena == "-1"
+        || !Turno || Turno == undefined || Turno == "-1" || !Alimentacion || Alimentacion == undefined || Alimentacion == "-1"
+        || !Hoteleria || Hoteleria == undefined || Hoteleria == "-1") {
+        swal("", "Debe completar el formulario, todos los campos son requeridos.", "info");
+        return false;
+    } else {
+        var DTO = {
+            "IniToken": IniToken,
+            "DotToken": DotToken,
+            "PidArea": PidArea,
+            "PidCodigoIniciativa": PidCodigoIniciativa,
+            "PidNombreProyecto": PidNombreProyecto,
+            "DotAnn": PeriodoAnn,
+            "DotSitProyecto": SituacionProyecto,
+            "DotSitFaena": SituacionFaena,
+            "DotDepto": DepartamentoDot,
+            "DotNumContrato": NumContrato,
+            "DotNombEECC": NombreEECC,
+            "DotServicio": DescripcionServicio,
+            "DotSubContrato": SubContrato,
+            "DotCodCentro": CentroCosto,
+            "DotTurno": Turno,
+            "DotHoteleria": Hoteleria,
+            "DotAlimentacion": Alimentacion,
+            "DotUbicacion": Ubicacion,
+            "DotClasificacion": ClasificacionDot,
+            "DotTipoEECC": TipoEECC,
+            "DotTotalDotacion": dotTot,
+            "DotEne": dotEne,
+            "DotFeb": dotFeb,
+            "DotMar": dotMar,
+            "DotAbr": dotAbr,
+            "DotMay": dotMay,
+            "DotJun": dotJun,
+            "DotJul": dotJul,
+            "DotAgo": dotAgo,
+            "DotSep": dotSep,
+            "DotOct": dotOct,
+            "DotNov": dotNov,
+            "DotDic": dotDic
+        }
+        $.ajax({
+            url: '../../Planificacion/ActualizarContratoDotacion',
+            method: "POST",
+            data: (DTO)
+        }).done(function (r) {
+            if (r && r.redirectUrlLogout && r.redirectUrlLogout == "true") {
+                document.getElementById('linkToLogout').click();
+                return;
+            }
+            var response = JSON.parse(JSON.stringify(r));
+            var contenido = response.Mensaje;
+            if (contenido == "Actualizado") {
+                swal("Exito", "Dotación actualizada correctamente.", "success")
+                setTimeout(function () {
+                    swal.close();
+                    FNPoblarVistaDotacionResumen();
+                    FNLimpiarFormContratoDotacionMod();
+                    $("#ContenedorPresupuesto").show();
+                    $("#ContenedorContratosDotacion").show();
+                    $("#ContenedorDotacionMod").hide()
+                }, 3000);
+            }
+            else {
+                swal("", "Error al intentar actualizar dotación, por favor intente nuevamente.", "error")
+                setTimeout(function () {
+                    swal.close();
+                    FNLimpiarFormContratoDotacionMod();
+                    $("#ContenedorPresupuesto").show();
+                    $("#ContenedorDotacionMod").hide();
+                }, 3000);
+            }
+        }).fail(function (xhr) {
+            console.log('error', xhr);
+        });
+    }
+}
+
+FNObtenerDotacion = function (DotToken) {
+    $('#AppLoaderContainer').show();
+    FNLimpiarFormContratoDotacionMod();
+    $.ajaxSetup({ cache: false });
+    $.ajax({
+        url: "../../Planificacion/ObtenerContratoDotacionByToken",
+        method: "GET",
+        data: { "DotToken": DotToken }
+    }).done(function (response) {
+        console.log("response=", response);
+        $('#AppLoaderContainer').hide();
+        if (response && response.redirectUrlLogout && response.redirectUrlLogout == "true") {
+            document.getElementById('linkToLogout').click();
+            return;
+        }
+        if (response && response.Dotacion) {
+            $("#DotToken").val(response.Dotacion.DotToken);
+            if (response.Dotacion.DotAnn != undefined && response.Dotacion.DotAnn != "") {
+                $("#PeriodoAnnMod").val(response.Dotacion.DotAnn);
+            }
+            if (response.Dotacion.DotDepto != undefined && response.Dotacion.DotDepto != "") {
+                $("#DepartamentoDotMod").val(response.Dotacion.DotDepto);
+            }
+
+            $("#CentroCostoMod").val(response.Dotacion.DotCodCentro);
+
+            if (response.Dotacion.DotClasificacion != undefined && response.Dotacion.DotClasificacion != "") {
+                $("#ClasificacionDotMod").val(response.Dotacion.DotClasificacion);
+            }
+            if (response.Dotacion.DotTipoEECC != undefined && response.Dotacion.DotTipoEECC != "") {
+                $("#TipoEECCMod").val(response.Dotacion.DotTipoEECC);
+            }
+            if (response.Dotacion.DotSitProyecto != undefined && response.Dotacion.DotSitProyecto != "") {
+                $("#SituacionProyectoMod").val(response.Dotacion.DotSitProyecto);
+            }
+            if (response.Dotacion.DotUbicacion != undefined && response.Dotacion.DotUbicacion != "") {
+                $("#UbicacionMod").val(response.Dotacion.DotUbicacion);
+            }
+
+            $("#NumContratoMod").val(response.Dotacion.DotNumContrato);
+            $("#NombreEECCMod").val(response.Dotacion.DotNombEECC);
+            $("#SubContratoMod").val(response.Dotacion.DotSubContrato);
+            $("#DescripcionServicioMod").val(response.Dotacion.DotServicio);
+
+            if (response.Dotacion.DotSitFaena != undefined && response.Dotacion.DotSitFaena != "") {
+                $("#SituacionFaenaMod").val(response.Dotacion.DotSitFaena);
+            }
+            if (response.Dotacion.DotTurno != undefined && response.Dotacion.DotTurno != "") {
+                $("#TurnoMod").val(response.Dotacion.DotTurno);
+            }
+            if (response.Dotacion.DotAlimentacion != undefined && response.Dotacion.DotAlimentacion != "") {
+                $("#AlimentacionMod").val(response.Dotacion.DotAlimentacion);
+            }
+            if (response.Dotacion.DotHoteleria != undefined && response.Dotacion.DotHoteleria != "") {
+                $("#HoteleriaMod").val(response.Dotacion.DotHoteleria);
+            }
+            $("#dotEneMod").val(response.Dotacion.DotEne);
+            $("#dotFebMod").val(response.Dotacion.DotFeb);
+            $("#dotMarMod").val(response.Dotacion.DotMar);
+            $("#dotAbrMod").val(response.Dotacion.DotAbr);
+            $("#dotMayMod").val(response.Dotacion.DotMay);
+            $("#dotJunMod").val(response.Dotacion.DotJun);
+            $("#dotJulMod").val(response.Dotacion.DotJul);
+            $("#dotAgoMod").val(response.Dotacion.DotAgo);
+            $("#dotSepMod").val(response.Dotacion.DotSep);
+            $("#dotOctMod").val(response.Dotacion.DotOct);
+            $("#dotNovMod").val(response.Dotacion.DotNov);
+            $("#dotDicMod").val(response.Dotacion.DotDic);
+        }
+        $("#ContenedorPresupuesto").hide();
+        $("#ContenedorDotacionMod").show()
+    }).fail(function (xhr) {
+        $('#AppLoaderContainer').hide();
+        console.log('error', xhr);
+    });
 }
 //
 // ELIMINAR DOTACION
 //
 FNEliminarContratoDotacion = function (token) {
-    $.ajaxSetup({ cache: false });
-    $.ajax({
-        url: "../../Planificacion/EliminarContratoDotacion",
-        method: "GET",
-        data: { "token": token }
-    }).done(function (request) {
-        if (request && request.redirectUrlLogout && request.redirectUrlLogout == "true") {
-            document.getElementById('linkToLogout').click();
-            return;
+    swal({
+        title: 'Esta seguro?',
+        text: "Está seguro que desea eliminar la Dotación?",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, continuar!',
+        cancelButtonText: 'No!',
+        confirmButtonClass: 'btn btn-primary',
+        cancelButtonClass: 'btn btn-danger'
+    }).then(function (isConfirm) {
+        if (isConfirm && isConfirm.value) {
+            $('#AppLoaderContainer').show();
+            $.ajaxSetup({ cache: false });
+            $.ajax({
+                url: "../../Planificacion/EliminarContratoDotacion",
+                method: "GET",
+                data: { "token": token }
+            }).done(function (request) {
+                $('#AppLoaderContainer').hide();
+                if (request && request.redirectUrlLogout && request.redirectUrlLogout == "true") {
+                    document.getElementById('linkToLogout').click();
+                    return;
+                }
+                swal("", "Dotación eliminada.", "success");
+                $("#ContenedorDotacionesResumen").html("");
+                $("#ContenedorDotacion").hide()
+                $("#ContenedorContratosDotacion").hide();
+                FNPoblarVistaDotacionResumen();
+            }).fail(function (xhr) {
+                $('#AppLoaderContainer').hide();
+                console.log('error', xhr);
+            });
+        } else {
+            return false;
         }
-        swal("", "Dotación eliminada.", "success");
-        $("#ContenedorDotacionesResumen").html("");
-        $("#ContenedorDotacion").hide()
-        $("#ContenedorContratosDotacion").hide();
-        FNLimpiarFormContratoDotacion();
-    }).fail(function (xhr) { console.log('error', xhr); });
+    });
     return false;
 }
 //
@@ -405,15 +1019,25 @@ document.getElementById('BotonVolverPresupuesto').onclick = function (e) {
     $("#ContenedorContratosDotacion").show();
     $("#ContenedorDotacion").hide()
 }
+document.getElementById('BotonVolverPresupuestoMod').onclick = function (e) {
+    FNPoblarVistaDotacionResumen();
+    $("#ContenedorPresupuesto").show();
+    $("#ContenedorContratosDotacion").show();
+    $("#ContenedorDotacionMod").hide()
+}
 document.getElementById('BotonAgregarDotacion').onclick = function (e) {
     $("#ContenedorPresupuesto").hide();
-    $("#ContenedorDotacion").show()
+    $("#ContenedorDotacion").show();
+    FNLimpiarFormContratoDotacion();
 }
 //
 // VER DOTACION AGREGADA
 //
 FNPoblarVistaDotacionResumen = function () {
     //PREPARAR
+    $("#ContenedorDotacionesResumen").html('');
+    $(".pageNumbers").html("");
+    $(".pager").hide();
     $.ajaxSetup({ cache: false });
     //FINANCIERO
     $.ajax({
@@ -421,8 +1045,22 @@ FNPoblarVistaDotacionResumen = function () {
         method: "GET",
         data: { "IniToken": localStorage.getItem("CAPEX_INICIATIVA_TOKEN") }
     }).done(function (r) {
-        $("#ContenedorDotacionesResumen").html(r);
-        $(".paginate").paginga({
+        if (r && r.Error && r.Error == "false") {
+            if (r.TotalItems > 0) {
+                $("#ContenedorContratosDotacion").show();
+                $("#ContenedorDotacionesResumen").html(r.ContenedorDotacionesResumen);
+                if (r.TotalItems > 1) {
+                    $(".pager").show();
+                    $(".pageNumbers").html(r.Pager);
+                    ChangePage(1);
+                }
+            } else {
+                $("#ContenedorContratosDotacion").hide();
+            }
+        } else {
+            $("#ContenedorContratosDotacion").hide();
+        }
+        /*$(".paginate").paginga({
             itemsPerPage: 1,
             itemsContainer: ".items",
             item: "> div",
@@ -442,11 +1080,30 @@ FNPoblarVistaDotacionResumen = function () {
             },
             history: false,
             historyHashPrefix: "page-"
-
-        });
+        });*/
     }).fail(function (xhr) {
+        $("#ContenedorContratosDotacion").hide();
         console.log('error', xhr);
     });
+}
+
+
+ChangePage = function (page) {
+    console.log("ChangePage page=" + page);
+    console.log("$('.pageNumbers a').length=" + $('.pageNumbers a').length);
+    var totalPages = $('.pageNumbers a').length;
+    var selectorSelectedPage = 'pageSelected_' + page;
+    var selectorSelectedDotacion = 'datosDotacionIniciativa_' + page;
+    $(('#' + selectorSelectedPage)).addClass('active');
+    $(('#' + selectorSelectedDotacion)).show();
+    var contador;
+    for (contador = 1; contador <= totalPages; contador++) {
+        if (contador != page) {
+            $(('#pageSelected_' + contador)).removeClass('active');
+            $(('#datosDotacionIniciativa_' + contador)).hide();
+        }
+    }
+    console.log("final ChangePage");
 }
 //
 // IMPORTAR TEMPLATE

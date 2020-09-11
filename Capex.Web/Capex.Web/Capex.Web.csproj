@@ -2230,6 +2230,7 @@
     <Content Include="Views\Mantenedor\Bloqueo.cshtml" />
     <Content Include="Views\Orientacion\Index.cshtml" />
     <Content Include="Views\Orientacion\ListarIniciativas.cshtml" />
+    <Content Include="Views\Planificacion\ModificarDotacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Export\" />

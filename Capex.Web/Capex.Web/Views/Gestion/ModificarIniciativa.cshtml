@@ -1058,13 +1058,13 @@
                                                             </div>
                                                         </div>
                                                         <!--PAGINACION DE CONTRATOS-->
-                                                        <div id="ContenedorContratosDotacion" style="display:none;">
+                                                        <div id="ContenedorContratosDotacion" class="pt-0" style="display:none;">
                                                             <div class="paginate 1">
-                                                                <div id="ContenedorDotacionesResumen" class="items"></div>
+                                                                <div id="ContenedorDotacionesResumen" class="items pb-0"></div>
                                                                 <div class="pager">
-                                                                    <div class="previousPage">&lsaquo;</div>
+                                                                    <!--<div class="previousPage">&lsaquo;</div>-->
                                                                     <div class="pageNumbers"></div>
-                                                                    <div class="nextPage">&rsaquo;</div>
+                                                                    <!--<div class="nextPage">&rsaquo;</div>-->
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1080,6 +1080,15 @@
                                             </div>
                                             <div class="card">
                                                 @Html.Partial("~/Views/Planificacion/Dotacion.cshtml")
+                                            </div>
+                                        </div>
+
+                                        <div id="ContenedorDotacionMod" class="card offset-md-0" style="display:none;">
+                                            <div class="card-body offset-md-0">
+                                                <div class="row pb-2 offset-md-0"> <input type="button" id="BotonVolverPresupuestoMod" class="btn btn-primary btn-sm" value="Volver a Presupuesto" /></div>
+                                            </div>
+                                            <div class="card">
+                                                @Html.Partial("~/Views/Planificacion/ModificarDotacion.cshtml")
                                             </div>
                                         </div>
                                     </div>
@@ -3044,6 +3053,340 @@
         $('#EvePayBack').number(true, 2, ',', '.');
         $('#EveTipoCambio').number(true, 2, ',', '.');
 
+        $("#dotEne").on("click", function () {
+            $(this).select();
+        });
+        $("#dotEne").focus(function () {
+            $(this).select();
+        });
+        $("#dotEne").focusin(function () {
+            $(this).select();
+        });
+        $("#dotEne").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotFeb").on("click", function () {
+            $(this).select();
+        });
+        $("#dotFeb").focus(function () {
+            $(this).select();
+        });
+        $("#dotFeb").focusin(function () {
+            $(this).select();
+        });
+        $("#dotFeb").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotMar").on("click", function () {
+            $(this).select();
+        });
+        $("#dotMar").focus(function () {
+            $(this).select();
+        });
+        $("#dotMar").focusin(function () {
+            $(this).select();
+        });
+        $("#dotMar").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotAbr").on("click", function () {
+            $(this).select();
+        });
+        $("#dotAbr").focus(function () {
+            $(this).select();
+        });
+        $("#dotAbr").focusin(function () {
+            $(this).select();
+        });
+        $("#dotAbr").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotMay").on("click", function () {
+            $(this).select();
+        });
+        $("#dotMay").focus(function () {
+            $(this).select();
+        });
+        $("#dotMay").focusin(function () {
+            $(this).select();
+        });
+        $("#dotMay").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotJun").on("click", function () {
+            $(this).select();
+        });
+        $("#dotJun").focus(function () {
+            $(this).select();
+        });
+        $("#dotJun").focusin(function () {
+            $(this).select();
+        });
+        $("#dotJun").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotJul").on("click", function () {
+            $(this).select();
+        });
+        $("#dotJul").focus(function () {
+            $(this).select();
+        });
+        $("#dotJul").focusin(function () {
+            $(this).select();
+        });
+        $("#dotJul").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotAgo").on("click", function () {
+            $(this).select();
+        });
+        $("#dotAgo").focus(function () {
+            $(this).select();
+        });
+        $("#dotAgo").focusin(function () {
+            $(this).select();
+        });
+        $("#dotAgo").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotSep").on("click", function () {
+            $(this).select();
+        });
+        $("#dotSep").focus(function () {
+            $(this).select();
+        });
+        $("#dotSep").focusin(function () {
+            $(this).select();
+        });
+        $("#dotSep").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotOct").on("click", function () {
+            $(this).select();
+        });
+        $("#dotOct").focus(function () {
+            $(this).select();
+        });
+        $("#dotOct").focusin(function () {
+            $(this).select();
+        });
+        $("#dotOct").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotNov").on("click", function () {
+            $(this).select();
+        });
+        $("#dotNov").focus(function () {
+            $(this).select();
+        });
+        $("#dotNov").focusin(function () {
+            $(this).select();
+        });
+        $("#dotNov").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotDic").on("click", function () {
+            $(this).select();
+        });
+        $("#dotDic").focus(function () {
+            $(this).select();
+        });
+        $("#dotDic").focusin(function () {
+            $(this).select();
+        });
+        $("#dotDic").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        //modificacion
+        $("#dotEneMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotEneMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotEneMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotEneMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotFebMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotFebMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotFebMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotFebMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotMarMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotMarMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotMarMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotMarMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotAbrMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotAbrMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotAbrMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotAbrMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotMayMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotMayMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotMayMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotMayMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotJunMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotJunMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotJunMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotJunMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotJulMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotJulMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotJulModMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotAgoMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotAgoMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotAgoMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotAgoMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotSepMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotSepMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotSepMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotSepMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotOctMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotOctMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotOctMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotOctMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotNovMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotNovMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotNovMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotNovMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
+        $("#dotDicMod").on("click", function () {
+            $(this).select();
+        });
+        $("#dotDicMod").focus(function () {
+            $(this).select();
+        });
+        $("#dotDicMod").focusin(function () {
+            $(this).select();
+        });
+        $("#dotDicMod").focusout(function () {
+            if ($(this).val() == "") {
+                $(this).val("0");
+            }
+        });
 
         /*********************************** LIMPIAR ALMACENAMIENTO LOCAL *******************************/
         localStorage.setItem("CAPEX_PLAN_PROCESO", "");
@@ -3266,6 +3609,8 @@
                 localStorage.setItem("CAPEX_INICIATIVA_FOLIO", FolioIniciativa);
             }
         }
+
+        FNPoblarVistaDotacionResumen();
 
         /****************************      IDENTIFICACION : FIJAR VALORES REQUIERE                ***********************/
 
@@ -3555,6 +3900,21 @@
                         FNObtenerDepartamentoDotacion();
                         setTimeout(function () {
                             FNObtenerTurnosDotacion();
+                        }, 200);
+                    }, 200);
+                }, 200);
+            }, 200);
+        }, 200);
+        setTimeout(function () {
+            FNObtenerUbicacionesMod();
+            setTimeout(function () {
+                FNObtenerTipoEECCMod();
+                setTimeout(function () {
+                    FNObtenerClasificacionesMod();
+                    setTimeout(function () {
+                        FNObtenerDepartamentoDotacionMod();
+                        setTimeout(function () {
+                            FNObtenerTurnosDotacionMod();
                         }, 200);
                     }, 200);
                 }, 200);

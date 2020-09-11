@@ -4264,7 +4264,7 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
                     parametos.Add("DotNov", DatosContratoDotacion.DotNov);
                     parametos.Add("DotDic", DatosContratoDotacion.DotDic);
                     parametos.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
-                    SqlMapper.Query(objConnection, "CAPEX_INS_IDENTIFICACION_DOTACION", commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    SqlMapper.Query(objConnection, "CAPEX_INS_IDENTIFICACION_DOTACION", parametos, commandType: CommandType.StoredProcedure).SingleOrDefault();
                     if (!string.IsNullOrEmpty(parametos.Get<string>("Respuesta")))
                     {
                         return parametos.Get<string>("Respuesta");
@@ -4291,10 +4291,71 @@ namespace CapexInfraestructure.Bll.Business.Planificacion
         /// </summary>
         /// <param name="DatosContratoDotacion"></param>
         /// <returns></returns>
-        public string ActualizarContratoDotacion(Dotacion.ContratoDotacion DatosContratoDotacion)
+        public string ActualizarContratoDotacion(Dotacion.ModificarDotacion DatosContratoDotacion)
         {
-            return null;
+            using (SqlConnection objConnection = new SqlConnection(Utils.ConnectionString()))
+            {
+                try
+                {
+                    objConnection.Open();
+                    var parametros = new DynamicParameters();
+                    parametros.Add("IniToken", DatosContratoDotacion.IniToken);
+                    parametros.Add("DotToken", DatosContratoDotacion.DotToken);
+                    parametros.Add("PidArea", DatosContratoDotacion.PidArea);
+                    parametros.Add("PidCodigoIniciativa", DatosContratoDotacion.PidCodigoIniciativa);
+                    parametros.Add("PidNombreProyecto", DatosContratoDotacion.PidNombreProyecto);
+                    parametros.Add("DotAnn", DatosContratoDotacion.DotAnn);
+                    parametros.Add("DotSitProyecto", DatosContratoDotacion.DotSitProyecto);
+                    parametros.Add("DotSitFaena", DatosContratoDotacion.DotSitFaena);
+                    parametros.Add("DotDepto", DatosContratoDotacion.DotDepto);
+                    parametros.Add("DotNumContrato", DatosContratoDotacion.DotNumContrato);
+                    parametros.Add("DotNombEECC", DatosContratoDotacion.DotNombEECC);
+                    parametros.Add("DotServicio", DatosContratoDotacion.DotServicio);
+                    parametros.Add("DotSubContrato", DatosContratoDotacion.DotSubContrato);
+                    parametros.Add("DotCodCentro", DatosContratoDotacion.DotCodCentro);
+                    parametros.Add("DotTurno", DatosContratoDotacion.DotTurno);
+                    parametros.Add("DotHoteleria", DatosContratoDotacion.DotHoteleria);
+                    parametros.Add("DotAlimentacion", DatosContratoDotacion.DotAlimentacion);
+                    parametros.Add("DotUbicacion", DatosContratoDotacion.DotUbicacion);
+                    parametros.Add("DotClasificacion", DatosContratoDotacion.DotClasificacion);
+                    parametros.Add("DotTipoEECC", DatosContratoDotacion.DotTipoEECC);
+                    parametros.Add("DotTotalDotacion", DatosContratoDotacion.DotTotalDotacion);
+                    parametros.Add("DotEne", DatosContratoDotacion.DotEne);
+                    parametros.Add("DotFeb", DatosContratoDotacion.DotFeb);
+                    parametros.Add("DotMar", DatosContratoDotacion.DotMar);
+                    parametros.Add("DotAbr", DatosContratoDotacion.DotAbr);
+                    parametros.Add("DotMay", DatosContratoDotacion.DotMay);
+                    parametros.Add("DotJun", DatosContratoDotacion.DotJun);
+                    parametros.Add("DotJul", DatosContratoDotacion.DotJul);
+                    parametros.Add("DotAgo", DatosContratoDotacion.DotAgo);
+                    parametros.Add("DotSep", DatosContratoDotacion.DotSep);
+                    parametros.Add("DotOct", DatosContratoDotacion.DotOct);
+                    parametros.Add("DotNov", DatosContratoDotacion.DotNov);
+                    parametros.Add("DotDic", DatosContratoDotacion.DotDic);
+                    parametros.Add("Respuesta", dbType: System.Data.DbType.String, direction: System.Data.ParameterDirection.Output, size: 50);
+                    SqlMapper.Query(objConnection, "CAPEX_UPD_IDENTIFICACION_DOTACION", parametros, commandType: CommandType.StoredProcedure).SingleOrDefault();
+                    if (!string.IsNullOrEmpty(parametros.Get<string>("Respuesta")))
+                    {
+                        return parametros.Get<string>("Respuesta");
+                    }
+                    else
+                    {
+                        return "ERROR";
+                    }
+                }
+                catch (Exception err)
+                {
+                    ExceptionResult = AppModule + "ActualizarContratoDotacion, Mensaje: " + err.Message.ToString() + "-" + ", Detalle: " + err.StackTrace.ToString();
+                    Utils.LogError(ExceptionResult);
+                    return null;
+                }
+                finally
+                {
+                    objConnection.Close();
+                }
+            }
         }
+
         /// <summary>
         /// 
         /// </summary>
