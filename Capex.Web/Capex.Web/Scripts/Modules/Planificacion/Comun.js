@@ -17,10 +17,19 @@
 
 FNObtenerFechaBloqueo = function () {
     //PREPARAR
+    var tipo_iniciativa = localStorage.getItem("CAPEX_TIPO_INICIATIVA");
+    console.info("tipo_iniciativa=" + tipo_iniciativa);
+    var tipoIniciativaSeleccionado = 1;
+    if (tipo_iniciativa == "CB" || tipo_iniciativa == "CD") {
+        tipoIniciativaSeleccionado = 1;
+    } else {
+        tipoIniciativaSeleccionado = 2;
+    }
     $.ajaxSetup({ cache: false });
     $.ajax({
         url: "/Planificacion/obtenerFechaBloqueo",
         type: "GET",
+        data: { "TipoIniciativa": tipoIniciativaSeleccionado },
         dataType: "json",
         success: function (r) {
             console.log("FNObtenerFechaBloqueo r=" + r);
@@ -28,10 +37,15 @@ FNObtenerFechaBloqueo = function () {
                 document.getElementById('linkToLogout').click();
                 return;
             }
+            var iniciativoHitoEstado = localStorage.getItem("CAPEX_INICIATIVA_HITO_ESTADO");
             if (r == "0") {
-                $('#BotonGuardarEnviarIniciativa').show();
+                if (iniciativoHitoEstado && iniciativoHitoEstado == "Guardado") {
+                    $('#BotonGuardarEnviarIniciativa').show();
+                }
             } else {
-                $('#BotonGuardarEnviarIniciativa').hide();
+                if (iniciativoHitoEstado && iniciativoHitoEstado == "Guardado") {
+                    $('#BotonGuardarEnviarIniciativa').hide();
+                }
             }
         }
     });

@@ -161,7 +161,8 @@ FNGuardarHitos = function (origen, asynCall) {
                         swal("Exito", "Información Capex /Hitos guardada correctamente.", "success");
                         $("#BotonGuardarHito").prop("disabled", "true");
                         $("#BotonActualizarHito").show();
-                        $("#BotonGuardarEnviarIniciativa").show();
+                        FNObtenerFechaBloqueo();
+                        //$("#BotonGuardarEnviarIniciativa").show();
                     }
                     origen = null;
                     valueResponse = true;

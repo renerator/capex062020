@@ -1759,7 +1759,7 @@ FNObtenerExcelTemplateFinal = function () {
     if (tipo_iniciativa == "CB" || tipo_iniciativa == "CD") {
         tipoIniciativaSeleccionado = 1;
     } else {
-        tipoIniciativaSeleccionado = 2;
+        tipoIniciativaSeleccionado = 2; 
     }
     $.ajax({
         url: "/Documentacion/SeleccionarExcelTemplatePeriodo/" + tipoIniciativaSeleccionado + "/" + periodo,
